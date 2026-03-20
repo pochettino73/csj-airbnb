@@ -85,7 +85,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ <span>Airbnb</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 20/03/2026 13:52</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 20/03/2026 13:57</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -262,7 +262,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="row r1">
   <div class="cd">
     <h3>Superhost &mdash; Evaluaci&oacute;n trimestral</h3>
-    <div class="s">Rating medio y n&ordm; reviews por periodo de evaluaci&oacute;n (365d). Verde = Superhost (&ge;4.8 + &ge;3 reviews)</div>
+    <div class="s">Rating medio por trimestre Airbnb (ventana 365d). &#x1F7E2; Verde = Superhost (&ge;4.8 + &ge;3 reviews) &mdash; &#x1F534; Rojo = por debajo del umbral</div>
     <div class="ch lg"><canvas id="c21"></canvas></div>
   </div>
 </div>
@@ -899,40 +899,70 @@ function drawC19() {
 function drawC21() {
   if(charts.c21) charts.c21.destroy();
   const labels = SH_CHECKS;
-  const ratings = labels.map(q => SH_DATA[q] ? SH_DATA[q].rating : 0);
+  const ratings = labels.map(q => SH_DATA[q] ? SH_DATA[q].rating : null);
   const counts = labels.map(q => SH_DATA[q] ? SH_DATA[q].n : 0);
   const isSH = labels.map(q => SH_DATA[q] ? SH_DATA[q].superhost : false);
-  const barColors = isSH.map(v => v ? '#22c55ecc' : '#ef4444cc');
+  const ptColors = ratings.map((v,i) => v === null ? 'transparent' : (isSH[i] ? '#22c55e' : '#ef4444'));
+  const ptBorder = ratings.map((v,i) => v === null ? 'transparent' : (isSH[i] ? '#16a34a' : '#dc2626'));
   charts.c21 = new Chart(document.getElementById('c21'), {
-    type:'bar',
+    type:'line',
     data: {
       labels,
       datasets: [
-        { label:'Reviews', data:counts, backgroundColor:barColors, borderRadius:4, borderSkipped:false, yAxisID:'y' },
-        { label:'Rating medio', data:ratings, type:'line', borderColor:'#f59e0b', borderWidth:2.5, pointRadius:4, pointBackgroundColor:ratings.map((v,i)=>isSH[i]?'#22c55e':'#ef4444'), tension:0.3, fill:false, yAxisID:'y1' },
-        { label:'Umbral 4.8', data:Array(labels.length).fill(4.8), type:'line', borderColor:'rgba(148,163,184,0.4)', borderDash:[6,4], borderWidth:1, pointRadius:0, fill:false, yAxisID:'y1' },
+        {
+          label:'Rating medio (365d)',
+          data:ratings,
+          borderColor:'#3b82f6',
+          borderWidth:2.5,
+          pointRadius:6,
+          pointHoverRadius:8,
+          pointBackgroundColor:ptColors,
+          pointBorderColor:ptBorder,
+          pointBorderWidth:2,
+          tension:0.3,
+          fill:false,
+          spanGaps:true,
+        },
+        {
+          label:'Umbral Superhost (4.8)',
+          data:Array(labels.length).fill(4.8),
+          borderColor:'rgba(239,68,68,0.5)',
+          borderDash:[8,4],
+          borderWidth:2,
+          pointRadius:0,
+          fill:{target:'end',above:'transparent',below:'rgba(239,68,68,0.08)'},
+        },
       ]
     },
     options: {
       responsive:true, maintainAspectRatio:false,
       interaction:{mode:'index',intersect:false},
       plugins: {
-        legend:{position:'top',labels:{usePointStyle:true,font:{size:10},filter:i=>!i.text.includes('Umbral')}},
+        legend:{position:'top',labels:{usePointStyle:true,font:{size:10}}},
         tooltip:{callbacks:{
-          afterBody: function(items) {
+          title: function(items) {
             const i = items[0].dataIndex;
-            return isSH[i] ? '\n\u2705 Superhost' : '\n\u274c No Superhost';
+            const q = labels[i];
+            return q + (isSH[i] ? ' \u2705 SUPERHOST' : ' \u274c No Superhost');
           },
           label:function(c) {
-            if(c.dataset.yAxisID==='y') return c.parsed.y+' reviews';
-            if(c.dataset.label==='Rating medio') return 'Rating: '+c.parsed.y.toFixed(2);
-            return '';
+            if(c.dataset.label.includes('Umbral')) return '';
+            const i = c.dataIndex;
+            const r = ratings[i];
+            const n = counts[i];
+            if(r===null) return '';
+            const diff = (r - 4.8).toFixed(2);
+            const sign = r >= 4.8 ? '+' : '';
+            return ['Rating: ' + r.toFixed(2) + ' (' + sign + diff + ' vs 4.8)', 'Reviews: ' + n + ' (min 3)'];
           }
         }}
       },
       scales: {
-        y: { position:'left', title:{display:true,text:'Reviews',color:'#60a5fa'}, ticks:{color:'#60a5fa',stepSize:5}, grid:{color:GC} },
-        y1: { position:'right', title:{display:true,text:'Rating',color:'#f59e0b'}, ticks:{color:'#f59e0b'}, grid:{drawOnChartArea:false}, min:4, max:5 },
+        y: {
+          min:4.0, max:5.0,
+          ticks:{stepSize:0.1,color:'#94a3b8',callback:v=>v.toFixed(1)},
+          grid:{color: function(ctx) { return ctx.tick.value === 4.8 ? 'rgba(239,68,68,0.3)' : GC; } }
+        },
         x: { ticks:{font:{size:9},maxRotation:45}, grid:{display:false} }
       }
     }
