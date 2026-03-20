@@ -750,8 +750,11 @@ function drawKPIs() {{
     y2+': '+fmt(ing2)+'€', '');
   h += card('Ocupaci&oacute;n '+periodLabel+' '+y1, ocu1.toFixed(1)+'%', pct(ocu1,ocu2),
     y2+': '+ocu2.toFixed(1)+'%', '');
-  h += card('PM alta (jun-ago) '+y1, pm1.toFixed(1)+'€/n', pct(pm1,pm2),
-    y2+': '+pm2.toFixed(1)+'€/n', '');
+  const pmB1 = PM_BANDA[y1] || {{alta:0,media:0,baja:0}};
+  const pmB2 = PM_BANDA[y2] || {{alta:0,media:0,baja:0}};
+  h += card('PM temporada '+y1, pm1.toFixed(1)+'€/n', pct(pm1,pm2),
+    '<span style="color:#ef4444">Alta:</span> '+pmB1.alta.toFixed(1)+'€ <span style="color:var(--m)">('+y2+': '+pmB2.alta.toFixed(1)+'€)</span><br><span style="color:#f59e0b">Media:</span> '+pmB1.media.toFixed(1)+'€ <span style="color:var(--m)">('+y2+': '+pmB2.media.toFixed(1)+'€)</span><br><span style="color:#3b82f6">Baja:</span> '+pmB1.baja.toFixed(1)+'€ <span style="color:var(--m)">('+y2+': '+pmB2.baja.toFixed(1)+'€)</span>',
+    'Alta=jun-ago &middot; Media=abr,may,sep,oct &middot; Baja=nov-mar');
 
   // Pace KPI
   const otb1 = (PACE_OTB[y1]||Array(12).fill(0)).slice(0,period).reduce((a,b)=>a+b,0);
