@@ -357,16 +357,17 @@ def build(data, ing, ocu, pm, rev):
             }
             sh_checks.append(label)
 
-    # === PRÓXIMA REVISIÓN SUPERHOST ===
-    # Determinar cuál es el próximo trimestre de evaluación
+    # === REVISIONES SUPERHOST FUTURAS ===
     today_str = now.strftime("%Y-%m-%d")
-    next_sh = None
+    from collections import Counter
+    from datetime import datetime as dt2
+    future_sh = []  # list of future quarter assessments
     for y in range(cy, cy + 2):
         for q, (sm, sd, ey_offset, em, ed) in enumerate([
             (1, 1, -1, 12, 31), (4, 1, 0, 3, 31), (7, 1, 0, 6, 30), (10, 1, 0, 9, 30)
         ], 1):
             eval_date = f"{y}-{[1,4,7,10][q-1]:02d}-01"
-            if eval_date > today_str and not next_sh:
+            if eval_date > today_str and len(future_sh) < 4:
                 start_w = f"{y-1}-{sm:02d}-{sd:02d}"
                 end_w = f"{y+ey_offset}-{em:02d}-{ed:02d}"
                 label_w = f"{y}-Q{q}"
@@ -376,10 +377,7 @@ def build(data, ing, ocu, pm, rev):
                 n_rev = len(ratings_w)
                 avg_now = round(total_pts / n_rev, 4) if n_rev else 0
                 gap = round(4.8 * n_rev - total_pts, 1)
-                # Distribution
-                from collections import Counter
                 dist_w = Counter(ratings_w)
-                # How many 5* needed to reach 4.80
                 needed_5 = 0
                 test_pts, test_n = total_pts, n_rev
                 while test_n > 0 and test_pts / test_n < 4.8:
@@ -388,7 +386,6 @@ def build(data, ing, ocu, pm, rev):
                     needed_5 += 1
                     if needed_5 > 50:
                         break
-                # Reviews < 5 in window
                 bad_revs = []
                 for r in qrevs_w:
                     if r.get("rating") and r["rating"] < 5:
@@ -398,11 +395,9 @@ def build(data, ing, ocu, pm, rev):
                             "comment": (r.get("comment") or "")[:100],
                         })
                 bad_revs.sort(key=lambda x: x["rating"])
-                # Days until evaluation
-                from datetime import datetime as dt2
                 eval_dt = dt2.strptime(eval_date, "%Y-%m-%d")
                 days_left = (eval_dt - now).days
-                next_sh = {
+                future_sh.append({
                     "label": label_w,
                     "eval_date": eval_date,
                     "days_left": days_left,
@@ -416,7 +411,8 @@ def build(data, ing, ocu, pm, rev):
                     "is_super": avg_now >= 4.8,
                     "dist": {str(k): v for k, v in dist_w.items()},
                     "bad_reviews": bad_revs[:10],
-                }
+                })
+    next_sh = future_sh[0] if future_sh else None
 
     rev_by_year = {}
     for y in active:
@@ -751,6 +747,7 @@ const CATS_KEY={J(cats_key)};
 const SH_DATA={J(superhost_quarters)};
 const SH_CHECKS={J(sh_checks)};
 const NEXT_SH={J(next_sh)};
+const FUTURE_SH={J(future_sh)};
 
 // Globals
 let charts = {{}};
@@ -1081,17 +1078,31 @@ function drawSpark() {{
 }}
 
 // === Review cards by year ===
-function drawNextSH() {{
+let shIdx = 0;
+function drawNextSH(idx) {{
+  if(idx !== undefined) shIdx = idx;
   const ct = document.getElementById('nextShPanel');
-  if(!NEXT_SH) {{ ct.innerHTML = '<p style="color:var(--m)">Sin datos</p>'; return; }}
-  const d = NEXT_SH;
+  if(!FUTURE_SH || !FUTURE_SH.length) {{ ct.innerHTML = '<p style="color:var(--m)">Sin datos</p>'; return; }}
+  const d = FUTURE_SH[shIdx];
+
+  // Quarter selector buttons
+  let hBtns = '<div style="display:flex;gap:6px;margin-bottom:12px">';
+  FUTURE_SH.forEach((q,i) => {{
+    const active = i === shIdx;
+    const bgc = active ? (q.is_super ? '#22c55e' : '#ef4444') : 'var(--c)';
+    const bdc = active ? bgc : 'var(--b)';
+    const txc = active ? '#fff' : 'var(--t)';
+    hBtns += '<button onclick="drawNextSH('+i+')" style="background:'+bgc+';color:'+txc+';border:1px solid '+bdc+';border-radius:8px;padding:6px 14px;font-size:12px;font-family:inherit;cursor:pointer;font-weight:'+(active?'700':'400')+'">'+q.label+'</button>';
+  }});
+  hBtns += '</div>';
   const col = d.is_super ? '#22c55e' : '#ef4444';
   const icon = d.is_super ? '&#x2705;' : '&#x26A0;&#xFE0F;';
   const statusTxt = d.is_super ? 'SUPERHOST' : 'EN RIESGO';
   const gap = d.gap;
   const dist = d.dist || {{}};
 
-  let h = '<h3>Pr&oacute;xima revisi&oacute;n Superhost &mdash; '+d.label+'</h3>';
+  let h = hBtns;
+  h += '<h3>Revisi&oacute;n Superhost &mdash; '+d.label+'</h3>';
   h += '<div class="s">Evaluaci&oacute;n: '+d.eval_date+' (faltan '+d.days_left+' d&iacute;as) &mdash; Ventana: '+d.window+'</div>';
 
   // Main rating display
