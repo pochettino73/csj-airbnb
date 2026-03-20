@@ -1416,7 +1416,9 @@ function drawC19() {{
 // === C21: Superhost timeline ===
 function drawC21() {{
   if(charts.c21) charts.c21.destroy();
-  const labels = SH_CHECKS;
+  const nextQ = NEXT_SH ? NEXT_SH.label : null;
+  const cutIdx = nextQ ? SH_CHECKS.indexOf(nextQ) : SH_CHECKS.length - 1;
+  const labels = SH_CHECKS.slice(0, cutIdx + 1);
   const ratings = labels.map(q => SH_DATA[q] ? SH_DATA[q].rating : null);
   const counts = labels.map(q => SH_DATA[q] ? SH_DATA[q].n : 0);
   const isSH = labels.map(q => SH_DATA[q] ? SH_DATA[q].superhost : false);
