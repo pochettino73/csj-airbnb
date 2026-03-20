@@ -809,11 +809,32 @@ function drawKPIs() {{
     y2+': '+fmt(ing2)+'€', '');
   h += card('Ocupaci&oacute;n '+periodLabel+' '+y1, ocu1.toFixed(1)+'%', pct(ocu1,ocu2),
     y2+': '+ocu2.toFixed(1)+'%', '');
+  // PM medio global
+  const pmAvg = (a) => {{ const vs=a.filter(v=>v>0); return vs.length?vs.reduce((s,v)=>s+v,0)/vs.length:0; }};
+  const pmGlobal1 = pmAvg(p1), pmGlobal2 = pmAvg(p2);
   const pmB1 = PM_BANDA[y1] || {{alta:0,media:0,baja:0}};
   const pmB2 = PM_BANDA[y2] || {{alta:0,media:0,baja:0}};
-  h += card('PM temporada '+y1, pm1.toFixed(1)+'€/n', pct(pm1,pm2),
-    '<span style="color:#ef4444">Alta:</span> '+pmB1.alta.toFixed(1)+'€ <span style="color:var(--m)">('+y2+': '+pmB2.alta.toFixed(1)+'€)</span><br><span style="color:#f59e0b">Media:</span> '+pmB1.media.toFixed(1)+'€ <span style="color:var(--m)">('+y2+': '+pmB2.media.toFixed(1)+'€)</span><br><span style="color:#3b82f6">Baja:</span> '+pmB1.baja.toFixed(1)+'€ <span style="color:var(--m)">('+y2+': '+pmB2.baja.toFixed(1)+'€)</span>',
-    'Alta=jun-ago &middot; Media=abr,may,sep,oct &middot; Baja=nov-mar');
+  const pmChg = pct(pmGlobal1, pmGlobal2);
+  const pmCls = pmChg >= 0 ? 'up' : 'down';
+  const pmArr = pmChg >= 0 ? '&#9650;' : '&#9660;';
+  const pmChgStr = isFinite(pmChg) && pmChg !== 0 ? '<div class="chg '+pmCls+'">'+pmArr+' '+Math.abs(pmChg).toFixed(1)+'% vs '+y2+'</div>' : '';
+  function miniBar(label, col, v1, v2) {{
+    const d = v2 > 0 ? ((v1-v2)/v2*100).toFixed(0) : '—';
+    const dc = parseFloat(d) >= 0 ? '#22c55e' : '#ef4444';
+    const sign = parseFloat(d) >= 0 ? '+' : '';
+    return '<div style="flex:1;background:var(--bg);border-radius:6px;padding:6px 8px;text-align:center;min-width:0">'
+      +'<div style="font-size:13px;font-weight:700;color:'+col+'">'+v1.toFixed(0)+'€</div>'
+      +'<div style="font-size:8px;color:var(--m);margin:1px 0">'+label+'</div>'
+      +(v2 > 0 ? '<div style="font-size:8px;color:'+dc+'">'+sign+d+'%</div>' : '')
+      +'</div>';
+  }}
+  h += '<div class="kpi"><div class="lbl">PM '+y1+'</div><div class="val">'+pmGlobal1.toFixed(1)+'€/n</div>'+pmChgStr
+    +'<div class="det">'+y2+': '+pmGlobal2.toFixed(1)+'€/n</div>'
+    +'<div style="display:flex;gap:4px;margin-top:8px">'
+    +miniBar('Alta','#ef4444',pmB1.alta,pmB2.alta)
+    +miniBar('Media','#f59e0b',pmB1.media,pmB2.media)
+    +miniBar('Baja','#3b82f6',pmB1.baja,pmB2.baja)
+    +'</div></div>';
 
   // Pace KPI
   const otb1 = (PACE_OTB[y1]||Array(12).fill(0)).slice(0,period).reduce((a,b)=>a+b,0);
