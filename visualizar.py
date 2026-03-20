@@ -336,11 +336,15 @@ def build(data, ing, ocu, pm, rev):
     superhost_quarters = {}  # {"2026-Q1": {rating, n, ...}}
     sh_checks = []
     for y in range(2018, cy + 2):
-        for q, (sm, sd, em, ed) in enumerate([
-            (1, 1, 12, 31), (4, 1, 3, 31), (7, 1, 6, 30), (10, 1, 9, 30)
+        # Q1: 1 ene Y-1 → 31 dic Y-1 (end year = Y-1)
+        # Q2: 1 abr Y-1 → 31 mar Y  (end year = Y)
+        # Q3: 1 jul Y-1 → 30 jun Y  (end year = Y)
+        # Q4: 1 oct Y-1 → 30 sep Y  (end year = Y)
+        for q, (sm, sd, ey_offset, em, ed) in enumerate([
+            (1, 1, -1, 12, 31), (4, 1, 0, 3, 31), (7, 1, 0, 6, 30), (10, 1, 0, 9, 30)
         ], 1):
             start = f"{y-1}-{sm:02d}-{sd:02d}"
-            end = f"{y}-{em:02d}-{ed:02d}"
+            end = f"{y+ey_offset}-{em:02d}-{ed:02d}"
             label = f"{y}-Q{q}"
             qrevs = [r for r in reviews_list if start <= r["date"] <= end]
             if not qrevs:
