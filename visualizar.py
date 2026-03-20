@@ -1072,7 +1072,7 @@ function drawC13() {{
   const yrs = ACTIVE.filter(y => COSTES_ANN[y] !== undefined);
   const costes = yrs.map(y => COSTES_ANN[y]);
   const ingresos = yrs.map(y => ANN_ING[y]||0);
-  const pctCoste = yrs.map((y,i) => ingresos[i] > 0 ? Math.round(costes[i]/ingresos[i]*100) : 0);
+  const pctCoste = yrs.map((y,i) => ingresos[i] > 1000 ? Math.round(costes[i]/ingresos[i]*100) : null);
   charts.c13 = new Chart(document.getElementById('c13'), {{
     type:'bar',
     data: {{ labels:yrs, datasets:[

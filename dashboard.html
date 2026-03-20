@@ -85,7 +85,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ <span>Airbnb</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 20/03/2026 13:45</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 20/03/2026 13:52</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -693,7 +693,7 @@ function drawC13() {
   const yrs = ACTIVE.filter(y => COSTES_ANN[y] !== undefined);
   const costes = yrs.map(y => COSTES_ANN[y]);
   const ingresos = yrs.map(y => ANN_ING[y]||0);
-  const pctCoste = yrs.map((y,i) => ingresos[i] > 0 ? Math.round(costes[i]/ingresos[i]*100) : 0);
+  const pctCoste = yrs.map((y,i) => ingresos[i] > 1000 ? Math.round(costes[i]/ingresos[i]*100) : null);
   charts.c13 = new Chart(document.getElementById('c13'), {
     type:'bar',
     data: { labels:yrs, datasets:[
