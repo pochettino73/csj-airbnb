@@ -356,6 +356,68 @@ def build(data, ing, ocu, pm, rev):
                 "superhost": avg_r >= 4.8 and len(qrevs) >= 3,
             }
             sh_checks.append(label)
+
+    # === PRÓXIMA REVISIÓN SUPERHOST ===
+    # Determinar cuál es el próximo trimestre de evaluación
+    today_str = now.strftime("%Y-%m-%d")
+    next_sh = None
+    for y in range(cy, cy + 2):
+        for q, (sm, sd, ey_offset, em, ed) in enumerate([
+            (1, 1, -1, 12, 31), (4, 1, 0, 3, 31), (7, 1, 0, 6, 30), (10, 1, 0, 9, 30)
+        ], 1):
+            eval_date = f"{y}-{[1,4,7,10][q-1]:02d}-01"
+            if eval_date > today_str and not next_sh:
+                start_w = f"{y-1}-{sm:02d}-{sd:02d}"
+                end_w = f"{y+ey_offset}-{em:02d}-{ed:02d}"
+                label_w = f"{y}-Q{q}"
+                qrevs_w = [r for r in reviews_list if start_w <= r["date"] <= end_w]
+                ratings_w = [r["rating"] for r in qrevs_w if r.get("rating") and r["rating"] > 0]
+                total_pts = sum(ratings_w)
+                n_rev = len(ratings_w)
+                avg_now = round(total_pts / n_rev, 4) if n_rev else 0
+                gap = round(4.8 * n_rev - total_pts, 1)
+                # Distribution
+                from collections import Counter
+                dist_w = Counter(ratings_w)
+                # How many 5* needed to reach 4.80
+                needed_5 = 0
+                test_pts, test_n = total_pts, n_rev
+                while test_n > 0 and test_pts / test_n < 4.8:
+                    test_pts += 5
+                    test_n += 1
+                    needed_5 += 1
+                    if needed_5 > 50:
+                        break
+                # Reviews < 5 in window
+                bad_revs = []
+                for r in qrevs_w:
+                    if r.get("rating") and r["rating"] < 5:
+                        bad_revs.append({
+                            "date": r["date"],
+                            "rating": r["rating"],
+                            "comment": (r.get("comment") or "")[:100],
+                        })
+                bad_revs.sort(key=lambda x: x["rating"])
+                # Days until evaluation
+                from datetime import datetime as dt2
+                eval_dt = dt2.strptime(eval_date, "%Y-%m-%d")
+                days_left = (eval_dt - now).days
+                next_sh = {
+                    "label": label_w,
+                    "eval_date": eval_date,
+                    "days_left": days_left,
+                    "window": f"{start_w} → {end_w}",
+                    "n": n_rev,
+                    "total_pts": total_pts,
+                    "rating": round(avg_now, 2),
+                    "rating_exact": round(avg_now, 4),
+                    "gap": gap,
+                    "needed_5": needed_5,
+                    "is_super": avg_now >= 4.8,
+                    "dist": {str(k): v for k, v in dist_w.items()},
+                    "bad_reviews": bad_revs[:10],
+                }
+
     rev_by_year = {}
     for y in active:
         sy = str(y)
@@ -630,22 +692,18 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
 <!-- SECTION 7: EVALUACIONES                      -->
 <!-- ============================================ -->
 <div class="sh">Evaluaciones <span>Reviews &amp; Superhost</span></div>
+<div class="row r1">
+  <div class="cd" id="nextShPanel"></div>
+</div>
 <div class="row r2">
-  <div class="cd">
-    <h3>Puntuaciones por a&ntilde;o</h3>
-    <div class="s">Comparativa entre a&ntilde;os seleccionados</div>
-    <div id="reviewCards"></div>
-  </div>
   <div class="cd">
     <h3>Radar de evaluaciones</h3>
     <div class="s">Subcategor&iacute;as comparadas (escala 4-5)</div>
     <div class="ch md"><canvas id="c10"></canvas></div>
   </div>
-</div>
-<div class="row r1">
   <div class="cd">
-    <h3>Superhost &mdash; Evaluaci&oacute;n trimestral</h3>
-    <div class="s">Rating medio por trimestre Airbnb (ventana 365d). &#x1F7E2; Verde = Superhost (&ge;4.8 + &ge;3 reviews) &mdash; &#x1F534; Rojo = por debajo del umbral</div>
+    <h3>Superhost &mdash; Historial trimestral</h3>
+    <div class="s">Rating medio por trimestre Airbnb (ventana 365d). Verde = Superhost &mdash; Rojo = por debajo de 4.8</div>
     <div class="ch lg"><canvas id="c21"></canvas></div>
   </div>
 </div>
@@ -694,6 +752,7 @@ const CATS_SUB={J(cats_sub)};
 const CATS_KEY={J(cats_key)};
 const SH_DATA={J(superhost_quarters)};
 const SH_CHECKS={J(sh_checks)};
+const NEXT_SH={J(next_sh)};
 
 // Globals
 let charts = {{}};
@@ -1005,26 +1064,82 @@ function drawSpark() {{
 }}
 
 // === Review cards by year ===
-function drawReviewCards() {{
-  const ct = document.getElementById('reviewCards');
-  const r1 = REV_BY_YEAR[y1] || {{}};
-  const r2 = REV_BY_YEAR[y2] || {{}};
-  const allCats = ['General', ...CATS_KEY];
-  const labels = ['General', ...CATS_SUB];
-  let h = '<div style="display:flex;gap:16px;margin-bottom:12px;">';
-  h += '<div style="font-size:11px;font-weight:600;color:'+PALETTE[y1]+'">'+y1+' ('+((r1.n)||0)+' reviews)</div>';
-  h += '<div style="font-size:11px;font-weight:600;color:'+PALETTE[y2]+'">'+y2+' ('+((r2.n)||0)+' reviews)</div>';
-  h += '</div><div class="rvs">';
-  allCats.forEach((c,i) => {{
-    const v1 = c === 'General' ? (r1.General||0) : (r1[c]||0);
-    const v2 = c === 'General' ? (r2.General||0) : (r2[c]||0);
-    const col1 = v1 >= 4.8 ? '#22c55e' : v1 >= 4.5 ? '#f59e0b' : v1 > 0 ? '#ef4444' : '#64748b';
-    const delta = v1 && v2 ? (v1-v2).toFixed(2) : '';
-    const dCol = parseFloat(delta) >= 0 ? '#22c55e' : '#ef4444';
-    const dStr = delta ? '<div style="font-size:9px;color:'+dCol+'">'+(parseFloat(delta)>=0?'+':'')+delta+'</div>' : '';
-    h += '<div class="rv"><div class="rs" style="color:'+col1+'">'+(v1?v1.toFixed(2):'—')+'</div><div style="font-size:9px;color:var(--m)">'+(v2?v2.toFixed(2):'—')+'</div>'+dStr+'<div class="rl">'+labels[i]+'</div></div>';
+function drawNextSH() {{
+  const ct = document.getElementById('nextShPanel');
+  if(!NEXT_SH) {{ ct.innerHTML = '<p style="color:var(--m)">Sin datos</p>'; return; }}
+  const d = NEXT_SH;
+  const col = d.is_super ? '#22c55e' : '#ef4444';
+  const icon = d.is_super ? '&#x2705;' : '&#x26A0;&#xFE0F;';
+  const statusTxt = d.is_super ? 'SUPERHOST' : 'EN RIESGO';
+  const gap = d.gap;
+  const dist = d.dist || {{}};
+
+  let h = '<h3>Pr&oacute;xima revisi&oacute;n Superhost &mdash; '+d.label+'</h3>';
+  h += '<div class="s">Evaluaci&oacute;n: '+d.eval_date+' (faltan '+d.days_left+' d&iacute;as) &mdash; Ventana: '+d.window+'</div>';
+
+  // Main rating display
+  h += '<div style="display:flex;align-items:center;gap:24px;margin:16px 0;flex-wrap:wrap">';
+  h += '<div style="text-align:center"><div style="font-size:48px;font-weight:800;color:'+col+'">'+d.rating_exact.toFixed(2)+'</div>';
+  h += '<div style="font-size:13px;font-weight:600;color:'+col+'">'+icon+' '+statusTxt+'</div></div>';
+
+  // Stats
+  h += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;flex:1;min-width:250px">';
+  h += '<div style="background:rgba(59,130,246,0.08);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700">'+d.n+'</div><div style="font-size:10px;color:var(--m)">Reviews</div></div>';
+  h += '<div style="background:rgba(59,130,246,0.08);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700">'+d.total_pts+'</div><div style="font-size:10px;color:var(--m)">Puntos totales</div></div>';
+
+  if(!d.is_super) {{
+    h += '<div style="background:rgba(239,68,68,0.1);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700;color:#ef4444">'+d.needed_5+'</div><div style="font-size:10px;color:#ef4444">Reviews 5&#9733; necesarias</div></div>';
+  }} else {{
+    const margin = (d.rating_exact - 4.8).toFixed(2);
+    h += '<div style="background:rgba(34,197,94,0.1);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700;color:#22c55e">+'+margin+'</div><div style="font-size:10px;color:#22c55e">Margen sobre 4.80</div></div>';
+  }}
+  h += '</div></div>';
+
+  // Distribution bar
+  const stars = [5,4,3,2,1];
+  const total = stars.reduce((s,k) => s + (dist[k]||0), 0);
+  h += '<div style="margin:12px 0"><div style="font-size:11px;font-weight:600;color:var(--m);margin-bottom:6px">DISTRIBUCI&Oacute;N</div>';
+  const barCols = {{5:'#22c55e',4:'#84cc16',3:'#f59e0b',2:'#f97316',1:'#ef4444'}};
+  stars.forEach(s => {{
+    const cnt = dist[s] || 0;
+    const pctW = total > 0 ? (cnt/total*100) : 0;
+    h += '<div style="display:flex;align-items:center;gap:8px;margin:3px 0">';
+    h += '<div style="width:20px;font-size:11px;font-weight:600;text-align:right">'+s+'&#9733;</div>';
+    h += '<div style="flex:1;background:var(--b);border-radius:4px;height:14px;overflow:hidden"><div style="width:'+pctW+'%;height:100%;background:'+barCols[s]+';border-radius:4px"></div></div>';
+    h += '<div style="width:30px;font-size:11px;color:var(--m);text-align:right">'+cnt+'</div>';
+    h += '</div>';
   }});
   h += '</div>';
+
+  // Bad reviews
+  const bad = d.bad_reviews || [];
+  if(bad.length > 0) {{
+    h += '<div style="margin-top:12px"><div style="font-size:11px;font-weight:600;color:var(--m);margin-bottom:6px">REVIEWS QUE PENALIZAN (< 5&#9733;)</div>';
+    h += '<div style="max-height:200px;overflow-y:auto">';
+    bad.forEach(r => {{
+      const rc = r.rating <= 3 ? '#ef4444' : '#f59e0b';
+      h += '<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--b);font-size:11px">';
+      h += '<div style="white-space:nowrap;color:var(--m)">'+r.date+'</div>';
+      h += '<div style="font-weight:700;color:'+rc+'">'+r.rating+'&#9733;</div>';
+      h += '<div style="color:var(--m);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+r.comment+'</div>';
+      h += '</div>';
+    }});
+    h += '</div></div>';
+  }}
+
+  // Simulation
+  if(!d.is_super) {{
+    h += '<div style="margin-top:12px;padding:12px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:8px">';
+    h += '<div style="font-size:11px;font-weight:600;color:#ef4444;margin-bottom:6px">&#x1F4CA; SIMULACI&Oacute;N</div>';
+    for(let extra = 1; extra <= 5; extra++) {{
+      const newAvg = (d.total_pts + 5*extra) / (d.n + extra);
+      const ok = newAvg >= 4.8;
+      const ic = ok ? '&#x2705;' : '&#x274C;';
+      h += '<div style="font-size:11px;color:var(--t);margin:2px 0">'+ic+' +'+extra+' review(s) de 5&#9733; &rarr; <b>'+newAvg.toFixed(4)+'</b></div>';
+    }}
+    h += '</div>';
+  }}
+
   ct.innerHTML = h;
 }}
 
@@ -1357,7 +1472,7 @@ function drawC21() {{
 
 // === DRAW ALL ===
 function drawAll() {{
-  drawKPIs(); drawC1(); drawC2(); drawC3(); drawC4(); drawC5(); drawC6(); drawC7(); drawC9(); drawSpark(); drawReviewCards(); drawC10(); drawC12(); drawC13(); drawC14(); drawC15(); drawC16(); drawC17(); drawC18(); drawC19(); drawC21();
+  drawKPIs(); drawC1(); drawC2(); drawC3(); drawC4(); drawC5(); drawC6(); drawC7(); drawC9(); drawSpark(); drawNextSH(); drawC10(); drawC12(); drawC13(); drawC14(); drawC15(); drawC16(); drawC17(); drawC18(); drawC19(); drawC21();
 }}
 drawAll();
 

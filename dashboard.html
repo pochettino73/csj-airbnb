@@ -85,7 +85,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ <span>Airbnb</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 20/03/2026 14:09</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 20/03/2026 14:23</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -247,22 +247,18 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <!-- SECTION 7: EVALUACIONES                      -->
 <!-- ============================================ -->
 <div class="sh">Evaluaciones <span>Reviews &amp; Superhost</span></div>
+<div class="row r1">
+  <div class="cd" id="nextShPanel"></div>
+</div>
 <div class="row r2">
-  <div class="cd">
-    <h3>Puntuaciones por a&ntilde;o</h3>
-    <div class="s">Comparativa entre a&ntilde;os seleccionados</div>
-    <div id="reviewCards"></div>
-  </div>
   <div class="cd">
     <h3>Radar de evaluaciones</h3>
     <div class="s">Subcategor&iacute;as comparadas (escala 4-5)</div>
     <div class="ch md"><canvas id="c10"></canvas></div>
   </div>
-</div>
-<div class="row r1">
   <div class="cd">
-    <h3>Superhost &mdash; Evaluaci&oacute;n trimestral</h3>
-    <div class="s">Rating medio por trimestre Airbnb (ventana 365d). &#x1F7E2; Verde = Superhost (&ge;4.8 + &ge;3 reviews) &mdash; &#x1F534; Rojo = por debajo del umbral</div>
+    <h3>Superhost &mdash; Historial trimestral</h3>
+    <div class="s">Rating medio por trimestre Airbnb (ventana 365d). Verde = Superhost &mdash; Rojo = por debajo de 4.8</div>
     <div class="ch lg"><canvas id="c21"></canvas></div>
   </div>
 </div>
@@ -311,6 +307,7 @@ const CATS_SUB=["Llegada", "Limpieza", "Veracidad", "Comunicación", "Ubicación
 const CATS_KEY=["llegada", "limpieza", "veracidad", "comunicacion", "ubicacion", "calidad"];
 const SH_DATA={"2018-Q1": {"n": 18, "rating": 4.82, "superhost": true}, "2018-Q2": {"n": 21, "rating": 4.85, "superhost": true}, "2018-Q3": {"n": 25, "rating": 4.88, "superhost": true}, "2018-Q4": {"n": 29, "rating": 4.81, "superhost": true}, "2019-Q1": {"n": 29, "rating": 4.86, "superhost": true}, "2019-Q2": {"n": 29, "rating": 4.82, "superhost": true}, "2019-Q3": {"n": 30, "rating": 4.86, "superhost": true}, "2019-Q4": {"n": 30, "rating": 4.86, "superhost": true}, "2020-Q1": {"n": 32, "rating": 4.77, "superhost": false}, "2020-Q2": {"n": 31, "rating": 4.8, "superhost": true}, "2020-Q3": {"n": 20, "rating": 4.74, "superhost": false}, "2020-Q4": {"n": 17, "rating": 4.82, "superhost": true}, "2021-Q1": {"n": 11, "rating": 5.0, "superhost": true}, "2021-Q2": {"n": 11, "rating": 4.73, "superhost": false}, "2021-Q3": {"n": 19, "rating": 4.79, "superhost": false}, "2021-Q4": {"n": 18, "rating": 4.56, "superhost": false}, "2022-Q1": {"n": 23, "rating": 4.52, "superhost": false}, "2022-Q2": {"n": 26, "rating": 4.65, "superhost": false}, "2022-Q3": {"n": 32, "rating": 4.69, "superhost": false}, "2022-Q4": {"n": 36, "rating": 4.78, "superhost": false}, "2023-Q1": {"n": 38, "rating": 4.79, "superhost": false}, "2023-Q2": {"n": 44, "rating": 4.84, "superhost": true}, "2023-Q3": {"n": 42, "rating": 4.86, "superhost": true}, "2023-Q4": {"n": 45, "rating": 4.89, "superhost": true}, "2024-Q1": {"n": 51, "rating": 4.96, "superhost": true}, "2024-Q2": {"n": 51, "rating": 4.9, "superhost": true}, "2024-Q3": {"n": 51, "rating": 4.84, "superhost": true}, "2024-Q4": {"n": 51, "rating": 4.8, "superhost": true}, "2025-Q1": {"n": 50, "rating": 4.76, "superhost": false}, "2025-Q2": {"n": 51, "rating": 4.73, "superhost": false}, "2025-Q3": {"n": 52, "rating": 4.77, "superhost": false}, "2025-Q4": {"n": 52, "rating": 4.81, "superhost": true}, "2026-Q1": {"n": 51, "rating": 4.8, "superhost": true}, "2026-Q2": {"n": 48, "rating": 4.79, "superhost": false}, "2026-Q3": {"n": 35, "rating": 4.77, "superhost": false}, "2026-Q4": {"n": 20, "rating": 4.65, "superhost": false}, "2027-Q1": {"n": 9, "rating": 4.44, "superhost": false}};
 const SH_CHECKS=["2018-Q1", "2018-Q2", "2018-Q3", "2018-Q4", "2019-Q1", "2019-Q2", "2019-Q3", "2019-Q4", "2020-Q1", "2020-Q2", "2020-Q3", "2020-Q4", "2021-Q1", "2021-Q2", "2021-Q3", "2021-Q4", "2022-Q1", "2022-Q2", "2022-Q3", "2022-Q4", "2023-Q1", "2023-Q2", "2023-Q3", "2023-Q4", "2024-Q1", "2024-Q2", "2024-Q3", "2024-Q4", "2025-Q1", "2025-Q2", "2025-Q3", "2025-Q4", "2026-Q1", "2026-Q2", "2026-Q3", "2026-Q4", "2027-Q1"];
+const NEXT_SH={"label": "2026-Q2", "eval_date": "2026-04-01", "days_left": 11, "window": "2025-04-01 → 2026-03-31", "n": 48, "total_pts": 230, "rating": 4.79, "rating_exact": 4.7917, "gap": 0.4, "needed_5": 2, "is_super": false, "dist": {"5": 39, "3": 1, "4": 8}, "bad_reviews": [{"date": "2025-05-21", "rating": 3, "comment": "Die Kommunikation mit Daniel war sehr unkompliziert. Leider gibt es eine große Baustelle direkt gege"}, {"date": "2025-07-03", "rating": 4, "comment": "A very affordable rental in a good location to shops and beach . \nThe apartment was ideal for one , "}, {"date": "2025-10-18", "rating": 4, "comment": "Die Unterkunft war sauber, es war alles da was man brauchte und auch der Standort war in Sant Jordi "}, {"date": "2025-11-30", "rating": 4, "comment": "De woning is zoals beschreven. Daniel stuurt alle informatie proactief, is erg behulpzaam en reageer"}, {"date": "2026-01-11", "rating": 4, "comment": "The instructions and Daniel's recommendations were perfect! The apartment is a bit dusty, rusty, and"}, {"date": "2026-01-19", "rating": 4, "comment": "Ich hatte insgesamt einen angenehmen Aufenthalt (4 Nächte) in Colonia de Sant Jordi. Die Wohnung lie"}, {"date": "2026-01-30", "rating": 4, "comment": "Daniel ist ein freundlicher, aufmerksamer Gastgeber. \nDie Lage der Wohnung ist gut, Marina, Lebensmi"}, {"date": "2026-02-11", "rating": 4, "comment": "The host is very friendly, and the place is nice. \n5 min. walking distance to the beautiful ocean an"}, {"date": "2026-02-20", "rating": 4, "comment": "Wir waren eine Woche in der Wohnung und zufrieden. Etwas gestört hat uns die Baustelle neben der Woh"}]};
 
 // Globals
 let charts = {};
@@ -622,26 +619,82 @@ function drawSpark() {
 }
 
 // === Review cards by year ===
-function drawReviewCards() {
-  const ct = document.getElementById('reviewCards');
-  const r1 = REV_BY_YEAR[y1] || {};
-  const r2 = REV_BY_YEAR[y2] || {};
-  const allCats = ['General', ...CATS_KEY];
-  const labels = ['General', ...CATS_SUB];
-  let h = '<div style="display:flex;gap:16px;margin-bottom:12px;">';
-  h += '<div style="font-size:11px;font-weight:600;color:'+PALETTE[y1]+'">'+y1+' ('+((r1.n)||0)+' reviews)</div>';
-  h += '<div style="font-size:11px;font-weight:600;color:'+PALETTE[y2]+'">'+y2+' ('+((r2.n)||0)+' reviews)</div>';
-  h += '</div><div class="rvs">';
-  allCats.forEach((c,i) => {
-    const v1 = c === 'General' ? (r1.General||0) : (r1[c]||0);
-    const v2 = c === 'General' ? (r2.General||0) : (r2[c]||0);
-    const col1 = v1 >= 4.8 ? '#22c55e' : v1 >= 4.5 ? '#f59e0b' : v1 > 0 ? '#ef4444' : '#64748b';
-    const delta = v1 && v2 ? (v1-v2).toFixed(2) : '';
-    const dCol = parseFloat(delta) >= 0 ? '#22c55e' : '#ef4444';
-    const dStr = delta ? '<div style="font-size:9px;color:'+dCol+'">'+(parseFloat(delta)>=0?'+':'')+delta+'</div>' : '';
-    h += '<div class="rv"><div class="rs" style="color:'+col1+'">'+(v1?v1.toFixed(2):'—')+'</div><div style="font-size:9px;color:var(--m)">'+(v2?v2.toFixed(2):'—')+'</div>'+dStr+'<div class="rl">'+labels[i]+'</div></div>';
+function drawNextSH() {
+  const ct = document.getElementById('nextShPanel');
+  if(!NEXT_SH) { ct.innerHTML = '<p style="color:var(--m)">Sin datos</p>'; return; }
+  const d = NEXT_SH;
+  const col = d.is_super ? '#22c55e' : '#ef4444';
+  const icon = d.is_super ? '&#x2705;' : '&#x26A0;&#xFE0F;';
+  const statusTxt = d.is_super ? 'SUPERHOST' : 'EN RIESGO';
+  const gap = d.gap;
+  const dist = d.dist || {};
+
+  let h = '<h3>Pr&oacute;xima revisi&oacute;n Superhost &mdash; '+d.label+'</h3>';
+  h += '<div class="s">Evaluaci&oacute;n: '+d.eval_date+' (faltan '+d.days_left+' d&iacute;as) &mdash; Ventana: '+d.window+'</div>';
+
+  // Main rating display
+  h += '<div style="display:flex;align-items:center;gap:24px;margin:16px 0;flex-wrap:wrap">';
+  h += '<div style="text-align:center"><div style="font-size:48px;font-weight:800;color:'+col+'">'+d.rating_exact.toFixed(2)+'</div>';
+  h += '<div style="font-size:13px;font-weight:600;color:'+col+'">'+icon+' '+statusTxt+'</div></div>';
+
+  // Stats
+  h += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;flex:1;min-width:250px">';
+  h += '<div style="background:rgba(59,130,246,0.08);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700">'+d.n+'</div><div style="font-size:10px;color:var(--m)">Reviews</div></div>';
+  h += '<div style="background:rgba(59,130,246,0.08);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700">'+d.total_pts+'</div><div style="font-size:10px;color:var(--m)">Puntos totales</div></div>';
+
+  if(!d.is_super) {
+    h += '<div style="background:rgba(239,68,68,0.1);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700;color:#ef4444">'+d.needed_5+'</div><div style="font-size:10px;color:#ef4444">Reviews 5&#9733; necesarias</div></div>';
+  } else {
+    const margin = (d.rating_exact - 4.8).toFixed(2);
+    h += '<div style="background:rgba(34,197,94,0.1);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700;color:#22c55e">+'+margin+'</div><div style="font-size:10px;color:#22c55e">Margen sobre 4.80</div></div>';
+  }
+  h += '</div></div>';
+
+  // Distribution bar
+  const stars = [5,4,3,2,1];
+  const total = stars.reduce((s,k) => s + (dist[k]||0), 0);
+  h += '<div style="margin:12px 0"><div style="font-size:11px;font-weight:600;color:var(--m);margin-bottom:6px">DISTRIBUCI&Oacute;N</div>';
+  const barCols = {5:'#22c55e',4:'#84cc16',3:'#f59e0b',2:'#f97316',1:'#ef4444'};
+  stars.forEach(s => {
+    const cnt = dist[s] || 0;
+    const pctW = total > 0 ? (cnt/total*100) : 0;
+    h += '<div style="display:flex;align-items:center;gap:8px;margin:3px 0">';
+    h += '<div style="width:20px;font-size:11px;font-weight:600;text-align:right">'+s+'&#9733;</div>';
+    h += '<div style="flex:1;background:var(--b);border-radius:4px;height:14px;overflow:hidden"><div style="width:'+pctW+'%;height:100%;background:'+barCols[s]+';border-radius:4px"></div></div>';
+    h += '<div style="width:30px;font-size:11px;color:var(--m);text-align:right">'+cnt+'</div>';
+    h += '</div>';
   });
   h += '</div>';
+
+  // Bad reviews
+  const bad = d.bad_reviews || [];
+  if(bad.length > 0) {
+    h += '<div style="margin-top:12px"><div style="font-size:11px;font-weight:600;color:var(--m);margin-bottom:6px">REVIEWS QUE PENALIZAN (< 5&#9733;)</div>';
+    h += '<div style="max-height:200px;overflow-y:auto">';
+    bad.forEach(r => {
+      const rc = r.rating <= 3 ? '#ef4444' : '#f59e0b';
+      h += '<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--b);font-size:11px">';
+      h += '<div style="white-space:nowrap;color:var(--m)">'+r.date+'</div>';
+      h += '<div style="font-weight:700;color:'+rc+'">'+r.rating+'&#9733;</div>';
+      h += '<div style="color:var(--m);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+r.comment+'</div>';
+      h += '</div>';
+    });
+    h += '</div></div>';
+  }
+
+  // Simulation
+  if(!d.is_super) {
+    h += '<div style="margin-top:12px;padding:12px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:8px">';
+    h += '<div style="font-size:11px;font-weight:600;color:#ef4444;margin-bottom:6px">&#x1F4CA; SIMULACI&Oacute;N</div>';
+    for(let extra = 1; extra <= 5; extra++) {
+      const newAvg = (d.total_pts + 5*extra) / (d.n + extra);
+      const ok = newAvg >= 4.8;
+      const ic = ok ? '&#x2705;' : '&#x274C;';
+      h += '<div style="font-size:11px;color:var(--t);margin:2px 0">'+ic+' +'+extra+' review(s) de 5&#9733; &rarr; <b>'+newAvg.toFixed(4)+'</b></div>';
+    }
+    h += '</div>';
+  }
+
   ct.innerHTML = h;
 }
 
@@ -974,7 +1027,7 @@ function drawC21() {
 
 // === DRAW ALL ===
 function drawAll() {
-  drawKPIs(); drawC1(); drawC2(); drawC3(); drawC4(); drawC5(); drawC6(); drawC7(); drawC9(); drawSpark(); drawReviewCards(); drawC10(); drawC12(); drawC13(); drawC14(); drawC15(); drawC16(); drawC17(); drawC18(); drawC19(); drawC21();
+  drawKPIs(); drawC1(); drawC2(); drawC3(); drawC4(); drawC5(); drawC6(); drawC7(); drawC9(); drawSpark(); drawNextSH(); drawC10(); drawC12(); drawC13(); drawC14(); drawC15(); drawC16(); drawC17(); drawC18(); drawC19(); drawC21();
 }
 drawAll();
 
