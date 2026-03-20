@@ -470,7 +470,7 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
 .filters button.active {{ background:var(--a); border-color:var(--a); }}
 
 /* KPIs */
-.kpis {{ display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:16px; }}
+.kpis {{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:16px; }}
 .kpi {{ background:var(--c); border:1px solid var(--b); border-radius:10px; padding:16px; }}
 .kpi:hover {{ border-color:var(--a); }}
 .kpi .lbl {{ font-size:10px; font-weight:600; color:var(--m); text-transform:uppercase; letter-spacing:.5px; margin-bottom:5px; }}
@@ -543,9 +543,7 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
     </select>
     <label style="margin-left:12px">Periodo:</label>
     <button class="period-btn active" data-months="12">Anual</button>
-    <button class="period-btn" data-months="{cm}">YTD</button>
-    <button class="period-btn" data-months="6">6m</button>
-    <button class="period-btn" data-months="3">3m</button>
+    <button class="period-btn" data-months="{cm}">A fecha</button>
   </div>
 </div>
 
@@ -803,8 +801,6 @@ function drawKPIs() {{
   }}
 
   let h = '';
-  h += card('B&ordm; neto '+periodLabel+' '+y1, fmt(neto1)+'€', pct(neto1,neto2),
-    'Margen: '+margen1+'% &mdash; '+y2+': '+fmt(neto2)+'€', '');
   h += card('Ingresos '+periodLabel+' '+y1, fmt(ing1)+'€', pct(ing1,ing2),
     y2+': '+fmt(ing2)+'€', '');
   h += card('Ocupaci&oacute;n '+periodLabel+' '+y1, ocu1.toFixed(1)+'%', pct(ocu1,ocu2),
@@ -828,8 +824,8 @@ function drawKPIs() {{
       +(v2 > 0 ? '<div style="font-size:8px;color:'+dc+'">'+sign+d+'%</div>' : '')
       +'</div>';
   }}
-  h += '<div class="kpi"><div class="lbl">PM '+y1+'</div><div class="val">'+pmGlobal1.toFixed(1)+'€/n</div>'+pmChgStr
-    +'<div class="det">'+y2+': '+pmGlobal2.toFixed(1)+'€/n</div>'
+  h += '<div class="kpi"><div class="lbl">PM '+y1+'</div><div class="val">'+pmGlobal1.toFixed(1)+'€</div>'+pmChgStr
+    +'<div class="det">'+y2+': '+pmGlobal2.toFixed(1)+'€</div>'
     +'<div style="display:flex;gap:4px;margin-top:8px">'
     +miniBar('Alta','#ef4444',pmB1.alta,pmB2.alta)
     +miniBar('Media','#f59e0b',pmB1.media,pmB2.media)
