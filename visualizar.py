@@ -470,7 +470,7 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
 .filters button.active {{ background:var(--a); border-color:var(--a); }}
 
 /* KPIs */
-.kpis {{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:16px; }}
+.kpis {{ display:grid; grid-template-columns:1fr 1fr 2fr 1fr; gap:14px; margin-bottom:16px; }}
 .kpi {{ background:var(--c); border:1px solid var(--b); border-radius:10px; padding:16px; }}
 .kpi:hover {{ border-color:var(--a); }}
 .kpi .lbl {{ font-size:10px; font-weight:600; color:var(--m); text-transform:uppercase; letter-spacing:.5px; margin-bottom:5px; }}
@@ -824,7 +824,7 @@ function drawKPIs() {{
       +(v2 > 0 ? '<div style="font-size:8px;color:'+dc+'">'+sign+d+'%</div>' : '')
       +'</div>';
   }}
-  h += '<div class="kpi" style="grid-column:span 2"><div class="lbl">PM '+y1+'</div><div class="val">'+pmGlobal1.toFixed(1)+'€</div>'+pmChgStr
+  h += '<div class="kpi"><div class="lbl">PM '+y1+'</div><div class="val">'+pmGlobal1.toFixed(1)+'€</div>'+pmChgStr
     +'<div class="det">'+y2+': '+pmGlobal2.toFixed(1)+'€</div>'
     +'<div style="display:flex;gap:4px;margin-top:8px">'
     +miniBar('Alta','#ef4444',pmB1.alta,pmB2.alta)
