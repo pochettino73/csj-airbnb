@@ -824,7 +824,7 @@ function drawKPIs() {{
       +(v2 > 0 ? '<div style="font-size:8px;color:'+dc+'">'+sign+d+'%</div>' : '')
       +'</div>';
   }}
-  h += '<div class="kpi"><div class="lbl">PM '+y1+'</div><div class="val">'+pmGlobal1.toFixed(1)+'€</div>'+pmChgStr
+  h += '<div class="kpi" style="grid-column:span 2"><div class="lbl">PM '+y1+'</div><div class="val">'+pmGlobal1.toFixed(1)+'€</div>'+pmChgStr
     +'<div class="det">'+y2+': '+pmGlobal2.toFixed(1)+'€</div>'
     +'<div style="display:flex;gap:4px;margin-top:8px">'
     +miniBar('Alta','#ef4444',pmB1.alta,pmB2.alta)

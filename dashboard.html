@@ -85,7 +85,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ <span>Airbnb</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 20/03/2026 19:39</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 20/03/2026 19:40</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -379,7 +379,7 @@ function drawKPIs() {
       +(v2 > 0 ? '<div style="font-size:8px;color:'+dc+'">'+sign+d+'%</div>' : '')
       +'</div>';
   }
-  h += '<div class="kpi"><div class="lbl">PM '+y1+'</div><div class="val">'+pmGlobal1.toFixed(1)+'€</div>'+pmChgStr
+  h += '<div class="kpi" style="grid-column:span 2"><div class="lbl">PM '+y1+'</div><div class="val">'+pmGlobal1.toFixed(1)+'€</div>'+pmChgStr
     +'<div class="det">'+y2+': '+pmGlobal2.toFixed(1)+'€</div>'
     +'<div style="display:flex;gap:4px;margin-top:8px">'
     +miniBar('Alta','#ef4444',pmB1.alta,pmB2.alta)
