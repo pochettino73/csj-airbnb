@@ -25,7 +25,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 .filters button.active { background:var(--a); border-color:var(--a); }
 
 /* KPIs */
-.kpis { display:grid; grid-template-columns:1fr 1fr 2fr 1fr; gap:14px; margin-bottom:16px; }
+.kpis { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:16px; }
 .kpi { background:var(--c); border:1px solid var(--b); border-radius:10px; padding:16px; }
 .kpi:hover { border-color:var(--a); }
 .kpi .lbl { font-size:10px; font-weight:600; color:var(--m); text-transform:uppercase; letter-spacing:.5px; margin-bottom:5px; }
@@ -85,7 +85,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ <span>Airbnb</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 20/03/2026 19:47</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 20/03/2026 19:50</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -370,22 +370,15 @@ function drawKPIs() {
   const pmCls = pmChg >= 0 ? 'up' : 'down';
   const pmArr = pmChg >= 0 ? '&#9650;' : '&#9660;';
   const pmChgStr = isFinite(pmChg) && pmChg !== 0 ? '<div class="chg '+pmCls+'">'+pmArr+' '+Math.abs(pmChg).toFixed(1)+'% vs '+y2+'</div>' : '';
-  function miniBar(label, col, v1, v2) {
-    const d = v2 > 0 ? ((v1-v2)/v2*100).toFixed(0) : '—';
-    const dc = parseFloat(d) >= 0 ? '#22c55e' : '#ef4444';
-    const sign = parseFloat(d) >= 0 ? '+' : '';
-    return '<div style="flex:1;background:var(--bg);border-radius:6px;padding:6px 8px;text-align:center;min-width:0">'
-      +'<div style="font-size:13px;font-weight:700;color:'+col+'">'+v1.toFixed(0)+'€</div>'
-      +'<div style="font-size:8px;color:var(--m);margin:1px 0">'+label+'</div>'
-      +(v2 > 0 ? '<div style="font-size:8px;color:'+dc+'">'+sign+d+'%</div>' : '')
-      +'</div>';
+  function miniLine(label, col, v1) {
+    return '<span style="color:'+col+';font-weight:600">'+v1.toFixed(0)+'€</span> <span style="color:var(--m)">'+label+'</span>';
   }
   h += '<div class="kpi"><div class="lbl">PM '+y1+'</div><div class="val">'+pmGlobal1.toFixed(1)+'€</div>'+pmChgStr
     +'<div class="det">'+y2+': '+pmGlobal2.toFixed(1)+'€</div>'
-    +'<div style="display:flex;gap:4px;margin-top:8px">'
-    +miniBar('Alta','#ef4444',pmB1.alta,pmB2.alta)
-    +miniBar('Media','#f59e0b',pmB1.media,pmB2.media)
-    +miniBar('Baja','#3b82f6',pmB1.baja,pmB2.baja)
+    +'<div style="font-size:10px;margin-top:6px;line-height:1.6">'
+    +miniLine('alta','#ef4444',pmB1.alta)+'<br>'
+    +miniLine('media','#f59e0b',pmB1.media)+'<br>'
+    +miniLine('baja','#3b82f6',pmB1.baja)
     +'</div></div>';
 
   // Pace KPI
@@ -397,6 +390,17 @@ function drawKPIs() {
   const paceCol = paceDelta >= 0 ? 'var(--g)' : 'var(--r)';
   const paceCapt = fin2Total > 0 ? Math.round(otb1/fin2Total*100) : 0;
   h += '<div class="kpi"><div class="lbl">Pace vs '+y2+'</div><div class="val" style="color:'+paceCol+'">'+paceSign+paceDelta.toFixed(1)+'%</div><div class="det">'+fmt(otb1)+'€ vs '+fmt(otb2)+'€ a misma fecha</div><div class="hist">'+paceCapt+'% del total final '+y2+' ('+fmt(fin2Total)+'€)</div></div>';
+
+  // Rating Superhost — próximo trimestre
+  const shd = FUTURE_SH && FUTURE_SH.length ? FUTURE_SH[0] : null;
+  if(shd) {
+    const shCol = shd.is_super ? '#22c55e' : '#ef4444';
+    const shIcon = shd.is_super ? '&#x2705;' : '&#x26A0;&#xFE0F;';
+    const shStatus = shd.is_super ? 'Superhost' : 'En riesgo';
+    const shDiff = (shd.rating_exact - 4.8).toFixed(2);
+    const shSign = shd.rating_exact >= 4.8 ? '+' : '';
+    h += '<div class="kpi"><div class="lbl">Rating '+shd.label+'</div><div class="val" style="color:'+shCol+'">'+shd.rating_exact.toFixed(2)+'</div><div class="chg" style="color:'+shCol+'">'+shIcon+' '+shStatus+'</div><div class="det">'+shSign+shDiff+' vs 4.80 &mdash; '+shd.n+' reviews</div><div class="hist">Eval: '+shd.eval_date+' ('+shd.days_left+'d)</div></div>';
+  }
 
   ct.innerHTML = h;
 }
