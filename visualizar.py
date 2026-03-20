@@ -388,7 +388,7 @@ def build(data, ing, ocu, pm, rev):
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 :root {{ --bg:#0f172a; --c:#1e293b; --b:#334155; --t:#f1f5f9; --m:#94a3b8; --a:#3b82f6; --g:#22c55e; --r:#ef4444; }}
 * {{ margin:0;padding:0;box-sizing:border-box; }}
-body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); padding:20px 24px; }}
+body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); padding:20px 24px; max-width:100%; overflow-x:hidden; }}
 
 /* Header + Filters */
 .top {{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid var(--b); }}
@@ -415,6 +415,19 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
 .kpi .hist {{ font-size:9px; color:var(--m); margin-top:3px; border-top:1px solid var(--b); padding-top:3px; }}
 @media(max-width:900px) {{ .kpis {{ grid-template-columns:repeat(2,1fr); }} }}
 @media(max-width:500px) {{ .kpis {{ grid-template-columns:1fr; }} }}
+@media(max-width:600px) {{
+  body {{ padding:10px 8px; }}
+  .top h1 {{ font-size:18px; }}
+  .kpi .val {{ font-size:22px; }}
+  .sh {{ font-size:15px; margin:20px 0 8px 0; }}
+  .cd {{ padding:12px; }}
+  .cd h3 {{ font-size:12px; }}
+  .ch.xl {{ height:260px; }} .ch.lg {{ height:240px; }} .ch.md {{ height:220px; }} .ch.sm {{ height:180px; }}
+  .filters {{ gap:4px; }}
+  .filters select, .filters button {{ padding:5px 8px; font-size:11px; }}
+  .spark-table {{ font-size:9px; }}
+  .spark-table th, .spark-table td {{ padding:2px 3px; }}
+}}
 
 /* Cards */
 .row {{ display:grid; gap:16px; margin-bottom:20px; }}
