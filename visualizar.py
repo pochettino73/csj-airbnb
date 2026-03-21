@@ -889,9 +889,9 @@ function makeDatasetLine(year, data, isPrimary) {{
 // === Banda histórica (reutilizable) ===
 function bandDatasets(hmax, hmin, havg, n) {{
   return [
-    {{ label:'Rango hist.', data:hmax.slice(0,n), borderColor:'transparent', backgroundColor:'rgba(148,163,184,0.10)', fill:'+1', pointRadius:0, pointHitRadius:0, order:10 }},
+    {{ label:'Rango hist.', data:hmax.slice(0,n), borderColor:'transparent', backgroundColor:'rgba(251,191,36,0.08)', fill:'+1', pointRadius:0, pointHitRadius:0, order:10 }},
     {{ label:'_min', data:hmin.slice(0,n), borderColor:'transparent', backgroundColor:'transparent', fill:false, pointRadius:0, pointHitRadius:0, order:10 }},
-    {{ label:'Media hist.', data:havg.slice(0,n), borderColor:'rgba(148,163,184,0.45)', borderDash:[6,3], borderWidth:1.5, pointRadius:0, pointHitRadius:0, fill:false, order:9 }},
+    {{ label:'Media hist.', data:havg.slice(0,n), borderColor:'rgba(251,191,36,0.7)', borderDash:[6,3], borderWidth:2, pointRadius:0, pointHitRadius:0, fill:false, order:9 }},
   ];
 }}
 function bandLegendFilter(item) {{ return item.text && item.text !== '_min'; }}
@@ -931,7 +931,7 @@ function drawC2() {{
     type:'bar',
     data: {{ labels:yrs, datasets:[
       {{ data:vals, backgroundColor:cols, borderRadius:6, borderSkipped:false }},
-      {{ label:'Media: '+meanI.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€', data:Array(yrs.length).fill(meanI), type:'line', borderColor:'rgba(148,163,184,0.5)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false }}
+      {{ label:'Media: '+meanI.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€', data:Array(yrs.length).fill(meanI), type:'line', borderColor:'rgba(251,191,36,0.6)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false }}
     ] }},
     options: {{
       responsive:true, maintainAspectRatio:false,
@@ -976,7 +976,7 @@ function drawC4() {{
     type:'bar',
     data: {{ labels:yrs, datasets:[
       {{ data:vals, backgroundColor:cols, borderRadius:6, borderSkipped:false }},
-      {{ label:'Media: '+meanO.toFixed(1)+'%', data:Array(yrs.length).fill(meanO), type:'line', borderColor:'rgba(148,163,184,0.5)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false }}
+      {{ label:'Media: '+meanO.toFixed(1)+'%', data:Array(yrs.length).fill(meanO), type:'line', borderColor:'rgba(251,191,36,0.6)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false }}
     ] }},
     options: {{
       responsive:true, maintainAspectRatio:false,
@@ -1021,7 +1021,7 @@ function drawC6() {{
     type:'bar',
     data: {{ labels:yrs, datasets:[
       {{ data:vals, backgroundColor:cols, borderRadius:6, borderSkipped:false }},
-      {{ label:'Media: '+meanP.toFixed(1)+'€', data:Array(yrs.length).fill(meanP), type:'line', borderColor:'rgba(148,163,184,0.5)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false }}
+      {{ label:'Media: '+meanP.toFixed(1)+'€', data:Array(yrs.length).fill(meanP), type:'line', borderColor:'rgba(251,191,36,0.6)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false }}
     ] }},
     options: {{
       responsive:true, maintainAspectRatio:false,
@@ -1459,7 +1459,7 @@ function drawC19() {{
     type:'bar',
     data: {{ labels:yrs, datasets:[
       {{ data:vals, backgroundColor:cols, borderRadius:6, borderSkipped:false }},
-      {{ label:'Media: '+meanLT.toFixed(0)+' días', data:Array(yrs.length).fill(meanLT), type:'line', borderColor:'rgba(148,163,184,0.5)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false }}
+      {{ label:'Media: '+meanLT.toFixed(0)+' días', data:Array(yrs.length).fill(meanLT), type:'line', borderColor:'rgba(251,191,36,0.6)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false }}
     ] }},
     options: {{
       responsive:true, maintainAspectRatio:false,
