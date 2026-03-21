@@ -395,6 +395,21 @@ def build(data, ing, ocu, pm, rev):
                             "comment": (r.get("comment") or "")[:100],
                         })
                 bad_revs.sort(key=lambda x: x["rating"])
+                # Reservas en la ventana que ya hicieron checkout pero no dejaron review
+                from datetime import timedelta
+                review_dates = set(r["date"] for r in qrevs_w)
+                stays_in_window = []
+                for r in reservas:
+                    ci = r.get("checkin")
+                    if not ci or not r.get("code"):
+                        continue
+                    co_date = (dt2.strptime(ci, "%Y-%m-%d") + timedelta(days=r["nights"])).strftime("%Y-%m-%d")
+                    # Stay falls in window if checkout is within window period
+                    if start_w <= co_date <= end_w and co_date <= today_str:
+                        stays_in_window.append({"guest": r.get("guest", "?"), "checkin": ci, "nights": r["nights"], "checkout": co_date})
+                # Estimated pending = stays - reviews (approximate, not exact match)
+                pending_reviews = max(0, len(stays_in_window) - n_rev)
+
                 eval_dt = dt2.strptime(eval_date, "%Y-%m-%d")
                 days_left = (eval_dt - now).days
                 future_sh.append({
@@ -411,6 +426,8 @@ def build(data, ing, ocu, pm, rev):
                     "is_super": avg_now >= 4.8,
                     "dist": {str(k): v for k, v in dist_w.items()},
                     "bad_reviews": bad_revs[:10],
+                    "pending": pending_reviews,
+                    "if_pending_5": round((total_pts + 5 * pending_reviews) / (n_rev + pending_reviews), 4) if pending_reviews > 0 and n_rev > 0 else avg_now,
                 })
     next_sh = future_sh[0] if future_sh else None
 
@@ -811,15 +828,24 @@ function drawKPIs() {{
   const pmCls = pmChg >= 0 ? 'up' : 'down';
   const pmArr = pmChg >= 0 ? '&#9650;' : '&#9660;';
   const pmChgStr = isFinite(pmChg) && pmChg !== 0 ? '<div class="chg '+pmCls+'">'+pmArr+' '+Math.abs(pmChg).toFixed(1)+'% vs '+y2+'</div>' : '';
-  function miniLine(label, col, v1) {{
-    return '<span style="color:'+col+';font-weight:600">'+v1.toFixed(0)+'€</span> <span style="color:var(--m)">'+label+'</span>';
+  function pmBlock(label, col, v1, v2) {{
+    const d = v2 > 0 ? ((v1-v2)/v2*100) : 0;
+    const dc = d >= 0 ? '#22c55e' : '#ef4444';
+    const sign = d >= 0 ? '+' : '';
+    const dStr = v2 > 0 ? '<div style="font-size:10px;color:'+dc+'">'+sign+d.toFixed(0)+'%</div>' : '';
+    return '<div style="flex:1;text-align:center">'
+      +'<div style="font-size:20px;font-weight:700;color:'+col+'">'+v1.toFixed(0)+'€</div>'
+      +'<div style="font-size:9px;color:var(--m);margin:2px 0">'+label+'</div>'
+      +dStr
+      +'</div>';
   }}
-  h += '<div class="kpi"><div class="lbl">PM '+y1+'</div><div class="val">'+pmGlobal1.toFixed(1)+'€</div>'+pmChgStr
-    +'<div class="det">'+y2+': '+pmGlobal2.toFixed(1)+'€</div>'
-    +'<div style="font-size:10px;margin-top:6px;line-height:1.6">'
-    +miniLine('alta','#ef4444',pmB1.alta)+'<br>'
-    +miniLine('media','#f59e0b',pmB1.media)+'<br>'
-    +miniLine('baja','#3b82f6',pmB1.baja)
+  h += '<div class="kpi"><div class="lbl">PM '+y1+'</div>'
+    +'<div style="display:flex;gap:2px;margin-top:8px">'
+    +pmBlock('Alta','#ef4444',pmB1.alta,pmB2.alta)
+    +'<div style="border-left:1px solid var(--b)"></div>'
+    +pmBlock('Media','#f59e0b',pmB1.media,pmB2.media)
+    +'<div style="border-left:1px solid var(--b)"></div>'
+    +pmBlock('Baja','#3b82f6',pmB1.baja,pmB2.baja)
     +'</div></div>';
 
   // Pace KPI
@@ -840,7 +866,8 @@ function drawKPIs() {{
     const shStatus = shd.is_super ? 'Superhost' : 'En riesgo';
     const shDiff = (shd.rating_exact - 4.8).toFixed(2);
     const shSign = shd.rating_exact >= 4.8 ? '+' : '';
-    h += '<div class="kpi"><div class="lbl">Rating '+shd.label+'</div><div class="val" style="color:'+shCol+'">'+shd.rating_exact.toFixed(2)+'</div><div class="chg" style="color:'+shCol+'">'+shIcon+' '+shStatus+'</div><div class="det">'+shSign+shDiff+' vs 4.80 &mdash; '+shd.n+' reviews</div><div class="hist">Eval: '+shd.eval_date+' ('+shd.days_left+'d)</div></div>';
+    const pendTxt = shd.pending > 0 ? '<div style="font-size:9px;color:var(--m);margin-top:3px;border-top:1px solid var(--b);padding-top:3px">'+shd.pending+' pendientes &rarr; si 5&#9733;: <b style="color:'+(shd.if_pending_5>=4.8?'#22c55e':'#f59e0b')+'">'+shd.if_pending_5.toFixed(2)+'</b></div>' : '';
+    h += '<div class="kpi"><div class="lbl">Rating '+shd.label+'</div><div class="val" style="color:'+shCol+'">'+shd.rating_exact.toFixed(2)+'</div><div class="chg" style="color:'+shCol+'">'+shIcon+' '+shStatus+'</div><div class="det">'+shSign+shDiff+' vs 4.80 &mdash; '+shd.n+' reviews</div><div class="hist">Eval: '+shd.eval_date+' ('+shd.days_left+'d)</div>'+pendTxt+'</div>';
   }}
 
   ct.innerHTML = h;
@@ -1115,9 +1142,12 @@ function drawNextSH(idx) {{
   h += '<div style="font-size:13px;font-weight:600;color:'+col+'">'+icon+' '+statusTxt+'</div></div>';
 
   // Stats
-  h += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;flex:1;min-width:250px">';
+  h += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1;min-width:250px">';
   h += '<div style="background:rgba(59,130,246,0.08);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700">'+d.n+'</div><div style="font-size:10px;color:var(--m)">Reviews</div></div>';
   h += '<div style="background:rgba(59,130,246,0.08);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700">'+d.total_pts+'</div><div style="font-size:10px;color:var(--m)">Puntos totales</div></div>';
+  // Pending reviews
+  const pend = d.pending || 0;
+  h += '<div style="background:rgba(251,191,36,0.1);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700;color:#f59e0b">'+pend+'</div><div style="font-size:10px;color:#f59e0b">Pendientes evaluar</div></div>';
 
   if(!d.is_super) {{
     h += '<div style="background:rgba(239,68,68,0.1);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700;color:#ef4444">'+d.needed_5+'</div><div style="font-size:10px;color:#ef4444">Reviews 5&#9733; necesarias</div></div>';
@@ -1126,6 +1156,19 @@ function drawNextSH(idx) {{
     h += '<div style="background:rgba(34,197,94,0.1);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700;color:#22c55e">+'+margin+'</div><div style="font-size:10px;color:#22c55e">Margen sobre 4.80</div></div>';
   }}
   h += '</div></div>';
+
+  // Pending simulation
+  if(pend > 0) {{
+    const pend5 = (d.total_pts + 5 * pend) / (d.n + pend);
+    const pend4 = (d.total_pts + 4 * pend) / (d.n + pend);
+    const pendMix = (d.total_pts + 5 * Math.ceil(pend*0.8) + 4 * Math.floor(pend*0.2)) / (d.n + pend);
+    h += '<div style="margin:8px 0;padding:10px;background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.2);border-radius:8px">';
+    h += '<div style="font-size:11px;font-weight:600;color:#f59e0b;margin-bottom:4px">SI LAS '+pend+' PENDIENTES EVAL&Uacute;AN:</div>';
+    h += '<div style="font-size:11px;color:var(--t);margin:2px 0">'+(pend5>=4.8?'&#x2705;':'&#x274C;')+' Todas 5&#9733; &rarr; <b>'+pend5.toFixed(4)+'</b></div>';
+    h += '<div style="font-size:11px;color:var(--t);margin:2px 0">'+(pendMix>=4.8?'&#x2705;':'&#x274C;')+' 80% de 5&#9733; + 20% de 4&#9733; &rarr; <b>'+pendMix.toFixed(4)+'</b></div>';
+    h += '<div style="font-size:11px;color:var(--t);margin:2px 0">'+(pend4>=4.8?'&#x2705;':'&#x274C;')+' Todas 4&#9733; &rarr; <b>'+pend4.toFixed(4)+'</b></div>';
+    h += '</div>';
+  }}
 
   // Distribution bar
   const stars = [5,4,3,2,1];

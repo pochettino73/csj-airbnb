@@ -85,7 +85,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ <span>Airbnb</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 21/03/2026 20:25</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 21/03/2026 20:28</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -370,15 +370,24 @@ function drawKPIs() {
   const pmCls = pmChg >= 0 ? 'up' : 'down';
   const pmArr = pmChg >= 0 ? '&#9650;' : '&#9660;';
   const pmChgStr = isFinite(pmChg) && pmChg !== 0 ? '<div class="chg '+pmCls+'">'+pmArr+' '+Math.abs(pmChg).toFixed(1)+'% vs '+y2+'</div>' : '';
-  function miniLine(label, col, v1) {
-    return '<span style="color:'+col+';font-weight:600">'+v1.toFixed(0)+'€</span> <span style="color:var(--m)">'+label+'</span>';
+  function pmBlock(label, col, v1, v2) {
+    const d = v2 > 0 ? ((v1-v2)/v2*100) : 0;
+    const dc = d >= 0 ? '#22c55e' : '#ef4444';
+    const sign = d >= 0 ? '+' : '';
+    const dStr = v2 > 0 ? '<div style="font-size:10px;color:'+dc+'">'+sign+d.toFixed(0)+'%</div>' : '';
+    return '<div style="flex:1;text-align:center">'
+      +'<div style="font-size:20px;font-weight:700;color:'+col+'">'+v1.toFixed(0)+'€</div>'
+      +'<div style="font-size:9px;color:var(--m);margin:2px 0">'+label+'</div>'
+      +dStr
+      +'</div>';
   }
-  h += '<div class="kpi"><div class="lbl">PM '+y1+'</div><div class="val">'+pmGlobal1.toFixed(1)+'€</div>'+pmChgStr
-    +'<div class="det">'+y2+': '+pmGlobal2.toFixed(1)+'€</div>'
-    +'<div style="font-size:10px;margin-top:6px;line-height:1.6">'
-    +miniLine('alta','#ef4444',pmB1.alta)+'<br>'
-    +miniLine('media','#f59e0b',pmB1.media)+'<br>'
-    +miniLine('baja','#3b82f6',pmB1.baja)
+  h += '<div class="kpi"><div class="lbl">PM '+y1+'</div>'
+    +'<div style="display:flex;gap:2px;margin-top:8px">'
+    +pmBlock('Alta','#ef4444',pmB1.alta,pmB2.alta)
+    +'<div style="border-left:1px solid var(--b)"></div>'
+    +pmBlock('Media','#f59e0b',pmB1.media,pmB2.media)
+    +'<div style="border-left:1px solid var(--b)"></div>'
+    +pmBlock('Baja','#3b82f6',pmB1.baja,pmB2.baja)
     +'</div></div>';
 
   // Pace KPI
