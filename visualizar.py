@@ -243,18 +243,44 @@ def build(data, ing, ocu, pm, rev):
         neto_ann[sy] = round(ingreso - total_costes)
 
     # === PM POR BANDA ESTACIONAL ===
-    # Alta: jun(5), jul(6), ago(7) — Media: abr(3), may(4), sep(8), oct(9) — Baja: nov(10), dic(11), ene(0), feb(1), mar(2)
-    ALTA = [5, 6, 7]
-    MEDIA = [3, 4, 8, 9]
-    BAJA = [10, 11, 0, 1, 2]
+    # Alta: 15/6 al 15/9 — Media: 1/4 al 15/6 y 15/9 al 31/10 — Baja: 1/11 al 31/3
+    def get_banda(checkin_str):
+        """Devuelve 'alta', 'media' o 'baja' según la fecha de checkin."""
+        mm, dd = int(checkin_str[5:7]), int(checkin_str[8:10])
+        # Alta: 15 jun - 15 sep
+        if (mm == 6 and dd >= 15) or mm in (7, 8) or (mm == 9 and dd <= 15):
+            return "alta"
+        # Baja: 1 nov - 31 mar
+        if mm in (11, 12, 1, 2, 3):
+            return "baja"
+        # Media: 1 abr - 14 jun y 16 sep - 31 oct
+        return "media"
+
     pm_banda = {}
     for y in active:
         sy = str(y)
-        pmy = pm.get(y, [0]*12)
-        def banda_avg(meses_idx):
-            vs = [pmy[m] for m in meses_idx if pmy[m] > 0]
-            return round(sum(vs)/len(vs), 1) if vs else 0
-        pm_banda[sy] = {"alta": banda_avg(ALTA), "media": banda_avg(MEDIA), "baja": banda_avg(BAJA)}
+        bandas = {"alta": [], "media": [], "baja": []}
+        for r in reservas:
+            if r["year"] != y or r["nights"] <= 0 or r["total"] <= 0:
+                continue
+            ci = r.get("checkin")
+            pm_r = (r["total"] - r["cleaning"]) / r["nights"] if r["nights"] > 0 else 0
+            if ci and pm_r > 0:
+                banda = get_banda(ci)
+                bandas[banda].append(pm_r)
+            elif not ci and pm_r > 0:
+                # Sin checkin: asignar por mes (fallback)
+                m = r["month"]
+                if m in (7, 8):
+                    bandas["alta"].append(pm_r)
+                elif m in (11, 12, 1, 2, 3):
+                    bandas["baja"].append(pm_r)
+                else:
+                    bandas["media"].append(pm_r)
+        pm_banda[sy] = {
+            b: round(sum(vs)/len(vs), 1) if vs else 0
+            for b, vs in bandas.items()
+        }
 
     # === PACE REPORT (On The Books vs LY) ===
     from datetime import date, timedelta
@@ -641,7 +667,7 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
 <div class="row r1">
   <div class="cd">
     <h3>PM por banda estacional</h3>
-    <div class="s">Alta (jun-ago) / Media (abr-may, sep-oct) / Baja (nov-mar) &mdash; &euro;/noche</div>
+    <div class="s">Alta (15jun-15sep) / Media (1abr-14jun, 16sep-31oct) / Baja (1nov-31mar) &mdash; &euro;/noche</div>
     <div class="ch lg"><canvas id="c14"></canvas></div>
   </div>
 </div>
@@ -873,14 +899,17 @@ function drawKPIs() {{
   ct.innerHTML = h;
 }}
 
+const COL_Y1 = '#3b82f6';  // azul fuerte — año principal
+const COL_Y2 = '#f97316';  // naranja — año comparación
 function makeDatasetLine(year, data, isPrimary) {{
+  const col = isPrimary ? COL_Y1 : COL_Y2;
   return {{
     label: year,
     data: data,
-    borderColor: PALETTE[year] || '#94a3b8',
+    borderColor: col,
     borderWidth: isPrimary ? 3 : 2,
     pointRadius: isPrimary ? 4 : 2,
-    pointBackgroundColor: PALETTE[year] || '#94a3b8',
+    pointBackgroundColor: col,
     tension: 0.3,
     fill: false,
   }};
@@ -1305,8 +1334,8 @@ function drawC14() {{
   charts.c14 = new Chart(document.getElementById('c14'), {{
     type:'bar',
     data: {{ labels:yrs, datasets:[
-      {{ label:'Alta (jun-ago)', data:yrs.map(y=>PM_BANDA[y].alta), backgroundColor:'#ef4444cc', borderRadius:6, borderSkipped:false }},
-      {{ label:'Media (abr-may,sep-oct)', data:yrs.map(y=>PM_BANDA[y].media), backgroundColor:'#f59e0bcc', borderRadius:6, borderSkipped:false }},
+      {{ label:'Alta (15jun-15sep)', data:yrs.map(y=>PM_BANDA[y].alta), backgroundColor:'#ef4444cc', borderRadius:6, borderSkipped:false }},
+      {{ label:'Media (abr-jun,sep-oct)', data:yrs.map(y=>PM_BANDA[y].media), backgroundColor:'#f59e0bcc', borderRadius:6, borderSkipped:false }},
       {{ label:'Baja (nov-mar)', data:yrs.map(y=>PM_BANDA[y].baja), backgroundColor:'#3b82f6cc', borderRadius:6, borderSkipped:false }},
     ] }},
     options: {{
