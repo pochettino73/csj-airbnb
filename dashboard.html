@@ -77,10 +77,20 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 .rv .rs { font-size:20px; font-weight:700; }
 .rv .rl { font-size:9px; color:var(--m); margin-top:2px; }
 
+.nav{display:flex;gap:4px;margin-bottom:16px}
+.nav a{display:inline-block;padding:8px 18px;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;font-family:'Inter',sans-serif;transition:all .15s}
+.nav a.active{background:var(--a);color:var(--t)}
+.nav a:not(.active){background:var(--c);color:var(--m);border:1px solid var(--b)}
+.nav a:not(.active):hover{border-color:var(--a);color:var(--t)}
 .ft { text-align:center; color:var(--m); font-size:9px; margin-top:24px; padding-top:12px; border-top:1px solid var(--b); }
 </style>
 </head>
 <body>
+
+<div class="nav">
+  <a href="dashboard.html" class="active">CSJ Airbnb</a>
+  <a href="compartido.html">Compartido</a>
+</div>
 
 <div class="top">
   <div>

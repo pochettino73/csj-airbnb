@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gastos Compartidos — Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+:root{--bg:#0f172a;--c:#1e293b;--b:#334155;--t:#f1f5f9;--m:#94a3b8;--a:#3b82f6;--g:#22c55e;--r:#ef4444;--w:#f59e0b;--p:#a855f7}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t);padding:20px 24px;max-width:100%;overflow-x:hidden}
+
+.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--b)}
+.top h1{font-size:22px;font-weight:800} .top h1 span{color:var(--a)}
+.top .sub{color:var(--m);font-size:11px}
+
+.filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.filters label{color:var(--m);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.filters select{background:var(--c);color:var(--t);border:1px solid var(--b);border-radius:8px;padding:6px 12px;font-size:12px;font-family:inherit;cursor:pointer}
+.filters select:focus{border-color:var(--a);outline:none}
+
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.kpi{background:var(--c);border:1px solid var(--b);border-radius:10px;padding:16px}
+.kpi:hover{border-color:var(--a)}
+.kpi .lbl{font-size:10px;font-weight:600;color:var(--m);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.kpi .val{font-size:26px;font-weight:700;letter-spacing:-.5px}
+.kpi .chg{font-size:11px;font-weight:600;margin-top:2px}
+.kpi .chg.up{color:var(--g)} .kpi .chg.down{color:var(--r)} .kpi .chg.neutral{color:var(--m)}
+.kpi .det{font-size:9px;color:var(--m);margin-top:1px}
+
+.row{display:grid;gap:16px;margin-bottom:20px}
+.r2{grid-template-columns:1fr 1fr}.r1{grid-template-columns:1fr}
+.cd{background:var(--c);border:1px solid var(--b);border-radius:10px;padding:18px}
+.cd h3{font-size:14px;font-weight:600;margin-bottom:2px}
+.cd .s{font-size:10px;color:var(--m);margin-bottom:12px}
+.ch{position:relative;width:100%}
+.ch.xl{height:400px}.ch.lg{height:340px}.ch.md{height:280px}.ch.sm{height:220px}
+
+.sh{font-size:16px;font-weight:700;margin:28px 0 14px 0;padding-top:16px;border-top:1px solid var(--b)}
+.sh span{color:var(--a);font-weight:400;font-size:11px;margin-left:8px}
+
+table.dt{width:100%;border-collapse:collapse;font-size:11px}
+table.dt th{color:var(--m);font-size:9px;font-weight:600;text-transform:uppercase;padding:6px 8px;text-align:right;border-bottom:1px solid var(--b);position:sticky;top:0;background:var(--c)}
+table.dt th:first-child{text-align:left}
+table.dt td{padding:5px 8px;text-align:right;border-bottom:1px solid rgba(51,65,85,.3)}
+table.dt td:first-child{text-align:left;color:var(--t);font-weight:500}
+table.dt tr:hover{background:rgba(59,130,246,.06)}
+
+.cmp-table{width:100%;border-collapse:collapse;font-size:12px}
+.cmp-table th{color:var(--m);font-size:10px;font-weight:600;text-transform:uppercase;padding:8px 10px;text-align:right;border-bottom:1px solid var(--b)}
+.cmp-table th:first-child{text-align:left}
+.cmp-table td{padding:7px 10px;text-align:right;border-bottom:1px solid rgba(51,65,85,.3)}
+.cmp-table td:first-child{text-align:left;font-weight:500}
+.cmp-table tr:hover{background:rgba(59,130,246,.06)}
+.cmp-table tfoot td{font-weight:700;border-top:2px solid var(--b)}
+
+.pill{display:inline-block;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600}
+.pill.g{background:rgba(34,197,94,.15);color:var(--g)}
+.pill.r{background:rgba(239,68,68,.15);color:var(--r)}
+.pill.n{background:rgba(148,163,184,.1);color:var(--m)}
+
+.nav{display:flex;gap:4px;margin-bottom:16px}
+.nav a{display:inline-block;padding:8px 18px;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;font-family:inherit;transition:all .15s}
+.nav a.active{background:var(--a);color:var(--t)}
+.nav a:not(.active){background:var(--c);color:var(--m);border:1px solid var(--b)}
+.nav a:not(.active):hover{border-color:var(--a);color:var(--t)}
+.ft{text-align:center;color:var(--m);font-size:9px;margin-top:24px;padding-top:12px;border-top:1px solid var(--b)}
+
+@media(max-width:900px){.kpis{grid-template-columns:1fr 1fr}.r2{grid-template-columns:1fr}}
+@media(max-width:600px){
+  body{padding:10px 8px}.top h1{font-size:17px}.kpis{grid-template-columns:1fr}
+  .kpi .val{font-size:20px}
+  .ch.xl{height:280px}.ch.lg{height:250px}.ch.md{height:220px}.ch.sm{height:180px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav">
+  <a href="dashboard.html">CSJ Airbnb</a>
+  <a href="compartido.html" class="active">Compartido</a>
+</div>
+
+<!-- HEADER -->
+<div class="top">
+  <div>
+    <h1>Gastos <span>Compartidos</span></h1>
+    <div class="sub">Dani + Ester &mdash; Cuenta com&uacute;n Cajamar</div>
+  </div>
+  <div class="filters">
+    <label>Mes</label>
+    <select id="selMes"></select>
+  </div>
+</div>
+
+<!-- KPIs -->
+<div class="kpis" id="kpis"></div>
+
+<!-- S1: PRESUPUESTO VS REAL -->
+<div class="row r1">
+  <div class="cd">
+    <h3>Presupuesto vs Real</h3>
+    <div class="s">Gastos del mes seleccionado &mdash; la l&iacute;nea marca el presupuesto</div>
+    <div class="ch xl"><canvas id="chBudget"></canvas></div>
+  </div>
+</div>
+
+<!-- S2: INGRESOS + TOP DESVIACIONES -->
+<div class="row r2">
+  <div class="cd">
+    <h3>Ingresos del mes</h3>
+    <div class="s">Detalle por fuente vs presupuesto</div>
+    <div id="ingresosDetail"></div>
+  </div>
+  <div class="cd">
+    <h3>Top desviaciones</h3>
+    <div class="s">Partidas m&aacute;s por encima del presupuesto</div>
+    <div id="topDesv"></div>
+  </div>
+</div>
+
+<!-- S3: EVOLUCION GLOBAL -->
+<div class="sh">Evoluci&oacute;n mensual <span>todos los meses disponibles</span></div>
+<div class="row r1">
+  <div class="cd">
+    <h3>Ingresos, Gastos y Balance</h3>
+    <div class="s">Barras: gastos (rojo) e ingresos (verde) &mdash; L&iacute;nea azul: balance &mdash; Punteadas: presupuesto</div>
+    <div class="ch xl"><canvas id="chEvo"></canvas></div>
+  </div>
+</div>
+
+<!-- S4: EVOLUCION POR PARTIDA -->
+<div class="row r1">
+  <div class="cd">
+    <h3>Evoluci&oacute;n por partida</h3>
+    <div class="s" style="display:flex;align-items:center;gap:8px">
+      <span>Selecciona partida:</span>
+      <select id="selPartida" style="background:var(--bg);color:var(--t);border:1px solid var(--b);border-radius:6px;padding:4px 8px;font-size:11px;font-family:inherit"></select>
+    </div>
+    <div class="ch lg"><canvas id="chPartida"></canvas></div>
+  </div>
+</div>
+
+<!-- S5: COMPARATIVA MES VS ANTERIOR -->
+<div class="sh">Comparativa <span>mes seleccionado vs anterior</span></div>
+<div class="row r1">
+  <div class="cd">
+    <h3 id="cmpMesTitle"></h3>
+    <div class="s" id="cmpMesSub"></div>
+    <div id="cmpMesTable"></div>
+  </div>
+</div>
+
+<!-- S6: COMPARATIVA YTD -->
+<div class="row r1">
+  <div class="cd">
+    <h3 id="cmpYtdTitle"></h3>
+    <div class="s" id="cmpYtdSub"></div>
+    <div id="cmpYtdTable"></div>
+  </div>
+</div>
+
+<!-- S7: TABLA COMPLETA -->
+<div class="sh">Detalle completo <span>todas las partidas y meses</span></div>
+<div class="row r1">
+  <div class="cd" style="overflow-x:auto">
+    <div class="s">Colores: <span class="pill g">bajo presupuesto</span> <span class="pill r">sobre presupuesto</span></div>
+    <div id="fullTable"></div>
+  </div>
+</div>
+
+<div class="ft">Gastos Compartidos Dashboard &mdash; Generado autom&aacute;ticamente &mdash; <span id="genDate"></span></div>
+
+<script>
+/* ===================== DATA ===================== */
+const HISTORICO = {"Coche":{"2024-11":-398.55,"2024-12":-398.55,"2025-01":-398.55,"2025-02":-398.55,"2025-03":-398.55,"2025-04":-398.55,"2025-05":-398.55,"2025-06":-398.55,"2025-07":-398.55,"2025-08":-411.8,"2025-09":-398.55,"2025-10":-398.55,"2025-11":-460.84,"2025-12":-398.55,"2026-01":-398.55,"2026-02":-398.55},"CSJ":{"2024-11":1100,"2024-12":0,"2025-01":1500,"2025-02":2175.61,"2025-03":300,"2025-04":1000,"2025-05":2600,"2025-06":1200,"2025-07":0,"2025-08":0,"2025-09":1200,"2025-10":1200,"2025-11":1250,"2025-12":1000,"2026-01":2400,"2026-02":0},"Dani":{"2024-11":2400,"2024-12":2400,"2025-01":2300,"2025-02":2500,"2025-03":1000,"2025-04":2500,"2025-05":2500,"2025-06":2500,"2025-07":2500,"2025-08":2500,"2025-09":2501.95,"2025-10":2500,"2025-11":2500,"2025-12":2400,"2026-01":2500,"2026-02":2500},"Ester":{"2024-11":1400,"2024-12":1400,"2025-01":1400,"2025-02":1400,"2025-03":1400,"2025-04":1400,"2025-05":1400,"2025-06":1400,"2025-07":1400,"2025-08":1400,"2025-09":1400,"2025-10":1400,"2025-11":1400,"2025-12":1400,"2026-01":0,"2026-02":1400},"Extraescolares":{"2024-11":-137,"2024-12":-110,"2025-01":-122,"2025-02":0,"2025-03":-127,"2025-04":0,"2025-05":-127,"2025-06":-45.68,"2025-07":0,"2025-08":0,"2025-09":0,"2025-10":-134.4,"2025-11":-224.4,"2025-12":-134.4,"2026-01":-159.4,"2026-02":-69.4},"Farmacia":{"2024-11":-19.25,"2024-12":-40.07,"2025-01":-85.93,"2025-02":-56.13,"2025-03":-44.1,"2025-04":-147.8,"2025-05":-21.11,"2025-06":-38.17,"2025-07":-102.86,"2025-08":-48.1,"2025-09":-31.47,"2025-10":-114.57,"2025-11":-74.86,"2025-12":-48.95,"2026-01":0,"2026-02":-17.5},"Hipoteca CSJ":{"2024-11":-446.28,"2024-12":-446.28,"2025-01":-446.28,"2025-02":-446.28,"2025-03":-446.28,"2025-04":-446.28,"2025-05":-446.28,"2025-06":-446.28,"2025-07":-446.28,"2025-08":-446.28,"2025-09":-446.28,"2025-10":-446.28,"2025-11":-446.28,"2025-12":-446.28,"2026-01":-446.28,"2026-02":-446.21},"Hipoteca Son Fiol":{"2024-11":-1044.99,"2024-12":-1044.99,"2025-01":-1044.99,"2025-02":-1044.99,"2025-03":-1044.99,"2025-04":-1044.99,"2025-05":-1044.99,"2025-06":-1044.99,"2025-07":-1044.99,"2025-08":-1044.99,"2025-09":-1044.99,"2025-10":-1044.99,"2025-11":-1044.99,"2025-12":-1044.99,"2026-01":-1044.99,"2026-02":-1044.95},"Limpieza Son Fiol":{"2024-11":-180,"2024-12":-200,"2025-01":-70,"2025-02":-270,"2025-03":-70,"2025-04":-202.95,"2025-05":-230,"2025-06":-380,"2025-07":-50,"2025-08":0,"2025-09":-200,"2025-10":-310,"2025-11":-240,"2025-12":-200,"2026-01":-210,"2026-02":-324},"Luz y agua":{"2024-11":-8.41,"2024-12":-245.77,"2025-01":-298.48,"2025-02":-148.13,"2025-03":-299.99,"2025-04":-112,"2025-05":-32.85,"2025-06":-193.53,"2025-07":-171.74,"2025-08":-24.73,"2025-09":-75.04,"2025-10":-53.08,"2025-11":-40.43,"2025-12":-91.06,"2026-01":-102.86,"2026-02":-169.78},"Madre Alberta":{"2024-11":-695.4,"2024-12":-236.5,"2025-01":-685.8,"2025-02":-693.9,"2025-03":-599.2,"2025-04":-597.7,"2025-05":-656.9,"2025-06":-522.45,"2025-07":-60.3,"2025-08":-205.9,"2025-09":-526.9,"2025-10":-795.3,"2025-11":-661.4,"2025-12":-384.7,"2026-01":-428.7,"2026-02":-434.2},"Neus":{"2024-11":-120,"2024-12":-80,"2025-01":-80,"2025-02":-50,"2025-03":-30,"2025-04":0,"2025-05":-170,"2025-06":-80,"2025-07":-60,"2025-08":0,"2025-09":-100,"2025-10":-200,"2025-11":0,"2025-12":0,"2026-01":-50,"2026-02":-130},"Restauraci\u00f3n":{"2024-11":-25,"2024-12":-43.6,"2025-01":-48.81,"2025-02":-195,"2025-03":-80.9,"2025-04":-94.45,"2025-05":-200.56,"2025-06":-108.58,"2025-07":-57.19,"2025-08":-664.22,"2025-09":-125.24,"2025-10":-38.57,"2025-11":-283.84,"2025-12":-444.94,"2026-01":-398.02,"2026-02":-80},"Seguro Cajamar":{"2024-11":-130.52,"2024-12":-128.03,"2025-01":-128.03,"2025-02":-130.38,"2025-03":-130.38,"2025-04":-180.23,"2025-05":-130.38,"2025-06":-130.38,"2025-07":-130.4,"2025-08":-130.4,"2025-09":-130.4,"2025-10":-130.4,"2025-11":-130.4,"2025-12":-134.23,"2026-01":-134.23,"2026-02":-135.78},"Seguro m\u00e9dico":{"2024-11":-197.62,"2024-12":-197.62,"2025-01":-229.07,"2025-02":-225.03,"2025-03":-225.03,"2025-04":-225.03,"2025-05":-225.03,"2025-06":-225.03,"2025-07":-225.03,"2025-08":-225.03,"2025-09":-225.03,"2025-10":-225.03,"2025-11":-225.03,"2025-12":-225.03,"2026-01":-271.47,"2026-02":-266.68},"Supermercado":{"2024-11":-1165.48,"2024-12":-613.84,"2025-01":-922.27,"2025-02":-551.45,"2025-03":-770.97,"2025-04":-950.27,"2025-05":-795.75,"2025-06":-1037.1,"2025-07":-732.23,"2025-08":-798.64,"2025-09":-904.2,"2025-10":-752.43,"2025-11":-1166.87,"2025-12":-642.23,"2026-01":-820.89,"2026-02":-812.56},"Tel\u00e9fonos / wifi / TV":{"2024-11":-121.9,"2024-12":-121.9,"2025-01":-119.85,"2025-02":-123.68,"2025-03":-125,"2025-04":-128.71,"2025-05":-132.66,"2025-06":-125,"2025-07":-134.22,"2025-08":-125,"2025-09":-135.54,"2025-10":-142,"2025-11":-146.98,"2025-12":-144.42,"2026-01":-147.75,"2026-02":-180.4},"Tienda":{"2024-11":-748.58,"2024-12":-412.06,"2025-01":-524.74,"2025-02":-56.39,"2025-03":-168.88,"2025-04":-128.77,"2025-05":-399.5,"2025-06":-362.37,"2025-07":-360.65,"2025-08":-478.85,"2025-09":-738.34,"2025-10":-357.42,"2025-11":-102.12,"2025-12":-516.67,"2026-01":-168.9,"2026-02":-223.9},"Varios":{"2024-11":-222.12,"2024-12":-212.46,"2025-03":-21,"2025-07":-105.22,"2025-09":-18.64,"2025-11":-95.33,"2025-12":-291.26,"2026-01":-179,"2026-02":-360}};
+
+const PRESUPUESTO = {"gastos":{"Limpieza Son Fiol":-300,"Neus":-80,"Madre Alberta":-600,"Extraescolares":-200,"Seguro m\u00e9dico":-267,"Seguro Cajamar":-136,"Tel\u00e9fonos / wifi / TV":-200,"Luz y agua":-200,"Hipoteca CSJ":-450,"Hipoteca Son Fiol":-1050,"Supermercado":-750,"Farmacia":-95,"Tienda":-180,"Coche":-400,"Restauraci\u00f3n":-150,"Varios":-100},"ingresos":{"Dani":2500,"Ester":1400,"CSJ":1259.945}};
+
+/* ===================== HELPERS ===================== */
+const PARTIDAS_INGRESO = ['Dani','Ester','CSJ'];
+const PARTIDAS_GASTO = Object.keys(PRESUPUESTO.gastos);
+const ALL_MESES = [...new Set(Object.values(HISTORICO).flatMap(d=>Object.keys(d)))].sort();
+const MES_NAMES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+function fmtMes(m){const[y,mm]=m.split('-');return MES_NAMES[+mm-1]+' '+y.slice(2)}
+function fmtEur(v){return (v>=0?'':'-')+Math.abs(v).toLocaleString('es-ES',{minimumFractionDigits:0,maximumFractionDigits:0})+' \u20ac'}
+function fmtEur2(v){return (v>=0?'':'-')+Math.abs(v).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' \u20ac'}
+function fmtPct(v){return (v>=0?'+':'')+v.toFixed(1)+'%'}
+function val(partida,mes){return (HISTORICO[partida]||{})[mes]||0}
+function totalGastos(mes){return PARTIDAS_GASTO.reduce((s,p)=>s+val(p,mes),0)}
+function totalIngresos(mes){return PARTIDAS_INGRESO.reduce((s,p)=>s+val(p,mes),0)}
+function balance(mes){return totalIngresos(mes)+totalGastos(mes)}
+function presGasto(){return Object.values(PRESUPUESTO.gastos).reduce((s,v)=>s+v,0)}
+function presIngreso(){return Object.values(PRESUPUESTO.ingresos).reduce((s,v)=>s+v,0)}
+function prevMes(m){const i=ALL_MESES.indexOf(m);return i>0?ALL_MESES[i-1]:null}
+function mesYear(m){return m.split('-')[0]}
+function mesMM(m){return m.split('-')[1]}
+
+/* ===================== STATE ===================== */
+let curMes = ALL_MESES[ALL_MESES.length-1];
+let charts = {};
+
+/* ===================== INIT ===================== */
+function init(){
+  const sel = document.getElementById('selMes');
+  ALL_MESES.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=fmtMes(m);sel.appendChild(o)});
+  sel.value=curMes;
+  sel.addEventListener('change',()=>{curMes=sel.value;render()});
+
+  const sp=document.getElementById('selPartida');
+  [...PARTIDAS_GASTO,...PARTIDAS_INGRESO].forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;sp.appendChild(o)});
+  sp.addEventListener('change',()=>renderPartidaChart());
+
+  document.getElementById('genDate').textContent=new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'});
+  render();
+}
+
+function render(){
+  renderKPIs();
+  renderBudgetChart();
+  renderIngresosDetail();
+  renderTopDesv();
+  renderEvoChart();
+  renderPartidaChart();
+  renderCmpMes();
+  renderCmpYTD();
+  renderDetalle();
+}
+
+/* ===================== KPIs ===================== */
+function renderKPIs(){
+  const m=curMes, pm=prevMes(m);
+  const ing=totalIngresos(m), gas=totalGastos(m), bal=balance(m);
+  const presG=presGasto(), presI=presIngreso();
+  const pIng=pm?totalIngresos(pm):null;
+  const pGas=pm?totalGastos(pm):null;
+  const pBal=pm?balance(pm):null;
+
+  function delta(cur,prev){
+    if(prev===null||prev===0) return {txt:'\u2014',cls:'neutral'};
+    const d=((cur-prev)/Math.abs(prev))*100;
+    return {txt:fmtPct(d),cls:d>=0?'up':'down'};
+  }
+  function deltaGas(cur,prev){
+    if(prev===null||prev===0) return {txt:'\u2014',cls:'neutral'};
+    const d=((cur-prev)/Math.abs(prev))*100;
+    return {txt:fmtPct(d),cls:cur>prev?'up':'down'};
+  }
+
+  const dIng=delta(ing,pIng), dGas=deltaGas(gas,pGas), dBal=delta(bal,pBal);
+
+  document.getElementById('kpis').innerHTML=`
+    <div class="kpi">
+      <div class="lbl">Ingresos</div>
+      <div class="val" style="color:var(--g)">${fmtEur(ing)}</div>
+      <div class="chg ${dIng.cls}">${dIng.txt} vs ${pm?fmtMes(pm):'\u2014'}</div>
+      <div class="det">Presupuesto: ${fmtEur(presI)}</div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">Gastos</div>
+      <div class="val" style="color:var(--r)">${fmtEur(Math.abs(gas))}</div>
+      <div class="chg ${dGas.cls}">${dGas.txt} vs ${pm?fmtMes(pm):'\u2014'}</div>
+      <div class="det">Presupuesto: ${fmtEur(Math.abs(presG))}</div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">Balance</div>
+      <div class="val" style="color:${bal>=0?'var(--g)':'var(--r)'}">${fmtEur(bal)}</div>
+      <div class="chg ${dBal.cls}">${dBal.txt} vs ${pm?fmtMes(pm):'\u2014'}</div>
+      <div class="det">Presupuesto: ${fmtEur(presI+presG)}</div>
+    </div>`;
+}
+
+/* ===================== PRESUPUESTO VS REAL ===================== */
+function renderBudgetChart(){
+  if(charts.budget) charts.budget.destroy();
+  const m=curMes;
+  const sorted=[...PARTIDAS_GASTO].sort((a,b)=>val(a,m)-val(b,m));
+  const actuals=sorted.map(p=>Math.abs(val(p,m)));
+  const budgets=sorted.map(p=>Math.abs(PRESUPUESTO.gastos[p]||0));
+  const colors=sorted.map(p=>{
+    const r=Math.abs(val(p,m)), b=Math.abs(PRESUPUESTO.gastos[p]||0);
+    return r>b?'rgba(239,68,68,.7)':'rgba(59,130,246,.7)';
+  });
+
+  charts.budget=new Chart(document.getElementById('chBudget').getContext('2d'),{
+    type:'bar',
+    data:{
+      labels:sorted,
+      datasets:[
+        {label:'Real',data:actuals,backgroundColor:colors,borderRadius:4,barPercentage:.6,categoryPercentage:.8},
+        {label:'Presupuesto',data:budgets,type:'line',borderColor:'transparent',
+         backgroundColor:'transparent',borderWidth:0,pointRadius:7,
+         pointBackgroundColor:'#f59e0b',pointBorderColor:'#fff',pointBorderWidth:2,
+         indexAxis:'y',showLine:false}
+      ]
+    },
+    options:{
+      indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:true,labels:{color:'#94a3b8',font:{size:10},usePointStyle:true},position:'top'},
+        tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+fmtEur2(ctx.raw)}}
+      },
+      scales:{
+        x:{grid:{color:'rgba(51,65,85,.3)'},ticks:{color:'#94a3b8',font:{size:10},callback:v=>v+' \u20ac'}},
+        y:{grid:{display:false},ticks:{color:'#f1f5f9',font:{size:11}}}
+      }
+    }
+  });
+}
+
+/* ===================== INGRESOS DETAIL ===================== */
+function renderIngresosDetail(){
+  const m=curMes;
+  let html='<table class="cmp-table" style="font-size:13px"><tr><th style="text-align:left">Fuente</th><th>Real</th><th>Presup.</th><th>Desv.</th></tr>';
+  let totalR=0,totalP=0;
+  PARTIDAS_INGRESO.forEach(p=>{
+    const r=val(p,m), pres=PRESUPUESTO.ingresos[p]||0;
+    totalR+=r;totalP+=pres;
+    const d=r-pres;
+    html+=`<tr><td>${p}</td><td>${fmtEur(r)}</td><td style="color:var(--m)">${fmtEur(pres)}</td>
+      <td><span class="pill ${d>=0?'g':'r'}">${d>=0?'+':''}${fmtEur2(d)}</span></td></tr>`;
+  });
+  html+=`<tfoot><tr><td>Total</td><td>${fmtEur(totalR)}</td><td style="color:var(--m)">${fmtEur(totalP)}</td>
+    <td><span class="pill ${totalR-totalP>=0?'g':'r'}">${totalR-totalP>=0?'+':''}${fmtEur2(totalR-totalP)}</span></td></tr></tfoot></table>`;
+  document.getElementById('ingresosDetail').innerHTML=html;
+}
+
+/* ===================== TOP DESVIACIONES ===================== */
+function renderTopDesv(){
+  const m=curMes;
+  const desvs=PARTIDAS_GASTO.map(p=>{
+    const r=val(p,m), pres=PRESUPUESTO.gastos[p]||0;
+    return {p,r,pres,desv:r-pres};
+  }).sort((a,b)=>a.desv-b.desv);
+
+  let html='<table class="cmp-table" style="font-size:12px">';
+  html+='<tr><th style="text-align:left">Partida</th><th>Real</th><th>Presup.</th><th>Exceso</th></tr>';
+  desvs.filter(d=>d.desv<0).slice(0,6).forEach(d=>{
+    html+=`<tr><td>${d.p}</td><td>${fmtEur(Math.abs(d.r))}</td><td style="color:var(--m)">${fmtEur(Math.abs(d.pres))}</td>
+      <td><span class="pill r">${fmtEur2(d.desv)}</span></td></tr>`;
+  });
+  if(desvs.filter(d=>d.desv<0).length===0) html+='<tr><td colspan="4" style="color:var(--g);text-align:center;padding:12px">Todas las partidas dentro de presupuesto</td></tr>';
+  html+='</table>';
+  document.getElementById('topDesv').innerHTML=html;
+}
+
+/* ===================== EVOLUCION GLOBAL ===================== */
+function renderEvoChart(){
+  if(charts.evo) charts.evo.destroy();
+  const labels=ALL_MESES.map(fmtMes);
+  const gastos=ALL_MESES.map(m=>Math.abs(totalGastos(m)));
+  const ingresos=ALL_MESES.map(m=>totalIngresos(m));
+  const balances=ALL_MESES.map(m=>balance(m));
+
+  charts.evo=new Chart(document.getElementById('chEvo').getContext('2d'),{
+    type:'bar',
+    data:{
+      labels,
+      datasets:[
+        {label:'Gastos',data:gastos,backgroundColor:'rgba(239,68,68,.55)',borderRadius:4,order:2},
+        {label:'Ingresos',data:ingresos,backgroundColor:'rgba(34,197,94,.55)',borderRadius:4,order:2},
+        {label:'Balance',data:balances,type:'line',borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.08)',
+         pointRadius:3,pointBackgroundColor:'#3b82f6',borderWidth:2,fill:true,tension:.3,order:1},
+        {label:'Pres. gastos',data:ALL_MESES.map(()=>Math.abs(presGasto())),type:'line',borderColor:'rgba(239,68,68,.25)',
+         borderWidth:1,borderDash:[5,5],pointRadius:0,order:3},
+        {label:'Pres. ingresos',data:ALL_MESES.map(()=>presIngreso()),type:'line',borderColor:'rgba(34,197,94,.25)',
+         borderWidth:1,borderDash:[5,5],pointRadius:0,order:3}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{labels:{color:'#94a3b8',font:{size:10},usePointStyle:true,pointStyle:'rectRounded'}},
+        tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+fmtEur2(ctx.raw)}}
+      },
+      scales:{
+        x:{grid:{color:'rgba(51,65,85,.3)'},ticks:{color:'#94a3b8',font:{size:10},maxRotation:45}},
+        y:{grid:{color:'rgba(51,65,85,.3)'},ticks:{color:'#94a3b8',font:{size:10},callback:v=>v+' \u20ac'}}
+      }
+    }
+  });
+}
+
+/* ===================== EVOLUCION POR PARTIDA ===================== */
+function renderPartidaChart(){
+  if(charts.partida) charts.partida.destroy();
+  const p=document.getElementById('selPartida').value;
+  const labels=ALL_MESES.map(fmtMes);
+  const values=ALL_MESES.map(m=>val(p,m));
+  const isGasto=PARTIDAS_GASTO.includes(p);
+  const pres=isGasto?(PRESUPUESTO.gastos[p]||0):(PRESUPUESTO.ingresos[p]||0);
+  const color=isGasto?'#ef4444':'#22c55e';
+
+  charts.partida=new Chart(document.getElementById('chPartida').getContext('2d'),{
+    type:'bar',
+    data:{
+      labels,
+      datasets:[
+        {label:p,data:isGasto?values.map(v=>Math.abs(v)):values,backgroundColor:color+'88',borderRadius:4},
+        {label:'Presupuesto',data:ALL_MESES.map(()=>Math.abs(pres)),type:'line',
+         borderColor:'rgba(148,163,184,.5)',borderWidth:1,borderDash:[5,5],pointRadius:0}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{labels:{color:'#94a3b8',font:{size:10}}},
+        tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+fmtEur2(ctx.raw)}}
+      },
+      scales:{
+        x:{grid:{color:'rgba(51,65,85,.3)'},ticks:{color:'#94a3b8',font:{size:10},maxRotation:45}},
+        y:{grid:{color:'rgba(51,65,85,.3)'},ticks:{color:'#94a3b8',font:{size:10},callback:v=>v+' \u20ac'}}
+      }
+    }
+  });
+}
+
+/* ===================== COMPARATIVA MES VS ANTERIOR ===================== */
+function renderCmpMes(){
+  const m=curMes, pm=prevMes(m);
+  if(!pm){
+    document.getElementById('cmpMesTitle').textContent='Mes vs Anterior';
+    document.getElementById('cmpMesSub').textContent='';
+    document.getElementById('cmpMesTable').innerHTML='<p style="color:var(--m)">No hay mes anterior disponible</p>';
+    return;
+  }
+  document.getElementById('cmpMesTitle').textContent=fmtMes(m)+' vs '+fmtMes(pm);
+  document.getElementById('cmpMesSub').textContent='Comparaci\u00f3n mes a mes';
+
+  let html='<table class="cmp-table">';
+
+  function section(title,partidas,isGasto){
+    const color=isGasto?'var(--a)':'var(--g)';
+    html+=`<tr><td colspan="5" style="font-size:10px;color:${color};font-weight:600;padding:10px 0 4px;border:none">${title}</td></tr>`;
+    html+=`<tr><th style="text-align:left">Partida</th><th>${fmtMes(m)}</th><th>${fmtMes(pm)}</th><th>\u0394</th><th>\u0394%</th></tr>`;
+    let totC=0,totP=0;
+    const list=isGasto?[...partidas].sort((a,b)=>val(a,m)-val(b,m)):partidas;
+    list.forEach(p=>{
+      const cur=val(p,m), prev=val(p,pm);
+      totC+=cur;totP+=prev;
+      const d=cur-prev;
+      const dp=prev!==0?((d/Math.abs(prev))*100):0;
+      const cv=isGasto?Math.abs(cur):cur, pv=isGasto?Math.abs(prev):prev;
+      const good=isGasto?(cur>prev):(cur>prev);
+      const cls=d===0?'n':(good?'g':'r');
+      const dShow=isGasto?-d:d;
+      html+=`<tr><td>${p}</td><td>${fmtEur(cv)}</td><td style="color:var(--m)">${fmtEur(pv)}</td>
+        <td><span class="pill ${cls}">${dShow>=0?'+':''}${fmtEur2(dShow)}</span></td>
+        <td style="color:var(--m)">${prev!==0?fmtPct(isGasto?-dp:dp):'\u2014'}</td></tr>`;
+    });
+    const dTot=totC-totP, dpTot=totP!==0?((dTot/Math.abs(totP))*100):0;
+    const goodTot=isGasto?(totC>totP):(totC>totP);
+    const clsTot=dTot===0?'n':(goodTot?'g':'r');
+    const dTotShow=isGasto?-dTot:dTot;
+    html+=`<tr style="font-weight:600;border-top:2px solid var(--b)"><td>Total</td>
+      <td>${fmtEur(isGasto?Math.abs(totC):totC)}</td><td style="color:var(--m)">${fmtEur(isGasto?Math.abs(totP):totP)}</td>
+      <td><span class="pill ${clsTot}">${dTotShow>=0?'+':''}${fmtEur2(dTotShow)}</span></td>
+      <td style="color:var(--m)">${totP!==0?fmtPct(isGasto?-dpTot:dpTot):'\u2014'}</td></tr>`;
+  }
+
+  section('GASTOS',PARTIDAS_GASTO,true);
+  html+='<tr><td colspan="5" style="padding:6px"></td></tr>';
+  section('INGRESOS',PARTIDAS_INGRESO,false);
+
+  const balC=balance(m),balP=balance(pm);
+  html+=`<tr style="font-weight:700;border-top:3px solid var(--a)"><td>BALANCE</td>
+    <td style="color:${balC>=0?'var(--g)':'var(--r)'}">${fmtEur(balC)}</td>
+    <td style="color:var(--m)">${fmtEur(balP)}</td>
+    <td><span class="pill ${balC>balP?'g':'r'}">${fmtEur2(balC-balP)}</span></td><td></td></tr>`;
+  html+='</table>';
+  document.getElementById('cmpMesTable').innerHTML=html;
+}
+
+/* ===================== COMPARATIVA YTD ===================== */
+function renderCmpYTD(){
+  const y=mesYear(curMes), mm=mesMM(curMes);
+  const yPrev=String(+y-1);
+  document.getElementById('cmpYtdTitle').textContent='YTD '+y+' vs '+yPrev;
+  const mesesY=ALL_MESES.filter(m=>mesYear(m)===y && mesMM(m)<=mm);
+  const mesesP=ALL_MESES.filter(m=>mesYear(m)===yPrev && mesMM(m)<=mm);
+  document.getElementById('cmpYtdSub').textContent='Acumulado ene\u2013'+MES_NAMES[+mm-1].toLowerCase()+' ('+mesesY.length+'m vs '+mesesP.length+'m)';
+
+  function sumP(p,meses){return meses.reduce((s,m)=>s+val(p,m),0)}
+
+  let html='<table class="cmp-table">';
+
+  function section(title,partidas,isGasto){
+    const color=isGasto?'var(--a)':'var(--g)';
+    html+=`<tr><td colspan="4" style="font-size:10px;color:${color};font-weight:600;padding:10px 0 4px;border:none">${title}</td></tr>`;
+    html+=`<tr><th style="text-align:left">Partida</th><th>${y}</th><th>${yPrev}</th><th>\u0394</th></tr>`;
+    let totY=0,totP=0;
+    partidas.forEach(p=>{
+      const cy=sumP(p,mesesY), cp=sumP(p,mesesP);
+      totY+=cy;totP+=cp;
+      const d=cy-cp;
+      const good=isGasto?(cy>cp):(cy>cp);
+      const cls=d===0?'n':(good?'g':'r');
+      const dShow=isGasto?-d:d;
+      html+=`<tr><td>${p}</td><td>${fmtEur(isGasto?Math.abs(cy):cy)}</td>
+        <td style="color:var(--m)">${mesesP.length?fmtEur(isGasto?Math.abs(cp):cp):'\u2014'}</td>
+        <td><span class="pill ${cls}">${dShow>=0?'+':''}${fmtEur2(dShow)}</span></td></tr>`;
+    });
+    const dTot=totY-totP;
+    const goodTot=isGasto?(totY>totP):(totY>totP);
+    const clsTot=dTot===0?'n':(goodTot?'g':'r');
+    const dTotShow=isGasto?-dTot:dTot;
+    html+=`<tr style="font-weight:600;border-top:2px solid var(--b)"><td>Total</td>
+      <td>${fmtEur(isGasto?Math.abs(totY):totY)}</td>
+      <td style="color:var(--m)">${mesesP.length?fmtEur(isGasto?Math.abs(totP):totP):'\u2014'}</td>
+      <td><span class="pill ${clsTot}">${dTotShow>=0?'+':''}${fmtEur2(dTotShow)}</span></td></tr>`;
+  }
+
+  section('GASTOS',PARTIDAS_GASTO,true);
+  html+='<tr><td colspan="4" style="padding:6px"></td></tr>';
+  section('INGRESOS',PARTIDAS_INGRESO,false);
+  html+='</table>';
+
+  const balY=mesesY.reduce((s,m)=>s+balance(m),0);
+  const balP=mesesP.reduce((s,m)=>s+balance(m),0);
+  html+=`<div style="margin-top:16px;padding:14px;background:rgba(59,130,246,.08);border-radius:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+    <span style="font-weight:600">Balance acumulado</span>
+    <span style="font-size:20px;font-weight:700;color:${balY>=0?'var(--g)':'var(--r)'}">${fmtEur(balY)}</span>
+    ${mesesP.length?`<span style="color:var(--m);font-size:12px">${yPrev}: ${fmtEur(balP)}</span>`:''}
+  </div>`;
+
+  document.getElementById('cmpYtdTable').innerHTML=html;
+}
+
+/* ===================== DETALLE COMPLETO ===================== */
+function renderDetalle(){
+  let html='<div style="overflow-x:auto"><table class="dt"><thead><tr><th>Partida</th><th>Presup.</th>';
+  ALL_MESES.forEach(m=>html+=`<th>${fmtMes(m)}</th>`);
+  html+='<th>Media</th></tr></thead><tbody>';
+
+  let totByMes={};ALL_MESES.forEach(m=>totByMes[m]=0);
+
+  html+='<tr><td colspan="'+(ALL_MESES.length+3)+'" style="font-size:10px;color:var(--a);font-weight:600;padding:10px 0 4px;border:none">GASTOS</td></tr>';
+  [...PARTIDAS_GASTO].sort((a,b)=>(PRESUPUESTO.gastos[a]||0)-(PRESUPUESTO.gastos[b]||0)).forEach(p=>{
+    const pres=PRESUPUESTO.gastos[p]||0;
+    html+=`<tr><td>${p}</td><td style="color:var(--m)">${fmtEur(Math.abs(pres))}</td>`;
+    let sum=0,cnt=0;
+    ALL_MESES.forEach(m=>{
+      const v=val(p,m);sum+=v;cnt++;totByMes[m]+=v;
+      const over=v<pres;
+      const bg=v===0?'':(over?'rgba(239,68,68,.12)':'rgba(34,197,94,.08)');
+      const col=v===0?'var(--m)':(over?'var(--r)':'var(--t)');
+      html+=`<td style="background:${bg};color:${col}">${v===0?'\u2014':fmtEur(Math.abs(v))}</td>`;
+    });
+    html+=`<td style="color:var(--m)">${fmtEur(Math.abs(cnt?sum/cnt:0))}</td></tr>`;
+  });
+  html+='<tr style="font-weight:600;border-top:2px solid var(--b)"><td>Total gastos</td><td style="color:var(--m)">'+fmtEur(Math.abs(presGasto()))+'</td>';
+  ALL_MESES.forEach(m=>html+=`<td>${fmtEur(Math.abs(totByMes[m]))}</td>`);
+  const avgGas=ALL_MESES.reduce((s,m)=>s+totByMes[m],0)/ALL_MESES.length;
+  html+=`<td style="color:var(--m)">${fmtEur(Math.abs(avgGas))}</td></tr>`;
+
+  html+='<tr><td colspan="'+(ALL_MESES.length+3)+'" style="font-size:10px;color:var(--g);font-weight:600;padding:10px 0 4px;border:none">INGRESOS</td></tr>';
+  let totIng={};ALL_MESES.forEach(m=>totIng[m]=0);
+  PARTIDAS_INGRESO.forEach(p=>{
+    const pres=PRESUPUESTO.ingresos[p]||0;
+    html+=`<tr><td>${p}</td><td style="color:var(--m)">${fmtEur(pres)}</td>`;
+    let sum=0;
+    ALL_MESES.forEach(m=>{const v=val(p,m);sum+=v;totIng[m]+=v;
+      html+=`<td style="color:${v===0?'var(--m)':'var(--t)'}">${v===0?'\u2014':fmtEur(v)}</td>`;
+    });
+    html+=`<td style="color:var(--m)">${fmtEur(sum/ALL_MESES.length)}</td></tr>`;
+  });
+  html+='<tr style="font-weight:600;border-top:2px solid var(--b)"><td>Total ingresos</td><td style="color:var(--m)">'+fmtEur(presIngreso())+'</td>';
+  ALL_MESES.forEach(m=>html+=`<td>${fmtEur(totIng[m])}</td>`);
+  const avgIng=ALL_MESES.reduce((s,m)=>s+totIng[m],0)/ALL_MESES.length;
+  html+=`<td style="color:var(--m)">${fmtEur(avgIng)}</td></tr>`;
+
+  html+='<tr style="font-weight:700;border-top:3px solid var(--a)"><td>BALANCE</td><td style="color:var(--m)">'+fmtEur(presIngreso()+presGasto())+'</td>';
+  ALL_MESES.forEach(m=>{const b=totIng[m]+totByMes[m];
+    html+=`<td style="color:${b>=0?'var(--g)':'var(--r)'}">${fmtEur(b)}</td>`;
+  });
+  const avgBal=avgIng+avgGas;
+  html+=`<td style="color:${avgBal>=0?'var(--g)':'var(--r)'}"><strong>${fmtEur(avgBal)}</strong></td></tr>`;
+
+  html+='</tbody></table></div>';
+  document.getElementById('fullTable').innerHTML=html;
+}
+
+/* ===================== BOOT ===================== */
+init();
+</script>
+</body>
+</html>
