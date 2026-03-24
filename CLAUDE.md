@@ -1,4 +1,4 @@
-> **Nota**: Forma parte de `segundo-cerebro/`. Las reservas entran via buzon (`00-buzon/`). Ver [CLAUDE.md raiz](../../CLAUDE.md) para el flujo completo.
+> **Nota**: Forma parte de `segundo-cerebro/`. Las reservas entran via buzon centralizado (`segundo-cerebro/00-buzon/`). Ver [CLAUDE.md raiz](../../CLAUDE.md) para el flujo completo.
 
 # CSJ Airbnb — Documentacion del Proyecto
 
@@ -18,6 +18,7 @@ Control y analisis del apartamento de alquiler turistico en Colonia de Sant Jord
 - **Perfil**: apartamento pequeno, buena ocupacion 12 meses, objetivo Superhost permanente
 - **Estrategia de precio**: subida gradual del PM sin perjudicar valoraciones
 - **Estancia minima**: 3 noches (ocasionalmente 2 si queda hueco)
+- **Dashboard publico**: https://pochettino73.github.io/csj-airbnb/dashboard.html
 
 ---
 
@@ -40,29 +41,19 @@ Control y analisis del apartamento de alquiler turistico en Colonia de Sant Jord
 Todo el sistema funciona con 3 ficheros JSON locales. **No hay llamadas API, no hay Google Sheet, no hay conexion a internet.**
 
 ```
-FUENTES DE DATOS
-════════════════
-_reservas.json  (488 reservas, 2015-2027)
-    → Ingresos, ocupacion, PM, pace, lead time, costes, beneficio neto
-    → Enriquecido con booking_date, checkin, confirmation_code (90% cobertura)
-    → Se actualiza cuando llega PDF de reserva al buzon
-
-_reviews.json   (343 evaluaciones)
-    → Puntuaciones, subcategorias, Superhost trimestral
-    → Se actualiza con cada nuevo export de Airbnb
-
-_visitas.json   (94 meses de page views)
-    → Conversion: visitas al listing + reservas por fecha de venta
-    → Dani actualiza 1x/mes desde panel Airbnb
+ESTRUCTURA DEL PROYECTO
+═══════════════════════
+01-datos/raw/          28 ficheros JSON del export personal de Airbnb (19/03/2026)
+_reservas.json         490 reservas (2015-2027) — fuente de verdad
+_reviews.json          343 evaluaciones — puntuaciones y Superhost
+_visitas.json          94 meses de page views
+visualizar.py          Genera dashboard.html desde los 3 JSON
+dashboard.html         Dashboard ejecutivo (publicado en GitHub Pages)
+CLAUDE.md              Este documento
 
 GENERACION
 ══════════
-python visualizar.py  →  dashboard.html
-
-EXPORT AIRBNB (01-datos/raw/)
-═════════════════════════════
-28 ficheros JSON del export personal de Airbnb (solicitado 19/03/2026)
-Fuente para enriquecer _reservas.json y crear _reviews.json
+python visualizar.py  →  dashboard.html  →  git push  →  GitHub Pages
 ```
 
 ### Google Sheet — ARCHIVO MUERTO
@@ -75,19 +66,21 @@ El Google Sheet (`1BEa1m5InTFUDzvvILcDafwC3mRn7b6GkLYnq0eAMvXg`) queda como hist
 
 ### 1. Nueva reserva
 
-1. Dani deja PDF de reserva en `00-buzon/entrante/`
+1. Dani deja PDF de reserva en `segundo-cerebro/00-buzon/entrante/`
 2. Claude extrae datos del PDF
 3. Verificar si la reserva ya existe en `_reservas.json`
 4. Si cruza meses: calcular prorrateo (2 registros, el sin `code` es continuacion)
 5. Anadir a `_reservas.json`
 6. Ejecutar `python visualizar.py` para regenerar dashboard
-7. Mover PDF a `00-buzon/procesado/`, registrar en log
+7. `git commit && git push` para actualizar GitHub Pages
+8. Mover PDF a `segundo-cerebro/00-buzon/procesado/YYYY/MM/`, registrar en log
 
 ### 2. Actualizar visitas (1x/mes)
 
 1. Dani entra al panel de Airbnb → Rendimiento → Visitas
 2. Edita `_visitas.json`, anade la linea del mes: `"2026-03": 750`
 3. Ejecuta `python visualizar.py`
+4. `git commit && git push`
 
 ### 3. Actualizar reviews (cuando haya nuevo export)
 
@@ -95,14 +88,16 @@ El Google Sheet (`1BEa1m5InTFUDzvvILcDafwC3mRn7b6GkLYnq0eAMvXg`) queda como hist
 2. Extraer a `01-datos/raw/`
 3. Claude procesa y actualiza `_reviews.json`
 4. Claude enriquece `_reservas.json` con nuevas reservas/fechas
+5. Regenerar dashboard y push
 
 ### 4. Regenerar dashboard
 
 ```bash
 python visualizar.py
+git add _reservas.json dashboard.html && git commit -m "..." && git push
 ```
 
-Lee los 3 JSON locales. Genera `dashboard.html`. Sin conexion a internet.
+Lee los 3 JSON locales. Genera `dashboard.html`. Push publica en GitHub Pages.
 
 ---
 
@@ -126,7 +121,7 @@ Lee los 3 JSON locales. Genera `dashboard.html`. Sin conexion a internet.
 - **`total`**: ingreso neto (tras comision Airbnb 3%+IVA, incluye limpieza)
 - **`booking_date`**: fecha de venta (cuando se hizo la reserva)
 - **`checkin`**: fecha de estancia (cuando entra el huesped)
-- **`confirmation_code`**: codigo Airbnb (90% cobertura, 10% sin match del export)
+- **`confirmation_code`**: codigo Airbnb (solo ~3/ano tienen match del export)
 - **Reservas entre meses**: se prorratean como 2 registros (el que no tiene `code` es la continuacion)
 
 ## Estructura de _visitas.json
@@ -181,14 +176,38 @@ costes_ano = COSTES_FIJOS[ano] + 40 * n_reservas
 
 ## Dashboard ejecutivo
 
+### Publicacion
+
+- **Repo**: `pochettino73/csj-airbnb` (publico)
+- **URL**: https://pochettino73.github.io/csj-airbnb/dashboard.html
+- **Responsive**: optimizado para movil y desktop
+
 ### 5 KPIs dinamicos
 
-Con filtros (ano y1 vs y2, periodo Anual/YTD/6m/3m):
-- Beneficio neto + margen % + comparativa (responde a filtro periodo)
-- Ingresos brutos + comparativa (responde a filtro periodo)
-- Ocupacion + comparativa (responde a filtro periodo)
-- PM temporada alta jun-ago + comparativa (fijo, no depende del periodo)
-- Pace vs LY: delta % vendido a misma fecha (responde a filtro periodo)
+Filtros: ano y1 vs y2, periodo Anual / A fecha.
+
+| KPI | Descripcion |
+|-----|-------------|
+| Ingresos | Ingresos brutos del periodo + comparativa vs y2 |
+| Ocupacion | % ocupacion del periodo + comparativa vs y2 |
+| PM por temporada | 3 valores horizontales: Alta / Media / Baja con deltas |
+| Pace | Delta % vendido a misma fecha vs y2 |
+| Rating | Nota global del proximo trimestre Superhost + pendientes + simulacion |
+
+### Bandas estacionales PM
+
+| Banda | Periodo |
+|-------|---------|
+| Alta | 15 jun — 15 sep |
+| Media | 1 abr — 14 jun + 16 sep — 31 oct |
+| Baja | 1 nov — 31 mar |
+
+### Colores de graficas
+
+- **y1** (ano principal): azul `#3b82f6`
+- **y2** (ano comparativa): naranja `#f97316`
+- **Media historica**: ambar/dorado `rgba(251,191,36,0.7)`
+- **Banda historica** (min/max): gris semitransparente
 
 ### Secciones
 
@@ -219,34 +238,46 @@ Con filtros (ano y1 vs y2, periodo Anual/YTD/6m/3m):
 - Lead Time medio por ano (tendencia de antelacion)
 
 **S7 — Evaluaciones y Superhost:**
-- Puntuaciones por ano (y1 vs y2, todas las subcategorias)
-- Radar de evaluaciones (y1 vs y2)
-- Timeline Superhost trimestral (rating + n reviews + umbral 4.8)
+- Timeline Superhost trimestral (rating + n reviews + umbral 4.8, recortado al proximo trimestre)
+- Proximo trimestre: selector de trimestres futuros, rating actual, distribucion de notas, simulacion de reviews necesarias, reviews pendientes
 
 ---
 
 ## Superhost
 
-Airbnb evalua trimestralmente (1 ene, 1 abr, 1 jul, 1 oct) con ventana de 365 dias. Criterios:
+Airbnb evalua trimestralmente (1 ene, 1 abr, 1 jul, 1 oct) con ventana de 365 dias.
+
+### Ventanas de evaluacion
+
+| Trimestre | Fecha evaluacion | Ventana |
+|-----------|-----------------|---------|
+| Q1 | 1 enero Y | 1 ene Y-1 — 31 dic Y-1 |
+| Q2 | 1 abril Y | 1 abr Y-1 — 31 mar Y |
+| Q3 | 1 julio Y | 1 jul Y-1 — 30 jun Y |
+| Q4 | 1 octubre Y | 1 oct Y-1 — 30 sep Y |
+
+### Criterios
+
 - Rating medio >= 4.8
 - >= 10 estancias/ano (o 3 estancias + 100 noches)
 - Tasa de cancelacion < 1%
 - Tasa de respuesta >= 90%
 
-El dashboard muestra el tracking trimestral con rating y numero de reviews por periodo.
+El dashboard calcula automaticamente los trimestres futuros con: rating actual de la ventana, distribucion de notas, reviews pendientes de evaluar, y simulacion de cuantas 5 estrellas se necesitan para llegar a 4.8.
 
 ---
 
 ## Pendiente / Mejoras
 
-- [ ] GitHub Pages para acceder al dashboard desde movil/desktop
 - [ ] Retomar control de gastos reales (no se actualiza desde 2024)
-- [ ] Finanzas compartidas con Ester (subdominio `compartido/`)
+- [x] GitHub Pages activo: https://pochettino73.github.io/csj-airbnb/dashboard.html
 - [x] 0 dependencias externas (3 JSON locales, sin API)
 - [x] Export Airbnb procesado: _reservas.json enriquecido + _reviews.json creado
 - [x] Dashboard con pace report, lead time, Superhost tracking
-- [x] _reservas.json como fuente de verdad (488 reservas, totales ajustados)
+- [x] _reservas.json como fuente de verdad (490 reservas, totales ajustados)
+- [x] Dashboard responsive (movil + desktop)
+- [x] Carpetas simplificadas (sin subcarpetas vacias)
 
 ---
 
-*Documento actualizado el 20/03/2026*
+*Documento actualizado el 23/03/2026*
