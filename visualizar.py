@@ -395,7 +395,7 @@ def build(data, ing, ocu, pm, rev):
             (1, 1, -1, 12, 31), (4, 1, 0, 3, 31), (7, 1, 0, 6, 30), (10, 1, 0, 9, 30)
         ], 1):
             eval_date = f"{y}-{[1,4,7,10][q-1]:02d}-01"
-            if eval_date > today_str and len(future_sh) < 3:
+            if eval_date >= today_str and len(future_sh) < 4:
                 start_w = f"{y-1}-{sm:02d}-{sd:02d}"
                 end_w = f"{y+ey_offset}-{em:02d}-{ed:02d}"
                 t_map_w = {1: 4, 2: 1, 3: 2, 4: 3}
@@ -1142,7 +1142,7 @@ function drawSpark() {{
 }}
 
 // === Review cards by year ===
-let shIdx = 0;
+let shIdx = 1;
 function drawNextSH(idx) {{
   if(idx !== undefined) shIdx = idx;
   const ct = document.getElementById('nextShPanel');
@@ -1507,7 +1507,7 @@ function drawC19() {{
 // === C21: Superhost timeline ===
 function drawC21() {{
   if(charts.c21) charts.c21.destroy();
-  const nextQ = NEXT_SH ? NEXT_SH.label : null;
+  const nextQ = (FUTURE_SH && FUTURE_SH.length > 1) ? FUTURE_SH[1].label : (NEXT_SH ? NEXT_SH.label : null);
   const cutIdx = nextQ ? SH_CHECKS.indexOf(nextQ) : SH_CHECKS.length - 1;
   const allLabels = SH_CHECKS.slice(0, cutIdx + 1);
   const labels = allLabels.slice(-4);
