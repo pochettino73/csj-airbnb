@@ -371,7 +371,7 @@ def build(data, ing, ocu, pm, rev):
         ], 1):
             start = f"{y-1}-{sm:02d}-{sd:02d}"
             end = f"{y+ey_offset}-{em:02d}-{ed:02d}"
-            label = f"{y}-Q{q}"
+            label = f"{y}-T{q}"
             qrevs = [r for r in reviews_list if start <= r["date"] <= end]
             if not qrevs:
                 continue
@@ -396,7 +396,7 @@ def build(data, ing, ocu, pm, rev):
             if eval_date > today_str and len(future_sh) < 4:
                 start_w = f"{y-1}-{sm:02d}-{sd:02d}"
                 end_w = f"{y+ey_offset}-{em:02d}-{ed:02d}"
-                label_w = f"{y}-Q{q}"
+                label_w = f"{y}-T{q}"
                 qrevs_w = [r for r in reviews_list if start_w <= r["date"] <= end_w]
                 ratings_w = [r["rating"] for r in qrevs_w if r.get("rating") and r["rating"] > 0]
                 total_pts = sum(ratings_w)
