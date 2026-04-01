@@ -395,7 +395,7 @@ def build(data, ing, ocu, pm, rev):
             (1, 1, -1, 12, 31), (4, 1, 0, 3, 31), (7, 1, 0, 6, 30), (10, 1, 0, 9, 30)
         ], 1):
             eval_date = f"{y}-{[1,4,7,10][q-1]:02d}-01"
-            if eval_date > today_str and len(future_sh) < 4:
+            if eval_date > today_str and len(future_sh) < 3:
                 start_w = f"{y-1}-{sm:02d}-{sd:02d}"
                 end_w = f"{y+ey_offset}-{em:02d}-{ed:02d}"
                 t_map_w = {1: 4, 2: 1, 3: 2, 4: 3}
@@ -1510,7 +1510,7 @@ function drawC21() {{
   const nextQ = NEXT_SH ? NEXT_SH.label : null;
   const cutIdx = nextQ ? SH_CHECKS.indexOf(nextQ) : SH_CHECKS.length - 1;
   const allLabels = SH_CHECKS.slice(0, cutIdx + 1);
-  const labels = allLabels.slice(-12);
+  const labels = allLabels.slice(-4);
   const ratings = labels.map(q => SH_DATA[q] ? SH_DATA[q].rating : null);
   const counts = labels.map(q => SH_DATA[q] ? SH_DATA[q].n : 0);
   const isSH = labels.map(q => SH_DATA[q] ? SH_DATA[q].superhost : false);
