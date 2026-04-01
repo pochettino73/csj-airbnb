@@ -371,7 +371,9 @@ def build(data, ing, ocu, pm, rev):
         ], 1):
             start = f"{y-1}-{sm:02d}-{sd:02d}"
             end = f"{y+ey_offset}-{em:02d}-{ed:02d}"
-            label = f"{y}-T{q}"
+            t_map = {1: 4, 2: 1, 3: 2, 4: 3}
+            t_year = {1: y-1, 2: y, 3: y, 4: y}
+            label = f"{t_year[q]}-T{t_map[q]}"
             qrevs = [r for r in reviews_list if start <= r["date"] <= end]
             if not qrevs:
                 continue
@@ -396,7 +398,9 @@ def build(data, ing, ocu, pm, rev):
             if eval_date > today_str and len(future_sh) < 4:
                 start_w = f"{y-1}-{sm:02d}-{sd:02d}"
                 end_w = f"{y+ey_offset}-{em:02d}-{ed:02d}"
-                label_w = f"{y}-T{q}"
+                t_map_w = {1: 4, 2: 1, 3: 2, 4: 3}
+                t_year_w = {1: y-1, 2: y, 3: y, 4: y}
+                label_w = f"{t_year_w[q]}-T{t_map_w[q]}"
                 qrevs_w = [r for r in reviews_list if start_w <= r["date"] <= end_w]
                 ratings_w = [r["rating"] for r in qrevs_w if r.get("rating") and r["rating"] > 0]
                 total_pts = sum(ratings_w)
@@ -582,7 +586,6 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
     </select>
     <label style="margin-left:12px">Periodo:</label>
     <button class="period-btn active" data-months="12">Anual</button>
-    <button class="period-btn" data-months="3">1T</button>
     <button class="period-btn" data-months="{cm}">A fecha</button>
   </div>
 </div>
