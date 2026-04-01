@@ -1575,7 +1575,7 @@ function drawC21() {{
           ticks:{{stepSize:0.1,color:'#94a3b8',callback:v=>v.toFixed(1)}},
           grid:{{color: function(ctx) {{ return ctx.tick.value === 4.8 ? 'rgba(239,68,68,0.3)' : GC; }} }}
         }},
-        x: {{ ticks:{{font:{{size:9}},maxRotation:45}}, grid:{{display:false}} }}
+        x: {{ ticks:{{font:{{size:10}},maxRotation:0,autoSkip:false}}, grid:{{display:false}} }}
       }}
     }}
   }});
