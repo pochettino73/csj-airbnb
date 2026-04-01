@@ -888,8 +888,8 @@ function drawKPIs() {{
   const paceCapt = fin2Total > 0 ? Math.round(otb1/fin2Total*100) : 0;
   h += '<div class="kpi"><div class="lbl">Pace vs '+y2+'</div><div class="val" style="color:'+paceCol+'">'+paceSign+paceDelta.toFixed(1)+'%</div><div class="det">'+fmt(otb1)+'€ vs '+fmt(otb2)+'€ a misma fecha</div><div class="hist">'+paceCapt+'% del total final '+y2+' ('+fmt(fin2Total)+'€)</div></div>';
 
-  // Rating Superhost — próximo trimestre
-  const shd = FUTURE_SH && FUTURE_SH.length ? FUTURE_SH[0] : null;
+  // Rating Superhost — trimestre activo (T2, el siguiente a evaluar)
+  const shd = FUTURE_SH && FUTURE_SH.length > 1 ? FUTURE_SH[1] : (FUTURE_SH && FUTURE_SH.length ? FUTURE_SH[0] : null);
   if(shd) {{
     const shCol = shd.is_super ? '#22c55e' : '#ef4444';
     const shIcon = shd.is_super ? '&#x2705;' : '&#x26A0;&#xFE0F;';
