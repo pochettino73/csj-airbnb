@@ -582,6 +582,7 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
     </select>
     <label style="margin-left:12px">Periodo:</label>
     <button class="period-btn active" data-months="12">Anual</button>
+    <button class="period-btn" data-months="3">1T</button>
     <button class="period-btn" data-months="{cm}">A fecha</button>
   </div>
 </div>
