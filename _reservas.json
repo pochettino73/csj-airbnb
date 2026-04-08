@@ -6237,6 +6237,32 @@
   },
   {
     "year": 2026,
+    "month": 9,
+    "code": "",
+    "guest": "Lukas Barak",
+    "checkin": "2026-09-20",
+    "nights": 11,
+    "pm": 84.21,
+    "cleaning": 55.0,
+    "total": 981.29,
+    "confirmation_code": "HMR2NXTWHJ",
+    "booking_date": "2026-04-07"
+  },
+  {
+    "year": 2026,
+    "month": 10,
+    "code": "HMR2NXTWHJ",
+    "guest": "Lukas Barak",
+    "checkin": "2026-10-01",
+    "nights": 1,
+    "pm": 84.21,
+    "cleaning": 5.0,
+    "total": 89.21,
+    "confirmation_code": "HMR2NXTWHJ",
+    "booking_date": "2026-04-07"
+  },
+  {
+    "year": 2026,
     "month": 10,
     "code": "",
     "guest": "Johann Klawitter",
