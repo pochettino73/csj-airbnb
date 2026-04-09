@@ -286,8 +286,9 @@ def build(data, ing, ocu, pm, rev):
     from datetime import date, timedelta
     today_d = date.today()
 
-    pace_otb = {}   # {str(y): [12]}  — revenue booked by equivalent date
-    pace_final = {}  # {str(y): [12]} — total final revenue
+    pace_otb = {}        # {str(y): [12]}  — revenue booked by equivalent date
+    pace_final = {}      # {str(y): [12]} — total final revenue
+    pace_nights_otb = {} # {str(y): [12]} — nights booked by equivalent date
 
     for y in active:
         sy = str(y)
@@ -297,7 +298,7 @@ def build(data, ing, ocu, pm, rev):
             cutoff = today_d.replace(year=y, day=28)
         cutoff_str = cutoff.strftime("%Y-%m-%d")
 
-        otb, final = [], []
+        otb, final, nights_otb = [], [], []
         for m in range(1, 13):
             mr = [r for r in reservas if r['year'] == y and r['month'] == m]
             final.append(round(sum(r['total'] for r in mr), 2))
@@ -305,8 +306,13 @@ def build(data, ing, ocu, pm, rev):
                         if r.get('booking_date') and r['booking_date'] <= cutoff_str)
             otb_v += sum(r['total'] for r in mr if not r.get('booking_date'))
             otb.append(round(otb_v, 2))
+            nights_v = sum(r.get('nights', 0) for r in mr
+                           if r.get('booking_date') and r['booking_date'] <= cutoff_str)
+            nights_v += sum(r.get('nights', 0) for r in mr if not r.get('booking_date'))
+            nights_otb.append(nights_v)
         pace_otb[sy] = otb
         pace_final[sy] = final
+        pace_nights_otb[sy] = nights_otb
 
     # === LEAD TIME ===
     lt_buckets_def = [("<7d", 0, 7), ("7-30d", 7, 30), ("30-90d", 30, 90), (">90d", 90, 9999)]
@@ -786,6 +792,7 @@ const CONV_DATA={J({str(y): conv_data[str(y)] for y in conv_years if str(y) in c
 const CONV_ANN={J(conv_ann)};
 const PACE_OTB={J(pace_otb)};
 const PACE_FINAL={J(pace_final)};
+const PACE_NIGHTS_OTB={J(pace_nights_otb)};
 const LT_SUMMARY={J(lt_summary)};
 const LT_AVG_YEAR={J(lt_avg_year)};
 const REV_BY_YEAR={J(rev_by_year)};
@@ -820,6 +827,15 @@ function drawKPIs() {{
   const ing1 = sum(d1,period), ing2 = sum(d2,period);
   const ocu1 = avg(o1,period), ocu2 = avg(o2,period);
 
+  // OTB a misma fecha (comparativa justa: vendido hasta hoy vs mismo día año pasado)
+  const otb1 = (PACE_OTB[y1]||Array(12).fill(0)).slice(0,period).reduce((a,b)=>a+b,0);
+  const otb2 = (PACE_OTB[y2]||Array(12).fill(0)).slice(0,period).reduce((a,b)=>a+b,0);
+  const noc1 = (PACE_NIGHTS_OTB[y1]||Array(12).fill(0)).slice(0,period).reduce((a,b)=>a+b,0);
+  const noc2 = (PACE_NIGHTS_OTB[y2]||Array(12).fill(0)).slice(0,period).reduce((a,b)=>a+b,0);
+  const diasAno = parseInt(y1) % 4 === 0 ? 366 : 365;
+  const ocuOtb1 = noc1 / diasAno * 100;
+  const ocuOtb2 = noc2 / diasAno * 100;
+
   // PM temporada alta (jun=5, jul=6, ago=7) — siempre fijo, no depende del filtro
   const pmAlta = (a) => {{ const vs=[a[5],a[6],a[7]].filter(v=>v>0); return vs.length?vs.reduce((s,v)=>s+v,0)/vs.length:0; }};
   const pm1 = pmAlta(p1), pm2 = pmAlta(p2);
@@ -845,10 +861,12 @@ function drawKPIs() {{
   }}
 
   let h = '';
-  h += card('Ingresos '+periodLabel+' '+y1, fmt(ing1)+'€', pct(ing1,ing2),
-    y2+': '+fmt(ing2)+'€', '');
-  h += card('Ocupaci&oacute;n '+periodLabel+' '+y1, ocu1.toFixed(1)+'%', pct(ocu1,ocu2),
-    y2+': '+ocu2.toFixed(1)+'%', '');
+  h += card('Ventas '+y1+' a misma fecha', fmt(otb1)+'€', pct(otb1,otb2),
+    y2+' misma fecha: '+fmt(otb2)+'€',
+    'Total final '+y2+': '+fmt(ing2)+'€');
+  h += card('Noches '+y1+' a misma fecha', noc1+' noches', pct(noc1,noc2),
+    y2+' misma fecha: '+noc2+' noches',
+    'Ocupaci&oacute;n equiv.: '+ocuOtb1.toFixed(1)+'% vs '+ocuOtb2.toFixed(1)+'%');
   // PM medio global
   const pmAvg = (a) => {{ const vs=a.filter(v=>v>0); return vs.length?vs.reduce((s,v)=>s+v,0)/vs.length:0; }};
   const pmGlobal1 = pmAvg(p1), pmGlobal2 = pmAvg(p2);
@@ -879,8 +897,6 @@ function drawKPIs() {{
     +'</div></div>';
 
   // Pace KPI
-  const otb1 = (PACE_OTB[y1]||Array(12).fill(0)).slice(0,period).reduce((a,b)=>a+b,0);
-  const otb2 = (PACE_OTB[y2]||Array(12).fill(0)).slice(0,period).reduce((a,b)=>a+b,0);
   const fin2Total = (PACE_FINAL[y2]||Array(12).fill(0)).slice(0,period).reduce((a,b)=>a+b,0);
   const paceDelta = otb2 > 0 ? ((otb1 - otb2) / otb2 * 100) : 0;
   const paceSign = paceDelta >= 0 ? '+' : '';
