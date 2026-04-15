@@ -6299,5 +6299,17 @@
     "total": 63.0,
     "confirmation_code": "HMD8JCJP22",
     "booking_date": "2026-03-11"
+  },
+  {
+    "year": 2026, "month": 4,
+    "code": "HMY38EJXR2",
+    "guest": "François Dehondt",
+    "checkin": "2026-04-19",
+    "nights": 3,
+    "pm": 42.64,
+    "cleaning": 60.0,
+    "total": 187.92,
+    "confirmation_code": "HMY38EJXR2",
+    "booking_date": "2026-04-14"
   }
 ]
