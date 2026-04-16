@@ -6311,5 +6311,17 @@
     "total": 187.92,
     "confirmation_code": "HMY38EJXR2",
     "booking_date": "2026-04-14"
+  },
+  {
+    "year": 2026, "month": 8,
+    "code": "HMQTHQ3KER",
+    "guest": "Montse Amat Ortega",
+    "checkin": "2026-08-07",
+    "nights": 2,
+    "pm": 120.0,
+    "cleaning": 50.0,
+    "total": 279.47,
+    "confirmation_code": "HMQTHQ3KER",
+    "booking_date": "2026-04-16"
   }
 ]
