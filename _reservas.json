@@ -5999,17 +5999,6 @@
     "year": 2026,
     "month": 5,
     "code": "",
-    "guest": "Uwe Dinklage",
-    "checkin": "",
-    "nights": 11,
-    "pm": 61.18,
-    "cleaning": 60.0,
-    "total": 733.0
-  },
-  {
-    "year": 2026,
-    "month": 5,
-    "code": "",
     "guest": "Suzanne Heikoop",
     "checkin": "2026-05-01",
     "nights": 3,
@@ -6301,7 +6290,8 @@
     "booking_date": "2026-03-11"
   },
   {
-    "year": 2026, "month": 4,
+    "year": 2026,
+    "month": 4,
     "code": "HMY38EJXR2",
     "guest": "François Dehondt",
     "checkin": "2026-04-19",
@@ -6313,7 +6303,8 @@
     "booking_date": "2026-04-14"
   },
   {
-    "year": 2026, "month": 8,
+    "year": 2026,
+    "month": 8,
     "code": "HMQTHQ3KER",
     "guest": "Montse Amat Ortega",
     "checkin": "2026-08-07",
