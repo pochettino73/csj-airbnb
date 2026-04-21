@@ -10,7 +10,8 @@
     "cleaning": 30.0,
     "total": 481.0,
     "booking_date": "2015-05-13",
-    "confirmation_code": "MY4P8R"
+    "confirmation_code": "MY4P8R",
+    "status": "confirmed"
   },
   {
     "year": 2015,
@@ -23,7 +24,8 @@
     "cleaning": 30.0,
     "total": 519.0,
     "confirmation_code": "83P5BM",
-    "booking_date": "2015-03-22"
+    "booking_date": "2015-03-22",
+    "status": "confirmed"
   },
   {
     "year": 2015,
@@ -36,7 +38,8 @@
     "cleaning": 50.0,
     "total": 537.0,
     "booking_date": "2015-06-03",
-    "confirmation_code": "59JTZD"
+    "confirmation_code": "59JTZD",
+    "status": "confirmed"
   },
   {
     "year": 2015,
@@ -49,7 +52,8 @@
     "cleaning": 50.0,
     "total": 470.0,
     "booking_date": "2015-05-31",
-    "confirmation_code": "3ZXJR5"
+    "confirmation_code": "3ZXJR5",
+    "status": "confirmed"
   },
   {
     "year": 2015,
@@ -62,7 +66,8 @@
     "cleaning": 50.0,
     "total": 544.0,
     "booking_date": "2015-06-02",
-    "confirmation_code": "HE8NMA"
+    "confirmation_code": "HE8NMA",
+    "status": "confirmed"
   },
   {
     "year": 2015,
@@ -75,7 +80,8 @@
     "cleaning": 30.0,
     "total": 579.0,
     "booking_date": "2015-05-12",
-    "confirmation_code": "ZWWCXD"
+    "confirmation_code": "ZWWCXD",
+    "status": "confirmed"
   },
   {
     "year": 2015,
@@ -88,7 +94,8 @@
     "cleaning": 30.0,
     "total": 580.0,
     "confirmation_code": "AWMXF5",
-    "booking_date": "2015-05-08"
+    "booking_date": "2015-05-08",
+    "status": "confirmed"
   },
   {
     "year": 2015,
@@ -101,7 +108,8 @@
     "cleaning": 0,
     "total": 252,
     "booking_date": "2015-07-10",
-    "confirmation_code": "49FDC4"
+    "confirmation_code": "49FDC4",
+    "status": "confirmed"
   },
   {
     "year": 2015,
@@ -114,7 +122,8 @@
     "cleaning": 50.0,
     "total": 218.0,
     "confirmation_code": "49FDC4",
-    "booking_date": "2015-07-10"
+    "booking_date": "2015-07-10",
+    "status": "confirmed"
   },
   {
     "year": 2015,
@@ -125,7 +134,8 @@
     "nights": 17,
     "pm": 82.35,
     "cleaning": 30.0,
-    "total": 1430.0
+    "total": 1430.0,
+    "status": "confirmed"
   },
   {
     "year": 2015,
@@ -138,7 +148,8 @@
     "cleaning": 30.0,
     "total": 493.0,
     "booking_date": "2015-04-22",
-    "confirmation_code": "MKD5PC"
+    "confirmation_code": "MKD5PC",
+    "status": "confirmed"
   },
   {
     "year": 2015,
@@ -149,7 +160,8 @@
     "nights": 5,
     "pm": 78.5,
     "cleaning": 30.0,
-    "total": 418.0
+    "total": 418.0,
+    "status": "confirmed"
   },
   {
     "year": 2015,
@@ -160,7 +172,8 @@
     "nights": 7,
     "pm": 78.5,
     "cleaning": 0,
-    "total": 560
+    "total": 560,
+    "status": "confirmed"
   },
   {
     "year": 2015,
@@ -173,7 +186,8 @@
     "cleaning": 50.0,
     "total": 349.0,
     "confirmation_code": "3A3QPR",
-    "booking_date": "2015-08-20"
+    "booking_date": "2015-08-20",
+    "status": "confirmed"
   },
   {
     "year": 2015,
@@ -186,7 +200,8 @@
     "cleaning": 50.0,
     "total": 558.0,
     "booking_date": "2015-07-20",
-    "confirmation_code": "3KREMF"
+    "confirmation_code": "3KREMF",
+    "status": "confirmed"
   },
   {
     "year": 2015,
@@ -197,7 +212,8 @@
     "nights": 5,
     "pm": 68.0,
     "cleaning": 30.0,
-    "total": 348.0
+    "total": 348.0,
+    "status": "confirmed"
   },
   {
     "year": 2015,
@@ -210,7 +226,8 @@
     "cleaning": 30.0,
     "total": 216.82,
     "booking_date": "2015-04-16",
-    "confirmation_code": "ZDCBAA"
+    "confirmation_code": "ZDCBAA",
+    "status": "confirmed"
   },
   {
     "year": 2015,
@@ -223,7 +240,8 @@
     "cleaning": 0,
     "total": 498.18,
     "confirmation_code": "ZDCBAA",
-    "booking_date": "2015-04-16"
+    "booking_date": "2015-04-16",
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -234,7 +252,8 @@
     "nights": 31,
     "pm": 19.35,
     "cleaning": 0,
-    "total": 600.0
+    "total": 600.0,
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -245,7 +264,8 @@
     "nights": 30,
     "pm": 20.0,
     "cleaning": 0,
-    "total": 600.0
+    "total": 600.0,
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -256,7 +276,8 @@
     "nights": 7,
     "pm": 21.43,
     "cleaning": 0,
-    "total": 150.0
+    "total": 150.0,
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -269,7 +290,8 @@
     "cleaning": 60.0,
     "total": 348.0,
     "booking_date": "2016-05-08",
-    "confirmation_code": "DS4RFD"
+    "confirmation_code": "DS4RFD",
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -280,7 +302,8 @@
     "nights": 5,
     "pm": 60.0,
     "cleaning": 30.0,
-    "total": 330.0
+    "total": 330.0,
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -293,7 +316,8 @@
     "cleaning": 60.0,
     "total": 1205.0,
     "booking_date": "2016-03-21",
-    "confirmation_code": "EZ4W9K"
+    "confirmation_code": "EZ4W9K",
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -306,7 +330,8 @@
     "cleaning": 60.0,
     "total": 477.0,
     "booking_date": "2016-06-12",
-    "confirmation_code": "5CXFZQ"
+    "confirmation_code": "5CXFZQ",
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -319,7 +344,8 @@
     "cleaning": 0,
     "total": 239.0,
     "confirmation_code": "5CXFZQ",
-    "booking_date": "2016-06-12"
+    "booking_date": "2016-06-12",
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -332,7 +358,8 @@
     "cleaning": 60.0,
     "total": 829.0,
     "booking_date": "2016-06-08",
-    "confirmation_code": "YWZNHN"
+    "confirmation_code": "YWZNHN",
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -345,7 +372,8 @@
     "cleaning": 60.0,
     "total": 1327.0,
     "booking_date": "2016-04-26",
-    "confirmation_code": "A924B3"
+    "confirmation_code": "A924B3",
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -358,7 +386,8 @@
     "cleaning": 60.0,
     "total": 250.0,
     "booking_date": "2016-05-21",
-    "confirmation_code": "TWRNTM"
+    "confirmation_code": "TWRNTM",
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -371,7 +400,8 @@
     "cleaning": 0,
     "total": 290.0,
     "confirmation_code": "TWRNTM",
-    "booking_date": "2016-05-21"
+    "booking_date": "2016-05-21",
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -384,7 +414,8 @@
     "cleaning": 60.0,
     "total": 444.0,
     "booking_date": "2016-08-02",
-    "confirmation_code": "RADYHJ"
+    "confirmation_code": "RADYHJ",
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -397,7 +428,8 @@
     "cleaning": 60.0,
     "total": 540.0,
     "booking_date": "2016-03-30",
-    "confirmation_code": "S3WH44"
+    "confirmation_code": "S3WH44",
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -408,7 +440,8 @@
     "nights": 10,
     "pm": 95.0,
     "cleaning": 50.0,
-    "total": 1000.0
+    "total": 1000.0,
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -421,7 +454,8 @@
     "cleaning": 60.0,
     "total": 712.0,
     "booking_date": "2016-05-21",
-    "confirmation_code": "34DS5R"
+    "confirmation_code": "34DS5R",
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -434,7 +468,8 @@
     "cleaning": 0,
     "total": 196.0,
     "confirmation_code": "34DS5R",
-    "booking_date": "2016-05-21"
+    "booking_date": "2016-05-21",
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -447,7 +482,8 @@
     "cleaning": 60.0,
     "total": 829.0,
     "booking_date": "2016-09-01",
-    "confirmation_code": "C49FN9"
+    "confirmation_code": "C49FN9",
+    "status": "confirmed"
   },
   {
     "year": 2016,
@@ -460,7 +496,8 @@
     "cleaning": 60.0,
     "total": 1022.0,
     "booking_date": "2016-07-29",
-    "confirmation_code": "2FNB35"
+    "confirmation_code": "2FNB35",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -473,7 +510,8 @@
     "cleaning": 60.0,
     "total": 559.0,
     "confirmation_code": "E5J3HN",
-    "booking_date": "2017-02-14"
+    "booking_date": "2017-02-14",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -486,7 +524,8 @@
     "cleaning": 60.0,
     "total": 433.0,
     "confirmation_code": "HM525NXXCZ",
-    "booking_date": "2017-03-21"
+    "booking_date": "2017-03-21",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -499,7 +538,8 @@
     "cleaning": 60.0,
     "total": 398.0,
     "confirmation_code": "HM5BTKTMYY",
-    "booking_date": "2017-04-26"
+    "booking_date": "2017-04-26",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -512,7 +552,8 @@
     "cleaning": 60.0,
     "total": 299.0,
     "confirmation_code": "HM5P95Y8TA",
-    "booking_date": "2017-05-19"
+    "booking_date": "2017-05-19",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -525,7 +566,8 @@
     "cleaning": 0,
     "total": 222.0,
     "booking_date": "2017-05-12",
-    "confirmation_code": "HMJR4W4W9H"
+    "confirmation_code": "HMJR4W4W9H",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -536,7 +578,8 @@
     "nights": 11,
     "pm": 74.0,
     "cleaning": 60.0,
-    "total": 834.0
+    "total": 834.0,
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -549,7 +592,8 @@
     "cleaning": 60.0,
     "total": 638.0,
     "confirmation_code": "HMTRXC85XT",
-    "booking_date": "2017-05-02"
+    "booking_date": "2017-05-02",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -562,7 +606,8 @@
     "cleaning": 60.0,
     "total": 488.0,
     "confirmation_code": "HMHS8BJDSY",
-    "booking_date": "2017-05-05"
+    "booking_date": "2017-05-05",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -573,7 +618,8 @@
     "nights": 1,
     "pm": 90.0,
     "cleaning": 0,
-    "total": 90.0
+    "total": 90.0,
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -586,7 +632,8 @@
     "cleaning": 60.0,
     "total": 372.0,
     "confirmation_code": "HMDWTJD8PR",
-    "booking_date": "2017-06-25"
+    "booking_date": "2017-06-25",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -599,7 +646,8 @@
     "cleaning": 60.0,
     "total": 1176.0,
     "confirmation_code": "HM48CBKXJT",
-    "booking_date": "2017-05-04"
+    "booking_date": "2017-05-04",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -612,7 +660,8 @@
     "cleaning": 60.0,
     "total": 588.0,
     "booking_date": "2017-05-10",
-    "confirmation_code": "HMA5ECSJSD"
+    "confirmation_code": "HMA5ECSJSD",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -623,7 +672,8 @@
     "nights": 9,
     "pm": 110.0,
     "cleaning": 60.0,
-    "total": 986.62
+    "total": 986.62,
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -634,7 +684,8 @@
     "nights": 7,
     "pm": 110.0,
     "cleaning": 0,
-    "total": 767.38
+    "total": 767.38,
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -647,7 +698,8 @@
     "cleaning": 60.0,
     "total": 695.0,
     "confirmation_code": "E3BE3Q",
-    "booking_date": "2017-01-22"
+    "booking_date": "2017-01-22",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -660,7 +712,8 @@
     "cleaning": 60.0,
     "total": 801.0,
     "booking_date": "2017-01-09",
-    "confirmation_code": "E53JW2"
+    "confirmation_code": "E53JW2",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -673,7 +726,8 @@
     "cleaning": 60.0,
     "total": 463.0,
     "confirmation_code": "HMR38X824A",
-    "booking_date": "2017-07-07"
+    "booking_date": "2017-07-07",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -686,7 +740,8 @@
     "cleaning": 60.0,
     "total": 374.0,
     "confirmation_code": "HMCPKF23RD",
-    "booking_date": "2017-08-08"
+    "booking_date": "2017-08-08",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -699,7 +754,8 @@
     "cleaning": 60.0,
     "total": 805.0,
     "confirmation_code": "HMRJ4XHZSB",
-    "booking_date": "2017-07-20"
+    "booking_date": "2017-07-20",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -710,7 +766,8 @@
     "nights": 8,
     "pm": 110.0,
     "cleaning": 60.0,
-    "total": 905.0
+    "total": 905.0,
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -723,7 +780,8 @@
     "cleaning": 60.0,
     "total": 544.0,
     "confirmation_code": "HMRQWZD4HB",
-    "booking_date": "2017-08-13"
+    "booking_date": "2017-08-13",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -736,7 +794,8 @@
     "cleaning": 60.0,
     "total": 752.0,
     "confirmation_code": "HM5F29Z5XJ",
-    "booking_date": "2017-09-24"
+    "booking_date": "2017-09-24",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -749,7 +808,8 @@
     "cleaning": 30.0,
     "total": 118.0,
     "confirmation_code": "HMCFADC8YE",
-    "booking_date": "2017-10-22"
+    "booking_date": "2017-10-22",
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -760,7 +820,8 @@
     "nights": 9,
     "pm": 44.0,
     "cleaning": 30.0,
-    "total": 407.0
+    "total": 407.0,
+    "status": "confirmed"
   },
   {
     "year": 2017,
@@ -773,7 +834,8 @@
     "cleaning": 60.0,
     "total": 227.0,
     "booking_date": "2017-11-04",
-    "confirmation_code": "HM3EBDHFW5"
+    "confirmation_code": "HM3EBDHFW5",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -786,7 +848,8 @@
     "cleaning": 60.0,
     "total": 153.23,
     "confirmation_code": "HMQHC3K9M2",
-    "booking_date": "2018-02-23"
+    "booking_date": "2018-02-23",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -799,7 +862,8 @@
     "cleaning": 60.0,
     "total": 235.24,
     "confirmation_code": "HMSQT2RSQK",
-    "booking_date": "2018-02-25"
+    "booking_date": "2018-02-25",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -812,7 +876,8 @@
     "cleaning": 60.0,
     "total": 283.8,
     "confirmation_code": "HMAQEBK8ZC",
-    "booking_date": "2018-02-20"
+    "booking_date": "2018-02-20",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -825,7 +890,8 @@
     "cleaning": 30.0,
     "total": 266.0,
     "booking_date": "2018-02-08",
-    "confirmation_code": "HM232APZKZ"
+    "confirmation_code": "HM232APZKZ",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -836,7 +902,8 @@
     "nights": 4,
     "pm": 49.0,
     "cleaning": 30.0,
-    "total": 216.81
+    "total": 216.81,
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -849,7 +916,8 @@
     "cleaning": 0,
     "total": 563.46,
     "confirmation_code": "HMCM5XET3Z",
-    "booking_date": "2018-02-04"
+    "booking_date": "2018-02-04",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -862,7 +930,8 @@
     "cleaning": 60.0,
     "total": 214.91,
     "confirmation_code": "HMYJY2CW8F",
-    "booking_date": "2018-03-05"
+    "booking_date": "2018-03-05",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -875,7 +944,8 @@
     "cleaning": 60.0,
     "total": 214.91,
     "confirmation_code": "HMYJY2CW8F",
-    "booking_date": "2018-03-05"
+    "booking_date": "2018-03-05",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -888,7 +958,8 @@
     "cleaning": 45.0,
     "total": 176.93,
     "booking_date": "2018-03-20",
-    "confirmation_code": "HMBWP8RXCP"
+    "confirmation_code": "HMBWP8RXCP",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -899,7 +970,8 @@
     "nights": 1,
     "pm": 46.2,
     "cleaning": 15.0,
-    "total": 58.98
+    "total": 58.98,
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -912,7 +984,8 @@
     "cleaning": 60.0,
     "total": 393.19,
     "confirmation_code": "HMPFTPXYTK",
-    "booking_date": "2018-03-05"
+    "booking_date": "2018-03-05",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -925,7 +998,8 @@
     "cleaning": 60.0,
     "total": 300.67,
     "confirmation_code": "HMEFAJHP3A",
-    "booking_date": "2018-04-02"
+    "booking_date": "2018-04-02",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -938,7 +1012,8 @@
     "cleaning": 60.0,
     "total": 346.93,
     "confirmation_code": "HMMDPE8QTZ",
-    "booking_date": "2018-02-11"
+    "booking_date": "2018-02-11",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -951,7 +1026,8 @@
     "cleaning": 60.0,
     "total": 231.29,
     "booking_date": "2018-04-22",
-    "confirmation_code": "HMJQHEZA53"
+    "confirmation_code": "HMJQHEZA53",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -964,7 +1040,8 @@
     "cleaning": 8.57,
     "total": 72.54,
     "booking_date": "2018-04-10",
-    "confirmation_code": "HM3Q92YNPN"
+    "confirmation_code": "HM3Q92YNPN",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -975,7 +1052,8 @@
     "nights": 6,
     "pm": 66.7,
     "cleaning": 51.43,
-    "total": 435.23
+    "total": 435.23,
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -988,7 +1066,8 @@
     "cleaning": 60.0,
     "total": 323.8,
     "confirmation_code": "HM3ET3XZYK",
-    "booking_date": "2018-05-21"
+    "booking_date": "2018-05-21",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1001,7 +1080,8 @@
     "cleaning": 60.0,
     "total": 362.4,
     "confirmation_code": "HMJKR89Z88",
-    "booking_date": "2018-03-14"
+    "booking_date": "2018-03-14",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1014,7 +1094,8 @@
     "cleaning": 60.0,
     "total": 568.5,
     "confirmation_code": "HMCS4EPZFR",
-    "booking_date": "2018-02-13"
+    "booking_date": "2018-02-13",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1027,7 +1108,8 @@
     "cleaning": 60.0,
     "total": 390.3,
     "booking_date": "2018-06-10",
-    "confirmation_code": "HMBWW95BCJ"
+    "confirmation_code": "HMBWW95BCJ",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1040,7 +1122,8 @@
     "cleaning": 60.0,
     "total": 658.2,
     "booking_date": "2018-05-14",
-    "confirmation_code": "HM3WPKZMMC"
+    "confirmation_code": "HM3WPKZMMC",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1053,7 +1136,8 @@
     "cleaning": 60.0,
     "total": 908.15,
     "confirmation_code": "HM3F5BDETC",
-    "booking_date": "2018-02-16"
+    "booking_date": "2018-02-16",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1066,7 +1150,8 @@
     "cleaning": 60.0,
     "total": 315.13,
     "confirmation_code": "HMQB5PPDJ4",
-    "booking_date": "2018-05-21"
+    "booking_date": "2018-05-21",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1079,7 +1164,8 @@
     "cleaning": 51.43,
     "total": 1285.97,
     "confirmation_code": "HMDB8YEX9R",
-    "booking_date": "2018-02-25"
+    "booking_date": "2018-02-25",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1092,7 +1178,8 @@
     "cleaning": 60.0,
     "total": 481.85,
     "booking_date": "2018-06-13",
-    "confirmation_code": "HMZCJZNNQC"
+    "confirmation_code": "HMZCJZNNQC",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1105,7 +1192,8 @@
     "cleaning": 60.0,
     "total": 813.35,
     "confirmation_code": "HMJKFZA5S5",
-    "booking_date": "2018-02-23"
+    "booking_date": "2018-02-23",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1118,7 +1206,8 @@
     "cleaning": 60.0,
     "total": 231.29,
     "booking_date": "2018-07-31",
-    "confirmation_code": "HMR8SR3PDW"
+    "confirmation_code": "HMR8SR3PDW",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1131,7 +1220,8 @@
     "cleaning": 60.0,
     "total": 602.31,
     "confirmation_code": "HMBBHDSFRX",
-    "booking_date": "2018-03-21"
+    "booking_date": "2018-03-21",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1144,7 +1234,8 @@
     "cleaning": 60.0,
     "total": 416.32,
     "confirmation_code": "HM9PZAJDAN",
-    "booking_date": "2018-07-29"
+    "booking_date": "2018-07-29",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1157,7 +1248,8 @@
     "cleaning": 8.57,
     "total": 197.14,
     "booking_date": "2018-01-26",
-    "confirmation_code": "HM9DD5ZFHH"
+    "confirmation_code": "HM9DD5ZFHH",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1170,7 +1262,8 @@
     "cleaning": 6.0,
     "total": 85.18,
     "confirmation_code": "HM9YHBFT4K",
-    "booking_date": "2018-02-15"
+    "booking_date": "2018-02-15",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1183,7 +1276,8 @@
     "cleaning": 60.0,
     "total": 598.17,
     "confirmation_code": "HM2XY88ZFH",
-    "booking_date": "2018-05-21"
+    "booking_date": "2018-05-21",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1196,7 +1290,8 @@
     "cleaning": 60.0,
     "total": 752.55,
     "booking_date": "2018-05-22",
-    "confirmation_code": "HMWZFNRQSR"
+    "confirmation_code": "HMWZFNRQSR",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1209,7 +1304,8 @@
     "cleaning": 54.0,
     "total": 766.63,
     "confirmation_code": "HMT4XDJ5DZ",
-    "booking_date": "2018-07-12"
+    "booking_date": "2018-07-12",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1222,7 +1318,8 @@
     "cleaning": 34.29,
     "total": 254.3,
     "booking_date": "2018-06-30",
-    "confirmation_code": "HM4MRD2TNP"
+    "confirmation_code": "HM4MRD2TNP",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1233,7 +1330,8 @@
     "nights": 3,
     "pm": 57.4,
     "cleaning": 25.71,
-    "total": 190.73
+    "total": 190.73,
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1246,7 +1344,8 @@
     "cleaning": 60.0,
     "total": 381.7,
     "confirmation_code": "HM4NKCQARS",
-    "booking_date": "2018-04-15"
+    "booking_date": "2018-04-15",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1259,7 +1358,8 @@
     "cleaning": 60.0,
     "total": 471.8,
     "confirmation_code": "HM9S5X8ASF",
-    "booking_date": "2018-07-08"
+    "booking_date": "2018-07-08",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1272,7 +1372,8 @@
     "cleaning": 8.57,
     "total": 33.07,
     "booking_date": "2018-10-04",
-    "confirmation_code": "HMXY5AZ92R"
+    "confirmation_code": "HMXY5AZ92R",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1283,7 +1384,8 @@
     "nights": 6,
     "pm": 42.0,
     "cleaning": 51.43,
-    "total": 303.43
+    "total": 303.43,
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1296,7 +1398,8 @@
     "cleaning": 60.0,
     "total": 283.14,
     "confirmation_code": "HMM4S2JKHP",
-    "booking_date": "2018-11-04"
+    "booking_date": "2018-11-04",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1309,7 +1412,8 @@
     "cleaning": 60.0,
     "total": 263.09,
     "confirmation_code": "HMDSFBSTMT",
-    "booking_date": "2018-11-02"
+    "booking_date": "2018-11-02",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1322,7 +1426,8 @@
     "cleaning": 60.0,
     "total": 206.87,
     "booking_date": "2018-10-07",
-    "confirmation_code": "HMEX3BNYM4"
+    "confirmation_code": "HMEX3BNYM4",
+    "status": "confirmed"
   },
   {
     "year": 2018,
@@ -1335,7 +1440,8 @@
     "cleaning": 40.0,
     "total": 331.51,
     "confirmation_code": "HMFD8TKEJ3",
-    "booking_date": "2018-10-28"
+    "booking_date": "2018-10-28",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1348,7 +1454,8 @@
     "cleaning": 60.0,
     "total": 245.74,
     "confirmation_code": "HMAQDFMCR2",
-    "booking_date": "2019-03-07"
+    "booking_date": "2019-03-07",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1361,7 +1468,8 @@
     "cleaning": 60.0,
     "total": 293.93,
     "confirmation_code": "HMNR48ZKFA",
-    "booking_date": "2019-02-08"
+    "booking_date": "2019-02-08",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1374,7 +1482,8 @@
     "cleaning": 60.0,
     "total": 341.15,
     "booking_date": "2019-02-19",
-    "confirmation_code": "HM4XCJ2XZF"
+    "confirmation_code": "HM4XCJ2XZF",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1387,7 +1496,8 @@
     "cleaning": 60.0,
     "total": 401.86,
     "confirmation_code": "HMHZEEWAXZ",
-    "booking_date": "2019-02-19"
+    "booking_date": "2019-02-19",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1400,7 +1510,8 @@
     "cleaning": 60.0,
     "total": 387.41,
     "confirmation_code": "HMR82WJRRA",
-    "booking_date": "2019-03-06"
+    "booking_date": "2019-03-06",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1413,7 +1524,8 @@
     "cleaning": 60.0,
     "total": 442.34,
     "confirmation_code": "HMS52WXY48",
-    "booking_date": "2019-01-19"
+    "booking_date": "2019-01-19",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1426,7 +1538,8 @@
     "cleaning": 15.0,
     "total": 187.93,
     "confirmation_code": "HM3CCW3YEY",
-    "booking_date": "2019-01-29"
+    "booking_date": "2019-01-29",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1439,7 +1552,8 @@
     "cleaning": 45.0,
     "total": 563.79,
     "confirmation_code": "HM3CCW3YEY",
-    "booking_date": "2019-01-29"
+    "booking_date": "2019-01-29",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1452,7 +1566,8 @@
     "cleaning": 60.0,
     "total": 474.11,
     "booking_date": "2019-02-14",
-    "confirmation_code": "HM4KZN2WBF"
+    "confirmation_code": "HM4KZN2WBF",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1465,7 +1580,8 @@
     "cleaning": 60.0,
     "total": 148.41,
     "confirmation_code": "HMAEQC95JR",
-    "booking_date": "2019-05-06"
+    "booking_date": "2019-05-06",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1478,7 +1594,8 @@
     "cleaning": 60.0,
     "total": 284.29,
     "confirmation_code": "HMAFQYQMY9",
-    "booking_date": "2019-04-08"
+    "booking_date": "2019-04-08",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1491,7 +1608,8 @@
     "cleaning": 45.0,
     "total": 385.33,
     "confirmation_code": "HMAKQM4NQS",
-    "booking_date": "2019-03-09"
+    "booking_date": "2019-03-09",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1504,7 +1622,8 @@
     "cleaning": 15.0,
     "total": 128.44,
     "confirmation_code": "HMAKQM4NQS",
-    "booking_date": "2019-03-09"
+    "booking_date": "2019-03-09",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1517,7 +1636,8 @@
     "cleaning": 60.0,
     "total": 273.69,
     "booking_date": "2019-05-21",
-    "confirmation_code": "HMARXNEQ55"
+    "confirmation_code": "HMARXNEQ55",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1530,7 +1650,8 @@
     "cleaning": 60.0,
     "total": 373.92,
     "confirmation_code": "HMANFTWJRQ",
-    "booking_date": "2019-03-13"
+    "booking_date": "2019-03-13",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1543,7 +1664,8 @@
     "cleaning": 60.0,
     "total": 573.88,
     "booking_date": "2019-04-07",
-    "confirmation_code": "HMAKZQF9DD"
+    "confirmation_code": "HMAKZQF9DD",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1556,7 +1678,8 @@
     "cleaning": 60.0,
     "total": 462.58,
     "confirmation_code": "HMAHTBNNB2",
-    "booking_date": "2019-04-04"
+    "booking_date": "2019-04-04",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1569,7 +1692,8 @@
     "cleaning": 42.86,
     "total": 407.54,
     "confirmation_code": "HMB2P4PRPS",
-    "booking_date": "2018-10-07"
+    "booking_date": "2018-10-07",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1582,7 +1706,8 @@
     "cleaning": 60.0,
     "total": 237.07,
     "confirmation_code": "HMAN3C3NYC",
-    "booking_date": "2019-06-13"
+    "booking_date": "2019-06-13",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1595,7 +1720,8 @@
     "cleaning": 60.0,
     "total": 515.58,
     "confirmation_code": "HMADMPZQCS",
-    "booking_date": "2019-04-19"
+    "booking_date": "2019-04-19",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1608,7 +1734,8 @@
     "cleaning": 60.0,
     "total": 807.63,
     "confirmation_code": "HM2ZC5853X",
-    "booking_date": "2019-02-28"
+    "booking_date": "2019-02-28",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1621,7 +1748,8 @@
     "cleaning": 60.0,
     "total": 549.31,
     "booking_date": "2019-05-30",
-    "confirmation_code": "HMAKH9KDQC"
+    "confirmation_code": "HMAKH9KDQC",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1634,7 +1762,8 @@
     "cleaning": 17.14,
     "total": 163.01,
     "confirmation_code": "HMAAX8PW44",
-    "booking_date": "2019-07-17"
+    "booking_date": "2019-07-17",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1647,7 +1776,8 @@
     "cleaning": 54.0,
     "total": 985.49,
     "confirmation_code": "HMSRPYWNE5",
-    "booking_date": "2019-03-06"
+    "booking_date": "2019-03-06",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1660,7 +1790,8 @@
     "cleaning": 6.0,
     "total": 85.94,
     "confirmation_code": "HMSRPYWNE5",
-    "booking_date": "2019-03-06"
+    "booking_date": "2019-03-06",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1673,7 +1804,8 @@
     "cleaning": 60.0,
     "total": 568.59,
     "confirmation_code": "HMAMC43KNM",
-    "booking_date": "2019-05-10"
+    "booking_date": "2019-05-10",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1686,7 +1818,8 @@
     "cleaning": 60.0,
     "total": 2236.05,
     "booking_date": "2019-02-26",
-    "confirmation_code": "HMAHRXJNXF"
+    "confirmation_code": "HMAHRXJNXF",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1699,7 +1832,8 @@
     "cleaning": 10.0,
     "total": 85.28,
     "confirmation_code": "HMAJDJMJWZ",
-    "booking_date": "2019-08-06"
+    "booking_date": "2019-08-06",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1712,7 +1846,8 @@
     "cleaning": 50.0,
     "total": 348.38,
     "confirmation_code": "HMAJDJMJWZ",
-    "booking_date": "2019-08-06"
+    "booking_date": "2019-08-06",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1725,7 +1860,8 @@
     "cleaning": 60.0,
     "total": 604.3,
     "confirmation_code": "HMABR3JWRK",
-    "booking_date": "2019-05-08"
+    "booking_date": "2019-05-08",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1738,7 +1874,8 @@
     "cleaning": 60.0,
     "total": 916.58,
     "confirmation_code": "HMAN3FF8JX",
-    "booking_date": "2019-07-09"
+    "booking_date": "2019-07-09",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1751,7 +1888,8 @@
     "cleaning": 60.0,
     "total": 435.64,
     "booking_date": "2019-09-16",
-    "confirmation_code": "HMANCCEEMN"
+    "confirmation_code": "HMANCCEEMN",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1764,7 +1902,8 @@
     "cleaning": 60.0,
     "total": 445.12,
     "confirmation_code": "HMT4DWKXQP",
-    "booking_date": "2019-02-24"
+    "booking_date": "2019-02-24",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1777,7 +1916,8 @@
     "cleaning": 60.0,
     "total": 262.13,
     "confirmation_code": "HMAPWTKX22",
-    "booking_date": "2019-09-08"
+    "booking_date": "2019-09-08",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1790,7 +1930,8 @@
     "cleaning": 60.0,
     "total": 393.19,
     "confirmation_code": "HMAQFR3N2S",
-    "booking_date": "2019-08-01"
+    "booking_date": "2019-08-01",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1803,7 +1944,8 @@
     "cleaning": 60.0,
     "total": 334.45,
     "confirmation_code": "HMARZ44HJP",
-    "booking_date": "2019-08-27"
+    "booking_date": "2019-08-27",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1816,7 +1958,8 @@
     "cleaning": 20.0,
     "total": 101.0,
     "confirmation_code": "HMAMP3HCSW",
-    "booking_date": "2019-10-13"
+    "booking_date": "2019-10-13",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1829,7 +1972,8 @@
     "cleaning": 40.0,
     "total": 200.0,
     "confirmation_code": "HMAMP3HCSW",
-    "booking_date": "2019-10-13"
+    "booking_date": "2019-10-13",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1842,7 +1986,8 @@
     "cleaning": 60.0,
     "total": 350.85,
     "confirmation_code": "HMABJMXHKK",
-    "booking_date": "2019-10-13"
+    "booking_date": "2019-10-13",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1855,7 +2000,8 @@
     "cleaning": 60.0,
     "total": 346.98,
     "confirmation_code": "HMAK5CSDAE",
-    "booking_date": "2019-10-31"
+    "booking_date": "2019-10-31",
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1866,7 +2012,8 @@
     "nights": 7,
     "pm": 35.0,
     "cleaning": 60.0,
-    "total": 293.83
+    "total": 293.83,
+    "status": "confirmed"
   },
   {
     "year": 2019,
@@ -1879,7 +2026,8 @@
     "cleaning": 40.0,
     "total": 443.26,
     "confirmation_code": "HMACTFFFZF",
-    "booking_date": "2019-11-10"
+    "booking_date": "2019-11-10",
+    "status": "confirmed"
   },
   {
     "year": 2020,
@@ -1892,7 +2040,8 @@
     "cleaning": 20.0,
     "total": 221.63,
     "confirmation_code": "HMACTFFFZF",
-    "booking_date": "2019-11-10"
+    "booking_date": "2019-11-10",
+    "status": "confirmed"
   },
   {
     "year": 2020,
@@ -1905,7 +2054,8 @@
     "cleaning": 60.0,
     "total": 335.37,
     "confirmation_code": "HMMWXQXHC8",
-    "booking_date": "2020-01-10"
+    "booking_date": "2020-01-10",
+    "status": "confirmed"
   },
   {
     "year": 2020,
@@ -1918,7 +2068,8 @@
     "cleaning": 60.0,
     "total": 287.37,
     "confirmation_code": "HMW3B8A8TN",
-    "booking_date": "2020-02-05"
+    "booking_date": "2020-02-05",
+    "status": "confirmed"
   },
   {
     "year": 2020,
@@ -1931,7 +2082,8 @@
     "cleaning": 60.0,
     "total": 341.15,
     "confirmation_code": "HMR8DRXXPZ",
-    "booking_date": "2020-02-28"
+    "booking_date": "2020-02-28",
+    "status": "confirmed"
   },
   {
     "year": 2020,
@@ -1944,7 +2096,8 @@
     "cleaning": 60.0,
     "total": 1198.13,
     "confirmation_code": "HMK4SP4EBN",
-    "booking_date": "2020-06-16"
+    "booking_date": "2020-06-16",
+    "status": "confirmed"
   },
   {
     "year": 2020,
@@ -1957,7 +2110,8 @@
     "cleaning": 40.0,
     "total": 520.4,
     "confirmation_code": "HMRAC338TP",
-    "booking_date": "2020-03-01"
+    "booking_date": "2020-03-01",
+    "status": "confirmed"
   },
   {
     "year": 2020,
@@ -1970,7 +2124,8 @@
     "cleaning": 20.0,
     "total": 260.2,
     "confirmation_code": "HMRAC338TP",
-    "booking_date": "2020-03-01"
+    "booking_date": "2020-03-01",
+    "status": "confirmed"
   },
   {
     "year": 2020,
@@ -1983,7 +2138,8 @@
     "cleaning": 60.0,
     "total": 520.4,
     "booking_date": "2020-07-19",
-    "confirmation_code": "HMME9M4DSC"
+    "confirmation_code": "HMME9M4DSC",
+    "status": "confirmed"
   },
   {
     "year": 2020,
@@ -1996,7 +2152,8 @@
     "cleaning": 60.0,
     "total": 323.8,
     "confirmation_code": "HMBP32RB8T",
-    "booking_date": "2020-08-04"
+    "booking_date": "2020-08-04",
+    "status": "confirmed"
   },
   {
     "year": 2020,
@@ -2009,7 +2166,8 @@
     "cleaning": 60.0,
     "total": 397.04,
     "confirmation_code": "HMTJPJMNC5",
-    "booking_date": "2020-07-10"
+    "booking_date": "2020-07-10",
+    "status": "confirmed"
   },
   {
     "year": 2020,
@@ -2022,7 +2180,8 @@
     "cleaning": 60.0,
     "total": 335.37,
     "confirmation_code": "HMCMFDNKSN",
-    "booking_date": "2020-08-02"
+    "booking_date": "2020-08-02",
+    "status": "confirmed"
   },
   {
     "year": 2020,
@@ -2035,7 +2194,8 @@
     "cleaning": 60.0,
     "total": 400.9,
     "confirmation_code": "HM3FNRSPSX",
-    "booking_date": "2020-07-16"
+    "booking_date": "2020-07-16",
+    "status": "confirmed"
   },
   {
     "year": 2020,
@@ -2048,7 +2208,8 @@
     "cleaning": 60.0,
     "total": 716.99,
     "booking_date": "2020-08-02",
-    "confirmation_code": "HMCR9NQ4DX"
+    "confirmation_code": "HMCR9NQ4DX",
+    "status": "confirmed"
   },
   {
     "year": 2020,
@@ -2061,7 +2222,8 @@
     "cleaning": 60.0,
     "total": 519.25,
     "confirmation_code": "HMNB2DXJDS",
-    "booking_date": "2020-07-25"
+    "booking_date": "2020-07-25",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2072,7 +2234,8 @@
     "nights": 1,
     "pm": 49.0,
     "cleaning": 60.0,
-    "total": 140.0
+    "total": 140.0,
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2085,7 +2248,8 @@
     "cleaning": 46.15,
     "total": 536.15,
     "confirmation_code": "HMSSRH4XJA",
-    "booking_date": "2021-03-08"
+    "booking_date": "2021-03-08",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2098,7 +2262,8 @@
     "cleaning": 13.85,
     "total": 160.85,
     "confirmation_code": "HMSSRH4XJA",
-    "booking_date": "2021-03-08"
+    "booking_date": "2021-03-08",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2111,7 +2276,8 @@
     "cleaning": 60.0,
     "total": 352.79,
     "confirmation_code": "HMCDY35ABJ",
-    "booking_date": "2021-03-17"
+    "booking_date": "2021-03-17",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2124,7 +2290,8 @@
     "cleaning": 60.0,
     "total": 711.5,
     "confirmation_code": "HMBCPNARTH",
-    "booking_date": "2021-03-17"
+    "booking_date": "2021-03-17",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2137,7 +2304,8 @@
     "cleaning": 60.0,
     "total": 597.97,
     "confirmation_code": "HMAKS4XB3Y",
-    "booking_date": "2021-03-24"
+    "booking_date": "2021-03-24",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2150,7 +2318,8 @@
     "cleaning": 60.0,
     "total": 342.11,
     "confirmation_code": "HMKZJAZXYE",
-    "booking_date": "2021-04-28"
+    "booking_date": "2021-04-28",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2163,7 +2332,8 @@
     "cleaning": 60.0,
     "total": 489.95,
     "confirmation_code": "HMK4JF3AR9",
-    "booking_date": "2021-04-29"
+    "booking_date": "2021-04-29",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2176,7 +2346,8 @@
     "cleaning": 60.0,
     "total": 491.49,
     "confirmation_code": "HMYQX5THAH",
-    "booking_date": "2021-05-10"
+    "booking_date": "2021-05-10",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2189,7 +2360,8 @@
     "cleaning": 60.0,
     "total": 485.7,
     "confirmation_code": "HMAENKSFYM",
-    "booking_date": "2021-04-27"
+    "booking_date": "2021-04-27",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2202,7 +2374,8 @@
     "cleaning": 60.0,
     "total": 628.85,
     "confirmation_code": "HM84NNFZS8",
-    "booking_date": "2021-03-21"
+    "booking_date": "2021-03-21",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2215,7 +2388,8 @@
     "cleaning": 10.0,
     "total": 99.0,
     "confirmation_code": "HMBZQMRPTC",
-    "booking_date": "2021-05-25"
+    "booking_date": "2021-05-25",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2226,7 +2400,8 @@
     "nights": 5,
     "pm": 99.0,
     "cleaning": 60.0,
-    "total": 534.85
+    "total": 534.85,
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2239,7 +2414,8 @@
     "cleaning": 50.0,
     "total": 495.0,
     "confirmation_code": "HMCDBSATST",
-    "booking_date": "2021-05-05"
+    "booking_date": "2021-05-05",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2252,7 +2428,8 @@
     "cleaning": 43.0,
     "total": 2280.29,
     "confirmation_code": "HMDYTR88JH",
-    "booking_date": "2021-02-23"
+    "booking_date": "2021-02-23",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2265,7 +2442,8 @@
     "cleaning": 60.0,
     "total": 202.38,
     "confirmation_code": "HMYE29R245",
-    "booking_date": "2021-06-15"
+    "booking_date": "2021-06-15",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2278,7 +2456,8 @@
     "cleaning": 60.0,
     "total": 1236.09,
     "confirmation_code": "HMS23S43ET",
-    "booking_date": "2021-05-04"
+    "booking_date": "2021-05-04",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2291,7 +2470,8 @@
     "cleaning": 17.0,
     "total": 559.89,
     "confirmation_code": "HMSW98D8YN",
-    "booking_date": "2021-08-17"
+    "booking_date": "2021-08-17",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2304,7 +2484,8 @@
     "cleaning": 60.0,
     "total": 400.9,
     "confirmation_code": "HMC2AAY833",
-    "booking_date": "2021-05-27"
+    "booking_date": "2021-05-27",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2317,7 +2498,8 @@
     "cleaning": 21.0,
     "total": 463.65,
     "confirmation_code": "HMY8RZCXMR",
-    "booking_date": "2021-05-16"
+    "booking_date": "2021-05-16",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2328,7 +2510,8 @@
     "nights": 2,
     "pm": 50.0,
     "cleaning": 17.0,
-    "total": 112.93
+    "total": 112.93,
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2341,7 +2524,8 @@
     "cleaning": 60.0,
     "total": 303.57,
     "confirmation_code": "HMWPBHJFFQ",
-    "booking_date": "2021-09-06"
+    "booking_date": "2021-09-06",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2354,7 +2538,8 @@
     "cleaning": 60.0,
     "total": 303.57,
     "confirmation_code": "HMTCHBJ458",
-    "booking_date": "2021-09-06"
+    "booking_date": "2021-09-06",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2367,7 +2552,8 @@
     "cleaning": 60.0,
     "total": 381.63,
     "confirmation_code": "HMKC8FKNXR",
-    "booking_date": "2021-09-13"
+    "booking_date": "2021-09-13",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2380,7 +2566,8 @@
     "cleaning": 39.0,
     "total": 835.76,
     "confirmation_code": "HMDQD3H4YJ",
-    "booking_date": "2021-03-30"
+    "booking_date": "2021-03-30",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2391,7 +2578,8 @@
     "nights": 2,
     "pm": 50.0,
     "cleaning": 24.0,
-    "total": 92.01
+    "total": 92.01,
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2404,7 +2592,8 @@
     "cleaning": 60.0,
     "total": 561.36,
     "confirmation_code": "HM9QMDRZAY",
-    "booking_date": "2021-05-26"
+    "booking_date": "2021-05-26",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2417,7 +2606,8 @@
     "cleaning": 60.0,
     "total": 384.67,
     "confirmation_code": "HMT5SJ8DD2",
-    "booking_date": "2021-06-17"
+    "booking_date": "2021-06-17",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2430,7 +2620,8 @@
     "cleaning": 43.0,
     "total": 282.82,
     "confirmation_code": "HMQY9AXFFQ",
-    "booking_date": "2021-06-14"
+    "booking_date": "2021-06-14",
+    "status": "confirmed"
   },
   {
     "year": 2021,
@@ -2443,7 +2634,8 @@
     "cleaning": 36.0,
     "total": 179.27,
     "confirmation_code": "HM9S5XET4N",
-    "booking_date": "2021-10-11"
+    "booking_date": "2021-10-11",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2456,7 +2648,8 @@
     "cleaning": 60.0,
     "total": 194.0,
     "confirmation_code": "HMTT45FM85",
-    "booking_date": "2021-12-28"
+    "booking_date": "2021-12-28",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2469,7 +2662,8 @@
     "cleaning": 60.0,
     "total": 165.0,
     "confirmation_code": "HMXT2QCK5F",
-    "booking_date": "2022-02-01"
+    "booking_date": "2022-02-01",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2482,7 +2676,8 @@
     "cleaning": 60.0,
     "total": 194.0,
     "confirmation_code": "HMD395E94F",
-    "booking_date": "2022-01-18"
+    "booking_date": "2022-01-18",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2495,7 +2690,8 @@
     "cleaning": 60.0,
     "total": 260.0,
     "confirmation_code": "HMDH3FQFAW",
-    "booking_date": "2022-02-09"
+    "booking_date": "2022-02-09",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2506,7 +2702,8 @@
     "nights": 3,
     "pm": 0,
     "cleaning": 60.0,
-    "total": 239.0
+    "total": 239.0,
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2519,7 +2716,8 @@
     "cleaning": 60.0,
     "total": 402.0,
     "confirmation_code": "HMT3EDMTHX",
-    "booking_date": "2022-02-22"
+    "booking_date": "2022-02-22",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2532,7 +2730,8 @@
     "cleaning": 60.0,
     "total": 989.0,
     "confirmation_code": "HMZW5MYZJ5",
-    "booking_date": "2022-02-09"
+    "booking_date": "2022-02-09",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2545,7 +2744,8 @@
     "cleaning": 60.0,
     "total": 372.0,
     "confirmation_code": "HMTADTZDXS",
-    "booking_date": "2022-03-29"
+    "booking_date": "2022-03-29",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2558,7 +2758,8 @@
     "cleaning": 60.0,
     "total": 335.0,
     "confirmation_code": "HMX2WJNP8A",
-    "booking_date": "2022-02-01"
+    "booking_date": "2022-02-01",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2571,7 +2772,8 @@
     "cleaning": 60.0,
     "total": 410.0,
     "confirmation_code": "HMDJJCAZKF",
-    "booking_date": "2022-02-28"
+    "booking_date": "2022-02-28",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2584,7 +2786,8 @@
     "cleaning": 60.0,
     "total": 438.0,
     "confirmation_code": "HM9Z9PJY4T",
-    "booking_date": "2022-04-20"
+    "booking_date": "2022-04-20",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2597,7 +2800,8 @@
     "cleaning": 60.0,
     "total": 276.0,
     "confirmation_code": "HM2E8ZTS58",
-    "booking_date": "2022-03-30"
+    "booking_date": "2022-03-30",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2610,7 +2814,8 @@
     "cleaning": 60.0,
     "total": 504.0,
     "confirmation_code": "HMFXZTEWBR",
-    "booking_date": "2022-03-19"
+    "booking_date": "2022-03-19",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2623,7 +2828,8 @@
     "cleaning": 60.0,
     "total": 237.0,
     "confirmation_code": "HMCZJYXCQ9",
-    "booking_date": "2022-04-10"
+    "booking_date": "2022-04-10",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2636,7 +2842,8 @@
     "cleaning": 60.0,
     "total": 168.0,
     "confirmation_code": "HM3SMT8KN4",
-    "booking_date": "2022-02-13"
+    "booking_date": "2022-02-13",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2649,7 +2856,8 @@
     "cleaning": 60.0,
     "total": 308.0,
     "confirmation_code": "HM3FRY5MPK",
-    "booking_date": "2022-03-14"
+    "booking_date": "2022-03-14",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2662,7 +2870,8 @@
     "cleaning": 60.0,
     "total": 363.0,
     "confirmation_code": "HM9XBZB2HK",
-    "booking_date": "2022-05-07"
+    "booking_date": "2022-05-07",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2675,7 +2884,8 @@
     "cleaning": 60.0,
     "total": 330.0,
     "confirmation_code": "HM2SS55RHN",
-    "booking_date": "2022-02-11"
+    "booking_date": "2022-02-11",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2688,7 +2898,8 @@
     "cleaning": 60.0,
     "total": 286.0,
     "confirmation_code": "HMN5Y4PNWX",
-    "booking_date": "2022-05-08"
+    "booking_date": "2022-05-08",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2701,7 +2912,8 @@
     "cleaning": 60.0,
     "total": 306.0,
     "confirmation_code": "HMPZWX4A5A",
-    "booking_date": "2022-06-08"
+    "booking_date": "2022-06-08",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2714,7 +2926,8 @@
     "cleaning": 60.0,
     "total": 320.0,
     "confirmation_code": "HM844NPJAB",
-    "booking_date": "2022-06-23"
+    "booking_date": "2022-06-23",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2727,7 +2940,8 @@
     "cleaning": 60.0,
     "total": 308.0,
     "confirmation_code": "HMWYXFYJZJ",
-    "booking_date": "2022-05-16"
+    "booking_date": "2022-05-16",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2740,7 +2954,8 @@
     "cleaning": 60.0,
     "total": 677.0,
     "confirmation_code": "HM9WEY5ANZ",
-    "booking_date": "2022-04-09"
+    "booking_date": "2022-04-09",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2753,7 +2968,8 @@
     "cleaning": 60.0,
     "total": 744.0,
     "confirmation_code": "HM892CFPWS",
-    "booking_date": "2022-02-28"
+    "booking_date": "2022-02-28",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2766,7 +2982,8 @@
     "cleaning": 60.0,
     "total": 1527.0,
     "confirmation_code": "HMKJDQPAQW",
-    "booking_date": "2022-02-17"
+    "booking_date": "2022-02-17",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2779,7 +2996,8 @@
     "cleaning": 60.0,
     "total": 574.0,
     "confirmation_code": "HMACRTTNY9",
-    "booking_date": "2022-04-15"
+    "booking_date": "2022-04-15",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2792,7 +3010,8 @@
     "cleaning": 60.0,
     "total": 744.0,
     "confirmation_code": "HMBENFZJ9A",
-    "booking_date": "2022-03-05"
+    "booking_date": "2022-03-05",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2805,7 +3024,8 @@
     "cleaning": 60.0,
     "total": 278.0,
     "confirmation_code": "HMMS4RTTAH",
-    "booking_date": "2022-06-22"
+    "booking_date": "2022-06-22",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2818,7 +3038,8 @@
     "cleaning": 60.0,
     "total": 744.0,
     "confirmation_code": "HMTYB4ANC8",
-    "booking_date": "2022-04-02"
+    "booking_date": "2022-04-02",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2831,7 +3052,8 @@
     "cleaning": 60.0,
     "total": 1118.0,
     "confirmation_code": "HMKPCD8DEJ",
-    "booking_date": "2022-03-13"
+    "booking_date": "2022-03-13",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2844,7 +3066,8 @@
     "cleaning": 60.0,
     "total": 560.0,
     "confirmation_code": "HMRX9BYMXT",
-    "booking_date": "2022-08-10"
+    "booking_date": "2022-08-10",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2857,7 +3080,8 @@
     "cleaning": 60.0,
     "total": 327.0,
     "confirmation_code": "HM5ZDBAQ2K",
-    "booking_date": "2022-04-15"
+    "booking_date": "2022-04-15",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2870,7 +3094,8 @@
     "cleaning": 60.0,
     "total": 249.0,
     "confirmation_code": "HMWEDQ8AMP",
-    "booking_date": "2022-08-14"
+    "booking_date": "2022-08-14",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2883,7 +3108,8 @@
     "cleaning": 60.0,
     "total": 835.0,
     "confirmation_code": "HMZ2W5333D",
-    "booking_date": "2022-07-31"
+    "booking_date": "2022-07-31",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2895,7 +3121,8 @@
     "pm": 0,
     "cleaning": 60.0,
     "total": 388.0,
-    "booking_date": "2022-08-24"
+    "booking_date": "2022-08-24",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2908,7 +3135,8 @@
     "cleaning": 60.0,
     "total": 442.0,
     "booking_date": "2022-09-05",
-    "confirmation_code": "HMKYJCRKJC"
+    "confirmation_code": "HMKYJCRKJC",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2921,7 +3149,8 @@
     "cleaning": 60.0,
     "total": 384.67,
     "booking_date": "2022-10-06",
-    "confirmation_code": "HMTWTYKCXD"
+    "confirmation_code": "HMTWTYKCXD",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2932,7 +3161,8 @@
     "nights": 3,
     "pm": 0,
     "cleaning": 60.0,
-    "total": 191.0
+    "total": 191.0,
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2943,7 +3173,8 @@
     "nights": 5,
     "pm": 0,
     "cleaning": 60.0,
-    "total": 313.0
+    "total": 313.0,
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2956,7 +3187,8 @@
     "cleaning": 60.0,
     "total": 313.0,
     "confirmation_code": "HM95Q4WPZW",
-    "booking_date": "2022-10-27"
+    "booking_date": "2022-10-27",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2969,7 +3201,8 @@
     "cleaning": 60.0,
     "total": 388.0,
     "confirmation_code": "HM5PRBF38Q",
-    "booking_date": "2022-11-27"
+    "booking_date": "2022-11-27",
+    "status": "confirmed"
   },
   {
     "year": 2022,
@@ -2982,7 +3215,8 @@
     "cleaning": 10.0,
     "total": 63.33,
     "confirmation_code": "HMHJYCEKTT",
-    "booking_date": "2022-10-20"
+    "booking_date": "2022-10-20",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -2995,7 +3229,8 @@
     "cleaning": 50.0,
     "total": 316.67,
     "confirmation_code": "HMHJYCEKTT",
-    "booking_date": "2022-10-20"
+    "booking_date": "2022-10-20",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3008,7 +3243,8 @@
     "cleaning": 60.0,
     "total": 327.0,
     "confirmation_code": "HM3BTX4WZR",
-    "booking_date": "2022-12-27"
+    "booking_date": "2022-12-27",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3021,7 +3257,8 @@
     "cleaning": 60.0,
     "total": 496.0,
     "confirmation_code": "HMFWBDPE38",
-    "booking_date": "2022-12-17"
+    "booking_date": "2022-12-17",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3034,7 +3271,8 @@
     "cleaning": 60.0,
     "total": 182.0,
     "confirmation_code": "HMSJTMTEDJ",
-    "booking_date": "2023-01-17"
+    "booking_date": "2023-01-17",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3047,7 +3285,8 @@
     "cleaning": 60.0,
     "total": 265.0,
     "confirmation_code": "HM93EEP5BP",
-    "booking_date": "2023-01-27"
+    "booking_date": "2023-01-27",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3060,7 +3299,8 @@
     "cleaning": 60.0,
     "total": 306.0,
     "confirmation_code": "HMJN9NJCCQ",
-    "booking_date": "2023-01-22"
+    "booking_date": "2023-01-22",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3073,7 +3313,8 @@
     "cleaning": 60.0,
     "total": 175.0,
     "confirmation_code": "HM8EZNRMSS",
-    "booking_date": "2023-02-17"
+    "booking_date": "2023-02-17",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3086,7 +3327,8 @@
     "cleaning": 42.86,
     "total": 253.57,
     "confirmation_code": "HMH4EY9WQ8",
-    "booking_date": "2023-01-25"
+    "booking_date": "2023-01-25",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3099,7 +3341,8 @@
     "cleaning": 17.14,
     "total": 101.43,
     "confirmation_code": "HMH4EY9WQ8",
-    "booking_date": "2023-01-25"
+    "booking_date": "2023-01-25",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3112,7 +3355,8 @@
     "cleaning": 60.0,
     "total": 461.0,
     "confirmation_code": "HM3J5N2TZ4",
-    "booking_date": "2023-01-26"
+    "booking_date": "2023-01-26",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3125,7 +3369,8 @@
     "cleaning": 60.0,
     "total": 232.0,
     "confirmation_code": "HMTJ8SJMA8",
-    "booking_date": "2023-02-24"
+    "booking_date": "2023-02-24",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3138,7 +3383,8 @@
     "cleaning": 60.0,
     "total": 262.0,
     "confirmation_code": "HMR82989TJ",
-    "booking_date": "2023-02-15"
+    "booking_date": "2023-02-15",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3151,7 +3397,8 @@
     "cleaning": 60.0,
     "total": 251.0,
     "confirmation_code": "HM55RMT9TA",
-    "booking_date": "2023-03-19"
+    "booking_date": "2023-03-19",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3164,7 +3411,8 @@
     "cleaning": 60.0,
     "total": 208.0,
     "confirmation_code": "HMQFF8WPNC",
-    "booking_date": "2023-03-25"
+    "booking_date": "2023-03-25",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3177,7 +3425,8 @@
     "cleaning": 60.0,
     "total": 188.0,
     "confirmation_code": "HMSZCP2KHB",
-    "booking_date": "2023-03-27"
+    "booking_date": "2023-03-27",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3190,7 +3439,8 @@
     "cleaning": 60.0,
     "total": 373.0,
     "confirmation_code": "HMSBMSHH39",
-    "booking_date": "2023-01-29"
+    "booking_date": "2023-01-29",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3203,7 +3453,8 @@
     "cleaning": 60.0,
     "total": 402.0,
     "confirmation_code": "HMQ4NNCE9Z",
-    "booking_date": "2023-03-14"
+    "booking_date": "2023-03-14",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3216,7 +3467,8 @@
     "cleaning": 60.0,
     "total": 577.0,
     "confirmation_code": "HMFXDKKEED",
-    "booking_date": "2023-01-30"
+    "booking_date": "2023-01-30",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3229,7 +3481,8 @@
     "cleaning": 60.0,
     "total": 181.0,
     "confirmation_code": "HMPZQFQ4K3",
-    "booking_date": "2023-04-16"
+    "booking_date": "2023-04-16",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3242,7 +3495,8 @@
     "cleaning": 60.0,
     "total": 531.0,
     "confirmation_code": "HMTSJC9DX5",
-    "booking_date": "2023-02-24"
+    "booking_date": "2023-02-24",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3255,7 +3509,8 @@
     "cleaning": 60.0,
     "total": 206.0,
     "confirmation_code": "HMHFAMRQYC",
-    "booking_date": "2023-05-12"
+    "booking_date": "2023-05-12",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3268,7 +3523,8 @@
     "cleaning": 60.0,
     "total": 638.0,
     "confirmation_code": "HMTTQ4QDNW",
-    "booking_date": "2023-02-23"
+    "booking_date": "2023-02-23",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3281,7 +3537,8 @@
     "cleaning": 60.0,
     "total": 564.0,
     "confirmation_code": "HM3D5K2DMF",
-    "booking_date": "2023-02-27"
+    "booking_date": "2023-02-27",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3294,7 +3551,8 @@
     "cleaning": 60.0,
     "total": 347.0,
     "confirmation_code": "HM8D2NQJYQ",
-    "booking_date": "2023-02-27"
+    "booking_date": "2023-02-27",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3307,7 +3565,8 @@
     "cleaning": 60.0,
     "total": 295.0,
     "confirmation_code": "HM4BRHYSF4",
-    "booking_date": "2023-01-15"
+    "booking_date": "2023-01-15",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3320,7 +3579,8 @@
     "cleaning": 60.0,
     "total": 280.0,
     "confirmation_code": "HMWNX55EC5",
-    "booking_date": "2023-05-05"
+    "booking_date": "2023-05-05",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3333,7 +3593,8 @@
     "cleaning": 60.0,
     "total": 595.0,
     "confirmation_code": "HM5RHNCN4K",
-    "booking_date": "2023-01-30"
+    "booking_date": "2023-01-30",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3346,7 +3607,8 @@
     "cleaning": 50.0,
     "total": 192.0,
     "confirmation_code": "HMYCJ85BQS",
-    "booking_date": "2023-04-27"
+    "booking_date": "2023-04-27",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3359,7 +3621,8 @@
     "cleaning": 42.86,
     "total": 465.0,
     "confirmation_code": "HMRZW9WRYN",
-    "booking_date": "2023-03-29"
+    "booking_date": "2023-03-29",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3372,7 +3635,8 @@
     "cleaning": 17.14,
     "total": 186.0,
     "confirmation_code": "HMRZW9WRYN",
-    "booking_date": "2023-03-29"
+    "booking_date": "2023-03-29",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3385,7 +3649,8 @@
     "cleaning": 60.0,
     "total": 358.0,
     "confirmation_code": "HMHZE45KPA",
-    "booking_date": "2022-10-20"
+    "booking_date": "2022-10-20",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3398,7 +3663,8 @@
     "cleaning": 60.0,
     "total": 450.0,
     "confirmation_code": "HMP2EJHSFJ",
-    "booking_date": "2022-12-12"
+    "booking_date": "2022-12-12",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3411,7 +3677,8 @@
     "cleaning": 60.0,
     "total": 820.0,
     "confirmation_code": "HMB3RYDTTX",
-    "booking_date": "2023-01-13"
+    "booking_date": "2023-01-13",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3424,7 +3691,8 @@
     "cleaning": 50.0,
     "total": 222.0,
     "confirmation_code": "HMQK54D834",
-    "booking_date": "2023-07-10"
+    "booking_date": "2023-07-10",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3437,7 +3705,8 @@
     "cleaning": 60.0,
     "total": 358.0,
     "confirmation_code": "HMW5ANZXXD",
-    "booking_date": "2023-03-19"
+    "booking_date": "2023-03-19",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3450,7 +3719,8 @@
     "cleaning": 60.0,
     "total": 711.0,
     "confirmation_code": "HMKBN4KEQC",
-    "booking_date": "2023-05-16"
+    "booking_date": "2023-05-16",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3463,7 +3733,8 @@
     "cleaning": 10.0,
     "total": 113.17,
     "confirmation_code": "HMMDJNNKZ4",
-    "booking_date": "2022-12-04"
+    "booking_date": "2022-12-04",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3476,7 +3747,8 @@
     "cleaning": 50.0,
     "total": 565.83,
     "confirmation_code": "HMMDJNNKZ4",
-    "booking_date": "2022-12-04"
+    "booking_date": "2022-12-04",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3489,7 +3761,8 @@
     "cleaning": 60.0,
     "total": 446.0,
     "confirmation_code": "HM9JECEZPN",
-    "booking_date": "2023-07-29"
+    "booking_date": "2023-07-29",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3502,7 +3775,8 @@
     "cleaning": 60.0,
     "total": 344.0,
     "confirmation_code": "HMDP3JRNKK",
-    "booking_date": "2023-04-11"
+    "booking_date": "2023-04-11",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3515,7 +3789,8 @@
     "cleaning": 60.0,
     "total": 738.0,
     "confirmation_code": "HM5YX3CKDT",
-    "booking_date": "2023-03-26"
+    "booking_date": "2023-03-26",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3528,7 +3803,8 @@
     "cleaning": 60.0,
     "total": 738.0,
     "confirmation_code": "HM9Z5QKXZD",
-    "booking_date": "2023-04-01"
+    "booking_date": "2023-04-01",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3541,7 +3817,8 @@
     "cleaning": 36.0,
     "total": 355.8,
     "confirmation_code": "HMWZNSQCYD",
-    "booking_date": "2023-05-08"
+    "booking_date": "2023-05-08",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3554,7 +3831,8 @@
     "cleaning": 24.0,
     "total": 237.2,
     "confirmation_code": "HMWZNSQCYD",
-    "booking_date": "2023-05-08"
+    "booking_date": "2023-05-08",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3567,7 +3845,8 @@
     "cleaning": 60.0,
     "total": 889.33,
     "confirmation_code": "HMMFSPWD9P",
-    "booking_date": "2023-03-30"
+    "booking_date": "2023-03-30",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3580,7 +3859,8 @@
     "cleaning": 60.0,
     "total": 516.0,
     "confirmation_code": "HMHDYHYN3K",
-    "booking_date": "2023-06-06"
+    "booking_date": "2023-06-06",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3593,7 +3873,8 @@
     "cleaning": 60.0,
     "total": 589.0,
     "confirmation_code": "HM93FWRYRQ",
-    "booking_date": "2023-04-10"
+    "booking_date": "2023-04-10",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3606,7 +3887,8 @@
     "cleaning": 34.29,
     "total": 295.43,
     "confirmation_code": "HMRPQKMY24",
-    "booking_date": "2023-04-18"
+    "booking_date": "2023-04-18",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3619,7 +3901,8 @@
     "cleaning": 25.71,
     "total": 221.57,
     "confirmation_code": "HMRPQKMY24",
-    "booking_date": "2023-04-18"
+    "booking_date": "2023-04-18",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3632,7 +3915,8 @@
     "cleaning": 60.0,
     "total": 395.0,
     "confirmation_code": "HMSKD989BE",
-    "booking_date": "2023-06-11"
+    "booking_date": "2023-06-11",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3645,7 +3929,8 @@
     "cleaning": 50.0,
     "total": 161.0,
     "confirmation_code": "HM44BQ8ZQM",
-    "booking_date": "2023-09-03"
+    "booking_date": "2023-09-03",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3658,7 +3943,8 @@
     "cleaning": 60.0,
     "total": 340.0,
     "confirmation_code": "HMPHQ5AANP",
-    "booking_date": "2023-09-06"
+    "booking_date": "2023-09-06",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3671,7 +3957,8 @@
     "cleaning": 60.0,
     "total": 708.0,
     "confirmation_code": "HMNAQ4WAJN",
-    "booking_date": "2023-07-06"
+    "booking_date": "2023-07-06",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3684,7 +3971,8 @@
     "cleaning": 50.0,
     "total": 126.0,
     "confirmation_code": "HMRJZPQFWX",
-    "booking_date": "2023-10-25"
+    "booking_date": "2023-10-25",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3697,7 +3985,8 @@
     "cleaning": 40.0,
     "total": 150.67,
     "confirmation_code": "HMBFZXJMJD",
-    "booking_date": "2023-09-24"
+    "booking_date": "2023-09-24",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3710,7 +3999,8 @@
     "cleaning": 60.0,
     "total": 511.0,
     "confirmation_code": "HME9NMB5B9",
-    "booking_date": "2023-10-08"
+    "booking_date": "2023-10-08",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3723,7 +4013,8 @@
     "cleaning": 20.0,
     "total": 75.33,
     "confirmation_code": "HMBFZXJMJD",
-    "booking_date": "2023-09-24"
+    "booking_date": "2023-09-24",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3736,7 +4027,8 @@
     "cleaning": 60.0,
     "total": 193.0,
     "confirmation_code": "HMNW2KWTYE",
-    "booking_date": "2023-10-23"
+    "booking_date": "2023-10-23",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3749,7 +4041,8 @@
     "cleaning": 60.0,
     "total": 257.0,
     "confirmation_code": "HMNPQTB5T5",
-    "booking_date": "2023-10-13"
+    "booking_date": "2023-10-13",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3762,7 +4055,8 @@
     "cleaning": 40.0,
     "total": 116.67,
     "confirmation_code": "HMNW4XC333",
-    "booking_date": "2023-11-19"
+    "booking_date": "2023-11-19",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3775,7 +4069,8 @@
     "cleaning": 20.0,
     "total": 58.33,
     "confirmation_code": "HMNW4XC333",
-    "booking_date": "2023-11-19"
+    "booking_date": "2023-11-19",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3788,7 +4083,8 @@
     "cleaning": 60.0,
     "total": 352.0,
     "confirmation_code": "HM4JJX2Y2N",
-    "booking_date": "2023-11-12"
+    "booking_date": "2023-11-12",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3801,7 +4097,8 @@
     "cleaning": 25.0,
     "total": 72.0,
     "confirmation_code": "HM4ZK3CZXQ",
-    "booking_date": "2023-11-07"
+    "booking_date": "2023-11-07",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3814,7 +4111,8 @@
     "cleaning": 60.0,
     "total": 217.0,
     "confirmation_code": "HMT2FJA9HN",
-    "booking_date": "2023-12-03"
+    "booking_date": "2023-12-03",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3827,7 +4125,8 @@
     "cleaning": 60.0,
     "total": 270.0,
     "confirmation_code": "HM9JQ28QA4",
-    "booking_date": "2023-10-15"
+    "booking_date": "2023-10-15",
+    "status": "confirmed"
   },
   {
     "year": 2023,
@@ -3840,7 +4139,8 @@
     "cleaning": 50.0,
     "total": 137.0,
     "confirmation_code": "HMKPR2REXX",
-    "booking_date": "2023-12-24"
+    "booking_date": "2023-12-24",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -3851,7 +4151,8 @@
     "nights": 3,
     "pm": 49.33,
     "cleaning": 60.0,
-    "total": 208.0
+    "total": 208.0,
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -3864,7 +4165,8 @@
     "cleaning": 50.0,
     "total": 128.0,
     "confirmation_code": "HM85Q4Q3HC",
-    "booking_date": "2024-01-01"
+    "booking_date": "2024-01-01",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -3877,7 +4179,8 @@
     "cleaning": 25.0,
     "total": 72.0,
     "confirmation_code": "HMHEC2AZ8D",
-    "booking_date": "2023-12-05"
+    "booking_date": "2023-12-05",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -3890,7 +4193,8 @@
     "cleaning": 60.0,
     "total": 724.0,
     "confirmation_code": "HMQWD4BKBQ",
-    "booking_date": "2023-11-15"
+    "booking_date": "2023-11-15",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -3903,7 +4207,8 @@
     "cleaning": 33.33,
     "total": 239.44,
     "confirmation_code": "HM3H8FEJYA",
-    "booking_date": "2024-01-01"
+    "booking_date": "2024-01-01",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -3916,7 +4221,8 @@
     "cleaning": 26.67,
     "total": 191.56,
     "confirmation_code": "HM3H8FEJYA",
-    "booking_date": "2024-01-01"
+    "booking_date": "2024-01-01",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -3929,7 +4235,8 @@
     "cleaning": 60.0,
     "total": 212.0,
     "confirmation_code": "HMDYYQWDHN",
-    "booking_date": "2024-02-04"
+    "booking_date": "2024-02-04",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -3942,7 +4249,8 @@
     "cleaning": 60.0,
     "total": 405.0,
     "confirmation_code": "HMK92BYZXF",
-    "booking_date": "2024-01-12"
+    "booking_date": "2024-01-12",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -3955,7 +4263,8 @@
     "cleaning": 60.0,
     "total": 317.0,
     "confirmation_code": "HMDQHDKN3N",
-    "booking_date": "2023-12-28"
+    "booking_date": "2023-12-28",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -3968,7 +4277,8 @@
     "cleaning": 50.0,
     "total": 121.0,
     "confirmation_code": "HM5E2M5Y42",
-    "booking_date": "2024-02-22"
+    "booking_date": "2024-02-22",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -3981,7 +4291,8 @@
     "cleaning": 22.5,
     "total": 160.12,
     "confirmation_code": "HM3KZ5RKQ2",
-    "booking_date": "2024-01-24"
+    "booking_date": "2024-01-24",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -3994,7 +4305,8 @@
     "cleaning": 37.5,
     "total": 266.88,
     "confirmation_code": "HM3KZ5RKQ2",
-    "booking_date": "2024-01-24"
+    "booking_date": "2024-01-24",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4007,7 +4319,8 @@
     "cleaning": 60.0,
     "total": 468.0,
     "confirmation_code": "HMCAR3X2BC",
-    "booking_date": "2023-12-04"
+    "booking_date": "2023-12-04",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4020,7 +4333,8 @@
     "cleaning": 60.0,
     "total": 278.0,
     "confirmation_code": "HM9DPMECKC",
-    "booking_date": "2024-02-15"
+    "booking_date": "2024-02-15",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4033,7 +4347,8 @@
     "cleaning": 60.0,
     "total": 339.0,
     "confirmation_code": "HMCJP5BWR4",
-    "booking_date": "2024-02-22"
+    "booking_date": "2024-02-22",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4046,7 +4361,8 @@
     "cleaning": 50.0,
     "total": 149.0,
     "confirmation_code": "HMCFFJYA9R",
-    "booking_date": "2024-02-08"
+    "booking_date": "2024-02-08",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4059,7 +4375,8 @@
     "cleaning": 15.0,
     "total": 71.75,
     "confirmation_code": "HMXZ3Y8Z5M",
-    "booking_date": "2023-10-25"
+    "booking_date": "2023-10-25",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4072,7 +4389,8 @@
     "cleaning": 45.0,
     "total": 215.25,
     "confirmation_code": "HMXZ3Y8Z5M",
-    "booking_date": "2023-10-25"
+    "booking_date": "2023-10-25",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4085,7 +4403,8 @@
     "cleaning": 60.0,
     "total": 285.0,
     "confirmation_code": "HM29SFZZBW",
-    "booking_date": "2024-02-05"
+    "booking_date": "2024-02-05",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4098,7 +4417,8 @@
     "cleaning": 60.0,
     "total": 544.0,
     "confirmation_code": "HM2X3B2HCJ",
-    "booking_date": "2023-12-05"
+    "booking_date": "2023-12-05",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4111,7 +4431,8 @@
     "cleaning": 60.0,
     "total": 204.0,
     "confirmation_code": "HM4XSQWPSX",
-    "booking_date": "2024-03-07"
+    "booking_date": "2024-03-07",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4124,7 +4445,8 @@
     "cleaning": 60.0,
     "total": 544.0,
     "confirmation_code": "HMAXYX858T",
-    "booking_date": "2023-11-24"
+    "booking_date": "2023-11-24",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4137,7 +4459,8 @@
     "cleaning": 50.0,
     "total": 164.0,
     "confirmation_code": "HMNZ55D9FJ",
-    "booking_date": "2024-03-21"
+    "booking_date": "2024-03-21",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4150,7 +4473,8 @@
     "cleaning": 60.0,
     "total": 512.0,
     "confirmation_code": "HM53E5JXRF",
-    "booking_date": "2023-12-28"
+    "booking_date": "2023-12-28",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4163,7 +4487,8 @@
     "cleaning": 60.0,
     "total": 297.0,
     "confirmation_code": "HMN38SN2AW",
-    "booking_date": "2024-01-15"
+    "booking_date": "2024-01-15",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4176,7 +4501,8 @@
     "cleaning": 60.0,
     "total": 827.0,
     "confirmation_code": "HMF2ZCHNE3",
-    "booking_date": "2023-11-09"
+    "booking_date": "2023-11-09",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4189,7 +4515,8 @@
     "cleaning": 50.0,
     "total": 138.0,
     "confirmation_code": "HM9JD9BCYA",
-    "booking_date": "2023-12-17"
+    "booking_date": "2023-12-17",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4202,7 +4529,8 @@
     "cleaning": 60.0,
     "total": 298.0,
     "confirmation_code": "HMF4Y553F4",
-    "booking_date": "2024-01-27"
+    "booking_date": "2024-01-27",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4215,7 +4543,8 @@
     "cleaning": 60.0,
     "total": 378.0,
     "confirmation_code": "HMDA3Z3CSJ",
-    "booking_date": "2024-03-14"
+    "booking_date": "2024-03-14",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4228,7 +4557,8 @@
     "cleaning": 60.0,
     "total": 894.0,
     "confirmation_code": "HMHEWSPYR4",
-    "booking_date": "2023-11-12"
+    "booking_date": "2023-11-12",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4241,7 +4571,8 @@
     "cleaning": 50.0,
     "total": 191.0,
     "confirmation_code": "HMZYX89XNC",
-    "booking_date": "2024-02-25"
+    "booking_date": "2024-02-25",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4254,7 +4585,8 @@
     "cleaning": 25.71,
     "total": 303.0,
     "confirmation_code": "HM4YNPECPB",
-    "booking_date": "2024-01-07"
+    "booking_date": "2024-01-07",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4267,7 +4599,8 @@
     "cleaning": 60.0,
     "total": 549.0,
     "confirmation_code": "HMBJ93EC3R",
-    "booking_date": "2024-01-31"
+    "booking_date": "2024-01-31",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4278,7 +4611,8 @@
     "nights": 2,
     "pm": 110.0,
     "cleaning": 50.0,
-    "total": 270.0
+    "total": 270.0,
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4291,7 +4625,8 @@
     "cleaning": 60.0,
     "total": 524.0,
     "confirmation_code": "HM8SCWS4WH",
-    "booking_date": "2024-03-19"
+    "booking_date": "2024-03-19",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4304,7 +4639,8 @@
     "cleaning": 60.0,
     "total": 723.0,
     "confirmation_code": "HMR2WCSCXS",
-    "booking_date": "2024-01-29"
+    "booking_date": "2024-01-29",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4317,7 +4653,8 @@
     "cleaning": 60.0,
     "total": 370.0,
     "confirmation_code": "HMNWZ9HT88",
-    "booking_date": "2024-04-29"
+    "booking_date": "2024-04-29",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4330,7 +4667,8 @@
     "cleaning": 60.0,
     "total": 480.0,
     "confirmation_code": "HMZYFFPDS9",
-    "booking_date": "2023-10-04"
+    "booking_date": "2023-10-04",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4343,7 +4681,8 @@
     "cleaning": 50.0,
     "total": 230.0,
     "confirmation_code": "HMZ92XNNQQ",
-    "booking_date": "2024-06-07"
+    "booking_date": "2024-06-07",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4356,7 +4695,8 @@
     "cleaning": 60.0,
     "total": 795.0,
     "confirmation_code": "HM9X8X9J4B",
-    "booking_date": "2024-01-23"
+    "booking_date": "2024-01-23",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4369,7 +4709,8 @@
     "cleaning": 60.0,
     "total": 723.0,
     "booking_date": "2024-05-20",
-    "confirmation_code": "HMD3ZWBAXN"
+    "confirmation_code": "HMD3ZWBAXN",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4382,7 +4723,8 @@
     "cleaning": 60.0,
     "total": 390.0,
     "booking_date": "2024-07-23",
-    "confirmation_code": "HMX4ST9Y3C"
+    "confirmation_code": "HMX4ST9Y3C",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4395,7 +4737,8 @@
     "cleaning": 60.0,
     "total": 570.0,
     "booking_date": "2024-05-19",
-    "confirmation_code": "HMY94YEWDB"
+    "confirmation_code": "HMY94YEWDB",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4408,7 +4751,8 @@
     "cleaning": 8.57,
     "total": 97.0,
     "booking_date": "2024-03-10",
-    "confirmation_code": "HM3X5TKKZ9"
+    "confirmation_code": "HM3X5TKKZ9",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4421,7 +4765,8 @@
     "cleaning": 60.0,
     "total": 457.0,
     "booking_date": "2024-07-24",
-    "confirmation_code": "HM3PEB4ZJB"
+    "confirmation_code": "HM3PEB4ZJB",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4434,7 +4779,8 @@
     "cleaning": 60.0,
     "total": 814.0,
     "booking_date": "2024-03-21",
-    "confirmation_code": "HM8WQ9EMXH"
+    "confirmation_code": "HM8WQ9EMXH",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4447,7 +4793,8 @@
     "cleaning": 50.0,
     "total": 234.0,
     "booking_date": "2024-07-26",
-    "confirmation_code": "HMB855PTN3"
+    "confirmation_code": "HMB855PTN3",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4460,7 +4807,8 @@
     "cleaning": 51.43,
     "total": 582.0,
     "confirmation_code": "HM3X5TKKZ9",
-    "booking_date": "2024-03-10"
+    "booking_date": "2024-03-10",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4473,7 +4821,8 @@
     "cleaning": 50.0,
     "total": 173.0,
     "confirmation_code": "HMC4XW54SK",
-    "booking_date": "2024-06-23"
+    "booking_date": "2024-06-23",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4486,7 +4835,8 @@
     "cleaning": 60.0,
     "total": 628.0,
     "confirmation_code": "HMF9CJDMSZ",
-    "booking_date": "2024-01-07"
+    "booking_date": "2024-01-07",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4499,7 +4849,8 @@
     "cleaning": 60.0,
     "total": 401.0,
     "confirmation_code": "HMXPFXDEFW",
-    "booking_date": "2024-03-15"
+    "booking_date": "2024-03-15",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4512,7 +4863,8 @@
     "cleaning": 50.0,
     "total": 212.0,
     "confirmation_code": "HMTZ2W3TC5",
-    "booking_date": "2024-08-27"
+    "booking_date": "2024-08-27",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4525,7 +4877,8 @@
     "cleaning": 60.0,
     "total": 583.0,
     "confirmation_code": "HMCEKD835T",
-    "booking_date": "2024-01-06"
+    "booking_date": "2024-01-06",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4538,7 +4891,8 @@
     "cleaning": 20.0,
     "total": 72.33,
     "confirmation_code": "HMASAE4NN3",
-    "booking_date": "2024-09-26"
+    "booking_date": "2024-09-26",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4551,7 +4905,8 @@
     "cleaning": 40.0,
     "total": 144.67,
     "confirmation_code": "HMASAE4NN3",
-    "booking_date": "2024-09-26"
+    "booking_date": "2024-09-26",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4564,7 +4919,8 @@
     "cleaning": 50.0,
     "total": 206.0,
     "confirmation_code": "HMBRZQKQXP",
-    "booking_date": "2024-09-25"
+    "booking_date": "2024-09-25",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4577,7 +4933,8 @@
     "cleaning": 60.0,
     "total": 283.0,
     "confirmation_code": "HMCCXK4MWK",
-    "booking_date": "2024-03-15"
+    "booking_date": "2024-03-15",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4590,7 +4947,8 @@
     "cleaning": 50.0,
     "total": 151.0,
     "confirmation_code": "HM54Q844NX",
-    "booking_date": "2024-09-28"
+    "booking_date": "2024-09-28",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4603,7 +4961,8 @@
     "cleaning": 60.0,
     "total": 414.0,
     "confirmation_code": "HMRTEAYS8X",
-    "booking_date": "2024-08-01"
+    "booking_date": "2024-08-01",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4616,7 +4975,8 @@
     "cleaning": 60.0,
     "total": 361.0,
     "confirmation_code": "HM4ARJ8H33",
-    "booking_date": "2024-07-11"
+    "booking_date": "2024-07-11",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4629,7 +4989,8 @@
     "cleaning": 25.71,
     "total": 166.71,
     "confirmation_code": "HM9CQWX452",
-    "booking_date": "2024-10-07"
+    "booking_date": "2024-10-07",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4642,7 +5003,8 @@
     "cleaning": 60.0,
     "total": 422.0,
     "confirmation_code": "HM3MMEYFFK",
-    "booking_date": "2024-07-14"
+    "booking_date": "2024-07-14",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4653,7 +5015,8 @@
     "nights": 4,
     "pm": 47.0,
     "cleaning": 34.29,
-    "total": 222.29
+    "total": 222.29,
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4666,7 +5029,8 @@
     "cleaning": 60.0,
     "total": 251.0,
     "confirmation_code": "HMSCXH8J8C",
-    "booking_date": "2024-08-15"
+    "booking_date": "2024-08-15",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4679,7 +5043,8 @@
     "cleaning": 60.0,
     "total": 251.0,
     "confirmation_code": "HMX3ZAJHAY",
-    "booking_date": "2024-11-08"
+    "booking_date": "2024-11-08",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4692,7 +5057,8 @@
     "cleaning": 60.0,
     "total": 251.0,
     "confirmation_code": "HM39JWFMHT",
-    "booking_date": "2024-07-24"
+    "booking_date": "2024-07-24",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4705,7 +5071,8 @@
     "cleaning": 60.0,
     "total": 231.0,
     "confirmation_code": "HMQAEST98Y",
-    "booking_date": "2024-09-05"
+    "booking_date": "2024-09-05",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4718,7 +5085,8 @@
     "cleaning": 36.0,
     "total": 299.4,
     "confirmation_code": "HMRCJ3AMF2",
-    "booking_date": "2024-10-02"
+    "booking_date": "2024-10-02",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4731,7 +5099,8 @@
     "cleaning": 24.0,
     "total": 199.6,
     "confirmation_code": "HMRCJ3AMF2",
-    "booking_date": "2024-10-02"
+    "booking_date": "2024-10-02",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4744,7 +5113,8 @@
     "cleaning": 60.0,
     "total": 318.0,
     "confirmation_code": "HMR8BRN22W",
-    "booking_date": "2024-10-27"
+    "booking_date": "2024-10-27",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4757,7 +5127,8 @@
     "cleaning": 60.0,
     "total": 275.0,
     "confirmation_code": "HMK9AZQ9MY",
-    "booking_date": "2024-11-12"
+    "booking_date": "2024-11-12",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4770,7 +5141,8 @@
     "cleaning": 60.0,
     "total": 400.0,
     "confirmation_code": "HM28EXCCC2",
-    "booking_date": "2024-10-07"
+    "booking_date": "2024-10-07",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4783,7 +5155,8 @@
     "cleaning": 50.0,
     "total": 135.0,
     "confirmation_code": "HMCJAETHJM",
-    "booking_date": "2024-12-15"
+    "booking_date": "2024-12-15",
+    "status": "confirmed"
   },
   {
     "year": 2024,
@@ -4796,7 +5169,8 @@
     "cleaning": 20.0,
     "total": 67.0,
     "confirmation_code": "HM4BFJEXYS",
-    "booking_date": "2024-12-04"
+    "booking_date": "2024-12-04",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -4807,7 +5181,8 @@
     "nights": 3,
     "pm": 41.67,
     "cleaning": 60.0,
-    "total": 185.0
+    "total": 185.0,
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -4820,7 +5195,8 @@
     "cleaning": 40.0,
     "total": 134.0,
     "booking_date": "2024-12-22",
-    "confirmation_code": "HM5JZM42RB"
+    "confirmation_code": "HM5JZM42RB",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -4833,7 +5209,8 @@
     "cleaning": 60.0,
     "total": 366.0,
     "booking_date": "2024-12-11",
-    "confirmation_code": "HMKP9A2FXA"
+    "confirmation_code": "HMKP9A2FXA",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -4846,7 +5223,8 @@
     "cleaning": 60.0,
     "total": 235.0,
     "confirmation_code": "HM4Y9ZWX29",
-    "booking_date": "2024-12-22"
+    "booking_date": "2024-12-22",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -4859,7 +5237,8 @@
     "cleaning": 60.0,
     "total": 308.0,
     "booking_date": "2024-12-29",
-    "confirmation_code": "HM5ET3MJR3"
+    "confirmation_code": "HM5ET3MJR3",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -4872,7 +5251,8 @@
     "cleaning": 60.0,
     "total": 239.0,
     "confirmation_code": "HMM45AWFT4",
-    "booking_date": "2025-01-08"
+    "booking_date": "2025-01-08",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -4885,7 +5265,8 @@
     "cleaning": 60.0,
     "total": 364.0,
     "confirmation_code": "HMEW3EQEWC",
-    "booking_date": "2024-11-16"
+    "booking_date": "2024-11-16",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -4898,7 +5279,8 @@
     "cleaning": 60.0,
     "total": 313.0,
     "confirmation_code": "HMXZ94S2YW",
-    "booking_date": "2024-11-27"
+    "booking_date": "2024-11-27",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -4911,7 +5293,8 @@
     "cleaning": 60.0,
     "total": 204.0,
     "confirmation_code": "HMXNWN2M59",
-    "booking_date": "2025-02-13"
+    "booking_date": "2025-02-13",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -4924,7 +5307,8 @@
     "cleaning": 50.0,
     "total": 150.0,
     "confirmation_code": "HMX5BA92HM",
-    "booking_date": "2024-12-06"
+    "booking_date": "2024-12-06",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -4937,7 +5321,8 @@
     "cleaning": 60.0,
     "total": 293.0,
     "confirmation_code": "HM4BN9MY92",
-    "booking_date": "2025-02-26"
+    "booking_date": "2025-02-26",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -4950,7 +5335,8 @@
     "cleaning": 60.0,
     "total": 263.0,
     "confirmation_code": "HMEAAYJ5ZS",
-    "booking_date": "2025-02-25"
+    "booking_date": "2025-02-25",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -4963,7 +5349,8 @@
     "cleaning": 60.0,
     "total": 228.0,
     "confirmation_code": "HME8DHT8DY",
-    "booking_date": "2024-12-10"
+    "booking_date": "2024-12-10",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -4976,7 +5363,8 @@
     "cleaning": 60.0,
     "total": 300.0,
     "confirmation_code": "HM3A32HYKN",
-    "booking_date": "2025-02-02"
+    "booking_date": "2025-02-02",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -4989,7 +5377,8 @@
     "cleaning": 60.0,
     "total": 411.0,
     "confirmation_code": "HMRJJ8FPQ4",
-    "booking_date": "2024-12-04"
+    "booking_date": "2024-12-04",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5002,7 +5391,8 @@
     "cleaning": 20.0,
     "total": 140.67,
     "confirmation_code": "HMQ5QZH29A",
-    "booking_date": "2025-01-16"
+    "booking_date": "2025-01-16",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5015,7 +5405,8 @@
     "cleaning": 40.0,
     "total": 281.33,
     "confirmation_code": "HMQ5QZH29A",
-    "booking_date": "2025-01-16"
+    "booking_date": "2025-01-16",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5028,7 +5419,8 @@
     "cleaning": 60.0,
     "total": 283.0,
     "confirmation_code": "HMRDN9DSBC",
-    "booking_date": "2025-03-05"
+    "booking_date": "2025-03-05",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5041,7 +5433,8 @@
     "cleaning": 60.0,
     "total": 252.0,
     "confirmation_code": "HM5MWAAPAH",
-    "booking_date": "2025-03-06"
+    "booking_date": "2025-03-06",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5054,7 +5447,8 @@
     "cleaning": 50.0,
     "total": 144.0,
     "confirmation_code": "HMXJBSCP9J",
-    "booking_date": "2025-04-06"
+    "booking_date": "2025-04-06",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5067,7 +5461,8 @@
     "cleaning": 60.0,
     "total": 805.0,
     "confirmation_code": "HMRTAPTXQK",
-    "booking_date": "2025-01-01"
+    "booking_date": "2025-01-01",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5080,7 +5475,8 @@
     "cleaning": 60.0,
     "total": 283.0,
     "confirmation_code": "HMQYKKBYH9",
-    "booking_date": "2025-03-17"
+    "booking_date": "2025-03-17",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5093,7 +5489,8 @@
     "cleaning": 60.0,
     "total": 324.0,
     "confirmation_code": "HM3ZMW3K3T",
-    "booking_date": "2024-10-02"
+    "booking_date": "2024-10-02",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5106,7 +5503,8 @@
     "cleaning": 60.0,
     "total": 457.0,
     "confirmation_code": "HM24RK8R9M",
-    "booking_date": "2025-02-05"
+    "booking_date": "2025-02-05",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5119,7 +5517,8 @@
     "cleaning": 50.0,
     "total": 93.0,
     "confirmation_code": "HMWD93W9XC",
-    "booking_date": "2025-04-21"
+    "booking_date": "2025-04-21",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5132,7 +5531,8 @@
     "cleaning": 60.0,
     "total": 500.0,
     "confirmation_code": "HMFQXEZFSC",
-    "booking_date": "2024-12-07"
+    "booking_date": "2024-12-07",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5145,7 +5545,8 @@
     "cleaning": 60.0,
     "total": 223.0,
     "confirmation_code": "HMBXRSJFA3",
-    "booking_date": "2025-03-13"
+    "booking_date": "2025-03-13",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5158,7 +5559,8 @@
     "cleaning": 60.0,
     "total": 500.0,
     "confirmation_code": "HMF2FSABNH",
-    "booking_date": "2024-10-12"
+    "booking_date": "2024-10-12",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5171,7 +5573,8 @@
     "cleaning": 60.0,
     "total": 385.0,
     "confirmation_code": "HMQDSKZAJD",
-    "booking_date": "2024-12-24"
+    "booking_date": "2024-12-24",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5184,7 +5587,8 @@
     "cleaning": 60.0,
     "total": 532.0,
     "confirmation_code": "HMRWJE2Z2R",
-    "booking_date": "2025-01-08"
+    "booking_date": "2025-01-08",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5197,7 +5601,8 @@
     "cleaning": 60.0,
     "total": 467.0,
     "confirmation_code": "HM9S9EMZCD",
-    "booking_date": "2024-11-11"
+    "booking_date": "2024-11-11",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5210,7 +5615,8 @@
     "cleaning": 50.0,
     "total": 201.0,
     "confirmation_code": "HMHY3AZS3X",
-    "booking_date": "2025-06-02"
+    "booking_date": "2025-06-02",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5223,7 +5629,8 @@
     "cleaning": 60.0,
     "total": 370.0,
     "confirmation_code": "HM3E8YKDDJ",
-    "booking_date": "2024-07-13"
+    "booking_date": "2024-07-13",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5236,7 +5643,8 @@
     "cleaning": 48.0,
     "total": 724.0,
     "confirmation_code": "HMX4EB8PE8",
-    "booking_date": "2024-10-04"
+    "booking_date": "2024-10-04",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5249,7 +5657,8 @@
     "cleaning": 12.0,
     "total": 181.0,
     "confirmation_code": "HMX4EB8PE8",
-    "booking_date": "2024-10-04"
+    "booking_date": "2024-10-04",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5262,7 +5671,8 @@
     "cleaning": 60.0,
     "total": 782.0,
     "confirmation_code": "HMQKQ3YJAE",
-    "booking_date": "2025-01-30"
+    "booking_date": "2025-01-30",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5275,7 +5685,8 @@
     "cleaning": 60.0,
     "total": 474.0,
     "confirmation_code": "HM5AJ29KEX",
-    "booking_date": "2025-03-25"
+    "booking_date": "2025-03-25",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5288,7 +5699,8 @@
     "cleaning": 60.0,
     "total": 376.0,
     "confirmation_code": "HMNM988JT2",
-    "booking_date": "2025-05-19"
+    "booking_date": "2025-05-19",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5301,7 +5713,8 @@
     "cleaning": 60.0,
     "total": 849.0,
     "confirmation_code": "HMSWAY54W3",
-    "booking_date": "2025-01-21"
+    "booking_date": "2025-01-21",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5314,7 +5727,8 @@
     "cleaning": 60.0,
     "total": 466.0,
     "confirmation_code": "HMKPP955CP",
-    "booking_date": "2025-07-16"
+    "booking_date": "2025-07-16",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5327,7 +5741,8 @@
     "cleaning": 30.0,
     "total": 111.5,
     "confirmation_code": "HMBZX3NWJJ",
-    "booking_date": "2025-07-16"
+    "booking_date": "2025-07-16",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5338,7 +5753,8 @@
     "nights": 1,
     "pm": 89.0,
     "cleaning": 50.0,
-    "total": 139.0
+    "total": 139.0,
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5351,7 +5767,8 @@
     "cleaning": 30.0,
     "total": 111.5,
     "confirmation_code": "HMBZX3NWJJ",
-    "booking_date": "2025-07-16"
+    "booking_date": "2025-07-16",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5364,7 +5781,8 @@
     "cleaning": 50.0,
     "total": 152.0,
     "confirmation_code": "HM8BMQ3JRP",
-    "booking_date": "2025-06-08"
+    "booking_date": "2025-06-08",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5377,7 +5795,8 @@
     "cleaning": 60.0,
     "total": 364.0,
     "confirmation_code": "HMNFZ2WCAX",
-    "booking_date": "2025-03-22"
+    "booking_date": "2025-03-22",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5390,7 +5809,8 @@
     "cleaning": 60.0,
     "total": 490.0,
     "confirmation_code": "HMZBPHZMMK",
-    "booking_date": "2024-09-06"
+    "booking_date": "2024-09-06",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5403,7 +5823,8 @@
     "cleaning": 50.0,
     "total": 225.0,
     "confirmation_code": "HM3XPQHH3M",
-    "booking_date": "2025-07-22"
+    "booking_date": "2025-07-22",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5416,7 +5837,8 @@
     "cleaning": 60.0,
     "total": 490.0,
     "confirmation_code": "HMFDAZSK8W",
-    "booking_date": "2025-01-15"
+    "booking_date": "2025-01-15",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5429,7 +5851,8 @@
     "cleaning": 60.0,
     "total": 459.0,
     "confirmation_code": "HMWTYJ5C9E",
-    "booking_date": "2024-11-03"
+    "booking_date": "2024-11-03",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5442,7 +5865,8 @@
     "cleaning": 50.0,
     "total": 196.0,
     "confirmation_code": "HMYM2ENQJR",
-    "booking_date": "2025-03-12"
+    "booking_date": "2025-03-12",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5455,7 +5879,8 @@
     "cleaning": 60.0,
     "total": 459.0,
     "confirmation_code": "HMY9HHWSEF",
-    "booking_date": "2025-01-18"
+    "booking_date": "2025-01-18",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5468,7 +5893,8 @@
     "cleaning": 50.0,
     "total": 237.0,
     "confirmation_code": "HMFZHSZREQ",
-    "booking_date": "2025-07-29"
+    "booking_date": "2025-07-29",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5481,7 +5907,8 @@
     "cleaning": 60.0,
     "total": 344.0,
     "confirmation_code": "HM93DEEHS5",
-    "booking_date": "2025-02-26"
+    "booking_date": "2025-02-26",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5494,7 +5921,8 @@
     "cleaning": 60.0,
     "total": 1122.0,
     "confirmation_code": "HMKTRXYK2T",
-    "booking_date": "2025-02-02"
+    "booking_date": "2025-02-02",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5507,7 +5935,8 @@
     "cleaning": 60.0,
     "total": 624.0,
     "confirmation_code": "HMR24K2SH5",
-    "booking_date": "2025-05-13"
+    "booking_date": "2025-05-13",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5520,7 +5949,8 @@
     "cleaning": 60.0,
     "total": 341.0,
     "confirmation_code": "HMBE9DNX82",
-    "booking_date": "2025-03-04"
+    "booking_date": "2025-03-04",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5533,7 +5963,8 @@
     "cleaning": 60.0,
     "total": 686.0,
     "confirmation_code": "HMCJT5DW8A",
-    "booking_date": "2025-03-10"
+    "booking_date": "2025-03-10",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5546,7 +5977,8 @@
     "cleaning": 60.0,
     "total": 275.0,
     "confirmation_code": "HMFSHW3JJ3",
-    "booking_date": "2025-07-09"
+    "booking_date": "2025-07-09",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5559,7 +5991,8 @@
     "cleaning": 5.0,
     "total": 69.83,
     "confirmation_code": "HMXJF8NNA4",
-    "booking_date": "2024-10-19"
+    "booking_date": "2024-10-19",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5572,7 +6005,8 @@
     "cleaning": 55.0,
     "total": 768.17,
     "confirmation_code": "HMXJF8NNA4",
-    "booking_date": "2024-10-19"
+    "booking_date": "2024-10-19",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5585,7 +6019,8 @@
     "cleaning": 60.0,
     "total": 400.0,
     "confirmation_code": "HMRAKWFJH3",
-    "booking_date": "2025-01-12"
+    "booking_date": "2025-01-12",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5598,7 +6033,8 @@
     "cleaning": 50.0,
     "total": 154.0,
     "confirmation_code": "HM8X9KY8QK",
-    "booking_date": "2025-09-01"
+    "booking_date": "2025-09-01",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5611,7 +6047,8 @@
     "cleaning": 60.0,
     "total": 795.0,
     "confirmation_code": "HMSNS95KWD",
-    "booking_date": "2025-05-18"
+    "booking_date": "2025-05-18",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5624,7 +6061,8 @@
     "cleaning": 60.0,
     "total": 183.0,
     "confirmation_code": "HM84ZTFTEW",
-    "booking_date": "2025-10-23"
+    "booking_date": "2025-10-23",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5637,7 +6075,8 @@
     "cleaning": 60.0,
     "total": 318.0,
     "confirmation_code": "HM3W42MPZ2",
-    "booking_date": "2025-09-04"
+    "booking_date": "2025-09-04",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5650,7 +6089,8 @@
     "cleaning": 50.0,
     "total": 100.0,
     "confirmation_code": "HMY9JXCQFC",
-    "booking_date": "2025-08-02"
+    "booking_date": "2025-08-02",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5663,7 +6103,8 @@
     "cleaning": 60.0,
     "total": 404.0,
     "confirmation_code": "HMXKY4N99S",
-    "booking_date": "2025-11-04"
+    "booking_date": "2025-11-04",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5676,7 +6117,8 @@
     "cleaning": 60.0,
     "total": 317.0,
     "confirmation_code": "HM3DKPDYP5",
-    "booking_date": "2025-07-02"
+    "booking_date": "2025-07-02",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5689,7 +6131,8 @@
     "cleaning": 60.0,
     "total": 185.0,
     "confirmation_code": "HMKTHFMAPY",
-    "booking_date": "2025-11-07"
+    "booking_date": "2025-11-07",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5702,7 +6145,8 @@
     "cleaning": 60.0,
     "total": 266.0,
     "confirmation_code": "HMSYS8QP8R",
-    "booking_date": "2025-07-08"
+    "booking_date": "2025-07-08",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5715,7 +6159,8 @@
     "cleaning": 60.0,
     "total": 517.0,
     "confirmation_code": "HMD85Y9AKN",
-    "booking_date": "2025-10-16"
+    "booking_date": "2025-10-16",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5728,7 +6173,8 @@
     "cleaning": 50.0,
     "total": 118.0,
     "confirmation_code": "HM2TM48KFY",
-    "booking_date": "2025-12-09"
+    "booking_date": "2025-12-09",
+    "status": "confirmed"
   },
   {
     "year": 2025,
@@ -5741,7 +6187,8 @@
     "cleaning": 60.0,
     "total": 283.0,
     "confirmation_code": "HMAXXTQD3D",
-    "booking_date": "2025-11-04"
+    "booking_date": "2025-11-04",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5754,7 +6201,8 @@
     "cleaning": 60.0,
     "total": 226.0,
     "confirmation_code": "HMZYB9W4JK",
-    "booking_date": "2025-08-14"
+    "booking_date": "2025-08-14",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5767,7 +6215,8 @@
     "cleaning": 60.0,
     "total": 167.0,
     "confirmation_code": "HMJYBK499Z",
-    "booking_date": "2025-12-29"
+    "booking_date": "2025-12-29",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5780,7 +6229,8 @@
     "cleaning": 60.0,
     "total": 243.0,
     "confirmation_code": "HMYCRFZ2K5",
-    "booking_date": "2025-12-10"
+    "booking_date": "2025-12-10",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5793,7 +6243,8 @@
     "cleaning": 60.0,
     "total": 406.0,
     "confirmation_code": "HMSWRA8S2E",
-    "booking_date": "2025-12-06"
+    "booking_date": "2025-12-06",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5806,7 +6257,8 @@
     "cleaning": 17.14,
     "total": 92.29,
     "confirmation_code": "HMTKB9RJCW",
-    "booking_date": "2026-01-09"
+    "booking_date": "2026-01-09",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5819,7 +6271,8 @@
     "cleaning": 42.86,
     "total": 230.71,
     "confirmation_code": "HMTKB9RJCW",
-    "booking_date": "2026-01-09"
+    "booking_date": "2026-01-09",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5832,7 +6285,8 @@
     "cleaning": 45.0,
     "total": 162.75,
     "confirmation_code": "HMB8WYS8Q2",
-    "booking_date": "2025-11-18"
+    "booking_date": "2025-11-18",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5845,7 +6299,8 @@
     "cleaning": 60.0,
     "total": 258.0,
     "confirmation_code": "HMB8WYS8Q2",
-    "booking_date": "2025-11-18"
+    "booking_date": "2025-11-18",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5858,7 +6313,8 @@
     "cleaning": 60.0,
     "total": 397.0,
     "confirmation_code": "HMJDM9ZSZ9",
-    "booking_date": "2025-11-13"
+    "booking_date": "2025-11-13",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5871,7 +6327,8 @@
     "cleaning": 60.0,
     "total": 172.0,
     "confirmation_code": "HMHRYJEEQ8",
-    "booking_date": "2026-02-13"
+    "booking_date": "2026-02-13",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5882,7 +6339,8 @@
     "nights": 4,
     "pm": 57.38,
     "cleaning": 15.0,
-    "total": 244.5
+    "total": 244.5,
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5895,7 +6353,8 @@
     "cleaning": 15.0,
     "total": 54.25,
     "confirmation_code": "HMB8WYS8Q2",
-    "booking_date": "2025-11-18"
+    "booking_date": "2025-11-18",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5908,7 +6367,8 @@
     "cleaning": 60.0,
     "total": 301.0,
     "confirmation_code": "HMY2SF8RF4",
-    "booking_date": "2026-02-02"
+    "booking_date": "2026-02-02",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5921,7 +6381,8 @@
     "cleaning": 60.0,
     "total": 197.0,
     "confirmation_code": "HM2NWK4DTH",
-    "booking_date": "2026-01-25"
+    "booking_date": "2026-01-25",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5934,7 +6395,8 @@
     "cleaning": 60.0,
     "total": 461.0,
     "confirmation_code": "HM9PCWYXMK",
-    "booking_date": "2025-12-01"
+    "booking_date": "2025-12-01",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5947,7 +6409,8 @@
     "cleaning": 60.0,
     "total": 161.9,
     "confirmation_code": "HM959FC5JC",
-    "booking_date": "2026-03-22"
+    "booking_date": "2026-03-22",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5958,7 +6421,8 @@
     "nights": 6,
     "pm": 57.5,
     "cleaning": 60.0,
-    "total": 405.0
+    "total": 405.0,
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5969,7 +6433,8 @@
     "nights": 12,
     "pm": 57.38,
     "cleaning": 45.0,
-    "total": 733.5
+    "total": 733.5,
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5982,7 +6447,8 @@
     "cleaning": 60.0,
     "total": 405.0,
     "confirmation_code": "HMDCDKAP2E",
-    "booking_date": "2025-11-27"
+    "booking_date": "2025-11-27",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -5993,7 +6459,8 @@
     "nights": 12,
     "pm": 61.17,
     "cleaning": 60.0,
-    "total": 794.0
+    "total": 794.0,
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6006,7 +6473,8 @@
     "cleaning": 60.0,
     "total": 231.0,
     "confirmation_code": "HM39ZRWZDJ",
-    "booking_date": "2025-11-19"
+    "booking_date": "2025-11-19",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6019,7 +6487,8 @@
     "cleaning": 60.0,
     "total": 240.0,
     "confirmation_code": "HMQE99NBYX",
-    "booking_date": "2026-03-08"
+    "booking_date": "2026-03-08",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6030,7 +6499,8 @@
     "nights": 8,
     "pm": 79.38,
     "cleaning": 60.0,
-    "total": 695.0
+    "total": 695.0,
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6041,7 +6511,8 @@
     "nights": 7,
     "pm": 78.43,
     "cleaning": 60.0,
-    "total": 609.0
+    "total": 609.0,
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6052,7 +6523,8 @@
     "nights": 7,
     "pm": 78.43,
     "cleaning": 60.0,
-    "total": 609.0
+    "total": 609.0,
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6063,7 +6535,8 @@
     "nights": 4,
     "pm": 82.25,
     "cleaning": 60.0,
-    "total": 389.0
+    "total": 389.0,
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6074,7 +6547,8 @@
     "nights": 1,
     "pm": 105.1,
     "cleaning": 6.0,
-    "total": 111.1
+    "total": 111.1,
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6085,7 +6559,8 @@
     "nights": 5,
     "pm": 115.2,
     "cleaning": 60.0,
-    "total": 636.0
+    "total": 636.0,
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6096,33 +6571,36 @@
     "nights": 9,
     "pm": 105.1,
     "cleaning": 54.0,
-    "total": 1000.4
+    "total": 1000.4,
+    "status": "confirmed"
   },
   {
     "year": 2026,
     "month": 7,
-    "code": "",
-    "guest": "Lia Piedra Prieto",
+    "code": "HMTPSMQXSS",
+    "guest": "Susan Schimmeyer",
     "checkin": "2026-07-12",
-    "nights": 7,
-    "pm": 109.57,
+    "nights": 5,
+    "pm": 115.21,
     "cleaning": 60.0,
-    "total": 827.0,
+    "total": 636.04,
     "confirmation_code": "HMTPSMQXSS",
-    "booking_date": "2026-01-05"
+    "booking_date": "2026-01-05",
+    "status": "confirmed"
   },
   {
     "year": 2026,
     "month": 7,
-    "code": "",
-    "guest": "Vasile Cumatrenco",
+    "code": "HMNWSFKKZK",
+    "guest": "Lia Piedra Prieto",
     "checkin": "2026-07-21",
-    "nights": 1,
-    "pm": 105.0,
-    "cleaning": 7.5,
-    "total": 112.5,
+    "nights": 7,
+    "pm": 109.55,
+    "cleaning": 60.0,
+    "total": 826.85,
     "confirmation_code": "HMNWSFKKZK",
-    "booking_date": "2026-01-01"
+    "booking_date": "2026-01-01",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6133,7 +6611,8 @@
     "nights": 5,
     "pm": 94.0,
     "cleaning": 60.0,
-    "total": 530.0
+    "total": 530.0,
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6144,20 +6623,8 @@
     "nights": 3,
     "pm": 110.0,
     "cleaning": 60.0,
-    "total": 390.0
-  },
-  {
-    "year": 2026,
-    "month": 8,
-    "code": "",
-    "guest": "Vasile Cumatrenco",
-    "checkin": "2026-08-01",
-    "nights": 7,
-    "pm": 105.0,
-    "cleaning": 52.5,
-    "total": 787.5,
-    "confirmation_code": "HMNWSFKKZK",
-    "booking_date": "2026-01-01"
+    "total": 390.0,
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6170,7 +6637,8 @@
     "cleaning": 60.0,
     "total": 900.0,
     "confirmation_code": "HMYWZP4MTM",
-    "booking_date": "2025-12-03"
+    "booking_date": "2025-12-03",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6183,7 +6651,8 @@
     "cleaning": 10.91,
     "total": 207.82,
     "confirmation_code": "HMQZFT2NNP",
-    "booking_date": "2025-12-11"
+    "booking_date": "2025-12-11",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6196,7 +6665,8 @@
     "cleaning": 49.09,
     "total": 935.18,
     "confirmation_code": "HMQZFT2NNP",
-    "booking_date": "2025-12-11"
+    "booking_date": "2025-12-11",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6209,7 +6679,8 @@
     "cleaning": 60.0,
     "total": 470.29,
     "confirmation_code": "HMBHBHF4PJ",
-    "booking_date": "2026-03-21"
+    "booking_date": "2026-03-21",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6222,7 +6693,8 @@
     "cleaning": 60.0,
     "total": 470.0,
     "confirmation_code": "HMD89CY5N3",
-    "booking_date": "2026-02-23"
+    "booking_date": "2026-02-23",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6235,7 +6707,8 @@
     "cleaning": 55.0,
     "total": 981.29,
     "confirmation_code": "HMR2NXTWHJ",
-    "booking_date": "2026-04-07"
+    "booking_date": "2026-04-07",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6248,7 +6721,8 @@
     "cleaning": 5.0,
     "total": 89.21,
     "confirmation_code": "HMR2NXTWHJ",
-    "booking_date": "2026-04-07"
+    "booking_date": "2026-04-07",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6261,7 +6735,8 @@
     "cleaning": 60.0,
     "total": 642.0,
     "confirmation_code": "HMDZ92B4D2",
-    "booking_date": "2026-01-24"
+    "booking_date": "2026-01-24",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6274,7 +6749,8 @@
     "cleaning": 54.0,
     "total": 571.5,
     "confirmation_code": "HMD8JCJP22",
-    "booking_date": "2026-03-11"
+    "booking_date": "2026-03-11",
+    "status": "confirmed"
   },
   {
     "year": 2027,
@@ -6287,7 +6763,8 @@
     "cleaning": 6.0,
     "total": 63.0,
     "confirmation_code": "HMD8JCJP22",
-    "booking_date": "2026-03-11"
+    "booking_date": "2026-03-11",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6300,7 +6777,8 @@
     "cleaning": 60.0,
     "total": 187.92,
     "confirmation_code": "HMY38EJXR2",
-    "booking_date": "2026-04-14"
+    "booking_date": "2026-04-14",
+    "status": "confirmed"
   },
   {
     "year": 2026,
@@ -6313,6 +6791,1507 @@
     "cleaning": 50.0,
     "total": 279.47,
     "confirmation_code": "HMQTHQ3KER",
-    "booking_date": "2026-04-16"
+    "booking_date": "2026-04-16",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 5,
+    "code": "HMS8CF9FYS",
+    "guest": "지원 송",
+    "checkin": "2026-05-20",
+    "nights": 3,
+    "pm": 53.05,
+    "cleaning": 60.0,
+    "total": 219.15,
+    "confirmation_code": "HMS8CF9FYS",
+    "booking_date": "2026-04-18",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 5,
+    "code": "HMSXYSPR83",
+    "guest": "Giulia Varesi",
+    "checkin": "2026-05-23",
+    "nights": 7,
+    "pm": 56.45,
+    "cleaning": 60.0,
+    "total": 455.15,
+    "confirmation_code": "HMSXYSPR83",
+    "booking_date": "2026-04-17",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 5,
+    "code": "HMY389855T",
+    "guest": "Anja",
+    "checkin": "2026-05-27",
+    "nights": 7,
+    "pm": 56.62,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMY389855T",
+    "booking_date": "2025-06-18",
+    "status": "cancelled",
+    "impacto": 456.34
+  },
+  {
+    "year": 2026,
+    "month": 5,
+    "code": "HMTKTTAQWR",
+    "guest": "Uwe",
+    "checkin": "2026-05-19",
+    "nights": 11,
+    "pm": 56.62,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMTKTTAQWR",
+    "booking_date": "2025-09-09",
+    "status": "cancelled",
+    "impacto": 682.82
+  },
+  {
+    "year": 2026,
+    "month": 3,
+    "code": "HMPM28E5Z4",
+    "guest": "Christina",
+    "checkin": "2026-03-03",
+    "nights": 3,
+    "pm": 43.85,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMPM28E5Z4",
+    "booking_date": "2026-03-01",
+    "status": "cancelled",
+    "impacto": 191.55
+  },
+  {
+    "year": 2026,
+    "month": 2,
+    "code": "HMBDBA83CD",
+    "guest": "Karl",
+    "checkin": "2026-02-28",
+    "nights": 9,
+    "pm": 42.36,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMBDBA83CD",
+    "booking_date": "2025-12-28",
+    "status": "cancelled",
+    "impacto": 441.24
+  },
+  {
+    "year": 2026,
+    "month": 2,
+    "code": "HMWJTAYK9T",
+    "guest": "Beatrice",
+    "checkin": "2026-02-21",
+    "nights": 7,
+    "pm": 42.36,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMWJTAYK9T",
+    "booking_date": "2025-11-08",
+    "status": "cancelled",
+    "impacto": 356.52
+  },
+  {
+    "year": 2025,
+    "month": 12,
+    "code": "HMM2FBCTYN",
+    "guest": "Nico",
+    "checkin": "2025-12-25",
+    "nights": 5,
+    "pm": 43.49,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMM2FBCTYN",
+    "booking_date": "2025-06-02",
+    "status": "cancelled",
+    "impacto": 277.45
+  },
+  {
+    "year": 2025,
+    "month": 10,
+    "code": "HM8AW4F8XE",
+    "guest": "Mercedes",
+    "checkin": "2025-10-31",
+    "nights": 3,
+    "pm": 62.91,
+    "cleaning": 60.0,
+    "total": 193.13,
+    "confirmation_code": "HM8AW4F8XE",
+    "booking_date": "2025-10-05",
+    "status": "cancelled",
+    "impacto": 55.6
+  },
+  {
+    "year": 2025,
+    "month": 9,
+    "code": "HMXK9C3QE3",
+    "guest": "Erika",
+    "checkin": "2025-09-27",
+    "nights": 3,
+    "pm": 84.48,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMXK9C3QE3",
+    "booking_date": "2025-07-05",
+    "status": "cancelled",
+    "impacto": 313.44
+  },
+  {
+    "year": 2025,
+    "month": 8,
+    "code": "HMM3H2XYC4",
+    "guest": "Belinda",
+    "checkin": "2025-08-30",
+    "nights": 29,
+    "pm": 95.27,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMM3H2XYC4",
+    "booking_date": "2024-07-02",
+    "status": "cancelled",
+    "impacto": 2822.83
+  },
+  {
+    "year": 2025,
+    "month": 8,
+    "code": "HM95RYE4QN",
+    "guest": "Marta",
+    "checkin": "2025-08-16",
+    "nights": 1,
+    "pm": 95.27,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HM95RYE4QN",
+    "booking_date": "2025-08-11",
+    "status": "cancelled",
+    "impacto": 155.27
+  },
+  {
+    "year": 2025,
+    "month": 8,
+    "code": "HM2D3Y92P4",
+    "guest": "Juan",
+    "checkin": "2025-08-10",
+    "nights": 4,
+    "pm": 95.27,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HM2D3Y92P4",
+    "booking_date": "2024-09-07",
+    "status": "cancelled",
+    "impacto": 441.08
+  },
+  {
+    "year": 2025,
+    "month": 7,
+    "code": "HMBXPSHRES",
+    "guest": "Josue",
+    "checkin": "2025-07-27",
+    "nights": 7,
+    "pm": 93.91,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMBXPSHRES",
+    "booking_date": "2025-01-21",
+    "status": "cancelled",
+    "impacto": 717.37
+  },
+  {
+    "year": 2025,
+    "month": 7,
+    "code": "HMF2A4B3FH",
+    "guest": "Adrian",
+    "checkin": "2025-07-27",
+    "nights": 6,
+    "pm": 93.91,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMF2A4B3FH",
+    "booking_date": "2025-03-25",
+    "status": "cancelled",
+    "impacto": 623.46
+  },
+  {
+    "year": 2025,
+    "month": 7,
+    "code": "HM82YR2BMP",
+    "guest": "Iñigo",
+    "checkin": "2025-07-15",
+    "nights": 9,
+    "pm": 93.91,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HM82YR2BMP",
+    "booking_date": "2024-11-15",
+    "status": "cancelled",
+    "impacto": 905.19
+  },
+  {
+    "year": 2025,
+    "month": 7,
+    "code": "HMFCR82955",
+    "guest": "Daniele",
+    "checkin": "2025-07-10",
+    "nights": 8,
+    "pm": 93.91,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMFCR82955",
+    "booking_date": "2025-01-27",
+    "status": "cancelled",
+    "impacto": 811.28
+  },
+  {
+    "year": 2025,
+    "month": 5,
+    "code": "HMHKZQND38",
+    "guest": "Viktoria",
+    "checkin": "2025-05-12",
+    "nights": 2,
+    "pm": 59.2,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMHKZQND38",
+    "booking_date": "2025-04-14",
+    "status": "cancelled",
+    "impacto": 178.4
+  },
+  {
+    "year": 2025,
+    "month": 5,
+    "code": "HM5EF9J5TK",
+    "guest": "Maria De Los Angeles",
+    "checkin": "2025-05-09",
+    "nights": 5,
+    "pm": 59.2,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HM5EF9J5TK",
+    "booking_date": "2024-10-07",
+    "status": "cancelled",
+    "impacto": 356.0
+  },
+  {
+    "year": 2025,
+    "month": 4,
+    "code": "HMRPW4DPK5",
+    "guest": "Sherin",
+    "checkin": "2025-04-05",
+    "nights": 9,
+    "pm": 54.82,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMRPW4DPK5",
+    "booking_date": "2024-12-08",
+    "status": "cancelled",
+    "impacto": 553.38
+  },
+  {
+    "year": 2025,
+    "month": 4,
+    "code": "HMDX94PDSA",
+    "guest": "María José",
+    "checkin": "2025-04-02",
+    "nights": 3,
+    "pm": 54.82,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMDX94PDSA",
+    "booking_date": "2024-09-13",
+    "status": "cancelled",
+    "impacto": 224.46
+  },
+  {
+    "year": 2025,
+    "month": 2,
+    "code": "HM5ZBNT8X2",
+    "guest": "Sinem",
+    "checkin": "2025-02-19",
+    "nights": 4,
+    "pm": 46.4,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HM5ZBNT8X2",
+    "booking_date": "2025-01-04",
+    "status": "cancelled",
+    "impacto": 245.6
+  },
+  {
+    "year": 2024,
+    "month": 12,
+    "code": "HMBREKJSBN",
+    "guest": "Romina",
+    "checkin": "2024-12-31",
+    "nights": 3,
+    "pm": 44.66,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMBREKJSBN",
+    "booking_date": "2024-09-15",
+    "status": "cancelled",
+    "impacto": 193.98
+  },
+  {
+    "year": 2024,
+    "month": 12,
+    "code": "HMR8MMRH5M",
+    "guest": "Emilie",
+    "checkin": "2024-12-30",
+    "nights": 5,
+    "pm": 44.66,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMR8MMRH5M",
+    "booking_date": "2024-11-04",
+    "status": "cancelled",
+    "impacto": 283.3
+  },
+  {
+    "year": 2024,
+    "month": 12,
+    "code": "HMT53BAJ5H",
+    "guest": "Shubham",
+    "checkin": "2024-12-29",
+    "nights": 7,
+    "pm": 44.66,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMT53BAJ5H",
+    "booking_date": "2024-10-13",
+    "status": "cancelled",
+    "impacto": 372.62
+  },
+  {
+    "year": 2024,
+    "month": 11,
+    "code": "HMEZK9RFYB",
+    "guest": "Isabel",
+    "checkin": "2024-11-18",
+    "nights": 74,
+    "pm": 45.98,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMEZK9RFYB",
+    "booking_date": "2024-07-29",
+    "status": "cancelled",
+    "impacto": 3462.52
+  },
+  {
+    "year": 2024,
+    "month": 11,
+    "code": "HMR9HNKMFC",
+    "guest": "Elke",
+    "checkin": "2024-11-01",
+    "nights": 28,
+    "pm": 45.98,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMR9HNKMFC",
+    "booking_date": "2024-06-19",
+    "status": "cancelled",
+    "impacto": 1347.44
+  },
+  {
+    "year": 2024,
+    "month": 10,
+    "code": "HMKPXQD3Y5",
+    "guest": "Dowon",
+    "checkin": "2024-10-12",
+    "nights": 3,
+    "pm": 57.11,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMKPXQD3Y5",
+    "booking_date": "2024-05-02",
+    "status": "cancelled",
+    "impacto": 231.33
+  },
+  {
+    "year": 2024,
+    "month": 9,
+    "code": "HMQW425PA8",
+    "guest": "Katie",
+    "checkin": "2024-09-30",
+    "nights": 7,
+    "pm": 73.46,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMQW425PA8",
+    "booking_date": "2024-05-07",
+    "status": "cancelled",
+    "impacto": 574.22
+  },
+  {
+    "year": 2024,
+    "month": 8,
+    "code": "HMRBKFN58S",
+    "guest": "Madeline",
+    "checkin": "2024-08-30",
+    "nights": 3,
+    "pm": 101.41,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMRBKFN58S",
+    "booking_date": "2024-02-26",
+    "status": "cancelled",
+    "impacto": 364.23
+  },
+  {
+    "year": 2024,
+    "month": 8,
+    "code": "HMTCBS3K8B",
+    "guest": "Marco",
+    "checkin": "2024-08-19",
+    "nights": 10,
+    "pm": 101.41,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMTCBS3K8B",
+    "booking_date": "2024-01-01",
+    "status": "cancelled",
+    "impacto": 1074.1
+  },
+  {
+    "year": 2024,
+    "month": 8,
+    "code": "HMDQCMERZH",
+    "guest": "Maria",
+    "checkin": "2024-08-08",
+    "nights": 10,
+    "pm": 101.41,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMDQCMERZH",
+    "booking_date": "2023-12-30",
+    "status": "cancelled",
+    "impacto": 1074.1
+  },
+  {
+    "year": 2024,
+    "month": 8,
+    "code": "HMZEF4YCK4",
+    "guest": "Anthony",
+    "checkin": "2024-08-01",
+    "nights": 7,
+    "pm": 101.41,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMZEF4YCK4",
+    "booking_date": "2023-10-24",
+    "status": "cancelled",
+    "impacto": 769.87
+  },
+  {
+    "year": 2024,
+    "month": 7,
+    "code": "HM3WSRPSKX",
+    "guest": "연선",
+    "checkin": "2024-07-23",
+    "nights": 2,
+    "pm": 104.97,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HM3WSRPSKX",
+    "booking_date": "2024-02-22",
+    "status": "cancelled",
+    "impacto": 269.94
+  },
+  {
+    "year": 2024,
+    "month": 7,
+    "code": "HMHECES545",
+    "guest": "Michael",
+    "checkin": "2024-07-01",
+    "nights": 18,
+    "pm": 104.97,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMHECES545",
+    "booking_date": "2023-09-22",
+    "status": "cancelled",
+    "impacto": 1949.46
+  },
+  {
+    "year": 2024,
+    "month": 6,
+    "code": "HMXSW9TDPM",
+    "guest": "Alberto",
+    "checkin": "2024-06-27",
+    "nights": 7,
+    "pm": 79.85,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMXSW9TDPM",
+    "booking_date": "2023-12-03",
+    "status": "cancelled",
+    "impacto": 618.95
+  },
+  {
+    "year": 2024,
+    "month": 5,
+    "code": "HM325RTKQY",
+    "guest": "Virginie",
+    "checkin": "2024-05-04",
+    "nights": 6,
+    "pm": 54.31,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HM325RTKQY",
+    "booking_date": "2023-11-04",
+    "status": "cancelled",
+    "impacto": 385.86
+  },
+  {
+    "year": 2024,
+    "month": 3,
+    "code": "HMMYH54W82",
+    "guest": "Hoe-Sen",
+    "checkin": "2024-03-20",
+    "nights": 8,
+    "pm": 50.69,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMMYH54W82",
+    "booking_date": "2024-01-14",
+    "status": "cancelled",
+    "impacto": 465.52
+  },
+  {
+    "year": 2024,
+    "month": 3,
+    "code": "HM9XSHEPKX",
+    "guest": "Hoe-Sen",
+    "checkin": "2024-03-20",
+    "nights": 8,
+    "pm": 50.69,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HM9XSHEPKX",
+    "booking_date": "2024-01-14",
+    "status": "cancelled",
+    "impacto": 465.52
+  },
+  {
+    "year": 2024,
+    "month": 2,
+    "code": "HMF2JDRTQW",
+    "guest": "Svenja",
+    "checkin": "2024-02-09",
+    "nights": 3,
+    "pm": 40.07,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMF2JDRTQW",
+    "booking_date": "2024-01-03",
+    "status": "cancelled",
+    "impacto": 180.21
+  },
+  {
+    "year": 2024,
+    "month": 1,
+    "code": "HMPJ8JN9SM",
+    "guest": "Sean Cathal",
+    "checkin": "2024-01-01",
+    "nights": 4,
+    "pm": 43.66,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMPJ8JN9SM",
+    "booking_date": "2023-10-10",
+    "status": "cancelled",
+    "impacto": 234.64
+  },
+  {
+    "year": 2023,
+    "month": 12,
+    "code": "HMJN2T4MSZ",
+    "guest": "Sabine",
+    "checkin": "2023-12-20",
+    "nights": 6,
+    "pm": 45.9,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMJN2T4MSZ",
+    "booking_date": "2023-11-01",
+    "status": "cancelled",
+    "impacto": 335.4
+  },
+  {
+    "year": 2023,
+    "month": 9,
+    "code": "HMY59KYY5J",
+    "guest": "Marielies",
+    "checkin": "2023-09-19",
+    "nights": 10,
+    "pm": 84.31,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMY59KYY5J",
+    "booking_date": "2023-03-01",
+    "status": "cancelled",
+    "impacto": 903.1
+  },
+  {
+    "year": 2023,
+    "month": 8,
+    "code": "HMWFY8JMYM",
+    "guest": "Rocio",
+    "checkin": "2023-08-14",
+    "nights": 14,
+    "pm": 99.11,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMWFY8JMYM",
+    "booking_date": "2022-08-18",
+    "status": "cancelled",
+    "impacto": 1447.54
+  },
+  {
+    "year": 2023,
+    "month": 8,
+    "code": "HMSZF5YMH5",
+    "guest": "Teresa",
+    "checkin": "2023-08-08",
+    "nights": 29,
+    "pm": 99.11,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMSZF5YMH5",
+    "booking_date": "2023-01-20",
+    "status": "cancelled",
+    "impacto": 2934.19
+  },
+  {
+    "year": 2023,
+    "month": 8,
+    "code": "HMYFFQ8ZX4",
+    "guest": "David",
+    "checkin": "2023-08-07",
+    "nights": 5,
+    "pm": 99.11,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMYFFQ8ZX4",
+    "booking_date": "2023-03-14",
+    "status": "cancelled",
+    "impacto": 555.55
+  },
+  {
+    "year": 2023,
+    "month": 7,
+    "code": "HMWBXN8C83",
+    "guest": "Marie",
+    "checkin": "2023-07-27",
+    "nights": 4,
+    "pm": 94.72,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMWBXN8C83",
+    "booking_date": "2023-03-04",
+    "status": "cancelled",
+    "impacto": 438.88
+  },
+  {
+    "year": 2023,
+    "month": 5,
+    "code": "HMFJ9X3TND",
+    "guest": "Johanna",
+    "checkin": "2023-05-30",
+    "nights": 7,
+    "pm": 56.46,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMFJ9X3TND",
+    "booking_date": "2023-01-30",
+    "status": "cancelled",
+    "impacto": 455.22
+  },
+  {
+    "year": 2023,
+    "month": 5,
+    "code": "HM29Q35MYE",
+    "guest": "Jana",
+    "checkin": "2023-05-30",
+    "nights": 2,
+    "pm": 56.46,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HM29Q35MYE",
+    "booking_date": "2023-04-24",
+    "status": "cancelled",
+    "impacto": 172.92
+  },
+  {
+    "year": 2023,
+    "month": 3,
+    "code": "HMPNRNA4KX",
+    "guest": "Maciek",
+    "checkin": "2023-03-28",
+    "nights": 7,
+    "pm": 46.21,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMPNRNA4KX",
+    "booking_date": "2023-01-31",
+    "status": "cancelled",
+    "impacto": 383.47
+  },
+  {
+    "year": 2023,
+    "month": 1,
+    "code": "HMHS859EC9",
+    "guest": "Bianka",
+    "checkin": "2023-01-08",
+    "nights": 5,
+    "pm": 43.7,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMHS859EC9",
+    "booking_date": "2022-11-02",
+    "status": "cancelled",
+    "impacto": 278.5
+  },
+  {
+    "year": 2022,
+    "month": 11,
+    "code": "HM3FTAMBT5",
+    "guest": "Barbara",
+    "checkin": "2022-11-24",
+    "nights": 3,
+    "pm": 42.17,
+    "cleaning": 60.0,
+    "total": 44.33,
+    "confirmation_code": "HM3FTAMBT5",
+    "booking_date": "2022-10-31",
+    "status": "cancelled",
+    "impacto": 142.18
+  },
+  {
+    "year": 2022,
+    "month": 11,
+    "code": "HMCQ4SFTMT",
+    "guest": "Claudia",
+    "checkin": "2022-11-02",
+    "nights": 3,
+    "pm": 42.17,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMCQ4SFTMT",
+    "booking_date": "2022-09-17",
+    "status": "cancelled",
+    "impacto": 186.51
+  },
+  {
+    "year": 2022,
+    "month": 10,
+    "code": "HM8TCWYTCT",
+    "guest": "Baha",
+    "checkin": "2022-10-13",
+    "nights": 7,
+    "pm": 51.87,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HM8TCWYTCT",
+    "booking_date": "2022-07-04",
+    "status": "cancelled",
+    "impacto": 423.09
+  },
+  {
+    "year": 2022,
+    "month": 10,
+    "code": "HMNSE5E3KX",
+    "guest": "Enrico",
+    "checkin": "2022-10-07",
+    "nights": 3,
+    "pm": 51.87,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMNSE5E3KX",
+    "booking_date": "2022-08-25",
+    "status": "cancelled",
+    "impacto": 215.61
+  },
+  {
+    "year": 2022,
+    "month": 9,
+    "code": "HMYEFQSWWS",
+    "guest": "Claudette",
+    "checkin": "2022-09-11",
+    "nights": 5,
+    "pm": 79.91,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMYEFQSWWS",
+    "booking_date": "2022-06-30",
+    "status": "cancelled",
+    "impacto": 459.55
+  },
+  {
+    "year": 2022,
+    "month": 8,
+    "code": "HMYS2XEC5H",
+    "guest": "Bettina",
+    "checkin": "2022-08-12",
+    "nights": 14,
+    "pm": 109.44,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMYS2XEC5H",
+    "booking_date": "2022-01-01",
+    "status": "cancelled",
+    "impacto": 1592.16
+  },
+  {
+    "year": 2022,
+    "month": 8,
+    "code": "HMKMPWE9EH",
+    "guest": "Elisa",
+    "checkin": "2022-08-07",
+    "nights": 7,
+    "pm": 109.44,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMKMPWE9EH",
+    "booking_date": "2022-01-28",
+    "status": "cancelled",
+    "impacto": 826.08
+  },
+  {
+    "year": 2022,
+    "month": 6,
+    "code": "HM524QRMAS",
+    "guest": "Connie Reidun",
+    "checkin": "2022-06-28",
+    "nights": 6,
+    "pm": 71.43,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HM524QRMAS",
+    "booking_date": "2022-05-04",
+    "status": "cancelled",
+    "impacto": 488.58
+  },
+  {
+    "year": 2022,
+    "month": 6,
+    "code": "HMX45T8WK2",
+    "guest": "Vicent",
+    "checkin": "2022-06-24",
+    "nights": 3,
+    "pm": 71.43,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMX45T8WK2",
+    "booking_date": "2022-06-12",
+    "status": "cancelled",
+    "impacto": 274.29
+  },
+  {
+    "year": 2022,
+    "month": 6,
+    "code": "HMFESD4HBW",
+    "guest": "Tamara",
+    "checkin": "2022-06-18",
+    "nights": 8,
+    "pm": 71.43,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMFESD4HBW",
+    "booking_date": "2022-02-18",
+    "status": "cancelled",
+    "impacto": 631.44
+  },
+  {
+    "year": 2022,
+    "month": 5,
+    "code": "HMY8TNYNPN",
+    "guest": "Joseph",
+    "checkin": "2022-05-29",
+    "nights": 5,
+    "pm": 58.25,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMY8TNYNPN",
+    "booking_date": "2022-01-08",
+    "status": "cancelled",
+    "impacto": 351.25
+  },
+  {
+    "year": 2022,
+    "month": 5,
+    "code": "HM4PYQMW85",
+    "guest": "María",
+    "checkin": "2022-05-19",
+    "nights": 3,
+    "pm": 58.25,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HM4PYQMW85",
+    "booking_date": "2022-05-03",
+    "status": "cancelled",
+    "impacto": 234.75
+  },
+  {
+    "year": 2022,
+    "month": 5,
+    "code": "HMCW93WJBZ",
+    "guest": "Jose",
+    "checkin": "2022-05-13",
+    "nights": 9,
+    "pm": 58.25,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMCW93WJBZ",
+    "booking_date": "2022-02-10",
+    "status": "cancelled",
+    "impacto": 584.25
+  },
+  {
+    "year": 2022,
+    "month": 5,
+    "code": "HMTBTJZXY5",
+    "guest": "Mathieu",
+    "checkin": "2022-05-06",
+    "nights": 4,
+    "pm": 58.25,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMTBTJZXY5",
+    "booking_date": "2022-04-25",
+    "status": "cancelled",
+    "impacto": 293.0
+  },
+  {
+    "year": 2022,
+    "month": 4,
+    "code": "HM29AK3DTX",
+    "guest": "Christopher",
+    "checkin": "2022-04-15",
+    "nights": 9,
+    "pm": 57.72,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HM29AK3DTX",
+    "booking_date": "2022-02-11",
+    "status": "cancelled",
+    "impacto": 579.48
+  },
+  {
+    "year": 2021,
+    "month": 12,
+    "code": "HMFPN5FBRA",
+    "guest": "Marta",
+    "checkin": "2021-12-31",
+    "nights": 2,
+    "pm": 72.0,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMFPN5FBRA",
+    "booking_date": "2021-12-30",
+    "status": "cancelled",
+    "impacto": 204.0
+  },
+  {
+    "year": 2021,
+    "month": 12,
+    "code": "HMBEMPH8YZ",
+    "guest": "Rodrigo",
+    "checkin": "2021-12-29",
+    "nights": 4,
+    "pm": 72.0,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMBEMPH8YZ",
+    "booking_date": "2021-11-29",
+    "status": "cancelled",
+    "impacto": 348.0
+  },
+  {
+    "year": 2021,
+    "month": 12,
+    "code": "HMNQ2ZCTNP",
+    "guest": "Benjamin",
+    "checkin": "2021-12-28",
+    "nights": 4,
+    "pm": 72.0,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMNQ2ZCTNP",
+    "booking_date": "2021-12-25",
+    "status": "cancelled",
+    "impacto": 348.0
+  },
+  {
+    "year": 2021,
+    "month": 9,
+    "code": "HMSDC4M4J9",
+    "guest": "Antiguo Miembro",
+    "checkin": "2021-09-24",
+    "nights": 5,
+    "pm": 86.5,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMSDC4M4J9",
+    "booking_date": "2021-08-07",
+    "status": "cancelled",
+    "impacto": 492.5
+  },
+  {
+    "year": 2021,
+    "month": 9,
+    "code": "HMHF3AQ8CJ",
+    "guest": "Jack",
+    "checkin": "2021-09-16",
+    "nights": 7,
+    "pm": 86.5,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMHF3AQ8CJ",
+    "booking_date": "2021-06-25",
+    "status": "cancelled",
+    "impacto": 665.5
+  },
+  {
+    "year": 2021,
+    "month": 8,
+    "code": "HM2MYHM5EB",
+    "guest": "Mercedes",
+    "checkin": "2021-08-16",
+    "nights": 5,
+    "pm": 89.8,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HM2MYHM5EB",
+    "booking_date": "2021-04-02",
+    "status": "cancelled",
+    "impacto": 509.0
+  },
+  {
+    "year": 2021,
+    "month": 5,
+    "code": "HMR5N2HBYH",
+    "guest": "Pauline",
+    "checkin": "2021-05-22",
+    "nights": 7,
+    "pm": 59.0,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMR5N2HBYH",
+    "booking_date": "2021-01-12",
+    "status": "cancelled",
+    "impacto": 473.0
+  },
+  {
+    "year": 2021,
+    "month": 3,
+    "code": "HMHHRZJT42",
+    "guest": "Janina",
+    "checkin": "2021-03-06",
+    "nights": 15,
+    "pm": 49.0,
+    "cleaning": 60.0,
+    "total": 192.35,
+    "confirmation_code": "HMHHRZJT42",
+    "booking_date": "2021-03-05",
+    "status": "cancelled",
+    "impacto": 602.65
+  },
+  {
+    "year": 2020,
+    "month": 12,
+    "code": "HMKYFMH3XQ",
+    "guest": "David",
+    "checkin": "2020-12-24",
+    "nights": 14,
+    "pm": 74.1,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMKYFMH3XQ",
+    "booking_date": "2020-12-23",
+    "status": "cancelled",
+    "impacto": 1097.4
+  },
+  {
+    "year": 2020,
+    "month": 9,
+    "code": "HMYR45Z8Y8",
+    "guest": "Berthold",
+    "checkin": "2020-09-28",
+    "nights": 13,
+    "pm": 70.2,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMYR45Z8Y8",
+    "booking_date": "2018-03-12",
+    "status": "cancelled",
+    "impacto": 972.6
+  },
+  {
+    "year": 2020,
+    "month": 9,
+    "code": "HMB9MQANXE",
+    "guest": "Paula",
+    "checkin": "2020-09-17",
+    "nights": 3,
+    "pm": 70.2,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMB9MQANXE",
+    "booking_date": "2020-08-24",
+    "status": "cancelled",
+    "impacto": 270.6
+  },
+  {
+    "year": 2020,
+    "month": 8,
+    "code": "HMPAKQFPD2",
+    "guest": "Hannah",
+    "checkin": "2020-08-18",
+    "nights": 8,
+    "pm": 87.17,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMPAKQFPD2",
+    "booking_date": "2020-07-23",
+    "status": "cancelled",
+    "impacto": 757.36
+  },
+  {
+    "year": 2020,
+    "month": 8,
+    "code": "HMZQA3W8QQ",
+    "guest": "Pierre",
+    "checkin": "2020-08-03",
+    "nights": 13,
+    "pm": 87.17,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMZQA3W8QQ",
+    "booking_date": "2019-12-31",
+    "status": "cancelled",
+    "impacto": 1193.21
+  },
+  {
+    "year": 2020,
+    "month": 8,
+    "code": "HMYK43BCD5",
+    "guest": "Alina",
+    "checkin": "2020-08-02",
+    "nights": 10,
+    "pm": 87.17,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMYK43BCD5",
+    "booking_date": "2020-07-12",
+    "status": "cancelled",
+    "impacto": 931.7
+  },
+  {
+    "year": 2020,
+    "month": 6,
+    "code": "HMHX5BWRSS",
+    "guest": "Jean-Claude",
+    "checkin": "2020-06-15",
+    "nights": 9,
+    "pm": 74.1,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMHX5BWRSS",
+    "booking_date": "2020-01-06",
+    "status": "cancelled",
+    "impacto": 726.9
+  },
+  {
+    "year": 2020,
+    "month": 5,
+    "code": "HMKFHZP4HN",
+    "guest": "Eva",
+    "checkin": "2020-05-17",
+    "nights": 5,
+    "pm": 74.1,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMKFHZP4HN",
+    "booking_date": "2020-01-05",
+    "status": "cancelled",
+    "impacto": 430.5
+  },
+  {
+    "year": 2020,
+    "month": 4,
+    "code": "HMHHXHC4JR",
+    "guest": "Nuria",
+    "checkin": "2020-04-03",
+    "nights": 8,
+    "pm": 74.1,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMHHXHC4JR",
+    "booking_date": "2020-01-26",
+    "status": "cancelled",
+    "impacto": 652.8
+  },
+  {
+    "year": 2020,
+    "month": 3,
+    "code": "HMH9S99THT",
+    "guest": "Bennit",
+    "checkin": "2020-03-16",
+    "nights": 4,
+    "pm": 49.0,
+    "cleaning": 60.0,
+    "total": 188.89,
+    "confirmation_code": "HMH9S99THT",
+    "booking_date": "2020-02-13",
+    "status": "cancelled",
+    "impacto": 67.11
+  },
+  {
+    "year": 2019,
+    "month": 12,
+    "code": "HMAKRPRZN9",
+    "guest": "Tomasz Und Aneta Barbara",
+    "checkin": "2019-12-08",
+    "nights": 7,
+    "pm": 35.0,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMAKRPRZN9",
+    "booking_date": "2019-11-27",
+    "status": "cancelled",
+    "impacto": 305.0
+  },
+  {
+    "year": 2019,
+    "month": 9,
+    "code": "HMAD4T92SF",
+    "guest": "Antonio",
+    "checkin": "2019-09-24",
+    "nights": 7,
+    "pm": 74.0,
+    "cleaning": 60.0,
+    "total": 272.4,
+    "confirmation_code": "HMAD4T92SF",
+    "booking_date": "2019-05-23",
+    "status": "cancelled",
+    "impacto": 305.6
+  },
+  {
+    "year": 2019,
+    "month": 9,
+    "code": "HMAE9HWZNC",
+    "guest": "Claire",
+    "checkin": "2019-09-01",
+    "nights": 4,
+    "pm": 74.0,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMAE9HWZNC",
+    "booking_date": "2019-08-04",
+    "status": "cancelled",
+    "impacto": 356.0
+  },
+  {
+    "year": 2019,
+    "month": 4,
+    "code": "HMSYSSPCYB",
+    "guest": "Florian",
+    "checkin": "2019-04-15",
+    "nights": 4,
+    "pm": 52.69,
+    "cleaning": 60.0,
+    "total": 0.0,
+    "confirmation_code": "HMSYSSPCYB",
+    "booking_date": "2019-02-24",
+    "status": "cancelled",
+    "impacto": 270.76
+  },
+  {
+    "year": 2026,
+    "month": 4,
+    "code": "HMKEA23BY9",
+    "guest": "Michaela Liskova",
+    "checkin": "2026-04-22",
+    "nights": 6,
+    "pm": 57.46,
+    "cleaning": 60.0,
+    "total": 404.75,
+    "confirmation_code": "HMKEA23BY9",
+    "booking_date": "2025-08-27",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 5,
+    "code": "HM5RJ9QHXS",
+    "guest": "Stef Wallace",
+    "checkin": "2026-05-07",
+    "nights": 12,
+    "pm": 61.17,
+    "cleaning": 60.0,
+    "total": 794.09,
+    "confirmation_code": "HM5RJ9QHXS",
+    "booking_date": "2025-08-13",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 6,
+    "code": "HMZKC8PCKM",
+    "guest": "Martin Pomp",
+    "checkin": "2026-06-01",
+    "nights": 7,
+    "pm": 78.42,
+    "cleaning": 60.0,
+    "total": 608.96,
+    "confirmation_code": "HMZKC8PCKM",
+    "booking_date": "2025-09-28",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 6,
+    "code": "HMFJ8S23WT",
+    "guest": "Marta Alvarez Iglesias",
+    "checkin": "2026-06-08",
+    "nights": 6,
+    "pm": 82.52,
+    "cleaning": 60.0,
+    "total": 555.09,
+    "confirmation_code": "HMFJ8S23WT",
+    "booking_date": "2025-09-09",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 6,
+    "code": "HMAZFDQRF3",
+    "guest": "Derek Stray",
+    "checkin": "2026-06-16",
+    "nights": 8,
+    "pm": 79.38,
+    "cleaning": 60.0,
+    "total": 695.02,
+    "confirmation_code": "HMAZFDQRF3",
+    "booking_date": "2025-09-26",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 6,
+    "code": "HMQMWE3HM4",
+    "guest": "Wilmer Pertuz Sinning",
+    "checkin": "2026-06-24",
+    "nights": 4,
+    "pm": 82.33,
+    "cleaning": 60.0,
+    "total": 389.33,
+    "confirmation_code": "HMQMWE3HM4",
+    "booking_date": "2025-09-21",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 6,
+    "code": "HMNKEKCM4M",
+    "guest": "Darya Kramar",
+    "checkin": "2026-06-30",
+    "nights": 10,
+    "pm": 105.07,
+    "cleaning": 60.0,
+    "total": 1110.66,
+    "confirmation_code": "HMNKEKCM4M",
+    "booking_date": "2025-11-03",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 7,
+    "code": "",
+    "guest": "Darya Kramar",
+    "checkin": "2026-07-01",
+    "nights": 9,
+    "pm": 105.07,
+    "cleaning": 0.0,
+    "total": 0.0,
+    "confirmation_code": "HMNKEKCM4M",
+    "booking_date": "2025-11-03",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 7,
+    "code": "HMHM4FQMHK",
+    "guest": "Vasile Cumatrenco",
+    "checkin": "2026-07-30",
+    "nights": 8,
+    "pm": 105.01,
+    "cleaning": 60.0,
+    "total": 900.1,
+    "confirmation_code": "HMHM4FQMHK",
+    "booking_date": "2025-11-02",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 8,
+    "code": "",
+    "guest": "Vasile Cumatrenco",
+    "checkin": "2026-08-01",
+    "nights": 6,
+    "pm": 105.01,
+    "cleaning": 0.0,
+    "total": 0.0,
+    "confirmation_code": "HMHM4FQMHK",
+    "booking_date": "2025-11-02",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 8,
+    "code": "HMHXK9AFY5",
+    "guest": "Renuka Prabhakar",
+    "checkin": "2026-08-09",
+    "nights": 5,
+    "pm": 94.01,
+    "cleaning": 60.0,
+    "total": 530.04,
+    "confirmation_code": "HMHXK9AFY5",
+    "booking_date": "2024-10-07",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 8,
+    "code": "HMHS3SRTMF",
+    "guest": "Tiani Les",
+    "checkin": "2026-08-25",
+    "nights": 3,
+    "pm": 110.1,
+    "cleaning": 60.0,
+    "total": 390.3,
+    "confirmation_code": "HMHS3SRTMF",
+    "booking_date": "2025-09-28",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 10,
+    "code": "HMB4YS98MZ",
+    "guest": "Christina Pereon",
+    "checkin": "2026-10-26",
+    "nights": 6,
+    "pm": 61.31,
+    "cleaning": 60.0,
+    "total": 427.88,
+    "confirmation_code": "HMB4YS98MZ",
+    "booking_date": "2026-04-08",
+    "status": "confirmed"
   }
 ]
