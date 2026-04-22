@@ -27,6 +27,9 @@ def load_reservas():
     with open(path, "r", encoding="utf-8") as f:
         reservas = json.load(f)
 
+    # Solo reservas confirmadas para cálculos de ingresos/ocupación/PM
+    reservas = [r for r in reservas if r.get("status", "confirmed") == "confirmed"]
+
     # Validación: filtrar entradas imposibles
     before = len(reservas)
     reservas = [r for r in reservas if 0 < r["nights"] <= 31 or r["total"] > 0]
@@ -122,6 +125,85 @@ def load_visitas():
 
 def J(o):
     return json.dumps(o, ensure_ascii=False)
+
+
+def calc_cancelaciones(reservas_all):
+    from collections import defaultdict
+    confirmed = [r for r in reservas_all if r.get("status", "confirmed") == "confirmed"]
+    cancelled  = [r for r in reservas_all if r.get("status") == "cancelled"]
+
+    conf_ranges = []
+    for r in confirmed:
+        try:
+            from datetime import datetime, timedelta
+            s = datetime.strptime(r["checkin"], "%Y-%m-%d")
+            e = s + timedelta(days=r["nights"])
+            conf_ranges.append((s, e, r))
+        except:
+            pass
+
+    def recovery(c):
+        from datetime import datetime, timedelta
+        try:
+            cs = datetime.strptime(c["checkin"], "%Y-%m-%d")
+            ce = cs + timedelta(days=c["nights"])
+        except:
+            return 0.0
+        rec = 0.0
+        for s, e, r in conf_ranges:
+            ov = (min(ce, e) - max(cs, s)).days
+            if ov > 0:
+                rec += r["total"] * ov / r["nights"]
+        return round(rec, 2)
+
+    years = sorted(set(r["year"] for r in reservas_all if r.get("checkin")))
+
+    by_year = defaultdict(lambda: {"conf": 0, "canc": 0, "perdido": 0, "recuperado": 0, "neto": 0,
+                                    "lt_conf": [], "lt_canc": []})
+
+    from datetime import datetime, timedelta
+    for r in confirmed:
+        y = r["year"]
+        by_year[y]["conf"] += 1
+        try:
+            bd = datetime.strptime(r["booking_date"], "%Y-%m-%d")
+            ci = datetime.strptime(r["checkin"], "%Y-%m-%d")
+            by_year[y]["lt_conf"].append((ci - bd).days)
+        except:
+            pass
+
+    for c in cancelled:
+        y = c["year"]
+        by_year[y]["canc"] += 1
+        precio = (c.get("impacto") or 0) + (c.get("total") or 0)
+        pen    = c.get("total") or 0
+        rec    = recovery(c)
+        neto   = round(precio - pen - rec, 2)
+        by_year[y]["perdido"]    += precio
+        by_year[y]["recuperado"] += rec
+        by_year[y]["neto"]       += neto
+        try:
+            bd = datetime.strptime(c["booking_date"], "%Y-%m-%d")
+            ci = datetime.strptime(c["checkin"], "%Y-%m-%d")
+            by_year[y]["lt_canc"].append((ci - bd).days)
+        except:
+            pass
+
+    result = {}
+    for y in years:
+        d = by_year[y]
+        total = d["conf"] + d["canc"]
+        result[y] = {
+            "conf": d["conf"],
+            "canc": d["canc"],
+            "tasa": round(d["canc"] / total * 100, 1) if total else 0,
+            "perdido": round(d["perdido"], 2),
+            "recuperado": round(d["recuperado"], 2),
+            "neto": round(d["neto"], 2),
+            "lt_conf": round(sum(d["lt_conf"]) / len(d["lt_conf"])) if d["lt_conf"] else 0,
+            "lt_canc": round(sum(d["lt_canc"]) / len(d["lt_canc"])) if d["lt_canc"] else 0,
+        }
+    return result
 
 
 def build(data, ing, ocu, pm, rev):
@@ -556,6 +638,11 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
 .cd .s {{ font-size:10px; color:var(--m); margin-bottom:12px; }}
 .ch {{ position:relative; width:100%; }}
 .ch.xl {{ height:380px; }} .ch.lg {{ height:320px; }} .ch.md {{ height:280px; }} .ch.sm {{ height:220px; }}
+/* Tooltip box posicionada en esquina */
+.tt-box {{ position:absolute; background:var(--c); border:1px solid var(--b); border-radius:8px; padding:8px 10px; font-size:11px; pointer-events:none; z-index:10; min-width:110px; opacity:0; transition:opacity .15s; box-shadow:0 4px 16px rgba(0,0,0,.35); }}
+.tt-box .tt-title {{ font-weight:700; color:var(--t); margin-bottom:5px; font-size:12px; }}
+.tt-box .tt-row {{ display:flex; align-items:center; gap:6px; color:var(--m); margin:2px 0; white-space:nowrap; }}
+.tt-box .tt-dot {{ width:8px; height:8px; border-radius:50%; flex-shrink:0; }}
 
 /* Section headers */
 .sh {{ font-size:18px; font-weight:700; margin:28px 0 12px 0; padding-top:16px; border-top:1px solid var(--b); }}
@@ -615,18 +702,6 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
     <h3>Evoluci&oacute;n anual de ingresos</h3>
     <div class="s">Total por a&ntilde;o con media hist&oacute;rica</div>
     <div class="ch xl"><canvas id="c2"></canvas></div>
-  </div>
-</div>
-<div class="row r2">
-  <div class="cd">
-    <h3>Beneficio neto anual</h3>
-    <div class="s">Ingresos &minus; costes estimados por a&ntilde;o</div>
-    <div class="ch lg"><canvas id="c12"></canvas></div>
-  </div>
-  <div class="cd">
-    <h3>Costes vs ingresos</h3>
-    <div class="s">Costes totales estimados vs ingreso bruto &mdash; % coste/ingreso</div>
-    <div class="ch lg"><canvas id="c13"></canvas></div>
   </div>
 </div>
 <div class="row r1">
@@ -758,12 +833,78 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
   </div>
 </div>
 
+<!-- ============================================ -->
+<!-- SECTION 8: CANCELACIONES                     -->
+<!-- ============================================ -->
+<div class="sh">Cancelaciones <span>Impacto &amp; Recuperaci&oacute;n</span></div>
+<div class="row r3">
+  <div class="cd">
+    <h3>Tasa de cancelaci&oacute;n anual</h3>
+    <div class="s">Reservas confirmadas vs canceladas por a&ntilde;o. % = tasa cancelaci&oacute;n</div>
+    <div class="ch md"><canvas id="c22"></canvas></div>
+  </div>
+  <div class="cd">
+    <h3>Impacto econ&oacute;mico cancelaciones</h3>
+    <div class="s">Precio estimado perdido &mdash; recuperado &mdash; p&eacute;rdida neta por a&ntilde;o (EUR)</div>
+    <div class="ch md"><canvas id="c23"></canvas></div>
+  </div>
+  <div class="cd">
+    <h3>Lead time medio reserva&rarr;checkin</h3>
+    <div class="s">D&iacute;as de antelaci&oacute;n al reservar: confirmadas vs canceladas</div>
+    <div class="ch md"><canvas id="c24"></canvas></div>
+  </div>
+</div>
+
 <div class="ft">CSJ Airbnb CEO Dashboard &mdash; visualizar.py &mdash; {now.strftime("%d/%m/%Y")}</div>
 
 <script>
 Chart.defaults.color='#94a3b8';
 Chart.defaults.borderColor='#334155';
 Chart.defaults.font.family="'Inter',sans-serif";
+
+// === Tooltip externo: caja flotante anclada en esquina superior derecha del área de datos ===
+const tooltipExternal = function(context) {{
+  const {{chart, tooltip}} = context;
+  const parent = chart.canvas.parentNode;
+  let box = parent.querySelector('.tt-box');
+  if (!box) {{
+    box = document.createElement('div');
+    box.className = 'tt-box';
+    parent.appendChild(box);
+  }}
+  // Cancelar hide pendiente (crítico en touch: touchend dispara opacity=0 enseguida)
+  if (box._ht) {{ clearTimeout(box._ht); box._ht = null; }}
+  if (!tooltip.body || !tooltip.opacity) {{
+    box._ht = setTimeout(function() {{ box.style.opacity = '0'; }}, 200);
+    return;
+  }}
+  // Suprimir si el cursor está sobre el eje Y (fuera del área de datos)
+  const ca = chart.chartArea;
+  const evtX = tooltip._eventPosition?.x;
+  if (evtX !== undefined && evtX < ca.left) {{
+    box._ht = setTimeout(function() {{ box.style.opacity = '0'; }}, 200);
+    return;
+  }}
+  // Contenido
+  const title = tooltip.title?.[0] || '';
+  let html = '<div class="tt-title">' + title + '</div>';
+  (tooltip.body || []).forEach(function(body, i) {{
+    const lc = tooltip.labelColors?.[i];
+    const rawCol = lc ? (lc.borderColor || lc.backgroundColor) : '#94a3b8';
+    const col = typeof rawCol === 'string' ? rawCol : (Array.isArray(rawCol) ? rawCol[0] : '#94a3b8');
+    const line = body.lines?.[0] || '';
+    if (line) html += '<div class="tt-row"><span class="tt-dot" style="background:' + col + '"></span>' + line + '</div>';
+  }});
+  box.innerHTML = html;
+  // Posición: esquina superior derecha del contenedor (encima de la leyenda)
+  const cw = chart.canvas.offsetWidth;
+  box.style.right = (cw - ca.right + 4) + 'px';
+  box.style.left = 'auto';
+  box.style.top = '6px';
+  box.style.opacity = '1';
+}};
+Chart.defaults.plugins.tooltip.enabled = false;
+Chart.defaults.plugins.tooltip.external = tooltipExternal;
 
 const M={J(MESES)};
 const GC='rgba(51,65,85,0.5)';
@@ -805,6 +946,7 @@ const SH_DATA={J(superhost_quarters)};
 const SH_CHECKS={J(sh_checks)};
 const NEXT_SH={J(next_sh)};
 const FUTURE_SH={J(future_sh)};
+const CANC_KPIS={J({str(k): v for k, v in data.get("canc_kpis", {}).items()})};
 
 // Globals
 let charts = {{}};
@@ -864,51 +1006,34 @@ function drawKPIs() {{
   }}
 
   let h = '';
+  // Card 1 — Ventas a misma fecha
   h += card('Ventas '+y1+' a misma fecha', fmt(otb1)+'€', pct(otb1,otb2),
     y2+' misma fecha: '+fmt(otb2)+'€',
     'Total final '+y2+': '+fmt(ing2)+'€');
-  h += card('Noches '+y1+' a misma fecha', noc1+' noches', pct(noc1,noc2),
-    y2+' misma fecha: '+noc2+' noches',
-    'Ocupaci&oacute;n equiv.: '+ocuOtb1.toFixed(1)+'% vs '+ocuOtb2.toFixed(1)+'%');
-  // PM medio global
+  // Card 2 — Ocupación a misma fecha
+  h += card('Ocupaci&oacute;n '+y1+' a misma fecha', ocuOtb1.toFixed(1)+'%', pct(ocuOtb1,ocuOtb2),
+    y2+' misma fecha: '+ocuOtb2.toFixed(1)+'%',
+    noc1+' noches vs '+noc2+' noches '+y2);
+  // PM computations
   const pmAvg = (a) => {{ const vs=a.filter(v=>v>0); return vs.length?vs.reduce((s,v)=>s+v,0)/vs.length:0; }};
   const pmGlobal1 = pmAvg(p1), pmGlobal2 = pmAvg(p2);
-  const pmB1 = PM_BANDA[y1] || {{alta:0,media:0,baja:0}};
-  const pmB2 = PM_BANDA[y2] || {{alta:0,media:0,baja:0}};
-  const pmChg = pct(pmGlobal1, pmGlobal2);
-  const pmCls = pmChg >= 0 ? 'up' : 'down';
-  const pmArr = pmChg >= 0 ? '&#9650;' : '&#9660;';
-  const pmChgStr = isFinite(pmChg) && pmChg !== 0 ? '<div class="chg '+pmCls+'">'+pmArr+' '+Math.abs(pmChg).toFixed(1)+'% vs '+y2+'</div>' : '';
-  function pmBlock(label, col, v1, v2) {{
-    const d = v2 > 0 ? ((v1-v2)/v2*100) : 0;
-    const dc = d >= 0 ? '#22c55e' : '#ef4444';
-    const sign = d >= 0 ? '+' : '';
-    const dStr = v2 > 0 ? '<div style="font-size:10px;color:'+dc+'">'+sign+d.toFixed(0)+'%</div>' : '';
-    return '<div style="flex:1;text-align:center">'
-      +'<div style="font-size:20px;font-weight:700;color:'+col+'">'+v1.toFixed(0)+'€</div>'
-      +'<div style="font-size:9px;color:var(--m);margin:2px 0">'+label+'</div>'
-      +dStr
-      +'</div>';
+  // Card 3 — Cancelaciones
+  const ck1 = CANC_KPIS[y1] || null;
+  const ck2 = CANC_KPIS[y2] || null;
+  if (ck1) {{
+    const tasa1 = ck1.tasa, tasa2 = ck2 ? ck2.tasa : 0;
+    const neto1c = ck1.neto, canc1 = ck1.canc, rec1 = ck1.recuperado;
+    h += card('Cancelaciones '+y1, canc1+' ('+tasa1.toFixed(1)+'%)', pct(tasa2,tasa1),
+      y2+': '+(ck2?ck2.canc:'-')+' ('+(ck2?ck2.tasa.toFixed(1):'-')+'%)',
+      'P&eacute;rdida neta: '+fmt(Math.round(neto1c))+'&euro; &mdash; Rec.: '+fmt(Math.round(rec1))+'&euro;');
+  }} else {{
+    h += card('Cancelaciones '+y1, 'Sin datos', 0, '', '');
   }}
-  h += '<div class="kpi"><div class="lbl">PM '+y1+'</div>'
-    +'<div style="display:flex;gap:2px;margin-top:8px">'
-    +pmBlock('Alta','#ef4444',pmB1.alta,pmB2.alta)
-    +'<div style="border-left:1px solid var(--b)"></div>'
-    +pmBlock('Media','#f59e0b',pmB1.media,pmB2.media)
-    +'<div style="border-left:1px solid var(--b)"></div>'
-    +pmBlock('Baja','#3b82f6',pmB1.baja,pmB2.baja)
-    +'</div></div>';
-
-  // Pace KPI
-  const fin2Total = (PACE_FINAL[y2]||Array(12).fill(0)).slice(0,period).reduce((a,b)=>a+b,0);
-  const paceDelta = otb2 > 0 ? ((otb1 - otb2) / otb2 * 100) : 0;
-  const paceSign = paceDelta >= 0 ? '+' : '';
-  const paceCol = paceDelta >= 0 ? 'var(--g)' : 'var(--r)';
-  const paceCapt = fin2Total > 0 ? Math.round(otb1/fin2Total*100) : 0;
-  h += '<div class="kpi"><div class="lbl">Pace vs '+y2+'</div><div class="val" style="color:'+paceCol+'">'+paceSign+paceDelta.toFixed(1)+'%</div><div class="det">'+fmt(otb1)+'€ vs '+fmt(otb2)+'€ a misma fecha</div><div class="hist">'+paceCapt+'% del total final '+y2+' ('+fmt(fin2Total)+'€)</div></div>';
-
-  // Rating Superhost — trimestre activo (T2, el siguiente a evaluar)
-  const shd = FUTURE_SH && FUTURE_SH.length > 1 ? FUTURE_SH[1] : (FUTURE_SH && FUTURE_SH.length ? FUTURE_SH[0] : null);
+  // Card 4 — PM medio (meses con reservas = a misma fecha de facto)
+  h += card('PM medio '+y1+' a misma fecha', pmGlobal1.toFixed(1)+'€', pct(pmGlobal1,pmGlobal2),
+    y2+' misma fecha: '+pmGlobal2.toFixed(1)+'€/noche', '');
+  // Card 5 — Rating trimestre en curso (próxima evaluación = FUTURE_SH[0])
+  const shd = FUTURE_SH && FUTURE_SH.length ? FUTURE_SH[0] : null;
   if(shd) {{
     const shCol = shd.is_super ? '#22c55e' : '#ef4444';
     const shIcon = shd.is_super ? '&#x2705;' : '&#x26A0;&#xFE0F;';
@@ -1294,61 +1419,6 @@ function drawC10() {{
   }});
 }}
 
-// === C12: Beneficio neto anual ===
-function drawC12() {{
-  if(charts.c12) charts.c12.destroy();
-  const yrs = ACTIVE.filter(y => NETO_ANN[y] !== undefined);
-  const vals = yrs.map(y => NETO_ANN[y]);
-  const cols = vals.map((v,i) => v >= 0 ? '#22c55e' : '#ef4444');
-  const ingVals = yrs.map(y => ANN_ING[y]||0);
-  charts.c12 = new Chart(document.getElementById('c12'), {{
-    type:'bar',
-    data: {{ labels:yrs, datasets:[
-      {{ label:'Beneficio neto', data:vals, backgroundColor:cols, borderRadius:6, borderSkipped:false }},
-      {{ label:'Ingreso bruto', data:ingVals, type:'line', borderColor:'rgba(148,163,184,0.4)', borderDash:[6,4], borderWidth:1.5, pointRadius:3, pointBackgroundColor:'rgba(148,163,184,0.6)', fill:false }},
-    ] }},
-    options: {{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{{ legend:{{position:'top',labels:{{usePointStyle:true,font:{{size:10}}}}}}, tooltip:{{callbacks:{{label:c=>c.dataset.label+': '+c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€'}}}} }},
-      scales:{{ y:{{ticks:{{callback:v=>(v/1000).toFixed(0)+'k€'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
-    }}
-  }});
-}}
-
-// === C13: Costes vs ingresos ===
-function drawC13() {{
-  if(charts.c13) charts.c13.destroy();
-  const yrs = ACTIVE.filter(y => COSTES_ANN[y] !== undefined);
-  const costes = yrs.map(y => COSTES_ANN[y]);
-  const ingresos = yrs.map(y => ANN_ING[y]||0);
-  const pctCoste = yrs.map((y,i) => ingresos[i] > 1000 ? Math.round(costes[i]/ingresos[i]*100) : null);
-  charts.c13 = new Chart(document.getElementById('c13'), {{
-    type:'bar',
-    data: {{ labels:yrs, datasets:[
-      {{ label:'Costes', data:costes, backgroundColor:'#ef4444aa', borderRadius:6, borderSkipped:false }},
-      {{ label:'Ingresos', data:ingresos, backgroundColor:'rgba(59,130,246,0.3)', borderColor:'#3b82f6', borderWidth:1.5, borderRadius:6, borderSkipped:false }},
-      {{ label:'% coste/ingreso', data:pctCoste, type:'line', borderColor:'#f59e0b', borderWidth:2, pointRadius:3, pointBackgroundColor:'#f59e0b', tension:0.3, fill:false, yAxisID:'y1' }},
-    ] }},
-    options: {{
-      responsive:true, maintainAspectRatio:false,
-      interaction:{{mode:'index',intersect:false}},
-      plugins: {{
-        legend:{{position:'top',labels:{{usePointStyle:true,font:{{size:10}}}}}},
-        tooltip:{{callbacks:{{
-          label:function(c) {{
-            if(c.dataset.yAxisID==='y1') return c.dataset.label+': '+c.parsed.y+'%';
-            return c.dataset.label+': '+c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€';
-          }}
-        }}}}
-      }},
-      scales: {{
-        y: {{ ticks:{{callback:v=>(v/1000).toFixed(0)+'k€'}}, grid:{{color:GC}} }},
-        y1: {{ position:'right', title:{{display:true,text:'% coste/ingreso',color:'#f59e0b'}}, ticks:{{callback:v=>v+'%',color:'#f59e0b'}}, grid:{{drawOnChartArea:false}}, min:0 }},
-        x: {{ grid:{{display:false}} }}
-      }}
-    }}
-  }});
-}}
 
 // === C14: PM por banda estacional ===
 function drawC14() {{
@@ -1600,9 +1670,110 @@ function drawC21() {{
   }});
 }}
 
+// === C22: Tasa cancelación por año ===
+function drawC22() {{
+  const el = document.getElementById('c22');
+  if (!el) return;
+  if (el._chart) el._chart.destroy();
+  const years = Object.keys(CANC_KPIS).sort();
+  const conf  = years.map(y => CANC_KPIS[y].conf);
+  const canc  = years.map(y => CANC_KPIS[y].canc);
+  const tasas = years.map(y => CANC_KPIS[y].tasa);
+  el._chart = new Chart(el, {{
+    type: 'bar',
+    data: {{
+      labels: years,
+      datasets: [
+        {{ label: 'Confirmadas', data: conf, backgroundColor: 'rgba(59,130,246,0.7)', stack: 'a' }},
+        {{ label: 'Canceladas',  data: canc, backgroundColor: 'rgba(239,68,68,0.7)',  stack: 'a' }},
+      ]
+    }},
+    options: {{
+      responsive: true, maintainAspectRatio: false,
+      plugins: {{
+        legend: {{ position: 'top', labels: {{ usePointStyle: true, font: {{ size: 10 }} }} }},
+        tooltip: {{ callbacks: {{
+          afterBody: (items) => {{
+            const i = items[0].dataIndex;
+            return ['Tasa: ' + tasas[i].toFixed(1) + '%'];
+          }}
+        }} }}
+      }},
+      scales: {{
+        x: {{ stacked: true, grid: {{ display: false }}, ticks: {{ font: {{ size: 10 }} }} }},
+        y: {{ stacked: true, ticks: {{ color: '#94a3b8' }}, grid: {{ color: GC }} }}
+      }}
+    }}
+  }});
+}}
+
+// === C23: Impacto económico cancelaciones ===
+function drawC23() {{
+  const el = document.getElementById('c23');
+  if (!el) return;
+  if (el._chart) el._chart.destroy();
+  const years    = Object.keys(CANC_KPIS).sort();
+  const perdido  = years.map(y => Math.round(CANC_KPIS[y].perdido));
+  const recup    = years.map(y => Math.round(CANC_KPIS[y].recuperado));
+  const neto     = years.map(y => Math.round(CANC_KPIS[y].neto));
+  el._chart = new Chart(el, {{
+    type: 'bar',
+    data: {{
+      labels: years,
+      datasets: [
+        {{ label: 'Precio estimado perdido', data: perdido, backgroundColor: 'rgba(239,68,68,0.5)' }},
+        {{ label: 'Recuperado',              data: recup,   backgroundColor: 'rgba(34,197,94,0.6)' }},
+        {{ label: 'P\u00e9rdida neta',        data: neto,    backgroundColor: 'rgba(239,68,68,0.85)', borderWidth: 1, borderColor: 'rgba(239,68,68,1)' }},
+      ]
+    }},
+    options: {{
+      responsive: true, maintainAspectRatio: false,
+      plugins: {{
+        legend: {{ position: 'top', labels: {{ usePointStyle: true, font: {{ size: 10 }} }} }},
+        tooltip: {{ callbacks: {{ label: c => c.dataset.label + ': ' + c.raw.toLocaleString('es-ES') + '\u20ac' }} }}
+      }},
+      scales: {{
+        x: {{ grid: {{ display: false }}, ticks: {{ font: {{ size: 10 }} }} }},
+        y: {{ ticks: {{ color: '#94a3b8', callback: v => v.toLocaleString('es-ES') + '\u20ac' }}, grid: {{ color: GC }} }}
+      }}
+    }}
+  }});
+}}
+
+// === C24: Lead time confirmadas vs canceladas ===
+function drawC24() {{
+  const el = document.getElementById('c24');
+  if (!el) return;
+  if (el._chart) el._chart.destroy();
+  const years = Object.keys(CANC_KPIS).sort();
+  const ltConf = years.map(y => CANC_KPIS[y].lt_conf);
+  const ltCanc = years.map(y => CANC_KPIS[y].lt_canc);
+  el._chart = new Chart(el, {{
+    type: 'bar',
+    data: {{
+      labels: years,
+      datasets: [
+        {{ label: 'Confirmadas (d\u00edas)', data: ltConf, backgroundColor: 'rgba(59,130,246,0.7)' }},
+        {{ label: 'Canceladas (d\u00edas)',  data: ltCanc, backgroundColor: 'rgba(239,68,68,0.7)' }},
+      ]
+    }},
+    options: {{
+      responsive: true, maintainAspectRatio: false,
+      plugins: {{
+        legend: {{ position: 'top', labels: {{ usePointStyle: true, font: {{ size: 10 }} }} }},
+        tooltip: {{ callbacks: {{ label: c => c.dataset.label + ': ' + c.raw + ' d\u00edas' }} }}
+      }},
+      scales: {{
+        x: {{ grid: {{ display: false }}, ticks: {{ font: {{ size: 10 }} }} }},
+        y: {{ ticks: {{ color: '#94a3b8', callback: v => v + 'd' }}, grid: {{ color: GC }} }}
+      }}
+    }}
+  }});
+}}
+
 // === DRAW ALL ===
 function drawAll() {{
-  drawKPIs(); drawC1(); drawC2(); drawC3(); drawC4(); drawC5(); drawC6(); drawC7(); drawC9(); drawSpark(); drawNextSH(); drawC10(); drawC12(); drawC13(); drawC14(); drawC15(); drawC16(); drawC17(); drawC18(); drawC19(); drawC21();
+  drawKPIs(); drawC1(); drawC2(); drawC3(); drawC4(); drawC5(); drawC6(); drawC7(); drawC9(); drawSpark(); drawNextSH(); drawC10(); drawC14(); drawC15(); drawC16(); drawC17(); drawC18(); drawC19(); drawC21(); drawC22(); drawC23(); drawC24();
 }}
 drawAll();
 
@@ -1628,7 +1799,9 @@ def main():
     ing, ocu, pm, reservas = load_reservas()
     rev, reviews_list = load_reviews()
     visitas = load_visitas()
-    data = {"reservas": reservas, "reviews_list": reviews_list, "visitas": visitas}
+    all_reservas = json.load(open(os.path.join(os.path.dirname(__file__), "_reservas.json"), encoding="utf-8"))
+    canc_kpis = calc_cancelaciones(all_reservas)
+    data = {"reservas": reservas, "reviews_list": reviews_list, "visitas": visitas, "canc_kpis": canc_kpis}
     html = build(data, ing, ocu, pm, rev)
     out = os.path.join(os.path.dirname(__file__), "dashboard.html")
     with open(out, "w", encoding="utf-8") as f:

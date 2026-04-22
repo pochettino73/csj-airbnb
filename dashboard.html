@@ -93,7 +93,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ <span>Airbnb</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 22/04/2026 15:20</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 22/04/2026 15:24</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -126,18 +126,6 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
     <h3>Evoluci&oacute;n anual de ingresos</h3>
     <div class="s">Total por a&ntilde;o con media hist&oacute;rica</div>
     <div class="ch xl"><canvas id="c2"></canvas></div>
-  </div>
-</div>
-<div class="row r2">
-  <div class="cd">
-    <h3>Beneficio neto anual</h3>
-    <div class="s">Ingresos &minus; costes estimados por a&ntilde;o</div>
-    <div class="ch lg"><canvas id="c12"></canvas></div>
-  </div>
-  <div class="cd">
-    <h3>Costes vs ingresos</h3>
-    <div class="s">Costes totales estimados vs ingreso bruto &mdash; % coste/ingreso</div>
-    <div class="ch lg"><canvas id="c13"></canvas></div>
   </div>
 </div>
 <div class="row r1">
@@ -855,61 +843,6 @@ function drawC10() {
   });
 }
 
-// === C12: Beneficio neto anual ===
-function drawC12() {
-  if(charts.c12) charts.c12.destroy();
-  const yrs = ACTIVE.filter(y => NETO_ANN[y] !== undefined);
-  const vals = yrs.map(y => NETO_ANN[y]);
-  const cols = vals.map((v,i) => v >= 0 ? '#22c55e' : '#ef4444');
-  const ingVals = yrs.map(y => ANN_ING[y]||0);
-  charts.c12 = new Chart(document.getElementById('c12'), {
-    type:'bar',
-    data: { labels:yrs, datasets:[
-      { label:'Beneficio neto', data:vals, backgroundColor:cols, borderRadius:6, borderSkipped:false },
-      { label:'Ingreso bruto', data:ingVals, type:'line', borderColor:'rgba(148,163,184,0.4)', borderDash:[6,4], borderWidth:1.5, pointRadius:3, pointBackgroundColor:'rgba(148,163,184,0.6)', fill:false },
-    ] },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{position:'top',labels:{usePointStyle:true,font:{size:10}}}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y.toLocaleString('es-ES',{maximumFractionDigits:0})+'€'}} },
-      scales:{ y:{ticks:{callback:v=>(v/1000).toFixed(0)+'k€'},grid:{color:GC}}, x:{grid:{display:false}} }
-    }
-  });
-}
-
-// === C13: Costes vs ingresos ===
-function drawC13() {
-  if(charts.c13) charts.c13.destroy();
-  const yrs = ACTIVE.filter(y => COSTES_ANN[y] !== undefined);
-  const costes = yrs.map(y => COSTES_ANN[y]);
-  const ingresos = yrs.map(y => ANN_ING[y]||0);
-  const pctCoste = yrs.map((y,i) => ingresos[i] > 1000 ? Math.round(costes[i]/ingresos[i]*100) : null);
-  charts.c13 = new Chart(document.getElementById('c13'), {
-    type:'bar',
-    data: { labels:yrs, datasets:[
-      { label:'Costes', data:costes, backgroundColor:'#ef4444aa', borderRadius:6, borderSkipped:false },
-      { label:'Ingresos', data:ingresos, backgroundColor:'rgba(59,130,246,0.3)', borderColor:'#3b82f6', borderWidth:1.5, borderRadius:6, borderSkipped:false },
-      { label:'% coste/ingreso', data:pctCoste, type:'line', borderColor:'#f59e0b', borderWidth:2, pointRadius:3, pointBackgroundColor:'#f59e0b', tension:0.3, fill:false, yAxisID:'y1' },
-    ] },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      interaction:{mode:'index',intersect:false},
-      plugins: {
-        legend:{position:'top',labels:{usePointStyle:true,font:{size:10}}},
-        tooltip:{callbacks:{
-          label:function(c) {
-            if(c.dataset.yAxisID==='y1') return c.dataset.label+': '+c.parsed.y+'%';
-            return c.dataset.label+': '+c.parsed.y.toLocaleString('es-ES',{maximumFractionDigits:0})+'€';
-          }
-        }}
-      },
-      scales: {
-        y: { ticks:{callback:v=>(v/1000).toFixed(0)+'k€'}, grid:{color:GC} },
-        y1: { position:'right', title:{display:true,text:'% coste/ingreso',color:'#f59e0b'}, ticks:{callback:v=>v+'%',color:'#f59e0b'}, grid:{drawOnChartArea:false}, min:0 },
-        x: { grid:{display:false} }
-      }
-    }
-  });
-}
 
 // === C14: PM por banda estacional ===
 function drawC14() {
@@ -1264,7 +1197,7 @@ function drawC24() {
 
 // === DRAW ALL ===
 function drawAll() {
-  drawKPIs(); drawC1(); drawC2(); drawC3(); drawC4(); drawC5(); drawC6(); drawC7(); drawC9(); drawSpark(); drawNextSH(); drawC10(); drawC12(); drawC13(); drawC14(); drawC15(); drawC16(); drawC17(); drawC18(); drawC19(); drawC21(); drawC22(); drawC23(); drawC24();
+  drawKPIs(); drawC1(); drawC2(); drawC3(); drawC4(); drawC5(); drawC6(); drawC7(); drawC9(); drawSpark(); drawNextSH(); drawC10(); drawC14(); drawC15(); drawC16(); drawC17(); drawC18(); drawC19(); drawC21(); drawC22(); drawC23(); drawC24();
 }
 drawAll();
 
