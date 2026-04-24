@@ -9,7 +9,13 @@ Todos los datos desde ficheros locales: _reservas.json, _reviews.json, _visitas.
 import json
 import os
 import calendar
+import sys
 from datetime import datetime
+
+from validar import validar as _validar
+
+_ROOT = os.path.dirname(os.path.dirname(__file__))  # CSJ/
+_DATOS = os.path.join(_ROOT, "datos")
 
 MESES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
 
@@ -23,7 +29,7 @@ PALETTE = {
 
 def load_reservas():
     """Carga _reservas.json y calcula ingresos, ocupación y PM mensuales por año."""
-    path = os.path.join(os.path.dirname(__file__), "_reservas.json")
+    path = os.path.join(_DATOS, "reservas.json")
     with open(path, "r", encoding="utf-8") as f:
         reservas = json.load(f)
 
@@ -69,7 +75,7 @@ def load_reservas():
 
 def load_reviews():
     """Carga _reviews.json y calcula medias por subcategoría."""
-    path = os.path.join(os.path.dirname(__file__), "_reviews.json")
+    path = os.path.join(_DATOS, "reviews.json")
     with open(path, "r", encoding="utf-8") as f:
         reviews = json.load(f)
 
@@ -115,7 +121,7 @@ def load_reviews():
 
 def load_visitas():
     """Carga _visitas.json con page views del listing por mes."""
-    path = os.path.join(os.path.dirname(__file__), "_visitas.json")
+    path = os.path.join(_DATOS, "visitas.json")
     if not os.path.exists(path):
         return {}
     with open(path, "r", encoding="utf-8") as f:
@@ -1795,15 +1801,20 @@ document.querySelectorAll('.period-btn').forEach(btn => {{
 
 
 def main():
+    errors, _ = _validar(verbose=True)
+    if errors:
+        print("Abortando — corrige los errores antes de regenerar el dashboard.")
+        sys.exit(1)
+
     print("Cargando datos locales...")
     ing, ocu, pm, reservas = load_reservas()
     rev, reviews_list = load_reviews()
     visitas = load_visitas()
-    all_reservas = json.load(open(os.path.join(os.path.dirname(__file__), "_reservas.json"), encoding="utf-8"))
+    all_reservas = json.load(open(os.path.join(_DATOS, "reservas.json"), encoding="utf-8"))
     canc_kpis = calc_cancelaciones(all_reservas)
     data = {"reservas": reservas, "reviews_list": reviews_list, "visitas": visitas, "canc_kpis": canc_kpis}
     html = build(data, ing, ocu, pm, rev)
-    out = os.path.join(os.path.dirname(__file__), "dashboard.html")
+    out = os.path.join(_ROOT, "dashboard.html")
     with open(out, "w", encoding="utf-8") as f:
         f.write(html)
     print(f"\nDashboard: {out}")

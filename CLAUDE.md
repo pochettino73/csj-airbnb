@@ -1,4 +1,4 @@
-> **Nota**: Forma parte de `segundo-cerebro/`. Las reservas entran via buzon centralizado (`segundo-cerebro/00-buzon/`). Ver [CLAUDE.md raiz](../../CLAUDE.md) para el flujo completo.
+> **Proyecto**: CSJ — Airbnb Colonia de Sant Jordi. Ruta: `C:\Users\droig\Proyectos\CSJ\`. Buzón de entrada: `CSJ/buzon/entrante/`.
 
 # CSJ Airbnb — Documentacion del Proyecto
 
@@ -43,17 +43,31 @@ Todo el sistema funciona con 3 ficheros JSON locales. **No hay llamadas API, no 
 ```
 ESTRUCTURA DEL PROYECTO
 ═══════════════════════
-01-datos/raw/          28 ficheros JSON del export personal de Airbnb (19/03/2026)
-_reservas.json         490 reservas (2015-2027) — fuente de verdad
-_reviews.json          343 evaluaciones — puntuaciones y Superhost
-_visitas.json          94 meses de page views
-visualizar.py          Genera dashboard.html desde los 3 JSON
-dashboard.html         Dashboard ejecutivo (publicado en GitHub Pages)
-CLAUDE.md              Este documento
+CSJ/
+├── dashboard.html         Dashboard ejecutivo (raíz — requerido por GitHub Pages)
+├── CLAUDE.md
+├── datos/
+│   ├── reservas.json      588 reservas (2015-2027) — fuente de verdad
+│   ├── reviews.json       346 evaluaciones — puntuaciones y Superhost
+│   ├── visitas.json       meses de page views
+│   └── raw/               28 ficheros JSON del export Airbnb (19/03/2026)
+├── scripts/
+│   ├── visualizar.py      Genera dashboard.html desde los 3 JSON
+│   ├── validar.py         Valida reservas.json (se ejecuta automáticamente)
+│   ├── pricing.py         RMS determinista — genera output/pricing_output.xlsx
+│   └── utils/             Scripts de debug (no operativos)
+├── output/
+│   ├── pricing_output.xlsx
+│   └── pricing_output.json
+└── buzon/
+    ├── entrante/          Dani deja PDFs aquí
+    └── procesado/YYYY/MM/
 
 GENERACION
 ══════════
-python visualizar.py  →  dashboard.html  →  git push  →  GitHub Pages
+python scripts/visualizar.py  →  dashboard.html  →  git push  →  GitHub Pages
+python scripts/pricing.py     →  output/pricing_output.xlsx
+python scripts/validar.py     →  validación standalone
 ```
 
 ### Google Sheet — ARCHIVO MUERTO
@@ -66,42 +80,42 @@ El Google Sheet (`1BEa1m5InTFUDzvvILcDafwC3mRn7b6GkLYnq0eAMvXg`) queda como hist
 
 ### 1. Nueva reserva
 
-1. Dani deja PDF de reserva en `segundo-cerebro/00-buzon/entrante/`
+1. Dani deja PDF de reserva en `buzon/entrante/`
 2. Claude extrae datos del PDF
-3. Verificar si la reserva ya existe en `_reservas.json`
+3. Verificar si la reserva ya existe en `datos/reservas.json`
 4. Si cruza meses: calcular prorrateo (2 registros, el sin `code` es continuacion)
-5. Anadir a `_reservas.json`
-6. Ejecutar `python visualizar.py` para regenerar dashboard
+5. Anadir a `datos/reservas.json`
+6. Ejecutar `python scripts/visualizar.py` para regenerar dashboard (valida automáticamente)
 7. `git commit && git push` para actualizar GitHub Pages
-8. Mover PDF a `segundo-cerebro/00-buzon/procesado/YYYY/MM/`, registrar en log
+8. Mover PDF a `buzon/procesado/YYYY/MM/`
 
 ### 2. Actualizar visitas (1x/mes)
 
 1. Dani entra al panel de Airbnb → Rendimiento → Visitas
-2. Edita `_visitas.json`, anade la linea del mes: `"2026-03": 750`
-3. Ejecuta `python visualizar.py`
+2. Edita `datos/visitas.json`, anade la linea del mes: `"2026-03": 750`
+3. Ejecuta `python scripts/visualizar.py`
 4. `git commit && git push`
 
 ### 3. Actualizar reviews (cuando haya nuevo export)
 
 1. Solicitar export de datos personales en Airbnb
-2. Extraer a `01-datos/raw/`
-3. Claude procesa y actualiza `_reviews.json`
-4. Claude enriquece `_reservas.json` con nuevas reservas/fechas
+2. Extraer a `datos/raw/`
+3. Claude procesa y actualiza `datos/reviews.json`
+4. Claude enriquece `datos/reservas.json` con nuevas reservas/fechas
 5. Regenerar dashboard y push
 
 ### 4. Regenerar dashboard
 
 ```bash
-python visualizar.py
-git add _reservas.json dashboard.html && git commit -m "..." && git push
+python scripts/visualizar.py
+git add datos/reservas.json dashboard.html && git commit -m "..." && git push
 ```
 
-Lee los 3 JSON locales. Genera `dashboard.html`. Push publica en GitHub Pages.
+Lee los 3 JSON en `datos/`. Genera `dashboard.html`. Push publica en GitHub Pages.
 
 ---
 
-## Estructura de _reservas.json
+## Estructura de datos/reservas.json
 
 ```json
 {
@@ -122,9 +136,10 @@ Lee los 3 JSON locales. Genera `dashboard.html`. Push publica en GitHub Pages.
 - **`booking_date`**: fecha de venta (cuando se hizo la reserva)
 - **`checkin`**: fecha de estancia (cuando entra el huesped)
 - **`confirmation_code`**: codigo Airbnb (solo ~3/ano tienen match del export)
+- **`rate_type`**: (opcional, solo nuevas reservas) `"refundable"` | `"nrf"`. Histórico sin dato = None. pricing.py normaliza los PMs NRF a equivalente flexible dividiendo por (1 - 0.10).
 - **Reservas entre meses**: se prorratean como 2 registros (el que no tiene `code` es la continuacion)
 
-## Estructura de _visitas.json
+## Estructura de datos/visitas.json
 
 ```json
 {
@@ -247,14 +262,30 @@ Filtros: ano y1 vs y2, periodo Anual / A fecha.
 
 Airbnb evalua trimestralmente (1 ene, 1 abr, 1 jul, 1 oct) con ventana de 365 dias.
 
-### Ventanas de evaluacion
+### Ventanas de evaluacion — notacion de negocio (T1-T4)
 
-| Trimestre | Fecha evaluacion | Ventana |
-|-----------|-----------------|---------|
-| Q1 | 1 enero Y | 1 ene Y-1 — 31 dic Y-1 |
-| Q2 | 1 abril Y | 1 abr Y-1 — 31 mar Y |
-| Q3 | 1 julio Y | 1 jul Y-1 — 30 jun Y |
-| Q4 | 1 octubre Y | 1 oct Y-1 — 30 sep Y |
+El dashboard usa notacion de negocio (T1=Jan-Mar, T2=Apr-Jun, T3=Jul-Sep, T4=Oct-Dec), NO la notacion de Airbnb (Q1-Q4). El mapeo es:
+
+| Label dashboard | Fecha evaluacion Airbnb | Ventana | Trimestre de negocio |
+|-----------------|------------------------|---------|----------------------|
+| Y-T1 | 1 abril Y | 1 abr Y-1 — 31 mar Y | Ene-Mar de Y |
+| Y-T2 | 1 julio Y | 1 jul Y-1 — 30 jun Y | Abr-Jun de Y |
+| Y-T3 | 1 octubre Y | 1 oct Y-1 — 30 sep Y | Jul-Sep de Y |
+| (Y-1)-T4 | 1 enero Y | 1 ene Y-1 — 31 dic Y-1 | Oct-Dic de Y-1 |
+
+### Implementacion en visualizar.py
+
+```python
+t_map = {1: 4, 2: 1, 3: 2, 4: 3}   # Airbnb q -> T de negocio
+t_year = {1: y-1, 2: y, 3: y, 4: y}  # ajuste de año
+```
+
+- `FUTURE_SH`: incluye el trimestre cuya eval_date >= hoy (4 entradas: T_actual_completado + T_activo + T3 + T4)
+- `shIdx = 1`: tab activo por defecto = T2 (el siguiente a evaluar, el que necesita seguimiento)
+- `FUTURE_SH[0]` = T1 (recien cerrado, visible como referencia historica)
+- El chart timeline muestra los ultimos 4 trimestres (`slice(-4)`), con `autoSkip:false`
+- La tarjeta de Rating en el menu superior usa `FUTURE_SH[1]` (T2 activo)
+- El chart corta en `FUTURE_SH[1].label` (T2), no en NEXT_SH (T1)
 
 ### Criterios
 
@@ -263,7 +294,115 @@ Airbnb evalua trimestralmente (1 ene, 1 abr, 1 jul, 1 oct) con ventana de 365 di
 - Tasa de cancelacion < 1%
 - Tasa de respuesta >= 90%
 
-El dashboard calcula automaticamente los trimestres futuros con: rating actual de la ventana, distribucion de notas, reviews pendientes de evaluar, y simulacion de cuantas 5 estrellas se necesitan para llegar a 4.8.
+---
+
+## Cambios aplicados 2026-04-21
+
+### Sección 8 — Cancelaciones (nueva)
+
+Se añadió campo `status` al JSON de reservas (`"confirmed"` / `"cancelled"`) para separar los dos universos de análisis. Las reservas sin `status` se tratan como `confirmed` por defecto.
+
+A las cancelaciones se les añadió campo `impacto` (estimación del precio perdido) y `total` (penalización cobrada por Airbnb). La lógica de recuperación (`recovery()`) calcula el solapamiento en días entre la cancelación y reservas confirmadas posteriores en las mismas fechas, estimando el ingreso que se recuperó.
+
+**Modelo de cálculo por cancelación:**
+- `perdido` = `impacto` + `total`
+- `recuperado` = ingreso prorateado de reservas confirmadas que ocuparon esas fechas
+- `neto` = `perdido` − `total` − `recuperado`
+
+**3 gráficas en S8:**
+- C22: Tasa de cancelación anual (confirmadas vs canceladas, % tasa)
+- C23: Impacto económico (perdido / recuperado / neto por año en EUR)
+- C24: Lead time comparado (días de antelación al reservar: confirmadas vs canceladas)
+
+**KPI en cabecera:** Card "Cancelaciones Y1" con nº cancelaciones y tasa %.
+
+---
+
+## Cambios aplicados 2026-04-21 (sesión tarde)
+
+### Corrección crítica: reservas faltantes en _reservas.json
+
+El export de datos de Airbnb (19/03/2026) **no incluye todas las reservas como host**. Al cruzar el JSON contra el panel de Airbnb → Reservas, se detectaron 11 reservas confirmadas ausentes y 2 registros con datos cruzados.
+
+**11 reservas añadidas:**
+HMKEA23BY9, HM5RJ9QHXS, HMZKC8PCKM, HMFJ8S23WT, HMAZFDQRF3, HMQMWE3HM4, HMNKEKCM4M, HMHM4FQMHK, HMHXK9AFY5, HMHS3SRTMF, HMB4YS98MZ
+
+Las que cruzan mes (HMNKEKCM4M jun→jul, HMHM4FQMHK jul→ago) se añadieron como 2 registros cada una.
+
+**2 registros corregidos:**
+- HMTPSMQXSS: tenía datos de Lia Piedra (7n, 827€) → corregido a Susan Schimmeyer (5n, 636.04€, 12-17 jul)
+- HMNWSFKKZK: tenía datos de Vasile Cumatrenco en 2 registros → corregido a Lia Piedra Prieto (7n, 826.85€, 21-28 jul, registro único)
+
+**Lección aprendida:** el export personal de Airbnb no es fiable como fuente completa de reservas host. La fuente de verdad es el panel Airbnb → Reservas. Cada vez que haya dudas sobre huecos, contrastar con el panel.
+
+---
+
+## Cambios aplicados 2026-04-23
+
+### Corrección prorrateos cross-month (histórico + 2026)
+
+Se detectaron 5 registros con noches mal prorateadas (el registro principal tenía el total de noches en lugar de solo las noches del mes de checkin):
+
+- HMNKEKCM4M (Darya Kramar, jun→jul 2026): nights 10→1 en junio
+- HMHM4FQMHK (Vasile Cumatrenco, jul→ago 2026): nights 8→2 en julio
+- Lisanne Vladisavljevic (sep→oct 2021): nights 9→2 en septiembre + continuación oct añadida (7n)
+- Mireille Heronneau (oct→nov 2021): nights 5→2 en octubre + continuación nov añadida (3n)
+- Elisabeth Liwadas Kreutz (may→jun 2022): nights 7→5 en mayo + continuación jun añadida (2n)
+
+**Regla:** el registro principal solo lleva las noches que caen en su mes. El total (€) va íntegro en el primer mes. La continuación (code='') lleva las noches del segundo mes y total=0.
+
+### Reserva añadida: Arthur Schaber (HMZRBPTXRS)
+
+Reserva no incluida en el export de Airbnb. Añadida manualmente tras validar huecos:
+- Feb 26 → Mar 2 de 2026 (4 noches, 217.41€, 1 adulto)
+- Registro Feb: year=2026, month=2, nights=3, total=217.41
+- Continuación Mar: year=2026, month=3, nights=1, total=0
+
+### validar.py — nuevo script de validación automática
+
+Creado `validar.py` e integrado en `visualizar.py`. Se ejecuta automáticamente en cada `python visualizar.py`. Si hay errores, aborta antes de generar el dashboard.
+
+**Checks implementados:**
+1. Campos obligatorios (year, month, nights, total)
+2. Cross-month mal prorateado (noches > días restantes del mes)
+3. Continuaciones huérfanas (code='' + total=0 sin registro principal en mes anterior)
+4. Ocupación >100% en cualquier mes
+5. Confirmadas con total=0 que no son continuaciones
+6. PM outlier (<15€ o >500€/noche según campo pm)
+7. Cancelaciones sin campo impacto
+8. Reviews con reservation_id desconocido
+
+**Total registros tras sesión:** 588 (502 confirmadas, 86 canceladas), 346 reviews.
+
+### Eliminadas gráficas C12 y C13
+
+Se eliminaron del dashboard las gráficas de Beneficio Neto y Costes vs Ingresos por no aportar valor operativo.
+
+---
+
+## Cambios aplicados 2026-04-23 (sesión tarde)
+
+### Reorganización de carpetas
+
+Estructura simplificada y semántica:
+- `datos/` — reservas.json, reviews.json, visitas.json, raw/
+- `scripts/` — visualizar.py, validar.py, pricing.py, utils/
+- `output/` — pricing_output.xlsx, pricing_output.json
+- `buzon/` — entrante/, procesado/YYYY/MM/
+- `dashboard.html` permanece en raíz (requerido por GitHub Pages)
+
+Scripts migrados a `scripts/` con paths actualizados:
+- `validar.py`: usa `Path(__file__).parent.parent` para localizar `datos/`
+- `visualizar.py`: constantes `_ROOT` y `_DATOS` resuelven rutas desde la posición del script
+- `pricing.py`: `_ROOT`, `_DEFAULT_INPUT`, `_DEFAULT_XLSX`, `_DEFAULT_JSON` como defaults dinámicos
+
+**Comando actualizado:** `python scripts/visualizar.py` (antes `python visualizar.py`)
+
+### Reserva añadida: Sophie Metais (HMBB8ASH5P)
+
+- May 31 → Jun 3 de 2026 (3 noches, 282€ total neto, rate_type="nrf")
+- PM NRF = 94€/noche (Airbnb); PM flexible normalizado = 104.44€
+- Registro único (no cross-month)
 
 ---
 
@@ -274,10 +413,13 @@ El dashboard calcula automaticamente los trimestres futuros con: rating actual d
 - [x] 0 dependencias externas (3 JSON locales, sin API)
 - [x] Export Airbnb procesado: _reservas.json enriquecido + _reviews.json creado
 - [x] Dashboard con pace report, lead time, Superhost tracking
-- [x] _reservas.json como fuente de verdad (490 reservas, totales ajustados)
+- [x] _reservas.json como fuente de verdad (587 registros, totales ajustados)
 - [x] Dashboard responsive (movil + desktop)
 - [x] Carpetas simplificadas (sin subcarpetas vacias)
+- [x] validar.py integrado en visualizar.py — validación automática en cada generación
+- [x] Carpetas reorganizadas: datos/, scripts/, output/, buzon/
+- [x] pricing.py con RMS determinista + columna Precio_NRF_-10% + WEEKLY_DISCOUNT
 
 ---
 
-*Documento actualizado el 23/03/2026*
+*Documento actualizado el 23/04/2026 (sesión tarde)*
