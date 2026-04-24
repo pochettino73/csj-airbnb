@@ -398,6 +398,34 @@ Scripts migrados a `scripts/` con paths actualizados:
 
 **Comando actualizado:** `python scripts/visualizar.py` (antes `python visualizar.py`)
 
+### auditar_dashboard.py — nuevo script de auditoría de métricas
+
+Creado `scripts/auditar_dashboard.py` e integrado en `visualizar.py` (se ejecuta tras validar.py). Calcula métricas de forma independiente y las compara con las fórmulas del dashboard.
+
+**Flujo completo:** `validar.py` (datos) → `auditar_dashboard.py` (métricas) → generación dashboard
+
+**Errores BLOQUEANTES** (impiden generación del dashboard):
+- Reservas solapadas activas (checkout en el futuro)
+- Ocupación > 100% en cualquier mes
+- Cross-month mal prorateado
+- Tests unitarios de casos documentados fallidos
+
+**AVISOS** (no bloquean):
+- PM mensual distorsionado por bug cross-month del dashboard (conocido, pendiente fix)
+- Inconsistencias históricas de PM (registros pre-2021 sin cleaning almacenado)
+- Solapes históricos (ambas reservas ya cerradas)
+- Pace con registros sin booking_date
+
+**Umbrales PM:** AVISO si delta > 5%, ERROR solo si delta > 15% en año actual sin cross-month
+
+**Tests unitarios incluidos (T1-T6):**
+- T1: HMNKEKCM4M Darya Kramar (jun→jul 2026) — nights=1 en jun, continuación en jul, PM distorsionado
+- T2: HMHM4FQMHK Vasile Cumatrenco (jul→ago 2026) — nights=2 en jul
+- T3: HMZRBPTXRS Arthur Schaber (feb→mar 2026) — nights=3 en feb
+- T4: Lisanne Vladisavljevic (sep 2021) — nights=2
+- T5: Mireille Heronneau (oct 2021) — nights=2
+- T6: Elisabeth Liwadas Kreutz (may 2022) — nights=5
+
 ### Reserva añadida: Sophie Metais (HMBB8ASH5P)
 
 - May 31 → Jun 3 de 2026 (3 noches, 282€ total neto, rate_type="nrf")
@@ -406,20 +434,83 @@ Scripts migrados a `scripts/` con paths actualizados:
 
 ---
 
+## Sistema de validación de datos
+
+### Validación automática — validar.py
+
+Se ejecuta automáticamente cada vez que se lanza `python scripts/visualizar.py`. Si detecta **errores**, aborta y no genera el dashboard. Si detecta **avisos**, los muestra pero continúa.
+
+También se puede lanzar standalone: `python scripts/validar.py`
+
+#### Checks que provocan ERROR (bloquean la generación del dashboard)
+
+| # | Qué detecta | Ejemplo |
+|---|-------------|---------|
+| 1 | **Campos obligatorios ausentes** — falta year, month, nights o total | Registro sin `total` |
+| 2 | **Cross-month mal prorateado** — el registro principal tiene más noches de las que caben en su mes | Reserva con checkin 30-jun y nights=10 cuando solo quedan 1 noche en junio |
+| 4 | **Ocupación imposible** — la suma de noches confirmadas en un mes supera los días del mes | Mes de 30 días con 32 noches vendidas |
+
+#### Checks que generan AVISO (no bloquean)
+
+| # | Qué detecta | Ejemplo |
+|---|-------------|---------|
+| 3 | **Continuación huérfana** — registro sin code y total=0 sin registro principal en mes anterior | Continuación de julio sin reserva principal en junio |
+| 5 | **Reserva confirmada con total=0** que no es continuación | Reserva con code pero sin ingreso |
+| 6 | **PM outlier** — precio/noche fuera de rango (< 15€ o > 500€) según campo `pm` almacenado | PM=3€ o PM=600€ |
+| 7 | **Cancelación sin campo `impacto`** | Cancelación sin estimación de ingreso perdido |
+| 8 | **Review con reservation_id desconocido** — el código no existe en reservas.json | Review huérfana |
+
+### Reglas de integridad para reservas cross-month
+
+Cuando una reserva cruza de un mes al siguiente se crean **2 registros**:
+
+| Campo | Registro principal (mes checkin) | Continuación (mes siguiente) |
+|-------|----------------------------------|------------------------------|
+| `code` | Código Airbnb (ej. HMXXX) | Vacío `""` |
+| `year` / `month` | Mes del checkin | Mes siguiente |
+| `nights` | Solo las noches que caen en su mes | Las noches del mes siguiente |
+| `total` | Ingreso íntegro de la reserva | `0` |
+| `pm` | PM real calculado sobre el total de noches | `0` |
+| `cleaning` | 60€ | `0` |
+
+**Por qué así:** el ingreso se cobra de una vez y se asigna al mes de entrada. Las noches se prorratean para que la ocupación mensual sea correcta.
+
+### Limitación conocida: PM distorsionado en meses con reservas cross-month
+
+**Problema:** el dashboard calcula el PM mensual como `(total - cleaning) / nights` sumando todos los registros del mes. Para meses donde entra la parte principal de una reserva cross-month (con el ingreso íntegro pero pocas noches), el PM aparece artificialmente alto.
+
+**Ejemplo real (junio 2026):** Darya Kramar tiene 1 noche en junio y 9 en julio, con 1.110€ íntegros en junio. El dashboard muestra PM junio 2026 = **115€/noche** cuando el PM real ponderado es **81€/noche**.
+
+**Impacto:** solo afecta a meses con reservas cross-month. El campo `pm` almacenado en cada registro es siempre correcto (refleja el precio real por noche sobre la estancia completa). Los ingresos totales y la ocupación no están afectados.
+
+**Estado:** bug conocido, pendiente de corregir en visualizar.py (usar campo `pm` ponderado por noches en lugar de `total/nights`).
+
+### Qué NO controla el validador automático
+
+- Que el precio sea razonable para la temporada (lo hace pricing.py con percentiles)
+- Que el nombre del huésped sea correcto (se verifica manualmente contra el PDF)
+- Que el booking_date sea correcto (se extrae del PDF)
+- La distorsión del PM mensual en el dashboard por reservas cross-month (bug conocido arriba)
+- Que todas las reservas del panel Airbnb estén en el JSON — el export de Airbnb no es fiable, hay que contrastar manualmente con el panel Airbnb → Reservas cuando haya dudas
+
+---
+
 ## Pendiente / Mejoras
 
 - [ ] Retomar control de gastos reales (no se actualiza desde 2024)
+- [ ] Corregir PM mensual en dashboard para reservas cross-month (usar campo `pm` ponderado) — auditoria_dashboard.py lo detecta como AVISO
 - [x] GitHub Pages activo: https://pochettino73.github.io/csj-airbnb/dashboard.html
 - [x] 0 dependencias externas (3 JSON locales, sin API)
-- [x] Export Airbnb procesado: _reservas.json enriquecido + _reviews.json creado
+- [x] Export Airbnb procesado: reservas.json enriquecido + reviews.json creado
 - [x] Dashboard con pace report, lead time, Superhost tracking
-- [x] _reservas.json como fuente de verdad (587 registros, totales ajustados)
+- [x] reservas.json como fuente de verdad (588 registros, totales ajustados)
 - [x] Dashboard responsive (movil + desktop)
 - [x] Carpetas simplificadas (sin subcarpetas vacias)
 - [x] validar.py integrado en visualizar.py — validación automática en cada generación
+- [x] auditar_dashboard.py — auditoría de métricas independiente (10 checks, tests unitarios)
 - [x] Carpetas reorganizadas: datos/, scripts/, output/, buzon/
 - [x] pricing.py con RMS determinista + columna Precio_NRF_-10% + WEEKLY_DISCOUNT
 
 ---
 
-*Documento actualizado el 23/04/2026 (sesión tarde)*
+*Documento actualizado el 24/04/2026*

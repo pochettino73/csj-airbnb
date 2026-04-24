@@ -13,6 +13,7 @@ import sys
 from datetime import datetime
 
 from validar import validar as _validar
+from auditar_dashboard import auditar as _auditar
 
 _ROOT = os.path.dirname(os.path.dirname(__file__))  # CSJ/
 _DATOS = os.path.join(_ROOT, "datos")
@@ -1804,6 +1805,11 @@ def main():
     errors, _ = _validar(verbose=True)
     if errors:
         print("Abortando — corrige los errores antes de regenerar el dashboard.")
+        sys.exit(1)
+
+    blocking, _ = _auditar(verbose=True)
+    if blocking:
+        print("Abortando — errores bloqueantes en auditoría de métricas.")
         sys.exit(1)
 
     print("Cargando datos locales...")
