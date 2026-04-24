@@ -1,0 +1,1329 @@
+[
+  {
+    "listingsCalendarData": [
+      {
+        "listingId": 4659211
+      },
+      {
+        "seasonalCalendarData": {
+          "seasonalMinNights": [
+            {
+              "checkinAllowedOn": "ALL",
+              "minNights": 1,
+              "endDate": "2025-03-28",
+              "startDate": "2025-03-28"
+            },
+            {
+              "checkinAllowedOn": "ALL",
+              "minNights": 2,
+              "endDate": "2025-04-14",
+              "startDate": "2025-04-13"
+            },
+            {
+              "checkinAllowedOn": "ALL",
+              "minNights": 1,
+              "endDate": "2025-05-12",
+              "startDate": "2025-05-12"
+            },
+            {
+              "checkinAllowedOn": "ALL",
+              "minNights": 1,
+              "endDate": "2025-06-17",
+              "startDate": "2025-06-17"
+            },
+            {
+              "checkinAllowedOn": "ALL",
+              "minNights": 2,
+              "endDate": "2025-07-11",
+              "startDate": "2025-07-10"
+            },
+            {
+              "checkinAllowedOn": "ALL",
+              "minNights": 1,
+              "endDate": "2025-08-10",
+              "startDate": "2025-08-10"
+            },
+            {
+              "checkinAllowedOn": "ALL",
+              "minNights": 1,
+              "endDate": "2025-08-21",
+              "startDate": "2025-08-21"
+            },
+            {
+              "checkinAllowedOn": "ALL",
+              "minNights": 2,
+              "endDate": "2025-08-28",
+              "startDate": "2025-08-27"
+            }
+          ]
+        },
+        "globalCalendarData": {
+          "bookingLeadTime": {
+            "bookingLeadTimeRule": 24,
+            "allowRequestToBook": false
+          }
+        },
+        "listingId": 1140090,
+        "dailyCalendarData": {
+          "busyOverrides": [
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2016-05-20"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2016-05-21"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2016-05-22"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2016-05-23"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2016-05-24"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2016-05-25"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2016-05-26"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-05-10"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-06-13"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-06-14"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-06-15"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-06-16"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-07-23"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-07-24"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-07-25"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-07-26"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-07-27"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-07-28"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-07-29"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-07-30"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-07-31"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-08-01"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-08-02"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-08-03"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-08-04"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-08-05"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-08-06"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-08-07"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-08-08"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-09-11"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-09-12"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-09-13"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-09-14"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-09-15"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-09-16"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2017-09-17"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-02-22"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-02-23"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-02-24"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-02-25"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-02-27"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-02-28"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-03-01"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-04-05"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-04-06"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-04-07"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-04-17"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-04-18"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-04-19"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-04-24"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-04-25"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-04-26"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-05-01"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-05-02"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-05-03"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-05-10"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-05-11"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-05-12"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-05-30"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-06-16"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-06-17"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-08-03"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-08-04"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-10-04"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-10-15"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-10-16"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-10-20"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-10-21"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-11-24"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-11-25"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-11-26"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-11-27"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2018-11-28"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-01-19"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-01-20"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-01-21"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-01-22"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-01-23"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-01-24"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-01-25"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-01-26"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-01-27"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-01-28"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-01-29"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-01-30"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-01-31"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-01"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-02"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-03"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-04"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-05"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-06"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-07"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-08"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-09"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-10"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-11"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-12"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-13"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-14"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-15"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-16"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-17"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-18"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-19"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-20"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-21"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-22"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-23"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-24"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-25"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-26"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-27"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-02-28"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-03-01"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-03-02"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-03-03"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-03-04"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-03-05"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-03-06"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-03-07"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-03-08"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-03-09"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-03-10"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-08-02"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2019-08-03"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-13"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-14"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-15"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-16"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-17"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-18"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-19"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-20"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-21"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-22"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-23"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-24"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-25"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-26"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-27"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-28"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-29"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-30"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-01-31"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-06-30"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-07-01"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-07-02"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-07-03"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-07-04"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-07-05"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-10-05"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-10-06"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-10-07"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-10-08"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2020-10-09"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2021-09-25"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2021-09-26"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2021-09-27"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2021-09-28"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2021-11-04"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2021-11-05"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2021-11-06"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2021-11-07"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2021-11-08"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2021-11-09"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2021-11-10"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2021-11-11"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2021-11-12"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-02-11"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-02-12"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-02-13"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-02-14"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-02-15"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-02-16"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-02-25"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-02-26"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-02-27"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-11-21"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-11-22"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-11-23"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-12-03"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-12-04"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-12-05"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-12-06"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-12-07"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2022-12-08"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2023-12-18"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2023-12-19"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2023-12-20"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2023-12-21"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2023-12-22"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2023-12-23"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2024-03-26"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2024-03-27"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2024-11-18"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2024-11-19"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2024-11-20"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2025-02-28"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2025-03-05"
+            },
+            {
+              "busyReason": [
+                "HOST_BUSY"
+              ],
+              "calendarDate": "2025-03-06"
+            }
+          ],
+          "availableOverrides": [
+            {
+              "overrideType": [
+                "MIN_DAYS_NOTICE"
+              ],
+              "calendarDate": "2025-11-12"
+            }
+          ]
+        }
+      },
+      {
+        "globalCalendarData": {
+          "bookingLeadTime": {
+            "bookingLeadTimeRule": 0,
+            "allowRequestToBook": false
+          }
+        },
+        "listingId": 1234325
+      }
+    ],
+    "ruleGroupAvailabilityRules": [
+      {
+        "maxNightsAvailabilityRule": [
+          {
+            "dayOfWeek": "UNSPECIFIED",
+            "maxNights": 2
+          }
+        ],
+        "minNightsAvailabilityRule": [
+          {
+            "dayOfWeek": "UNSPECIFIED",
+            "minNights": 2
+          }
+        ]
+      },
+      {
+        "minNightsAvailabilityRule": [
+          {
+            "dayOfWeek": "UNSPECIFIED",
+            "minNights": 1
+          }
+        ]
+      },
+      {
+        "minNightsAvailabilityRule": [
+          {
+            "dayOfWeek": "UNSPECIFIED",
+            "minNights": 2
+          }
+        ]
+      }
+    ]
+  }
+]

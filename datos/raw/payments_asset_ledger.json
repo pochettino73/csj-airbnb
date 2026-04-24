@@ -1,0 +1,2975 @@
+[
+  {
+    "funds": [
+      {
+        "ownerType": "user",
+        "createdAt": 1640438376000,
+        "amount": 216830000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G01RKNnLmDBrwTwz5kSGokZW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1651148868000,
+        "amount": 438670000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G01U9hYOzCY1in2ytyyarrAC00001DZ8rCZSnD1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1594560623000,
+        "amount": 1198550000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G02yTApmyaJ6z7dgCTzIelXW00001DZ8rCZSnD1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1559997903000,
+        "amount": 373920000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G03E1E95ZLA9PFiKsjGjt2c00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1632143627000,
+        "amount": 381630000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G03clyJUdkb8SuMvlBkFzFvW00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1641303723000,
+        "amount": 193700000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G06SWix6ymWlyEISvozfYUOO00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1711073054414,
+        "amount": 338830000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G07RRqn0Wr5wgFLuQr0yhGA000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1710726411442,
+        "amount": 277550000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G07lo95yrQdMbPYzp3jf3Z4m00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1759079187648,
+        "amount": 274650000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G08CqNksxycHTkfaYxTSVw1W00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1746636765255,
+        "amount": 456790000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0978Ix1pX4wAzjM5YNrcYCW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1759338801201,
+        "amount": 837840000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0AeicYSE173A8nE7MPk7yKW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1741884905673,
+        "amount": 265980000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0C876c7bn05e3Qzrpvycjye00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1760893754037,
+        "amount": 154000000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0CEtXnJYL9ZuG8pQsizAOUW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1749833748026,
+        "amount": 467390000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0CHA8aXBX5ggRTiq7RpyrgW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1766680811177,
+        "amount": 117570000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0CPzSAtASWW5bf6RL5sQYhW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1643982995000,
+        "amount": 164790000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0DYzLK9rOXhjy4uy8Mac1UG00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1684327147451,
+        "amount": 206140000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0EULwXb919dOxRgUNxjFmH00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1697201481242,
+        "amount": 339700000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0F57GzU2Qac5bN4xaMg64GW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1620998617000,
+        "amount": 342110000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0FiKdwZrXDHupBqDs4q9R200000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1697633112716,
+        "amount": 707830000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0HC6im0nbCReQNhyPsprbZ000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1660999794835,
+        "amount": 743550000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0IQIDfBRj5ZBH2CiXWqhhL00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1681609318914,
+        "amount": 402440000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0KTr1vow18uxj3XzJEdxZnW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1709085816984,
+        "amount": 426960000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0LIzYkmzaJ9wR2CRJQok6mW00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1680784926608,
+        "amount": 372950000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0LfzWrXIgaK4HEdplmavTK000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1687178828266,
+        "amount": 594600000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0Lph1MUBL4sfvPQHv19JO500000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1708911941446,
+        "amount": 121040000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0MoNAdULyaNDeI6ZFSu31F000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1772902535004,
+        "amount": 300670000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0MsbTcwbfEof1s8Q0QyyYbW00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1623590400000,
+        "amount": 485700000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0MypFhMhOcfDGYZhjqrjRwW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1570624834000,
+        "amount": 262130000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0N4mWyTB6YUTLvEjgumuYz000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1574257135000,
+        "amount": 345780000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0OSuQSlMT24vcpMzxg5PFRW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1756832906567,
+        "amount": 993470000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0Peahtk1nE5PSWypeoeJzpW00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1597149880000,
+        "amount": 323800000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0Qr5ucXprBlOwY2cUzl1MCW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1720270200559,
+        "amount": 479920000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0RKzmy1LUHnotLjy4mDnWi800002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1713877357863,
+        "amount": 543960000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0RxPhPj0P4mxIKETmLM1I000000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1732295154445,
+        "amount": 250570000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0S2X7NzP0bbKhM0cwUZ889000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1700963945919,
+        "amount": 257310000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0S9lMutcj6kxkt6eEzWCxg000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1562419348000,
+        "amount": 515580000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0UfeFy9Y2YnitzNFzzx3P5u00001DZ8rCZSnD1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1686315030891,
+        "amount": 346930000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0UjeCbppL47Qch93WBgNss00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1743958326459,
+        "amount": 283330000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0Xf3XvUUjAfhLo5qJw5TAT00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1713647872617,
+        "amount": 203530000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0YWuSaP516evpr6csbF1p400000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1657715344000,
+        "amount": 743540000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0ZVGQ6ILL7COpAbCpmnQwu00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1703555409100,
+        "amount": 216830000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0aTchzCBkZB47WGI61fw6b000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1740157607882,
+        "amount": 203530000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0aeHJy6wIdGy0uqDSHxzVbG00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1563971892000,
+        "amount": 1230160000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0aeTgHaiH5yryb1Q6ga3ABm00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1752772729053,
+        "amount": 375840000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0awNwlZIX4vuKpqyHrbdtjW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1736010623542,
+        "amount": 185030000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0bxQtryIWaygzbCrSCE2yFe00001DZ8rCZSnD1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1749229040399,
+        "amount": 531960000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0byW26OCoXV4F3O3g5gUgnW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1692190106575,
+        "amount": 737810000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0c4o2w0jDFzKBtHijW630LW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1725811887341,
+        "amount": 212010000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0cA2RAtfHFCRJCb6MSg6R700000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1568378484000,
+        "amount": 913830000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0cyJJ8mYUa9LMJG1mYgKK8W00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1622898096000,
+        "amount": 491490000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0d3dSKASv6LxTyecR6qiGfW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1615126542000,
+        "amount": 730480000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0eWbvrR21CgBOnPXhd5ZDV00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1762942134814,
+        "amount": 16200000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0edaDzzppIpwPlnD90tiTL000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1745859193824,
+        "amount": 252100000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0fFOoMbSb4meKnWZA8NlL700000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1675388301486,
+        "amount": 182140000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0g4ct9L1n7h8OQf3CQzmlyW00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1712494387744,
+        "amount": 285260000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0gvVRr5Yf8Ogec9IKBkzj2000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1772212887672,
+        "amount": 217410000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0iQkiL96ydH4GJqKIyHtkYG00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1600720052000,
+        "amount": 30000000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0jLCUua99DAxHi0951oI4b00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1652618634000,
+        "amount": 277550000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0k7GnaUpD1KhjuE8NQpQc300000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1765082412842,
+        "amount": 185320000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0kCooh4KvBcfYcZeOvyMzPW00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1661603773405,
+        "amount": 1117890000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0l8EoeLCf2RuXWeCvCpr1b00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1762965651042,
+        "amount": 100220000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0lDOn3gjn448asmldUdEtP00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1730909154348,
+        "amount": 250560000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0lJEuEzy4I5wxW2YLShnaL000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1767372560819,
+        "amount": 225510000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0lyjqU9z4GSoYSstdM9GGpW00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1706492870385,
+        "amount": 431100000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0nEDK1EOr8mfdf7GuRrofm00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1721827396904,
+        "amount": 230320000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0nY0sNK6H9gxyUqsNzFvhxG00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1764002191692,
+        "amount": 403910000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0ofO6gqdTBlvVXJcy03oS3W00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1740502621344,
+        "amount": 470520000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0qCRHVXrH3Nu7zRW1J2hfkW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1646143064000,
+        "amount": 239000000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0qYUswZD57zSDBHzSCfHfXm00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1751649074787,
+        "amount": 782000000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0rSfYc20b139DoMqcljIzqW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1618231196000,
+        "amount": 711500000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0s12uz0yYH7Uoz19TpZWwQG00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1727799287087,
+        "amount": 216550000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0s3tLi4f95WAiH7uFUAMYl00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1735751692744,
+        "amount": 200930000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0s4TApLTH5huiYc3xER4lP00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1688821053472,
+        "amount": 449860000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0sHIcAsaH4pwyJeKWw540UW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1653567914000,
+        "amount": 167690000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0u1UDPayiZyUh0vw3pKwEQm00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1582465719000,
+        "amount": 289110000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0uG0nTFHycu43QLS1VZdFy000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1562935153000,
+        "amount": 807630000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0ucfpvsH139QsHs69HEzZJW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1742748689179,
+        "amount": 410540000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0vG3gFDS962vxGgTIKCjKV00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1669426893196,
+        "amount": 44330000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0vUWTmboj7MRc0omTGwuUC00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1617628285000,
+        "amount": 350790000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0w5SmyQNmWGj8qOuvNJrRNW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1637846524000,
+        "amount": 284290000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0wzJBikcAYKLRLNjK0rnDSW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1735577319494,
+        "amount": 134920000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0xzpyTkYLGNEdjRB3ZGBKY000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1683031254963,
+        "amount": 180990000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0yNSy7X8eHKU2bY5nJIyMnu00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1675648357647,
+        "amount": 265020000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0ygm8qi06asSHz3sHBXoEvm00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1596459247000,
+        "amount": 520400000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0zOeyR6NrIEYcgWKzOeGuou00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1667389100035,
+        "amount": 312240000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G0zpdqh9h2WurMKa4R7a07R000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1747932912085,
+        "amount": 222620000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G13L0A3rc97mBvTd3oHbYoP00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1656155610000,
+        "amount": 304530000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G145b4OzOIXz2CzAPDBxh2QW00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1560429772000,
+        "amount": 573880000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G15UkyUbY6bMDxKsbJA2qAj000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1700272208929,
+        "amount": 193130000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G15hazs0VccgrYXjlxdx9huW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1667957969432,
+        "amount": 313200000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G16Mag4Mab2X9BZ7W0v39J500000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1715517722881,
+        "amount": 296810000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G16yUNHqpYbEafWXQ5dYUfHW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1567773485000,
+        "amount": 602550000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G17Oc1ze3AZ7iYO16gRqj4uW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1719233231553,
+        "amount": 457760000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G19LVQsSpj2UBE8Cd4tXHD200000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1703814265556,
+        "amount": 269840000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G19ZVKiMlf2EAqwofs8GykL000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1734972355070,
+        "amount": 400220000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G19rsUd0MDElwcSPtySAEjyG00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1728404975140,
+        "amount": 414390000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1CetDrmmyZTDZ8oHWfnrA1W00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1722607319151,
+        "amount": 390300000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1Dkkb0ahnEBh7Pp4Xr92WR00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1598534219000,
+        "amount": 400900000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1EAQSvdIXC68YBk9lfJoxi00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1731341363403,
+        "amount": 231290000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1FaSe4OAf6FO8yYX8ICpMZW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1595939919000,
+        "amount": 780600000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1FzYOyKL0I6w06TayF0qPQe00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1657026059000,
+        "amount": 676520000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1GbJxSSEnCC9yrHValxHmL000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1649078037000,
+        "amount": 335370000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1HsXGxMuLEOACA851l9y1L000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1652273020000,
+        "amount": 308380000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1HyhWuLqAcIagbwzGix9u8000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1711937894320,
+        "amount": 287180000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1IdwznkGwbbyBFt0GySbpxW00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1660733072971,
+        "amount": 277550000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1KAbpof090IxYBcNGtk7DT00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1736268159883,
+        "amount": 307610000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1La08OyiiXI4HcdWLqbpbO000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1770578243994,
+        "amount": 258270000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1NHi0znd4Z74mq7NzwKp11000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1695952943941,
+        "amount": 516640000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1OmDMtvsX2tAS6P3EyoJua000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1765471246315,
+        "amount": 265980000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1P1YF9QZ11R9cdXA0ZNxkr00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1666781463093,
+        "amount": 387410000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1P4kRf8SPETgBtU2pAPDPE00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1698497955967,
+        "amount": 126240000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1PP8dN7cr4ouCh8ky5cjcO000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1714840155009,
+        "amount": 511720000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1QB3MBN5n3GOXINgbaL33t00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1701568134615,
+        "amount": 352010000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1QXjOulujAmRf40mOdteD300000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1754932196860,
+        "amount": 225120000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1Qa31Z6mj94hMAPzKzZiymW00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1584452402000,
+        "amount": 188890000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1Qs2xuB9T5R8E6mrv9y6up000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1630155174000,
+        "amount": 1290110000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1SfkcptzWZyz2CF1IBuRwIm00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1620133697000,
+        "amount": 597970000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1SwwTwW9D2bP0IMxW96j5Z00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1762965651042,
+        "amount": -16200000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1T2kznyEPJ6ArgTugUiS1Q000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1754067929686,
+        "amount": 223390000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1TMHMcm5943xslDOS89wHa00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1740503516500,
+        "amount": 620860000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1U4ilzDcgdFyWzKEoubF8Sm00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1705024042413,
+        "amount": 724310000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1UTXXudJb4AOcAmRp5T16W00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1708308206773,
+        "amount": 317410000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1VEDVtKVf2YQCodytzDY0Zm00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1691502789656,
+        "amount": 446380000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1VN1AQcv907fhLQ0BZs77K00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1773334415048,
+        "amount": 197460000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1We3Umg7LFt8r89klNcBrb00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1741884905673,
+        "amount": -31800000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1ZFHMHhk98LetRNpEyw42lW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1702174869357,
+        "amount": 136660000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1ZhIcoJj553uFPkL59V0mK00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1755537189784,
+        "amount": 489560000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1amsLLT5H8o9h0dU3pQ3Rm00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1690894836408,
+        "amount": 679410000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1b4u17Bob7RPyQXtV4ZtLW000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1737045769045,
+        "amount": 235140000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1bK7Tji3LBRBu4qJuWBJ6n00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1767976860662,
+        "amount": 167110000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1buofjFyOXvCFK4WFbuGzIm00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1677994860968,
+        "amount": 461610000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1c9rOU26vDixuyzFumXIjem00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1760462196391,
+        "amount": 399940000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1eZBqqavP0zqkG4vhqa2qj000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1758474607505,
+        "amount": 685870000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1efZrmREH1Ph61fTPbaLy0W00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1754586606843,
+        "amount": 489560000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1ehbV9zvzIIs4fkGApakLtW00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1755104747449,
+        "amount": 458720000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1fYVhxcZn5MhUDH8n55iNq00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1645192656000,
+        "amount": 260200000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1fodprMLHFURsfN1634V7j00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1563540394000,
+        "amount": 549310000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1gq3cofpP7vhJl3rtyyEByO00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1755882592733,
+        "amount": 237070000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1iHPUqHz8XNbYR5Jc7qsnwW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1756401047413,
+        "amount": 195630000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1iebr56RL7s8sUnryeny3yu00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1742323983647,
+        "amount": 300670000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1lEW7MdLD9POYAWSun0y9w000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1753722452875,
+        "amount": 466430000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1lyIvPEcSdZqD4fo9r9OEI000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1763311377765,
+        "amount": 317410000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1mOCF3Gs5CHOtnImic550g00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1660137280715,
+        "amount": 743540000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1n8bwI3Wn0lede8BiaOz75000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1698975824552,
+        "amount": 511050000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1owlBRghH5uPiSnBEV6cng00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1739663642292,
+        "amount": 313200000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1pDOFGNnPFwfnr6DSGHeVz000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1565008921000,
+        "amount": 568590000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1psvzlFfGZYamrnvwYQ0HV000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1722055552062,
+        "amount": 795060000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1qQiOXI5v3Meh8trAvtBep00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1583848484000,
+        "amount": 341150000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1qXwRByDecsCbjdO0tjoeZ000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1633784648000,
+        "amount": 561360000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1reUOkAOyWBaxpu2usUJeT000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1558874590000,
+        "amount": 513750000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1sTUzjEbMcbTOZf5ISH7sYW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1562158149000,
+        "amount": 237070000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1t3kOFuVn1wuPiD9hIrpej00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1588373771000,
+        "amount": 62400000,
+        "ownerId": "6252715",
+        "assetToken": "USD",
+        "token": "0G1uN72uy4yG3zAxfNspEasy800001DZ8rCZSnD1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1728838459510,
+        "amount": 150530000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1vGFVJ9f92c8tOEU4Ym89l00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1671501089614,
+        "amount": 388320000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1vOENz0sMZXDeyOqaGMb98G00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1754244625737,
+        "amount": 152260000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1vpifD5Dr5R9weHx2chbS300000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1769877942456,
+        "amount": 323140000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1wVRNYzsQXKyeK7nW22ODqW00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1676338764836,
+        "amount": 306460000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1wtwy4pUAdkCr6lltOyCiwG00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1689167191457,
+        "amount": 819530000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1wwXgBzZOaykWyze16Ixb1K00001DZ8rCZSnD1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1724687379402,
+        "amount": 569550000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1xcSWp0Hb978cMUCiblnsT00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1683406304722,
+        "amount": 531150000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1yGyyVV1vfXRHfTnN49Oe9000002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1744304549471,
+        "amount": 283330000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1yTv0bIU0aCT841jURcPnw000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1723467096445,
+        "amount": 814040000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1yuyU0NJkJoc6GrfYHTuXf000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1729525782908,
+        "amount": 422100000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1z9Rn4omoZqDrF9bofb30s000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1707270567145,
+        "amount": 212010000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G1zHdZzWGdHCY3GHwoPaKc8W00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1598016779000,
+        "amount": 335370000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G20Jp5SfTv6kgC9u0DlzzNd000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1654866540000,
+        "amount": 362350000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G21H7whUaLCD9FUv8vaJqlB00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1601384061000,
+        "amount": 103000000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G22913VltyaSLE61PqDtYwI000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1714655023974,
+        "amount": 138390000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G22D1fymJSWW4AKD7Z8MPczW00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1653310775000,
+        "amount": 237070000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G23n9MSFDr7zyPkaPClEjZaW00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1737910179054,
+        "amount": 366360000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G23zOytIMz8TV9URHiPjAs3m00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1635683584000,
+        "amount": 297780000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G24NYtanx12NP7N4rkhTUgo00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1569414999000,
+        "amount": 272400000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G25GvrXPE1Fz5rcnB2yfyuBu00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1704332912310,
+        "amount": 127980000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G266hps1af4UBuAti9okHU400000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1733676301979,
+        "amount": 318020000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G26uhz8hcgX8aGaIkrSku2zW00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1704160810228,
+        "amount": 143590000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G277OH0hpf51RL6aCDCqJud00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1647177446000,
+        "amount": 988910000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G278FDIpLv14eehw7EgyxDYW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1722870271299,
+        "amount": 722780000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G27qIoWIzgXYrpqKS1kqxz0000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1576849086000,
+        "amount": 666690000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G28lhXc5tX70uxQzSlGPW8A000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1711763095039,
+        "amount": 148800000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G29IyzNIF0Jxs6Lz0k6zc97y00000cnaQcHkOc5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1724525055721,
+        "amount": 233790000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2Crm4Ji1vFyKhAEYQ67zkzm00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1707616997567,
+        "amount": 404750000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2Cs2Tw3w9D9vOy3UILtidq000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1748192534178,
+        "amount": 500010000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2DdvCyRAMbzcIn2Ec9mfQqm00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1757697339421,
+        "amount": 624480000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2Dl1cKPIXA4P7xR5e49pcx00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1633008168000,
+        "amount": 378250000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2GR2awmmX9784F1ulG7Sm300000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1677375604031,
+        "amount": 355370000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2H1y2SGcodMLoiFasVwoTL000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1712839249199,
+        "amount": 543960000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2HLnZfqbrBtxgfLHWNTA6N00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1756573786607,
+        "amount": 344040000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2HzKBKu7qZU5TIBlA8NcxR000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1600693801000,
+        "amount": 585160000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2IMX4cxqbEwvuBhdnhQcUB00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1692794556009,
+        "amount": 737810000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2IaIpjSpT7bvXmF7D8SkQD00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1621860633000,
+        "amount": 489950000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2Ie6TzDtWYl5qy47uyuaWt000002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1721135126324,
+        "amount": 370060000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2Io5SSfoj3qeDd7MSG6gNd00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1730303358516,
+        "amount": 389230000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2P0W6BgzYbaKzjcPMVpfyAG00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1654432380000,
+        "amount": 319950000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2QJIe2IhT369Zyrzbjg1yku00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1686920818824,
+        "amount": 280440000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2QgCgDDbbFy4cF4Vl7sXnXW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1676943443114,
+        "amount": 174430000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2R4j6euTn9eOPR1PnSMFZs00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1665483895624,
+        "amount": 442340000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2SA7gwFuf1YhCfD5mHJEoD00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1762533714891,
+        "amount": 318020000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2SVPjOz0idGizS3wPaB4PHm00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1646486598000,
+        "amount": 401860000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2T5oyjuUwbkaaZSrRib2yye00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1625143069000,
+        "amount": 572440000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2UeXaoYdT6WBOyCPDJnDO0W00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1655807607000,
+        "amount": 286220000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2UxBYEW9j1pfFeNcIDPwPL00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1687697013005,
+        "amount": 192160000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2WPNK2VV91lODLWHJfUynF000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1569414999000,
+        "amount": 434240000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2WS8rdaUPCPOqvXKmcpI9H00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1741884905673,
+        "amount": -470520000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2WZRdI0NT00uMxCMDTNy7zG00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1744869552450,
+        "amount": 804880000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2XIVNUC5TFtgsrTKAoqUjA00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1693831445533,
+        "amount": 888720000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2XZ6M1f4DEvhHFnez0XFOF000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1674352620801,
+        "amount": 495440000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2YDtX9ru1BH8uk8neOzyoV000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1572442677000,
+        "amount": 300670000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2YW6HmtbT8fRJvmbNpyugiW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1738773632682,
+        "amount": 239000000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2ZnGG5jLD60fzWf6ePIP4Q000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1758215460642,
+        "amount": 237070000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2a2XLaQND8HuygYaSa8JtRW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1725228146906,
+        "amount": 678540000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2aMLKg6dL1Axtb9oj5bD0400000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1636897213000,
+        "amount": 359020000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2bDH9szqOaZLVCSoky9yxJW00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1682167786990,
+        "amount": 576920000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2bsF3prxvA79t1dACzAYHdW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1629809031000,
+        "amount": 400900000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2byeGGzISGfwqGDWWFjuLa000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1693399628169,
+        "amount": 592680000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2c1bST8j58583WAJteG0M900000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1635077840000,
+        "amount": 384670000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2c7eeUOInCQw3ouymBFrDdW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1726991537705,
+        "amount": 100000000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2e3gz4MBWXiLDzyFENCdc3000002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1719061397753,
+        "amount": 190810000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2fieX3sJb7UuVIKkCvG8lu00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1626614336000,
+        "amount": 1961130000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2ghsynGOwZyAywA677LONXW00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1631363472000,
+        "amount": 303570000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2he0acr6P4Y8vvxcQZHuSB00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1672105156447,
+        "amount": 269840000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2ke3KQLy0WUjg62tFiaMeFW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1739122147739,
+        "amount": 364280000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2kwgPmqAL51u8crmmMa5ad00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1750266071615,
+        "amount": 200840000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2l5GdFkq544Qv0EnoCG2PA00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1567342443000,
+        "amount": 433660000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2liMzLdemdmKWCYh1xM8sD000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1561121004000,
+        "amount": 462580000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2m6r3psJ11ueRRS0Qyz3Sim00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1697028276297,
+        "amount": 160940000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2mbkIXztuX5yNILTKPezxAW00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1756055582350,
+        "amount": 458720000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2o9GzeZ2Gc6af5GzzKqpnx000002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1743439756188,
+        "amount": 422100000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2pDbEeHSL9uw8azQ8s0o4T000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1729007462226,
+        "amount": 361390000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2pk5BGgqT63O1weYKQCQJC00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1727023554231,
+        "amount": -100000000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2pkZLoF7n4axefzvBoPzWTW00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1730044090954,
+        "amount": 206130000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2qrxOAdMrDwBaFO1U3emt300000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1561552516000,
+        "amount": 569550000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2sAYdBZGX49guqWzIVAdyUm00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1565527125000,
+        "amount": 2114980000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2tmQasCzGdqyBI5pxcTR42000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1727023554231,
+        "amount": 173080000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2u4NKzy7lGEMzpZn9ZyYoU400001DZ8rCZSnD1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1663929593669,
+        "amount": 248630000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2vHJNzFYiZl5cMbZA81wxdW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1704591941528,
+        "amount": 208160000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2vIJk0Qef34RDEVLodflnA00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1628428418000,
+        "amount": 202380000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2wCCST4gnAVQJNpFCjgce400000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1750784308203,
+        "amount": 904680000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2wiIyU1R0Y1SA08ggvBFbFW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1768583267000,
+        "amount": 242850000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2xy1zPB9hJNU4zmlUaz2GWO00001DZ8rCZSnD1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1586005833000,
+        "amount": -63000000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2yJGfhln2cPrWV6Ziy7sk5m00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1701309964878,
+        "amount": 174920000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2yRA33FOMWVT3UzSvBG2dc000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1696597279756,
+        "amount": 395120000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2yhpPk5TmW8CInlpDwLVFp000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1581603035000,
+        "amount": 335370000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2zE81DQzyeOybjW26PxIPra00001DZ8rCZSnD1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1725983385778,
+        "amount": 709670000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G2ziBALT1OY55WLMKu1okSbW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1746204943126,
+        "amount": 323810000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G30EP6zWDSc25CP3vmO2vuoW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1691933203710,
+        "amount": 344040000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G30JYZgAmbCN8laoiaJnyolW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1599310617000,
+        "amount": 716990000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G31FvYwQmTAN9aBi8WnnK1C00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1685711485889,
+        "amount": 563770000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G31GzGyjhEGZU4QoFKdXsKym00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1624281789000,
+        "amount": 631850000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G31nsQDIEr3XQW0ZwyCOxdrW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1741884905673,
+        "amount": 227820000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G32AJfxdCP1Jf7RDtsN4dvv00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1638750245000,
+        "amount": 21120000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G342UDcuDPCIeOqzstbAInhW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1649593604000,
+        "amount": 371980000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G36hCztzIkJRIuLrjk9tw34000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1589514121000,
+        "amount": 46380000,
+        "ownerId": "6252715",
+        "assetToken": "USD",
+        "token": "0G36zXCUgneYzz3NAwlfZKjdm00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1734253843890,
+        "amount": 274650000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G37ayvQqdGXR4N3SLiTE6DDW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1659703042727,
+        "amount": 573400000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G37y6BWk5ea7K3qrhr40G69000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1644241440000,
+        "amount": 193720000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G384hgqd9DEv8iRRhq2CzKu000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1656594580000,
+        "amount": 358500000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G38LfK3mi13Zgxsyi1d1QzuW00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1717332169385,
+        "amount": 297790000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G39BUfOs7yXyAWww9lkGxMDm00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1731687493061,
+        "amount": 250560000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3AJrgVsv95l8SGHvPP4SfR00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1710050478664,
+        "amount": 467970000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3AWmNHL8v9w9qMPPkZhmF400000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1724168706285,
+        "amount": 456790000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3B2l2mfzeWt40k870n7zog000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1744650277280,
+        "amount": 143590000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3BH32ydw6bfD5HyPThn44R000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1662721597547,
+        "amount": 560440000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3BP9pXHlLBbQ5wQK4oLTl800000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1559566188000,
+        "amount": 273690000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3CmkLOnEyWlaOxyBBkVffOG00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1690031751065,
+        "amount": 358500000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3Cy9IzUCnITcm7fGEacztL800002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1625921817000,
+        "amount": 534850000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3DByIiGf0WojPYr8S2CdxHW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1695213889740,
+        "amount": 588630000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3DDBbA8i12q8iMIeBXDx0c00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1694782975259,
+        "amount": 515580000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3DRQg4BZD6NBMIn0cnizhJ000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1728058470216,
+        "amount": 283330000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3EpAnj2nL2uRdpGThEmYqE00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1698721298729,
+        "amount": 225510000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3F5TyosmoWh4cX3vy5SBAJ000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1658406521319,
+        "amount": 1527230000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3KBcRxrnycJK9sa4I91Wg4000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1571057731000,
+        "amount": 393190000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3LlvQ5JDX1j8H6aNFeotym000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1747328426046,
+        "amount": 500010000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3Mt1yXyBuIGo5cy9kcaGK5800002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1752339957032,
+        "amount": 578220000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3NEzDzcFWHrsnWmYp6tDPGW00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1715863636885,
+        "amount": 826850000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3Nm5EYJJj1rQzv2yAgSzeYm00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1747155094341,
+        "amount": 138380000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3PfqvPa1D4OAKznl0CjsVV000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1732639476966,
+        "amount": 499100000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3Q6GrrJAvCxg7gZHyDTl86000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1597497356000,
+        "amount": 397040000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3UgE9M34P3l86bJ8NtSoUz000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1720615509462,
+        "amount": 722770000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3VDMy74GkXxiwL9YgxRMsr000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1615193520000,
+        "amount": -538130000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3Vb934xgydDaDuURWxXxKA000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1639359833000,
+        "amount": -21120000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3W6N12l4T4F84q1AY2IV9200000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1679190264732,
+        "amount": 262130000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3WAjFfuoT03RQkglF08wxB00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1766854285925,
+        "amount": 283330000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3Wh4A2FkH7LxsL9khxyY6b000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1655297423000,
+        "amount": 329590000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3Wjrpj2lb94QBHiwCvPrsj00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1717160573293,
+        "amount": 163830000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3XLXoZuv96gen8p0j9idEH00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1570019735000,
+        "amount": 442320000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3Xs2OpCGrAKxooBs7usa3a00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1753031870610,
+        "amount": 848830000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3YjPHVfcjDpP6bi2ieCm6S00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1609337416000,
+        "amount": 192740000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3YwPJrrNDCGfveHHX44oJO00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1762187740446,
+        "amount": 182710000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3ZNaczGb8aLKyj52VsJGigm00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1680093566197,
+        "amount": 208160000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3bbx9U7hv8Vwxn9YniLFHl00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1717592771538,
+        "amount": 549310000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3bdI7rSWXDT9XzHlcfJyIEm00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1628598741000,
+        "amount": 1236090000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3cAqZuLqT8t9hs6Xi0BO4Q00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1773767302639,
+        "amount": 460650000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3cIyljVEyIhzReWE5UOyB3G00001DZ8rCZSnD1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1690289885974,
+        "amount": 711210000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3d6JB2i4HEtevUwmRHzL0k000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1726678835659,
+        "amount": 400900000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3eP5uCf4PEweESni7JvlSN00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1631623453000,
+        "amount": 303570000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3fDjVcwWbFv8A6zGH2hbv7000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1771866938758,
+        "amount": 172310000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3ghcrHzrsc2qyJvvU9Eik9m00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1741884905673,
+        "amount": 292960000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3gj4v6kpjBt9ptQdsSWYZC00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1616419950000,
+        "amount": 685870000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3hoIhtn0fBpARpszWEEas4W00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1663497714280,
+        "amount": 326690000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3irXqZBwP2XBKxAMvxNln400000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1673228077594,
+        "amount": 326690000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3izNIfADwdwyCV9PNQ6cZs000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1650199302000,
+        "amount": 410300000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3kCGwzszZIybMafa1NrJOIO00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1765818533465,
+        "amount": 517410000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3kbx11pevDI9ZpLeMsSzzBm00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1762015519465,
+        "amount": 193130000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3m8hspAcL3qww9z7OAEmvmW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1686706886825,
+        "amount": 294890000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3mzu7ydcZH2QyZkiWJUYM8e00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1672624110378,
+        "amount": 379700000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3oFjzLCcuWcKUkl0Wz8zx9e00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1750438577942,
+        "amount": 385490000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3otLJuOOHANR9azkWuzVv0G00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1678845422675,
+        "amount": 232250000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3pNlgaTD91vx3KOEOTVyzgm00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1664190257057,
+        "amount": 835090000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3sUMkDzYIYojFTy0Kjzf3QW00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1684588183962,
+        "amount": 638260000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3t6OHkyqSdCS7FwkHLz5Ja000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1679535682282,
+        "amount": 250560000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3tNzKhdoecfL3yToJbA6Zzm00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1689857157877,
+        "amount": 221650000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3uW2nitiX7Oe2nkQzrEfsg000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1653743119000,
+        "amount": 503690000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3un1zercia2TeVSzzyyCzFp00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1748883438466,
+        "amount": 370060000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3w3pU7B0v2V84PRa1pqcyvW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1727195596215,
+        "amount": 583040000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3wgOfVBMP46Qiv5m8IjdO300000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1719666962315,
+        "amount": 706920000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3wpznydSeJJQqzbeFh2EO8G00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1571747936000,
+        "amount": 333050000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3x8K5OhyIZaDOJSbXr6iYhW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1771089795222,
+        "amount": 397480000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3xlA5q6FL9b8jImT4aO3dy000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1680525575220,
+        "amount": 187920000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3xlbNbjKHCqfN9HKV3rujk00000JOoDJ8tCJ5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1718109746958,
+        "amount": 893690000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3yUtVzMysfwr4tt853NBRDu00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1688561034872,
+        "amount": 358500000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3ykWPPsBeWG4xymzMSOljKu00002R6HgP6vYQ1",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1573393140000,
+        "amount": 349250000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3z3kohqkCduKKC8YpyWpe1W00004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1769100173102,
+        "amount": 406400000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3z5Hi7yTRHyB4xQ4zCzHKEu00000cnaQcHkOc5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1666177100938,
+        "amount": 384670000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3zAzSzpXIez5fQmjv8myRJw00000cnaQcHkOc5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1721727093750,
+        "amount": 524250000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3zBxz48rDIzyb6Y92y1ZIO200000cnaQcHkOc5",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1740502586772,
+        "amount": 31800000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3zRa7ivkQaX4h8ttYZs7aPW00009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1761066571194,
+        "amount": 794810000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3zXVW6wkKYZaMHXeZ9QPB2000009iP6faRc9L",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1754327877718,
+        "amount": 364280000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3zk3u6wsqazYF770E21xgg000004sCZKoDp4r",
+        "assetType": "currency_micros"
+      },
+      {
+        "ownerType": "user",
+        "createdAt": 1687871333948,
+        "amount": 650500000,
+        "ownerId": "6252715",
+        "assetToken": "EUR",
+        "token": "0G3zqX9azbcIJwUzz6F6EY9Ne00001DZ8rCZSnD1",
+        "assetType": "currency_micros"
+      }
+    ],
+    "accounts": [
+      {
+        "ownerType": "user",
+        "accountVersion": 1,
+        "ownerId": "6252715",
+        "token": "0GUItz7a4KoX3rRWHJ1iPDNE000009iP6faRc9L"
+      }
+    ]
+  }
+]

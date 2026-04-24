@@ -1,0 +1,119 @@
+[
+  {
+    "instruments": [
+      {
+        "instrumentDetails": {
+          "country": "ES",
+          "postalCode": "08004",
+          "streetAddress1": "Chopin 1 pr2",
+          "locality": "Barcelona",
+          "instrumentToken": "0GK0gpbzs6S2egNkt81QtbidZDQ",
+          "region": "BARCELONA",
+          "paypalEmail": "Droig.roig@gmail.com"
+        }
+      },
+      {
+        "instrumentDetails": {
+          "expirationYear": 2021,
+          "country": "ES",
+          "cardLastFourDigits": "4010",
+          "commercial": "NO",
+          "durbinRegulated": "NO",
+          "bin": "454803",
+          "postalCode": "08692",
+          "cardType": "VISA",
+          "prepaid": "NO",
+          "instrumentToken": "0GK0gnd6EGFte4K8jw5GEBy4AVL",
+          "expirationMonth": 2,
+          "countryOfIssuance": "ES",
+          "healthcare": "NO",
+          "issuingBank": "Caixabank S.A.",
+          "payroll": "NO",
+          "debit": "NO"
+        }
+      },
+      {
+        "instrumentDetails": {
+          "expirationYear": 2019,
+          "country": "ES",
+          "lastName": "Roig Lopez",
+          "cardLastFourDigits": "1072",
+          "commercial": "NO",
+          "durbinRegulated": "NO",
+          "bin": "410626",
+          "postalCode": "07340",
+          "cardType": "VISA",
+          "prepaid": "NO",
+          "instrumentToken": "0GK0gwYyq7FkmA7zwqTfDpMzUhZ1",
+          "expirationMonth": 11,
+          "countryOfIssuance": "ES",
+          "healthcare": "NO",
+          "firstName": "Daniel",
+          "issuingBank": "Servired, Sociedad Espanola de Medios de Pago, S.A",
+          "payroll": "NO",
+          "debit": "NO"
+        }
+      },
+      {
+        "instrumentDetails": {
+          "country": "ES",
+          "postalCode": "07340",
+          "streetAddress1": "Son Sitges N 14",
+          "locality": "Alaro",
+          "instrumentToken": "0GK0gvuZI9cEz2HPp1X110nJ3E3",
+          "region": "ISLAS BALEARES",
+          "paypalEmail": "estervallesprat@gmail.com"
+        }
+      },
+      {
+        "instrumentDetails": {
+          "bankAccountName": "Daniel Roig Lopez",
+          "country": "ES",
+          "postalCode": "07368",
+          "iban": "•••••1949",
+          "streetAddress1": "C/ Ramon y Cajal 18 3C",
+          "locality": "Colonia de Sant Jordi",
+          "instrumentToken": "0GK0gzNhAZnEmg5kmDyWpyWLGjf1",
+          "region": "ISLAS BALEARES",
+          "swift": "BSABESBB"
+        },
+        "payoutSettings": {
+          "targetCurrency": "EUR",
+          "minPayoutAmountInUSD": 0
+        }
+      },
+      {
+        "instrumentDetails": {
+          "bankAccountName": "Daniel Roig",
+          "country": "ES",
+          "iban": "•••••3715",
+          "instrumentToken": "0GK00T00L9sSGKfcapSRjkC8XBF",
+          "bankName": "banco sabadell",
+          "swift": "BSABESBBXXX"
+        },
+        "payoutSettings": {
+          "targetCurrency": "EUR",
+          "minPayoutAmountInUSD": 0
+        }
+      },
+      {
+        "instrumentDetails": {
+          "bankAccountName": "Daniel Roig",
+          "country": "ES",
+          "postalCode": "07368",
+          "iban": "•••••3325",
+          "streetAddress1": "C/ Ramon y Cajal 18 3C",
+          "locality": "Colonia de Sant Jordi",
+          "instrumentToken": "0G00gvoozzam296tQCwwrBljyva0",
+          "bankName": "Cajamar",
+          "region": "ISLAS BALEARES",
+          "swift": "CCRIES2AXXX"
+        },
+        "payoutSettings": {
+          "targetCurrency": "EUR",
+          "minPayoutAmountInUSD": 0
+        }
+      }
+    ]
+  }
+]

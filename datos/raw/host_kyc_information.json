@@ -1,0 +1,28 @@
+[
+  {
+    "accountDetails": {
+      "business": {
+        "businessData": {
+          "type": "INDIVIDUAL"
+        }
+      },
+      "profiles": [
+        {
+          "roles": [
+            {
+              "type": "PRIMARY_AUTHORIZED_USER"
+            }
+          ],
+          "profileData": {
+            "placeOfBirth": "ES",
+            "address": "ramon y cajal\ncolonia sant jordi\nbaleares\nES\n07638",
+            "nationality": "ES",
+            "name": "daniel roig lopez",
+            "dateOfBirth": "1973-03-14"
+          }
+        }
+      ],
+      "id": 6252715
+    }
+  }
+]

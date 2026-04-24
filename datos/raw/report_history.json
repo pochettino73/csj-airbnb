@@ -1,0 +1,109 @@
+[
+  {
+    "userFlags": [
+      {
+        "flaggableId": 383796902,
+        "createdAt": "2021-01-09T19:10:42.000Z",
+        "flaggingUserId": 6252715,
+        "flaggableType": "User",
+        "name": "scam",
+        "userFlagStep": [
+          {
+            "createdAt": "2021-01-09T19:10:42.000Z",
+            "userInput": [
+              "airbnb_message"
+            ]
+          },
+          {
+            "createdAt": "2021-01-09T19:10:42.000Z",
+            "userInput": "\"scam\""
+          },
+          {
+            "createdAt": "2021-01-09T19:10:42.000Z",
+            "userInput": "\"communicate_outside\""
+          }
+        ]
+      },
+      {
+        "flaggableId": 918979041,
+        "createdAt": "2021-02-08T12:51:01.000Z",
+        "flaggingUserId": 6252715,
+        "flaggableType": "Thread",
+        "name": "Dismiss suspicious message education",
+        "flaggedUserId": 387729340
+      },
+      {
+        "flaggableId": 387729340,
+        "createdAt": "2021-02-08T12:52:31.000Z",
+        "flaggingUserId": 6252715,
+        "flaggableType": "User",
+        "name": "scam",
+        "userFlagStep": [
+          {
+            "createdAt": "2021-02-08T12:52:31.000Z",
+            "userInput": "\"advertisement\""
+          },
+          {
+            "createdAt": "2021-02-08T12:52:31.000Z",
+            "userInput": "\"scam\""
+          },
+          {
+            "createdAt": "2021-02-08T12:52:31.000Z",
+            "userInput": [
+              "airbnb_message"
+            ]
+          }
+        ]
+      },
+      {
+        "flaggableId": 982346498,
+        "createdAt": "2021-06-15T04:26:57.000Z",
+        "flaggingUserId": 6252715,
+        "flaggableType": "Thread",
+        "name": "Take offline intent message",
+        "flaggedUserId": 407147024
+      },
+      {
+        "flaggableId": 1144542869,
+        "createdAt": "2022-03-19T09:58:42.000Z",
+        "flaggingUserId": 6252715,
+        "flaggableType": "Thread",
+        "name": "Dismiss suspicious message education",
+        "flaggedUserId": 76321860
+      },
+      {
+        "flaggableId": 46619255,
+        "createdAt": "2022-09-01T20:31:33.000Z",
+        "flaggingUserId": 6252715,
+        "flaggableType": "User",
+        "name": "something_else",
+        "userFlagStep": [
+          {
+            "createdAt": "2022-09-01T20:31:33.000Z",
+            "userInput": "\"something_else\""
+          },
+          {
+            "createdAt": "2022-09-01T20:31:33.000Z",
+            "userInput": "\"page_broken\""
+          }
+        ]
+      },
+      {
+        "flaggableId": 1605278838,
+        "createdAt": "2023-09-19T18:41:26.000Z",
+        "flaggingUserId": 6252715,
+        "flaggableType": "Thread",
+        "name": "Dismiss suspicious message education",
+        "flaggedUserId": 16986936
+      },
+      {
+        "flaggableId": 1687834848,
+        "createdAt": "2024-01-02T07:30:28.000Z",
+        "flaggingUserId": 6252715,
+        "flaggableType": "Thread",
+        "name": "Dismiss suspicious message education",
+        "flaggedUserId": 553628846
+      }
+    ]
+  }
+]

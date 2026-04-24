@@ -1,0 +1,11 @@
+[
+  {
+    "referralCodes": [
+      {
+        "code": "DROIG8",
+        "entityType": "User",
+        "vanityType": "ReferralCode"
+      }
+    ]
+  }
+]

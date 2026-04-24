@@ -1,0 +1,119 @@
+[
+  {
+    "listingRegistrations": [
+      {
+        "registrations": [
+          {
+            "registrationSubmissions": [
+              {
+                "regulatoryBody": "Spain 2022",
+                "data": {
+                  "attestation": true,
+                  "permit_number": "ETVPL/13930"
+                },
+                "time": "2022-09-15T08:30:00Z",
+                "type": "Existing registration"
+              },
+              {
+                "regulatoryBody": "Spain 2022",
+                "data": {
+                  "attestation": true,
+                  "permit_number": "ETVPL/13612"
+                },
+                "time": "2023-02-13T12:39:32Z",
+                "type": "Existing registration"
+              },
+              {
+                "regulatoryBody": "Spain 2022",
+                "data": {
+                  "attestation": true,
+                  "permit_number": "ETVPL/136121"
+                },
+                "time": "2023-02-13T12:39:32Z",
+                "type": "Existing registration"
+              }
+            ]
+          },
+          {
+            "registrationSubmissions": [
+              {
+                "regulatoryBody": "Mallorca Spain Two",
+                "data": {
+                  "attestation": true,
+                  "permit_number": "ESFCTU00000700800108051200000000000000000ETVPL/136121",
+                  "listing_address": "Carrer Ramon i Cajal, 18 3C, Colònia de Sant Jordi, Balearic Islands 07638, ES"
+                },
+                "time": "2025-06-24T08:12:38Z",
+                "type": "Existing registration"
+              }
+            ]
+          },
+          {
+            "registrationSubmissions": [
+              {
+                "regulatoryBody": "Spain 2025",
+                "data": {
+                  "listing_address": "Carrer Ramon i Cajal, 18 3C, Colònia de Sant Jordi, Balearic Islands 07638, ES",
+                  "attestation": true,
+                  "permit_number": "ETVPL/136121"
+                },
+                "time": "2025-06-28T12:18:21Z",
+                "type": "Existing registration"
+              }
+            ]
+          },
+          {
+            "registrationSubmissions": [
+              {
+                "regulatoryBody": "Spain National Mallorca",
+                "data": {
+                  "listing_address": "Carrer Ramon i Cajal, 18 3C, Colònia de Sant Jordi, Balearic Islands 07638, ES",
+                  "attestation": true,
+                  "permit_number": "ESFCTU00000700800108051200000000000000000ETVPL/136121"
+                },
+                "time": "2025-10-25T12:00:57Z",
+                "type": "Existing registration"
+              }
+            ]
+          },
+          {
+            "registrationSubmissions": [
+              {
+                "regulatoryBody": "Spain Regional Mallorca",
+                "data": {
+                  "listing_address": "Carrer Ramon i Cajal, 18 3C, Colònia de Sant Jordi, Balearic Islands 07638, ES",
+                  "attestation": true,
+                  "permit_number": "ETVPL/13612"
+                },
+                "time": "2025-12-19T13:52:33Z",
+                "type": "Existing registration"
+              }
+            ]
+          },
+          {
+            "registrationSubmissions": [
+              {
+                "regulatoryBody": "Spain",
+                "data": {
+                  "listing_address": "Carrer Ramon i Cajal, 18 3C, Colònia de Sant Jordi, Balearic Islands 07638, ES",
+                  "tax_degree_applicable": "YES",
+                  "ownership": "YES",
+                  "cadastral_type": "01",
+                  "cadastral_number": "9724908DD9592S0014JM",
+                  "street_type": "Calle",
+                  "street_name": "Ramon y Cajal",
+                  "number_type": "NUM",
+                  "municipal_code": "Salines, Ses",
+                  "province_code": "07"
+                },
+                "time": "2019-01-10T08:07:18Z",
+                "type": "Tax reporting"
+              }
+            ]
+          }
+        ],
+        "listingUrl": "https://www.airbnb.com/rooms/1140090"
+      }
+    ]
+  }
+]

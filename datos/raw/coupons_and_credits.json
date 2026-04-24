@@ -1,0 +1,35 @@
+[
+  {
+    "coupons": [
+      {
+        "currency": "USD",
+        "ownerId": 6252715
+      },
+      {
+        "redeemedOnReservationId": 1177134569,
+        "currency": "USD",
+        "ownerId": 6252715,
+        "redeemedByUserId": 6252715
+      },
+      {
+        "redeemedOnReservationId": 1689424122,
+        "currency": "USD",
+        "ownerId": 6252715,
+        "redeemedByUserId": 6252715
+      },
+      {
+        "redeemedOnReservationId": 3857695442,
+        "currency": "USD",
+        "ownerId": 6252715,
+        "redeemedByUserId": 6252715
+      },
+      {
+        "redeemedOnReservationId": 1446147102682400836,
+        "currency": "USD",
+        "ownerId": 6252715,
+        "redeemedByUserId": 6252715
+      }
+    ]
+  },
+  {}
+]

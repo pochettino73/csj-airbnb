@@ -1,0 +1,2079 @@
+[
+  {
+    "pricingData": [
+      {
+        "smartPricingSetting": {
+          "isEnabled": false,
+          "lastMinutePricingEnabled": false
+        },
+        "customPricings": {
+          "customDailyPrices": [
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-03-18"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-03-19"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-03-20"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-03-21"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-03-22"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-03-23"
+            },
+            {
+              "price": {
+                "amount": 45,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-03-24"
+            },
+            {
+              "price": {
+                "amount": 45,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-03-25"
+            },
+            {
+              "price": {
+                "amount": 45,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-03-26"
+            },
+            {
+              "price": {
+                "amount": 45,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-03-27"
+            },
+            {
+              "price": {
+                "amount": 57,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-03-28"
+            },
+            {
+              "price": {
+                "amount": 66,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-03-29"
+            },
+            {
+              "price": {
+                "amount": 66,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-03-30"
+            },
+            {
+              "price": {
+                "amount": 66,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-03-31"
+            },
+            {
+              "price": {
+                "amount": 66,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-01"
+            },
+            {
+              "price": {
+                "amount": 66,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-02"
+            },
+            {
+              "price": {
+                "amount": 66,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-03"
+            },
+            {
+              "price": {
+                "amount": 66,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-04"
+            },
+            {
+              "price": {
+                "amount": 66,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-05"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-06"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-07"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-08"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-09"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-10"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-11"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-12"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-13"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-14"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-15"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-16"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-17"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-18"
+            },
+            {
+              "price": {
+                "amount": 57,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-19"
+            },
+            {
+              "price": {
+                "amount": 57,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-20"
+            },
+            {
+              "price": {
+                "amount": 57,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-21"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-22"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-23"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-24"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-25"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-26"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-27"
+            },
+            {
+              "price": {
+                "amount": 57,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-28"
+            },
+            {
+              "price": {
+                "amount": 57,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-29"
+            },
+            {
+              "price": {
+                "amount": 57,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-04-30"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-01"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-02"
+            },
+            {
+              "price": {
+                "amount": 60,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-03"
+            },
+            {
+              "price": {
+                "amount": 70,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-04"
+            },
+            {
+              "price": {
+                "amount": 70,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-05"
+            },
+            {
+              "price": {
+                "amount": 70,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-06"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-07"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-08"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-09"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-10"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-11"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-12"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-13"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-14"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-15"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-16"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-17"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-18"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-19"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-20"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-21"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-22"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-23"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-24"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-25"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-26"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-27"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-28"
+            },
+            {
+              "price": {
+                "amount": 67,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-29"
+            },
+            {
+              "price": {
+                "amount": 72,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-30"
+            },
+            {
+              "price": {
+                "amount": 72,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-05-31"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-01"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-02"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-03"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-04"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-05"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-06"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-07"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-08"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-09"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-10"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-11"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-12"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-13"
+            },
+            {
+              "price": {
+                "amount": 94,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-14"
+            },
+            {
+              "price": {
+                "amount": 94,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-15"
+            },
+            {
+              "price": {
+                "amount": 94,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-16"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-17"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-18"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-19"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-20"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-21"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-22"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-23"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-24"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-25"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-26"
+            },
+            {
+              "price": {
+                "amount": 86,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-27"
+            },
+            {
+              "price": {
+                "amount": 94,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-28"
+            },
+            {
+              "price": {
+                "amount": 94,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-29"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-06-30"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-01"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-02"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-03"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-04"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-05"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-06"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-07"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-08"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-09"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-10"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-11"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-12"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-13"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-14"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-15"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-16"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-17"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-18"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-19"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-20"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-21"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-22"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-23"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-24"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-25"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-26"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-27"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-28"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-29"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-30"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-07-31"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-01"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-02"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-03"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-04"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-05"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-06"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-07"
+            },
+            {
+              "price": {
+                "amount": 120,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-08"
+            },
+            {
+              "price": {
+                "amount": 122,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-14"
+            },
+            {
+              "price": {
+                "amount": 122,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-15"
+            },
+            {
+              "price": {
+                "amount": 122,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-16"
+            },
+            {
+              "price": {
+                "amount": 119,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-17"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-18"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-19"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-20"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-21"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-22"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-23"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-24"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-25"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-26"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-27"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-28"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-29"
+            },
+            {
+              "price": {
+                "amount": 115,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-30"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-08-31"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-01"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-02"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-03"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-04"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-05"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-06"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-07"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-08"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-09"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-10"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-11"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-12"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-13"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-14"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-15"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-16"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-17"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-18"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-19"
+            },
+            {
+              "price": {
+                "amount": 107,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-20"
+            },
+            {
+              "price": {
+                "amount": 106,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-21"
+            },
+            {
+              "price": {
+                "amount": 106,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-22"
+            },
+            {
+              "price": {
+                "amount": 106,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-23"
+            },
+            {
+              "price": {
+                "amount": 106,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-24"
+            },
+            {
+              "price": {
+                "amount": 106,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-25"
+            },
+            {
+              "price": {
+                "amount": 106,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-26"
+            },
+            {
+              "price": {
+                "amount": 106,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-27"
+            },
+            {
+              "price": {
+                "amount": 106,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-28"
+            },
+            {
+              "price": {
+                "amount": 106,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-29"
+            },
+            {
+              "price": {
+                "amount": 106,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-09-30"
+            },
+            {
+              "price": {
+                "amount": 106,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-01"
+            },
+            {
+              "price": {
+                "amount": 106,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-02"
+            },
+            {
+              "price": {
+                "amount": 106,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-03"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-05"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-06"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-07"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-08"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-09"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-10"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-11"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-12"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-13"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-14"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-15"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-16"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-17"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-18"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-19"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-20"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-21"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-22"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-23"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-24"
+            },
+            {
+              "price": {
+                "amount": 74,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-25"
+            },
+            {
+              "price": {
+                "amount": 64,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-26"
+            },
+            {
+              "price": {
+                "amount": 64,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-27"
+            },
+            {
+              "price": {
+                "amount": 64,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-28"
+            },
+            {
+              "price": {
+                "amount": 64,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-29"
+            },
+            {
+              "price": {
+                "amount": 64,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-30"
+            },
+            {
+              "price": {
+                "amount": 64,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-10-31"
+            },
+            {
+              "price": {
+                "amount": 64,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-01"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-02"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-03"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-04"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-05"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-06"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-07"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-08"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-09"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-10"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-11"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-12"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-13"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-14"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-15"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-16"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-17"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-18"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-19"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-20"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-21"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-22"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-23"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-24"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-25"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-26"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-27"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-28"
+            },
+            {
+              "price": {
+                "amount": 55,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-29"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-11-30"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-01"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-02"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-03"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-04"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-05"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-06"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-07"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-08"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-09"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-10"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-11"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-12"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-13"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-14"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-15"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-16"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-17"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-18"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-19"
+            },
+            {
+              "price": {
+                "amount": 53,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-20"
+            },
+            {
+              "price": {
+                "amount": 63,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-21"
+            },
+            {
+              "price": {
+                "amount": 63,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-22"
+            },
+            {
+              "price": {
+                "amount": 63,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-23"
+            },
+            {
+              "price": {
+                "amount": 63,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-24"
+            },
+            {
+              "price": {
+                "amount": 63,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-25"
+            },
+            {
+              "price": {
+                "amount": 63,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-26"
+            },
+            {
+              "price": {
+                "amount": 63,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-27"
+            },
+            {
+              "price": {
+                "amount": 63,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-28"
+            },
+            {
+              "price": {
+                "amount": 63,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-29"
+            },
+            {
+              "price": {
+                "amount": 63,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-30"
+            },
+            {
+              "price": {
+                "amount": 63,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2026-12-31"
+            },
+            {
+              "price": {
+                "amount": 63,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2027-01-01"
+            },
+            {
+              "price": {
+                "amount": 63,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2027-01-02"
+            },
+            {
+              "price": {
+                "amount": 63,
+                "currency": "EUR"
+              },
+              "effectiveDate": "2027-01-03"
+            }
+          ]
+        },
+        "listingPriceSetting": {
+          "pricePerExtraPerson": {
+            "amount": 20,
+            "currency": "EUR"
+          },
+          "weeklyPriceFactor": 0.95,
+          "defaultDailyPrice": {
+            "amount": 120,
+            "currency": "EUR"
+          },
+          "guestsIncluded": 2,
+          "securityDeposit": {
+            "amount": 250,
+            "currency": "EUR"
+          },
+          "listingCurrency": "EUR",
+          "monthlyPriceFactor": 0.85
+        },
+        "listingId": 1140090
+      },
+      {
+        "smartPricingSetting": {
+          "isEnabled": false,
+          "lastMinutePricingEnabled": false
+        },
+        "listingPriceSetting": {
+          "pricePerExtraPerson": {
+            "amount": 0,
+            "currency": "EUR"
+          },
+          "defaultDailyPrice": {
+            "amount": 80,
+            "currency": "EUR"
+          },
+          "guestsIncluded": 1,
+          "securityDeposit": {
+            "amount": 300,
+            "currency": "EUR"
+          },
+          "listingCurrency": "EUR"
+        },
+        "listingId": 1234325
+      },
+      {
+        "smartPricingSetting": {
+          "isEnabled": false,
+          "lastMinutePricingEnabled": false
+        },
+        "listingPriceSetting": {
+          "pricePerExtraPerson": {
+            "amount": 0,
+            "currency": "EUR"
+          },
+          "defaultDailyPrice": {
+            "amount": 13,
+            "currency": "EUR"
+          },
+          "guestsIncluded": 1,
+          "listingCurrency": "EUR"
+        },
+        "listingId": 4659211
+      }
+    ]
+  }
+]

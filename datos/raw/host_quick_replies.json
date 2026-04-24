@@ -1,0 +1,338 @@
+[
+  {
+    "templates": [
+      {
+        "texts": [
+          {
+            "message": "#{LISTING_DIRECTIONS}",
+            "locale": "es"
+          }
+        ],
+        "entities": [
+          {
+            "entityType": "LISTING",
+            "entityId": 1140090
+          },
+          {
+            "entityType": "LISTING",
+            "entityId": 1234325
+          }
+        ],
+        "templateMessage": {
+          "title": "Cómo llegar",
+          "userId": 6252715
+        }
+      },
+      {
+        "texts": [
+          {
+            "message": "#{LISTING_HOUSE_MANUAL}",
+            "locale": "es"
+          }
+        ],
+        "entities": [
+          {
+            "entityType": "LISTING",
+            "entityId": 1140090
+          },
+          {
+            "entityType": "LISTING",
+            "entityId": 1234325
+          }
+        ],
+        "templateMessage": {
+          "title": "Guía de la casa",
+          "userId": 6252715
+        }
+      },
+      {
+        "texts": [
+          {
+            "message": "#{LISTING_GUEST_INTERACTION}",
+            "locale": "es"
+          }
+        ],
+        "entities": [
+          {
+            "entityType": "LISTING",
+            "entityId": 1140090
+          },
+          {
+            "entityType": "LISTING",
+            "entityId": 1234325
+          }
+        ],
+        "templateMessage": {
+          "title": "Interacción",
+          "userId": 6252715
+        }
+      },
+      {
+        "texts": [
+          {
+            "message": "#{LISTING_NEIGHBORHOOD}",
+            "locale": "es"
+          }
+        ],
+        "entities": [
+          {
+            "entityType": "LISTING",
+            "entityId": 1140090
+          },
+          {
+            "entityType": "LISTING",
+            "entityId": 1234325
+          }
+        ],
+        "templateMessage": {
+          "title": "Barrio",
+          "userId": 6252715
+        }
+      },
+      {
+        "texts": [
+          {
+            "message": "SSID: #{WIFI_NAME} Contraseña: #{WIFI_PASSWORD}",
+            "locale": "es"
+          }
+        ],
+        "entities": [
+          {
+            "entityType": "LISTING",
+            "entityId": 1140090
+          },
+          {
+            "entityType": "LISTING",
+            "entityId": 1234325
+          }
+        ],
+        "templateMessage": {
+          "title": "Wifi",
+          "userId": 6252715
+        }
+      },
+      {
+        "texts": [
+          {
+            "message": "#{LISTING_HOUSE_RULES}",
+            "locale": "es"
+          }
+        ],
+        "entities": [
+          {
+            "entityType": "LISTING",
+            "entityId": 1140090
+          },
+          {
+            "entityType": "LISTING",
+            "entityId": 1234325
+          }
+        ],
+        "templateMessage": {
+          "title": "Normas de la casa",
+          "userId": 6252715
+        }
+      },
+      {
+        "texts": [
+          {
+            "message": "#{LISTING_TRANSIT}",
+            "locale": "es"
+          }
+        ],
+        "entities": [
+          {
+            "entityType": "LISTING",
+            "entityId": 1140090
+          },
+          {
+            "entityType": "LISTING",
+            "entityId": 1234325
+          }
+        ],
+        "templateMessage": {
+          "title": "Transporte",
+          "userId": 6252715
+        }
+      },
+      {
+        "texts": [
+          {
+            "message": "#{LISTING_GUEST_ACCESS}",
+            "locale": "es"
+          }
+        ],
+        "entities": [
+          {
+            "entityType": "LISTING",
+            "entityId": 1140090
+          },
+          {
+            "entityType": "LISTING",
+            "entityId": 1234325
+          }
+        ],
+        "templateMessage": {
+          "title": "Acceso",
+          "userId": 6252715
+        }
+      },
+      {
+        "texts": [
+          {
+            "message": "¡Gracias por hospedarte en nuestro alojamiento! Puedes quedarte hasta esta hora: #{CHECK_OUT_TIME}. Te damos todas las instrucciones para la salida.",
+            "locale": "es"
+          }
+        ],
+        "entities": [
+          {
+            "entityType": "LISTING",
+            "entityId": 1140090
+          },
+          {
+            "entityType": "LISTING",
+            "entityId": 1234325
+          }
+        ],
+        "templateMessage": {
+          "title": "Instrucciones para la salida",
+          "userId": 6252715
+        }
+      },
+      {
+        "texts": [
+          {
+            "message": "Hola, #{GUEST_FIRST_NAME}. ¡Espero que hayas disfrutado de una estancia fantástica! \n\nLa salida es el #{CHECK_OUT_DATE} a las #{CHECK_OUT_TIME}. Te adjunto las instrucciones para la salida.\n\nSi te hace falta algo antes de marcharte, estoy aquí para lo que necesites.",
+            "locale": "es"
+          }
+        ],
+        "templateMessage": {
+          "title": "Antes de la salida",
+          "userId": 6252715
+        }
+      },
+      {
+        "texts": [
+          {
+            "message": "Hola #{GUEST_FIRST_NAME},\n\nYa quedan pocos días para las vacaciones y quiero compartir con vosotros las instrucciones para la entrada autónoma en el apartamento del #{CHECK_IN_DATE}\n\nAprovecho para comentaros que actualmente el ayuntamiento está realizando mejoras en la calle. Se trata de trabajos puntuales en horario laboral. Por la tarde y por la noche la zona mantiene la tranquilidad habitual.\n\nDIRECCIÓN\n\nLa dirección es calle Ramón y Cajal, número 18 (esquina con la calle Roada).\nNo hay una puerta principal del edificio como se puede ver en la imagen 2, por lo que hay que subir dos plantas (planta baja, primera y segunda). La puerta del apartamento es la segunda empezando por la izquierda (ver imagen 3).\n\nHe dejado la llave debajo de la pequeña alfombra marrón situada fuera del apartamento (ver imagen 3).\n\nGoogle Maps:\nhttps://maps.app.goo.gl/621k2mSmn976pVGq6\n\nINTERNET\n\nLos datos de Internet (red y contraseña) están indicados debajo del pequeño dispositivo blanco situado cerca del sofá y también los adjunto en la imagen 4:\n\nRed: MOVISTAR_21C0 o MOVISTAR_PLUS_21C0\n\nContraseña: colonia1\n\nAIRE ACONDICIONADO (A/C)\n\nHay dos equipos en el apartamento: uno en el salón y otro en la habitación principal.\nCada uno tiene su propio mando a distancia, y las instrucciones se encuentran en el cajón situado entre la nevera y el horno.\n\nOs agradecería que apagaseis los equipos cuando no estéis en el apartamento. Enfrían o calientan la estancia muy rápidamente cuando regresáis, por lo que no es necesario dejarlos encendidos durante vuestra ausencia.\n\nTOALLAS Y ROPA DE CAMA\n\nHe dejado dos juegos de ropa de cama y toallas por si los necesitan.\nEn caso contrario, por favor déjenlos en el armario tal y como los encontraron.\n\nDETALLES\n\nEncontraréis también unos tapones y un antifaz por si alguien es especialmente sensible al ruido o a la luz y quiere descansar con total comodidad.\n\nBASURA / RESIDUOS\n\nTienen dos opciones para tirar la basura:\n\nTirarla en la calle: adjunto en la imagen 5 encontrarán el horario de recogida de residuos. Es importante respetar correctamente los horarios para no molestar a los vecinos\n\nLlevarla a un punto de recogida público situado junto al Campo de Fútbol (ver imagen 6):\nhttps://maps.app.goo.gl/hetA7rFRLf6ScPYbA\n\nCHECK-OUT\n\nCuando hagan el check-out, por favor dejen la llave sobre la mesa dentro del apartamento, para que el personal de limpieza pueda recogerla al ir a limpiar.\n\nSi necesitáis cualquier cosa durante vuestra estancia, estaré disponible para ayudaros.\n¡Que tengáis unas fantásticas vacaciones en la Colonia!",
+            "locale": "es"
+          }
+        ],
+        "entities": [
+          {
+            "entityType": "LISTING",
+            "entityId": 1140090
+          },
+          {
+            "entityType": "LISTING",
+            "entityId": 1234325
+          }
+        ],
+        "templateMessage": {
+          "title": "Check-in",
+          "userId": 6252715
+        }
+      },
+      {
+        "texts": [
+          {
+            "message": "Opción 1: Transporte privado (coche de alquiler)\n\nLa opción más cómoda y rápida\n\nSal del Aeropuerto de Palma y toma la Ma-19 en dirección Santanyí / Llucmajor.\n\nContinúa por la Ma-19 hasta enlazar con la Ma-30 (dirección Campos).\n\nSigue las indicaciones hacia Campos y después toma la Ma-6040 en dirección Colònia de Sant Jordi.\n\nEntra en la Colònia de Sant Jordi y sigue las indicaciones hacia el centro del pueblo.\n\nDirígete a calle Ramón y Cajal, esquina con calle Roada.\n\nDuración aproximada: 45–50 minutos (dependiendo del tráfico).\nAparcamiento: Hay aparcamiento gratuito en la calle o en las inmediaciones del apartamento.\n\nGoogle Maps (ruta directa):\nhttps://maps.app.goo.gl/621k2mSmn976pVGq6\n\nOpción 2: Transporte público\n\nOpción económica, pero más lenta\n\nPaso 1: Aeropuerto → Palma (Estación Intermodal)\n\nDesde el aeropuerto, toma el bus A1 en dirección Palma Centro / Puerto.\n\nBaja en Plaça d’Espanya (Estación Intermodal).\n\nDuración: 20–25 minutos.\n\nPaso 2: Palma → Colònia de Sant Jordi\n\nDesde la Estación Intermodal, toma el bus interurbano TIB – línea 530 (Palma → Colònia de Sant Jordi).\n\nBaja en la parada Colònia de Sant Jordi – Centro.\n\nDuración: aprox. 1 h 15 min – 1 h 30 min.\n\nPaso 3: Parada → Apartamento\n\nDesde la parada, el apartamento se encuentra a 5–10 minutos caminando.\n\nDirígete a calle Ramón y Cajal, 18, esquina con calle Roada.\n\nDuración total aproximada: 1 h 45 min – 2 h.\n\nPuedes consultar horarios actualizados en:\nhttps://www.tib.org",
+            "locale": "es"
+          }
+        ],
+        "entities": [
+          {
+            "entityType": "LISTING",
+            "entityId": 1140090
+          }
+        ],
+        "templateMessage": {
+          "title": "Cómo llegar desde el aeropuerto",
+          "userId": 6252715
+        }
+      },
+      {
+        "texts": [
+          {
+            "message": "¡Hola, #{GUEST_FIRST_NAME}! No queda nada para que empiece tu estancia. Puedes llegar cuando quieras el #{CHECK_IN_DATE} a partir de las #{CHECK_IN_TIME}.\n\nEsta es la dirección:\n#{LISTING_ADDRESS}\n\nAquí tienes la información para conectarte al wifi:\nNombre: #{WIFI_NAME}\nContraseña: #{WIFI_PASSWORD}\n\nSi tienes alguna pregunta, estoy aquí para lo que necesites. ¡Espero que disfrutes de tu estancia!",
+            "locale": "es"
+          }
+        ],
+        "templateMessage": {
+          "title": "Antes de la llegada",
+          "userId": 6252715
+        }
+      },
+      {
+        "texts": [
+          {
+            "message": "Bienvenido/a a la Colònia de Sant Jordi, uno de los mejores puntos de Mallorca para disfrutar de playas vírgenes, naturaleza y pueblos con encanto.\nAquí encontrarás recomendaciones personales para aprovechar al máximo tu estancia.\n\nPLAYAS IMPRESCINDIBLES\n\nLa mayoría de las mejores playas de Mallorca se encuentran en el sur de la isla.\n\n🌊 Es Trenc\n\nUna de las playas más famosas de Mallorca.\n\n🚗 A 10 minutos en coche desde la Colònia, dirección Campos.\n\n🅿️ Parking de pago (aprox. 7 € todo el día).\n\nDesde la arena, camina unos 15 minutos hacia la derecha (pasando dos chiringuitos) para encontrar zonas menos concurridas.\n\n🚶 Alternativa muy recomendable: paseo a pie desde la playa d’Es Coto, saliendo desde el Hotel El Marqués (unos 30 minutos junto al mar).\n\n🌊 Es Carbó\n\n🚶 30 minutos caminando desde el puerto de la Colònia.\n\nPlaya totalmente virgen y una de las mejores de la isla.\n\nConsejo: no te quedes al inicio; camina unos 10 minutos más hacia el final para disfrutarla con menos gente.\n\n🌊 Es Caragol\n\n🚗 Conduce hasta Cap de Ses Salines (pasando Es Llombards).\n\n🅿️ Aparca cerca del faro, con vistas espectaculares del archipiélago de Cabrera.\n\n🚶 Camina unos 30 minutos hacia la derecha hasta llegar a esta playa salvaje y tranquila.\n\nMuy parecida a Es Carbó y totalmente recomendable.\n\n🌊 Cala Llombards\n\n🚗 A unos 12 km, dirección Santanyí.\n\nCala pequeña, de aguas cristalinas y fácil acceso.\n\n🌊 S’Amarador\n\nSituada dentro del Parque Natural de Mondragó, cerca de Cala Figuera.\n\nIdeal para combinar naturaleza y playa.\n\n🌊 Playas del norte de la isla\n\nSi te apetece explorar otra zona:\n\nPlaya de Muro – playa larga, natural y muy similar a Es Trenc.\n\nSon Serra de Marina – ambiente más salvaje y menos turístico, ideal para pasear.\n\nRESTAURANTES RECOMENDADOS\n\n📍 En la Colònia de Sant Jordi\n\nHostal Playa – pescado fresco, vistas al mar y ambiente romántico (mejor reservar).\n\nCassai Beach House – cocina mediterránea y vistas espectaculares (recomendable reservar).\n\nMarisol – arroces y paellas, ubicado en el puerto.\n\nCinc Illes – buena comida y música en directo algunos días.\n\n📍 En Ses Salines\n\nCan Manolo – pescado fresco, muy conocido en toda la isla.\n\nCassai Ses Salines – restaurante moderno con el mismo concepto que el de la Colònia.\n\n📍 En Sa Ràpita\n\nCa’s Busso – comida local mallorquina, sencilla y auténtica (muy recomendado).\n\nRestaurantes de arroces y pescado junto al mar.\n\nQUÉ VER POR ZONAS DE LA ISLA\n\n🌞 Sur\n\nPaseo a pie hasta Es Carbó desde la Colònia: naturaleza, mar y tranquilidad absoluta.\n\nCap de Ses Salines, el punto más al sur de Mallorca. Ideal para un atardecer y paseo hasta Es Caragol.\n\nCala Figuera, pequeño pueblo pesquero. Sobre las 16:00 h regresan las barcas de pesca y es muy bonito de ver.\n\nSa Ràpita, uno de los pueblos donde es más fácil encontrar restaurantes abiertos fuera de temporada.\n\n🌄 Oeste\n\nPalma de Mallorca: imprescindible el casco antiguo y la Catedral.\nRestaurantes recomendados: Patrón Lunares o Brutus.\n\nRuta en coche por la Serra de Tramuntana (Ma-10), pasando por:\n\nEstellencs\n\nBanyalbufar\n\nPort des Canonge\n\nValldemossa\n\nDeià\n\nSóller\n\nFornalutx\n\nBiniaraix\n\nEstá más lejos desde la Colònia, pero vale muchísimo la pena.\n\n🌊 Norte\n\nFormentor, Playa de Muro y Puerto de Alcúdia: playas largas y paisajes espectaculares.\n\n🏘️ Este\n\nSantanyí, especialmente miércoles y sábados, cuando se celebra el mercado local.\n\n⭐ Experiencias que suelen encantar\n\n🌅 Ver el atardecer en el puerto de la Colònia o en Cap de Ses Salines.\n\n🚤 Excursión en barco al Parque Nacional de Cabrera (sale desde la Colònia).\n\n🚶 Paseos nocturnos tranquilos por la Colònia de Sant Jordi.\n\n🛒 Comprar productos locales como sobrasada, queso o ensaimadas en Ses Salines o Santanyí.",
+            "locale": "es"
+          }
+        ],
+        "entities": [
+          {
+            "entityType": "LISTING",
+            "entityId": 1140090
+          }
+        ],
+        "templateMessage": {
+          "title": "Cosas que ver",
+          "userId": 6252715
+        }
+      },
+      {
+        "texts": [
+          {
+            "message": "Hola #{GUEST_FIRST_NAME}\n\nMuchas gracias por tu reserva y por elegir nuestro apartamento para tu estancia en la Colònia de Sant Jordi. Es un placer tenerte como huésped y esperamos que disfrutes mucho de Mallorca.\n\nEn los próximos días, te pedimos que estés atento/a a los mensajes de Airbnb, ya que recibirás:\n\n- Un mensaje con indicaciones detalladas para llegar al apartamento desde el aeropuerto, tanto en transporte privado como en transporte público.\n\n- Otro mensaje con recomendaciones de cosas que ver y hacer en la zona, playas, restaurantes y planes para disfrutar al máximo de la isla.\n\n- Dos días antes de entrar en el apartamento te enviaremos un último mensaje con todas las instrucciones del check-in, para que tu llegada sea fácil y cómoda.\n\nDurante tu estancia, no dudes en escribirnos para cualquier cosa que puedas necesitar: recomendaciones, dudas o cualquier imprevisto. Para nosotros, lo más importante es que te sientas a gusto, cómodo/a y como en casa.\n\nGracias de nuevo por tu confianza.\n\n¡Te esperamos muy pronto!\nUn saludo cordial,",
+            "locale": "es"
+          }
+        ],
+        "entities": [
+          {
+            "entityType": "LISTING",
+            "entityId": 1140090
+          },
+          {
+            "entityType": "LISTING",
+            "entityId": 1234325
+          }
+        ],
+        "templateMessage": {
+          "title": "Confirmación de la reserva",
+          "userId": 6252715
+        }
+      },
+      {
+        "texts": [
+          {
+            "message": "Buenos días, espero que la estancia esté yendo genial y estéis disfrutando de las vacaciones. Si hay cualquier cosa que queréis compartir conmigo aquí estoy para lo que necesitéis.\n\nUn saludo,",
+            "locale": "es"
+          }
+        ],
+        "entities": [
+          {
+            "entityType": "LISTING",
+            "entityId": 1140090
+          }
+        ],
+        "templateMessage": {
+          "title": "Grado de satisfacción inicial",
+          "userId": 6252715
+        }
+      },
+      {
+        "texts": [
+          {
+            "message": "Hola, #{GUEST_FIRST_NAME}. Espero que estés a gusto en el alojamiento y que disfrutes de tu estancia. \n\nSi te hace falta algo, estoy aquí para lo que necesites.",
+            "locale": "es"
+          }
+        ],
+        "templateMessage": {
+          "title": "Después de la primera noche",
+          "userId": 6252715
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,842 @@
+[
+  {
+    "wishlistData": [
+      {
+        "numberOfInfants": 0,
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 1913411299
+          }
+        ],
+        "numberOfChildren": 2,
+        "numberOfAdults": 2,
+        "numberOfPets": 0,
+        "inviteCode": "IOFMZLTP",
+        "name": "Copenhaguen, Dinamarca 2026",
+        "wishlistItemData": [
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005955196299,
+            "pdpType": "HOME",
+            "federatedSearchId": "CD8D37CE-4538-4EE9-A76A-606D58A32665",
+            "adults": 2,
+            "wishlistId": 1913411299,
+            "pdpId": "1492026113927835878",
+            "checkIn": "2026-08-20",
+            "children": 2,
+            "checkOut": "2026-08-23"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005890560631,
+            "pdpType": "HOME",
+            "federatedSearchId": "4740A454-A041-4D9D-807B-56EB4568FBD9",
+            "adults": 2,
+            "wishlistId": 1913411299,
+            "pdpId": "1571195845806007978",
+            "checkIn": "2026-08-20",
+            "children": 2,
+            "checkOut": "2026-08-23"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005782517589,
+            "pdpType": "HOME",
+            "federatedSearchId": "6327A7A4-BB26-4CE2-BFCF-0F91F2B3DFF4",
+            "adults": 2,
+            "wishlistId": 1913411299,
+            "pdpId": "904955426415511737",
+            "checkIn": "2026-08-21",
+            "children": 2,
+            "checkOut": "2026-08-24"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005774042050,
+            "pdpType": "HOME",
+            "federatedSearchId": "6E720B7E-CC88-47C7-B4C6-84915C3D1769",
+            "adults": 2,
+            "wishlistId": 1913411299,
+            "pdpId": "1590419552745015647",
+            "checkIn": "2026-08-21",
+            "children": 2,
+            "checkOut": "2026-08-24"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005774036575,
+            "pdpType": "HOME",
+            "federatedSearchId": "403042CC-2DD2-4B4F-83BB-D515B4988BA5",
+            "adults": 2,
+            "wishlistId": 1913411299,
+            "pdpId": "1168583026247285584",
+            "checkIn": "2026-08-21",
+            "children": 2,
+            "checkOut": "2026-08-24"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 1913411299,
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "numberOfInfants": 0,
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 1886216382
+          }
+        ],
+        "numberOfChildren": 2,
+        "numberOfAdults": 2,
+        "numberOfPets": 0,
+        "inviteCode": "QQIPMMYR",
+        "name": "Chamonix, França 2026 setmana Santa",
+        "wishlistItemData": [
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005776089536,
+            "pdpType": "HOME",
+            "federatedSearchId": "34476F3F-E62A-4A0F-B950-6893AB554A2A",
+            "adults": 2,
+            "wishlistId": 1886216382,
+            "pdpId": "43923343",
+            "checkIn": "2026-04-09",
+            "children": 2,
+            "checkOut": "2026-04-12"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005776089212,
+            "pdpType": "HOME",
+            "federatedSearchId": "34476F3F-E62A-4A0F-B950-6893AB554A2A",
+            "adults": 2,
+            "wishlistId": 1886216382,
+            "pdpId": "16639387",
+            "checkIn": "2026-04-09",
+            "children": 2,
+            "checkOut": "2026-04-12"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005629353585,
+            "pdpType": "HOME",
+            "federatedSearchId": "19CCDC9A-003E-4FFC-81E6-96A9F239527E",
+            "adults": 2,
+            "wishlistId": 1886216382,
+            "pdpId": "36015064",
+            "checkIn": "2026-04-07",
+            "children": 2,
+            "checkOut": "2026-04-10"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 1886216382,
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "numberOfInfants": 0,
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 1640675712
+          }
+        ],
+        "numberOfChildren": 2,
+        "numberOfAdults": 2,
+        "numberOfPets": 0,
+        "inviteCode": "EVOCLPWX",
+        "name": "Chamonix, França 2025",
+        "wishlistItemData": [
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005497279458,
+            "pdpType": "HOME",
+            "federatedSearchId": "4233BED1-5E6A-4060-A0CA-2CA8CD5B27E9",
+            "adults": 2,
+            "wishlistId": 1640675712,
+            "pdpId": "688392194502689535",
+            "checkIn": "2026-02-27",
+            "children": 2,
+            "checkOut": "2026-03-03"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11004242157346,
+            "pdpType": "HOME",
+            "federatedSearchId": "dbd45981-938d-4ce6-b88b-8da638427de6",
+            "adults": 2,
+            "wishlistId": 1640675712,
+            "pdpId": "15781219",
+            "checkIn": "2025-04-21",
+            "children": 2,
+            "checkOut": "2025-04-25"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 1640675712,
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "numberOfInfants": 0,
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 1808834999
+          }
+        ],
+        "numberOfChildren": 2,
+        "numberOfAdults": 2,
+        "numberOfPets": 0,
+        "inviteCode": "AIVPLQQC",
+        "name": "Porté-Puymorens, França 2025",
+        "wishlistItemData": [
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005480347231,
+            "pdpType": "HOME",
+            "federatedSearchId": "751B7965-5249-4DCA-90F2-4538197E81AB",
+            "adults": 2,
+            "wishlistId": 1808834999,
+            "pdpId": "29092674",
+            "checkIn": "2025-12-26",
+            "children": 2,
+            "checkOut": "2025-12-30"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005461188845,
+            "pdpType": "HOME",
+            "federatedSearchId": "AC2CC34E-C126-4063-AEF8-174EDBC0BBE3",
+            "adults": 2,
+            "wishlistId": 1808834999,
+            "pdpId": "34457706",
+            "checkIn": "2025-12-26",
+            "children": 2,
+            "checkOut": "2025-12-30"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005439280465,
+            "pdpType": "HOME",
+            "federatedSearchId": "C20514DD-6AC8-4745-A13A-EC3DA0CEA6E8",
+            "adults": 2,
+            "wishlistId": 1808834999,
+            "pdpId": "1113675509998320787",
+            "checkIn": "2025-12-27",
+            "children": 2,
+            "checkOut": "2026-01-03"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005393006524,
+            "pdpType": "HOME",
+            "federatedSearchId": "83b2705d-fded-4472-a00a-c5a98528d32b",
+            "adults": 2,
+            "wishlistId": 1808834999,
+            "pdpId": "1289012815864051287",
+            "checkIn": "2025-12-26",
+            "children": 2,
+            "checkOut": "2026-01-02"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005363105234,
+            "pdpType": "HOME",
+            "federatedSearchId": "72282f8b-597a-4321-9253-0ecbb3dbd8e6",
+            "adults": 2,
+            "wishlistId": 1808834999,
+            "pdpId": "1147081792150679678",
+            "checkIn": "2025-12-26",
+            "children": 2,
+            "checkOut": "2025-12-30"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005343881643,
+            "pdpType": "HOME",
+            "federatedSearchId": "9592c0aa-4b55-4a39-b1a8-0af64a7dea50",
+            "adults": 2,
+            "wishlistId": 1808834999,
+            "pdpId": "19806869",
+            "checkIn": "2025-12-26",
+            "children": 2,
+            "checkOut": "2025-12-30"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005296270875,
+            "pdpType": "HOME",
+            "federatedSearchId": "5ac1e394-3c8b-4b4f-b5dd-7909253e448c",
+            "adults": 3,
+            "wishlistId": 1808834999,
+            "pdpId": "967177542197391683",
+            "checkIn": "2025-12-26",
+            "children": 2,
+            "checkOut": "2025-12-30"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005296254957,
+            "pdpType": "HOME",
+            "federatedSearchId": "3f1b8f3e-7aea-4109-97fd-983482b02ea5",
+            "adults": 3,
+            "wishlistId": 1808834999,
+            "pdpId": "996851579750172574",
+            "checkIn": "2025-12-26",
+            "children": 2,
+            "checkOut": "2025-12-30"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005210403871,
+            "pdpType": "HOME",
+            "federatedSearchId": "f2f464b0-86a2-4672-989f-dc6e617ebf57",
+            "adults": 2,
+            "wishlistId": 1808834999,
+            "pdpId": "803647178384868951",
+            "checkIn": "2025-12-26",
+            "children": 2,
+            "checkOut": "2025-12-30"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005210401483,
+            "pdpType": "HOME",
+            "federatedSearchId": "0ba0ac48-e7cd-43f7-8d1b-34db587c23aa",
+            "adults": 2,
+            "wishlistId": 1808834999,
+            "pdpId": "968059048623157161",
+            "checkIn": "2025-12-26",
+            "children": 2,
+            "checkOut": "2025-12-30"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005210400887,
+            "pdpType": "HOME",
+            "federatedSearchId": "0ba0ac48-e7cd-43f7-8d1b-34db587c23aa",
+            "adults": 2,
+            "wishlistId": 1808834999,
+            "pdpId": "754339254822949378",
+            "checkIn": "2025-12-26",
+            "children": 2,
+            "checkOut": "2026-01-02"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005210399969,
+            "pdpType": "HOME",
+            "federatedSearchId": "bb42ddbb-1643-47a7-a8e7-bb84eabcd2bb",
+            "adults": 2,
+            "wishlistId": 1808834999,
+            "pdpId": "2944243",
+            "checkIn": "2025-12-26",
+            "children": 2,
+            "checkOut": "2025-12-30"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 1808834999,
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "numberOfInfants": 0,
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 1827333592
+          }
+        ],
+        "numberOfChildren": 2,
+        "numberOfAdults": 2,
+        "numberOfPets": 0,
+        "inviteCode": "SIIRWFVL",
+        "name": "Berlín, Alemanya 2025",
+        "wishlistItemData": [
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005311347116,
+            "pdpType": "HOME",
+            "federatedSearchId": "19152899-5282-4b9b-bbe8-4630dea2e2f0",
+            "adults": 2,
+            "wishlistId": 1827333592,
+            "pdpId": "30230330",
+            "checkIn": "2025-12-05",
+            "children": 2,
+            "checkOut": "2025-12-08"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11005311346039,
+            "pdpType": "HOME",
+            "federatedSearchId": "2c870cfe-3557-41c5-91b8-55cddcc20542",
+            "adults": 2,
+            "wishlistId": 1827333592,
+            "pdpId": "1021570018421874003",
+            "checkIn": "2025-12-04",
+            "children": 2,
+            "checkOut": "2025-12-06"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 1827333592,
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "numberOfInfants": 0,
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 1733720377
+          }
+        ],
+        "numberOfChildren": 2,
+        "numberOfAdults": 2,
+        "numberOfPets": 0,
+        "inviteCode": "KRQTSMCM",
+        "name": "Rovaniemi, Finlàndia 2025",
+        "wishlistItemData": [
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11004783885120,
+            "pdpType": "HOME",
+            "federatedSearchId": "fa5ef2d0-ca7f-43f7-90d0-df7f6d7643aa",
+            "adults": 2,
+            "wishlistId": 1733720377,
+            "pdpId": "16682899",
+            "checkIn": "2025-12-20",
+            "children": 2,
+            "checkOut": "2025-12-24"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 1733720377,
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "numberOfInfants": 0,
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 1643220405
+          }
+        ],
+        "numberOfChildren": 2,
+        "numberOfAdults": 2,
+        "inviteCode": "FYAIBYXD",
+        "name": "França Esqui Catalunya",
+        "wishlistItemData": [
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11004723862429,
+            "pdpType": "HOME",
+            "federatedSearchId": "e2ebb9d6-a4bc-416d-b2ef-938fbae17206",
+            "adults": 2,
+            "wishlistId": 1643220405,
+            "pdpId": "659321248195418158",
+            "checkIn": "2025-12-26",
+            "children": 2,
+            "checkOut": "2025-12-30"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11004339222915,
+            "pdpType": "HOME",
+            "federatedSearchId": "214235d7-73df-466a-9cb1-69382f491fc6",
+            "adults": 4,
+            "wishlistId": 1643220405,
+            "pdpId": "739623059109389562",
+            "checkIn": "2025-01-24",
+            "children": 2,
+            "checkOut": "2025-01-26"
+          },
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11004256571941,
+            "pdpType": "HOME",
+            "federatedSearchId": "392e7bf0-749b-4dea-aecf-e98bfb0df1de",
+            "adults": 1,
+            "wishlistId": 1643220405,
+            "pdpId": "50411198",
+            "checkIn": "2024-12-08",
+            "children": 0,
+            "checkOut": "2024-12-13"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 1643220405,
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "numberOfInfants": 0,
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 1581912694
+          }
+        ],
+        "numberOfChildren": 2,
+        "numberOfAdults": 4,
+        "numberOfPets": 0,
+        "inviteCode": "INSWIFKA",
+        "name": "Porté-Puymorens, França 2024",
+        "wishlistItemData": [
+          {
+            "pets": 0,
+            "infants": 0,
+            "wishlistItemId": 11003901575080,
+            "pdpType": "HOME",
+            "federatedSearchId": "f713c361-37e6-4997-97f6-b8e4f89d808b",
+            "adults": 4,
+            "wishlistId": 1581912694,
+            "pdpId": "24665265",
+            "checkIn": "2025-12-26",
+            "children": 2,
+            "checkOut": "2026-01-01"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 1581912694,
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "numGuests": 3,
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 1163112175
+          }
+        ],
+        "wishlistItemData": [
+          {
+            "wishlistItemId": 11001605919809,
+            "pdpType": "HOME",
+            "wishlistId": 1163112175,
+            "pdpId": "35149701"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 1163112175,
+        "checkInDate": "2022-12-26",
+        "numberOfInfants": 1,
+        "numberOfChildren": 1,
+        "checkOutDate": "2023-01-05",
+        "numberOfAdults": 2,
+        "inviteCode": "QSTDOARL",
+        "name": "Masella",
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "numGuests": 3,
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 1163110890
+          }
+        ],
+        "wishlistItemData": [
+          {
+            "wishlistItemId": 11001605913471,
+            "pdpType": "HOME",
+            "wishlistId": 1163110890,
+            "pdpId": "18174465"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 1163110890,
+        "checkInDate": "2022-12-26",
+        "numberOfInfants": 1,
+        "numberOfChildren": 1,
+        "checkOutDate": "2023-01-05",
+        "numberOfAdults": 2,
+        "inviteCode": "CLMNUKWO",
+        "name": "Cerdanya, Spain",
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "numGuests": 3,
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 1163088826
+          }
+        ],
+        "wishlistItemData": [
+          {
+            "wishlistItemId": 11001605803044,
+            "pdpType": "HOME",
+            "wishlistId": 1163088826,
+            "pdpId": "17853613"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 1163088826,
+        "checkInDate": "2022-12-26",
+        "numberOfInfants": 1,
+        "numberOfChildren": 1,
+        "checkOutDate": "2023-01-05",
+        "numberOfAdults": 2,
+        "inviteCode": "HVLBDJXW",
+        "name": "Cerdanya, Spain",
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "numGuests": 3,
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 1095273101
+          }
+        ],
+        "wishlistItemData": [
+          {
+            "wishlistItemId": 11001264408745,
+            "pdpType": "HOME",
+            "wishlistId": 1095273101,
+            "pdpId": "620924218506275419"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 1095273101,
+        "checkInDate": "2022-07-30",
+        "numberOfInfants": 1,
+        "numberOfChildren": 1,
+        "checkOutDate": "2022-08-06",
+        "numberOfAdults": 2,
+        "inviteCode": "NTMHXJKR",
+        "name": "Formentera, Islas Baleares",
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "numGuests": 10,
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 1019149665
+          }
+        ],
+        "wishlistItemData": [
+          {
+            "wishlistItemId": 11000867262091,
+            "pdpType": "HOME",
+            "wishlistId": 1019149665,
+            "pdpId": "16081337"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 1019149665,
+        "checkInDate": "2022-03-25",
+        "numberOfInfants": 0,
+        "numberOfChildren": 0,
+        "checkOutDate": "2022-03-27",
+        "numberOfAdults": 10,
+        "inviteCode": "IEBBEHEN",
+        "name": "Bateix Quique ",
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "numGuests": 3,
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 1010166993
+          }
+        ],
+        "wishlistItemData": [
+          {
+            "checkIn": "2025-04-21",
+            "wishlistItemId": 11000821893296,
+            "pdpType": "HOME",
+            "checkOut": "2025-04-24",
+            "wishlistId": 1010166993,
+            "pdpId": "22747731"
+          },
+          {
+            "wishlistItemId": 11000821888192,
+            "pdpType": "HOME",
+            "wishlistId": 1010166993,
+            "pdpId": "46852647"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 1010166993,
+        "checkInDate": "2022-03-04",
+        "numberOfInfants": 1,
+        "numberOfChildren": 1,
+        "checkOutDate": "2022-03-08",
+        "numberOfAdults": 2,
+        "inviteCode": "YHWIHYUZ",
+        "name": "Chamonix-Mont-Blanc",
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "numGuests": 8,
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 1004566750
+          }
+        ],
+        "wishlistItemData": [
+          {
+            "wishlistItemId": 11000793066513,
+            "pdpType": "HOME",
+            "wishlistId": 1004566750,
+            "pdpId": "4126602"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 1004566750,
+        "checkInDate": "2022-03-03",
+        "numberOfInfants": 0,
+        "numberOfChildren": 2,
+        "checkOutDate": "2022-03-06",
+        "numberOfAdults": 6,
+        "inviteCode": "ZAYRLOBY",
+        "name": "Alaró, Islas Baleares",
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "numGuests": 6,
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 812354340
+          }
+        ],
+        "wishlistItemData": [
+          {
+            "wishlistItemId": 10000991435004,
+            "pdpType": "HOME",
+            "wishlistId": 812354340,
+            "pdpId": "36370858"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 812354340,
+        "checkInDate": "2020-12-28",
+        "numberOfInfants": 1,
+        "numberOfChildren": 0,
+        "checkOutDate": "2021-01-03",
+        "numberOfAdults": 6,
+        "inviteCode": "UPLKVGYM",
+        "name": "Cerdanya, Spain",
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 13262738
+          }
+        ],
+        "inviteCode": "VFUDYUKF",
+        "name": "Favoritos guardados en el móvil",
+        "wishlistItemData": [
+          {
+            "wishlistItemId": 1119226300,
+            "pdpType": "HOME",
+            "wishlistId": 13262738,
+            "pdpId": "18195993"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 13262738,
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 473172332
+          }
+        ],
+        "inviteCode": "YWQCLCHY",
+        "name": "Cardedeu",
+        "wishlistItemData": [
+          {
+            "wishlistItemId": 1589216204,
+            "pdpType": "HOME",
+            "wishlistId": 473172332,
+            "pdpId": "20687703"
+          }
+        ],
+        "isPrivate": true,
+        "wishlistId": 473172332,
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 12103656
+          }
+        ],
+        "inviteCode": "JOIJQTYO",
+        "name": "Lugares de vacaciones",
+        "isPrivate": false,
+        "wishlistId": 12103656,
+        "wishlistType": "WISHLIST"
+      },
+      {
+        "wishlistUserData": [
+          {
+            "userId": "6252715",
+            "wishlistId": 12103654
+          }
+        ],
+        "inviteCode": "OFZFTMKT",
+        "name": "Casas de ensueño",
+        "isPrivate": false,
+        "wishlistId": 12103654,
+        "wishlistType": "WISHLIST"
+      }
+    ],
+    "pendingWishlistItemData": [
+      {
+        "checkIn": "2026-08-20",
+        "pdpType": "HOME",
+        "checkOut": "2026-08-23",
+        "userId": 6252715,
+        "pdpId": "1068777918112309853"
+      },
+      {
+        "checkIn": "2026-08-20",
+        "pdpType": "HOME",
+        "checkOut": "2026-08-23",
+        "userId": 6252715,
+        "pdpId": "1436759927557977585"
+      }
+    ]
+  }
+]

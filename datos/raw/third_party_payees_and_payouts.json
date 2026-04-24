@@ -1,0 +1,55 @@
+[
+  {
+    "profiles": [
+      {
+        "profileId": "73576b9717fb4f588bc79c4b11b8ec21",
+        "ownerUserId": 6252715
+      },
+      {
+        "profileId": "59ad2bf9a10a461abb2611e2400d0bfb",
+        "ownerUserId": 6252715
+      },
+      {
+        "profileId": "c5fe448e4dce45a589d0e32bab70d2b0",
+        "ownerUserId": 6252715
+      },
+      {
+        "profileId": "b2a57e866ada4fc4b589505ad946ac46",
+        "ownerUserId": 6252715
+      },
+      {
+        "profileId": "42acb9e65cc74247a912a210fcd72255",
+        "ownerUserId": 6252715
+      },
+      {
+        "profileId": "bf719b3dd11042d6990bc3af3f635f81",
+        "ownerUserId": 6252715
+      },
+      {
+        "profileId": "4e6a5e0c9647405196783871668adbb0",
+        "ownerUserId": 6252715
+      },
+      {
+        "profileId": "2b9a9727e845432ab078b1cc6f6a2826",
+        "ownerUserId": 6252715
+      },
+      {
+        "profileId": "40b0a6edfc4947c2904742a0ff8d490f",
+        "ownerUserId": 6252715
+      },
+      {
+        "profileId": "d4104907834842a3ad8bf93593a553f5",
+        "ownerUserId": 6252715
+      },
+      {
+        "profileId": "8d055523252b4e77a4c2838f44060212",
+        "ownerUserId": 6252715
+      }
+    ],
+    "businesses": [
+      {
+        "businessId": "902411f08068472a9430d53c09ad1528"
+      }
+    ]
+  }
+]

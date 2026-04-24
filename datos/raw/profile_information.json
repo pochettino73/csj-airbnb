@@ -1,0 +1,76 @@
+[
+  {
+    "profilePhotos": [
+      {
+        "name": "8afa6326-9017-4e0d-b117-25a220dfede9.jpg",
+        "fileType": "JPEG",
+        "createdAt": 1614084662.000000000
+      },
+      {
+        "name": "742678ac-7f11-4ff5-b5ab-b0115b000ac9.jpg",
+        "fileType": "JPEG",
+        "createdAt": 1495469270.000000000
+      },
+      {
+        "name": "82c603a7-59ac-4ed6-9910-917b5726705f.jpg",
+        "fileType": "JPEG",
+        "createdAt": 1495469255.000000000
+      },
+      {
+        "name": "e9e7dcab-7294-4630-b898-0a1de0e0fc09.jpg",
+        "fileType": "JPEG",
+        "createdAt": 1495469232.000000000
+      },
+      {
+        "name": "original.jpg",
+        "fileType": "JPEG",
+        "createdAt": 1400569437.000000000
+      },
+      {
+        "name": "original.jpg",
+        "fileType": "JPEG",
+        "createdAt": 1367857961.000000000
+      }
+    ],
+    "user": {
+      "country": "ES",
+      "lastName": "Roig",
+      "birthdate": "1973-03-14",
+      "initialIp": "83.38.186.50",
+      "languages": 0,
+      "facebookId": 610881882,
+      "sex": "Male",
+      "tosVersion": 16,
+      "tosAcceptedAt": "2026-02-20T08:38:30.586Z",
+      "market": "Mallorca Island",
+      "mostRecentIp": "176.87.104.60",
+      "createdAt": "2013-05-06T15:19:24.000Z",
+      "firstName": "Daniel",
+      "nativeCurrency": "EUR",
+      "id": 6252715,
+      "email": "droig.roig@gmail.com",
+      "userProfileInfo": {
+        "hometown": "Barcelona, Spain",
+        "lng": 2.646630048751831,
+        "facebookProfileUpdatedAt": "2019-12-18T17:47:44.000Z",
+        "about": "Soy Consultor estratégico de profesión y nacido en Barcelona aunque desde el 2013 vivo en Mallorca. Mallorca es una maravilla, no solo en verano sino también en invierno y aprovecho para animaros a que vengáis y descubráis su gastronomía, la Serra de Tramuntana con su naturaleza y sus pueblos, su cultura y su gente.\r\n\r\nVivo en Alaró, uno de los pueblos con más vida y con más encanto de la isla durante todo el año. La Colonia de Sant Jordi es un paraíso que considero todo el  mundo debería conocer.\r\n\r\nMe encantan todos los deportes, practico muchos de ellos aunque mi pasión es la montaña.\r\n\r\nAmigo de mis amigos",
+        "currentCity": "Palma de Mallorca, Balearic Islands, Spain",
+        "lat": 39.57120132446289
+      },
+      "preferredLocale": "ca",
+      "updatedAt": "2026-03-03T11:35:08.598Z"
+    },
+    "phoneNumbers": [
+      {
+        "number": "34659578959",
+        "country": "ES",
+        "createdAt": "2013-05-06T15:19:25.000Z",
+        "receivesSms": true,
+        "verifiedAt": "2024-06-12T13:42:29.000Z",
+        "verificationMethod": 1,
+        "userId": 6252715,
+        "updatedAt": "2024-06-12T13:42:29.000Z"
+      }
+    ]
+  }
+]

@@ -1,0 +1,177 @@
+[
+  {
+    "claimData": [
+      {
+        "referenceId": "CLSF-05153971"
+      },
+      {
+        "claimItems": [
+          {
+            "evidence": [
+              {
+                "evidenceFiles": [
+                  {
+                    "name": "281474977014024-0.jpg",
+                    "fileType": "UNDEFINED",
+                    "createdAt": 1635616774.000000000
+                  }
+                ],
+                "evidenceDescription": "Estantería"
+              },
+              {
+                "evidenceFiles": [
+                  {
+                    "name": "281474977014024-1.jpg",
+                    "fileType": "UNDEFINED",
+                    "createdAt": 1635616774.000000000
+                  }
+                ],
+                "evidenceDescription": "Estantería"
+              }
+            ],
+            "estimateAmountMicrosNative": 60000000,
+            "questionResponseData": {
+              "questions": [
+                {
+                  "answers": [
+                    {
+                      "value": "ItemDamaged"
+                    }
+                  ]
+                },
+                {
+                  "answers": [
+                    {
+                      "value": "UserEstimation"
+                    }
+                  ]
+                },
+                {
+                  "answers": [
+                    {
+                      "value": "6"
+                    }
+                  ]
+                }
+              ]
+            },
+            "estimateNativeCurrency": "EUR",
+            "itemDescription": "Estantería de plástico de la nevera"
+          }
+        ],
+        "questionResponseData": {
+          "questions": [
+            {
+              "answers": [
+                {
+                  "value": "ItemDamaged"
+                }
+              ]
+            }
+          ]
+        },
+        "userAgreements": [
+          {
+            "agreementType": "HOST_GUARANTEE",
+            "accepted": true
+          }
+        ],
+        "referenceId": "CLSF-355937",
+        "claimOverview": "A part of the bridge has been broken"
+      },
+      {
+        "referenceId": "CLA-TES4TX9RWM",
+        "claimMessages": [
+          "Hola,\nLa reserva de Mercedes Berzosa se realizó bajo una tarifa no reembolsable, tal y como se indicaba en el momento de la reserva.\nLamento mucho que esté atravesando una situación de salud complicada, pero según la política de Airbnb, las tarifas no reembolsables no pueden devolverse, salvo que el equipo de soporte determine que se trata de una circunstancia atenuante reconocida oficialmente.\n\nPor tanto, remito este caso a revisión de Airbnb para que valoren si procede alguna excepción, pero por mi parte no corresponde la devolución del importe solicitado.\n\nMuchas gracias por su gestión"
+        ]
+      },
+      {
+        "referenceId": "CLA-HAYXWQCXW9"
+      },
+      {
+        "referenceId": "CLA-RHRN5MRD4F",
+        "claimMessages": [
+          "Hi Mirjam,\n\nLet me give you a brief summary of which has been exactly the situation and then I will give you a friendly offer:\n\n-\tYou checked in on the 4th and sent me a message complaining about the cleaning and I replied to you the same day offering a refund of 60€ but you never answered to my offer\n-\tI also offered you to send you a new person to clean it up but you also discarded that\n-\tDuring your whole stay I have been very kind with you (take a look to the messages history) trying (and I say ‘trying’ because communication with you was not easy…) to satisfy your needs\n-\tI have never had a cleaning complain (you can take a look to my reviews) but I accept your complaint because the service was done by a new lady cleaner and I wanted you to be happy\n\nMy surprise was that when you checked out you left the apartment much more (and more) dirty and disordered than any other guest did it before as I pointed out in the evaluation I posted in Airbnb. I was very disappointed because that is not the way clients use to leave an apartment, at least mine…, but I rather preferred to think that you did it because of the initial issue.\n\nDid you add an evaluation in Airbnb about your stay righ after you checked out?\n\nI do not see the point at all about your claim, sorry",
+          "Hi there,\n\nDid she read the evaluation I wrote about her stay in your webpage after her checked out? Cause I never received any feedback from her and her stay (did she write one?).\n\nNot sure if you have enough information if you take a look to the messages history and the evaluation I wrote in your webpage but I do not agree at all about her claim. \n\nLooking forward to hear from you,"
+        ]
+      },
+      {
+        "referenceId": "CLA-EBWTKCZBD4"
+      },
+      {
+        "claimItems": [
+          {
+            "evidence": [
+              {
+                "evidenceFiles": [
+                  {
+                    "name": "IMG_9162.JPG",
+                    "fileType": "UNDEFINED",
+                    "createdAt": 1493633772.000000000
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "referenceId": "CLA-ACC448BPAT",
+        "claimOverview": "Karin, as we have agreed I kindly request to pay you for 50% of the new door handle \n\nThnx"
+      },
+      {
+        "paymentOutcomes": [
+          {
+            "amountMicros": 100000000,
+            "paymentCurrency": "EUR",
+            "intent": "FULL"
+          }
+        ],
+        "referenceId": "CLA-TW4H8QC89M",
+        "claimOverview": "Según acordado"
+      },
+      {
+        "claimItems": [
+          {
+            "evidence": [
+              {
+                "evidenceFiles": [
+                  {
+                    "name": "IMG_3183.PNG",
+                    "fileType": "UNDEFINED",
+                    "createdAt": 1600591125.000000000
+                  }
+                ]
+              },
+              {
+                "evidenceFiles": [
+                  {
+                    "name": "IMG_3189.PNG",
+                    "fileType": "UNDEFINED",
+                    "createdAt": 1600591125.000000000
+                  }
+                ]
+              },
+              {
+                "evidenceFiles": [
+                  {
+                    "name": "IMG_3188.PNG",
+                    "fileType": "UNDEFINED",
+                    "createdAt": 1600591125.000000000
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "referenceId": "CLA-CN2BWNKD82",
+        "claimOverview": "Les dejé muy claro antes de entrar en el apartamento (ver foto adjunta) que tenían que tener cuidado con los aparatos de aire acondicionado y asegurar que no los dejaban encendidos. \n\nSe marcharon el lunes y yo fui a hacer la limpieza el viernes. Mi sorpresa fue que se habían dejado encendido el A/C del salón..., y lo ha estado por cinco días completos.\n\n"
+      },
+      {
+        "referenceId": "CLA-TNY3DXZJDF",
+        "claimOverview": "Como puedes comprobar en el histórico de los mensajes, Gordon me solicitó cambiar las fechas una vez ya había confirmado la reserva. Hice los cambios pero el sistema no tuvo en cambio incluir la tarifa de limpieza del apartamento.\n\nLe comenté en su momento que faltaban los 60€ y también se lo recordé el día antes de marcharse solicitándole que me dejara el dinero encima de la mesa del comedor, cosa que no ha hecho.\n\n¿Me podéis ayudar?\n\ngracias,",
+        "claimMessages": [
+          "Me podeis por favor confirmar como está este tema?\n\nGracias"
+        ]
+      }
+    ]
+  }
+]

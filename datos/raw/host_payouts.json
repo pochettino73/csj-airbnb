@@ -1,0 +1,16 @@
+[
+  {
+    "physicalPayoutSplitRules": [
+      {
+        "physicalPayoutSplitRuleDetails": [
+          {
+            "percentage": "100",
+            "instrumentToken": "0GK0gzNhAZnEmg5kmDyWpyWLGjf1"
+          }
+        ],
+        "ruleToken": "0G00gngw0zbgUoBCo0B9SSBafWL-1",
+        "userId": 6252715
+      }
+    ]
+  }
+]

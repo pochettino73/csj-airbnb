@@ -1,0 +1,38 @@
+[
+  {
+    "templates": [
+      {
+        "market": {
+          "country": "Spain",
+          "region": "Europe"
+        },
+        "priceCurrency": "EUR",
+        "requirements": 0,
+        "id": 3668470,
+        "experience": [
+          {
+            "defaultLocale": "fr",
+            "experienceDescription": [
+              {
+                "locale": "fr"
+              }
+            ],
+            "hostId": 6252715,
+            "location": {
+              "country": "Spain",
+              "lng": 3.0175712,
+              "city": "Mallorca Other",
+              "lat": 39.6952629,
+              "locationDescriptions": [
+                {
+                  "locale": "fr"
+                }
+              ]
+            }
+          }
+        ],
+        "tripHostId": 6252715
+      }
+    ]
+  }
+]

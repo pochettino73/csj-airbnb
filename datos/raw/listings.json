@@ -1,0 +1,361 @@
+[
+  {
+    "listings": [
+      {
+        "amenities": [
+          "tv",
+          "cable",
+          "internet",
+          "wireless_internet",
+          "ac",
+          "kitchen",
+          "free_parking",
+          "street_parking",
+          "heating",
+          "family_friendly",
+          "washer",
+          "essentials",
+          "hangers",
+          "hair_dryer",
+          "iron",
+          "laptop_friendly_workspace",
+          "self_checkin",
+          "lockbox",
+          "high_chair",
+          "crib",
+          "pack_n_play_travel_crib",
+          "hot_water",
+          "microwave",
+          "coffee_maker",
+          "refrigerator",
+          "dishes_and_silverware",
+          "cooking_basics",
+          "oven",
+          "stove",
+          "patio_or_belcony",
+          "alfresco_dining",
+          "outdoor_seating",
+          "beach_access"
+        ],
+        "bathroomType": "private",
+        "country": "ES",
+        "hostUserId": 6252715,
+        "rooms": [
+          {
+            "amenities": [
+              "QUEEN_BED",
+              "CRIB_BED"
+            ],
+            "roomNumber": 1,
+            "id": 12976540,
+            "listingId": 1140090,
+            "isPrivate": true,
+            "roomType": "BEDROOM"
+          },
+          {
+            "roomNumber": 1000000,
+            "id": 214219151,
+            "listingId": 1140090,
+            "isPrivate": true,
+            "roomType": "FULL_BATHROOM"
+          },
+          {
+            "roomNumber": 1000004,
+            "id": 214219152,
+            "listingId": 1140090,
+            "isPrivate": true,
+            "roomType": "EXTERIOR"
+          },
+          {
+            "roomNumber": 1000001,
+            "id": 214219153,
+            "listingId": 1140090,
+            "isPrivate": true,
+            "roomType": "KITCHEN"
+          },
+          {
+            "roomNumber": 1000002,
+            "id": 214219154,
+            "listingId": 1140090,
+            "isPrivate": true,
+            "roomType": "LIVING_ROOM"
+          },
+          {
+            "roomNumber": 1000005,
+            "id": 569575234,
+            "listingId": 1140090,
+            "isPrivate": true,
+            "roomType": "BALCONY"
+          }
+        ],
+        "availableByDefault": true,
+        "petsAllowed": false,
+        "city": "Colònia de Sant Jordi",
+        "precision": "building",
+        "infantsAllowed": true,
+        "streetNative": "Balearic Islands",
+        "language": "es",
+        "userDefinedLocation": true,
+        "photos": [
+          {
+            "name": "3dd02366_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1400409062.000000000
+          },
+          {
+            "name": "80947e0e_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1399837924.000000000
+          },
+          {
+            "name": "2edef352_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1398712514.000000000
+          },
+          {
+            "name": "625d30b9_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1399838058.000000000
+          },
+          {
+            "name": "664aa926_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1399837962.000000000
+          },
+          {
+            "name": "6ba86c06_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1399838000.000000000
+          },
+          {
+            "name": "41b1c967_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1399838151.000000000
+          },
+          {
+            "name": "9bf7db7c_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1400409038.000000000
+          },
+          {
+            "name": "1efaa58b_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1399838252.000000000
+          },
+          {
+            "name": "6dbdbbf3_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1399838288.000000000
+          },
+          {
+            "name": "f3cffca9_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1398712756.000000000
+          },
+          {
+            "name": "ee093c98_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1398712712.000000000
+          },
+          {
+            "name": "6c6b3f19_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1398712803.000000000
+          }
+        ],
+        "personCapacity": 2,
+        "phoneCountry": "ES",
+        "childrenAlloewd": true,
+        "smokingAllowed": false,
+        "formattedAddress": "Carrer Ramon i Cajal, 18, 07638 Colònia de Sant Jordi, Balearic Islands, Spain",
+        "street": "Carrer Ramon i Cajal, 18",
+        "propertyType": "Apartment",
+        "cityNative": "Colònia de Sant Jordi",
+        "expectations": [
+          {
+            "listingId": 1140090,
+            "expectationType": "lake_or_river_or_water_body",
+            "locale": "es",
+            "hasExpectation": true
+          },
+          {
+            "listingId": 1140090,
+            "expectationType": "potential_noise",
+            "locale": "es",
+            "hasExpectation": true
+          },
+          {
+            "listingId": 1140090,
+            "expectationType": "requires_stairs",
+            "locale": "es",
+            "hasExpectation": true
+          }
+        ],
+        "id": 1140090,
+        "state": "Balearic Islands",
+        "email": "droig.roig@gmail.com",
+        "lat": 39.32003920079811,
+        "roomType": "Entire home/apt",
+        "eventsAllowed": false,
+        "lng": 2.995679096030415,
+        "bathrooms": 1.0,
+        "bedrooms": 1,
+        "zipcode": "07638",
+        "license": "ETVPL/13612",
+        "directions": "Best way to access Colonia de Sant Jordi from the airport is to rent a car, trip should not take more than 30\u0027\n\nAnother option if you do not want to rent a car is to take a bus (line 1) from the aiport and get into Plaza España in the city center. From there you can take another bus driving directly to Colonia de Sant Jordi that will take around 1h15\u0027",
+        "instantBookLeadTimeHours": 24,
+        "phone": "34659578959",
+        "beds": 1,
+        "listingDescriptions": [
+          {
+            "summary": "Apartment located in the south of Mallorca, one of the most beautiful spots of the island surrounded by beautiful beaches and wonderful environment, ideal for a tremendous vacation with your partner and your children",
+            "tier": "MARKETPLACE",
+            "neighborhoodOverview": "Neighborhood is very quiet and parking is always free and available in front of the main building door",
+            "name": "Apartment in the South of Mallorca",
+            "interaction": "I currently live in Alaro (Mallorca) and I will available if needed",
+            "description": "Apartment located in the south of Mallorca, one of the most beautiful spots of the island surrounded by beautiful beaches and wonderful environment, ideal for a tremendous vacation with your partner and your children\n\nIdeal apartment for a couple and optional third person in Colonia de Sant Jordi within the idyllic beaches of Es Trenc and Es Carbó.\n\nExterior apartment with 50m2 distributed in a double room, a bathroom, a laundry room and a dining room with an american kitchen and a terrace with beautiful views.\n\nThe apartment is in a quiet area of Colonia de Sant Jordi a few meters from the harbor beach, the boardwalk and the bars and restaurants.\n\nSouth of Mallorca has the best beaches on the island and Colonia de Sant Jordi is a nice little town crowded and perfect for a few days of rest.\n\nI currently live in Alaro (Mallorca) and I will available if needed\n\nNeighborhood is very quiet and parking is always free and available in front of the main building door",
+            "language": "en",
+            "space": "Ideal apartment for a couple and optional third person in Colonia de Sant Jordi within the idyllic beaches of Es Trenc and Es Carbó.\n\nExterior apartment with 50m2 distributed in a double room, a bathroom, a laundry room and a dining room with an american kitchen and a terrace with beautiful views.\n\nThe apartment is in a quiet area of Colonia de Sant Jordi a few meters from the harbor beach, the boardwalk and the bars and restaurants.\n\nSouth of Mallorca has the best beaches on the island and Colonia de Sant Jordi is a nice little town crowded and perfect for a few days of rest."
+          },
+          {
+            "summary": "Apartamento localizado en el sur de Mallorca, en uno de los parajes más bellos de la isla, rodeado de playas paradisíacas y un entorno maravilloso, ideal para pasar unos días formidables con tu familia",
+            "tier": "MARKETPLACE",
+            "neighborhoodOverview": "Hay parking gratuito disponible en la misma puerta de acceso al edificio",
+            "name": "Propiedad en el Sur de Mallorca",
+            "description": "Apartamento localizado en el sur de Mallorca, en uno de los parajes más bellos de la isla, rodeado de playas paradisíacas y un entorno maravilloso, ideal para pasar unos días formidables con tu familia\n\nApartamento localizado en el sur de Mallorca, en uno de los parajes más bellos de la isla, rodeado de playas paradisíacas y un entorno maravilloso.\n\nLa Colonia de Sant Jordi es el municipio con mejor acceso a las espectaculares playas de Es Trenc y el Carbó así como al archipiélago de Cabrera al que se puede acceder con algunas de las barcas comerciales que ofrecen el servicio de transporte desde el mismo puerto del municipio.\n\nEs una localidad que dispone de una oferta muy amplia y variada para disfrutar en familia de la gastronomía y los deportes de la zona. \n\nEl apartamento dispone de una habitación doble con una cama de matrimonio así como también de una cama supletoria en el salón. La cocina y el baño están perfectamente equipados y dispone de una amplia terraza para poder disfrutar de comidas y cenas al aire libre. \n\nEl acceso a las playas puede realizarse andando desde el apartamento:\n\n- Playa del puerto se encuentra a 5\u0027\n- Playa de Es Dolç a 10\u0027\n- Playa de Es Carbó a 30\u0027\n- Playa del Marqués del Palmer a 10\u0027\n- Playa de Es Trenc a 35\u0027\n\nExisten también dos supermercados (Eroski y Miguel) a escasos metros de casa que facilitarán que tu estancia sea lo más cómoda posible.\n\nHay parking gratuito disponible en la misma puerta de acceso al edificio",
+            "language": "es",
+            "space": "Apartamento localizado en el sur de Mallorca, en uno de los parajes más bellos de la isla, rodeado de playas paradisíacas y un entorno maravilloso.\n\nLa Colonia de Sant Jordi es el municipio con mejor acceso a las espectaculares playas de Es Trenc y el Carbó así como al archipiélago de Cabrera al que se puede acceder con algunas de las barcas comerciales que ofrecen el servicio de transporte desde el mismo puerto del municipio.\n\nEs una localidad que dispone de una oferta muy amplia y variada para disfrutar en familia de la gastronomía y los deportes de la zona. \n\nEl apartamento dispone de una habitación doble con una cama de matrimonio así como también de una cama supletoria en el salón. La cocina y el baño están perfectamente equipados y dispone de una amplia terraza para poder disfrutar de comidas y cenas al aire libre. \n\nEl acceso a las playas puede realizarse andando desde el apartamento:\n\n- Playa del puerto se encuentra a 5\u0027\n- Playa de Es Dolç a 10\u0027\n- Playa de Es Carbó a 30\u0027\n- Playa del Marqués del Palmer a 10\u0027\n- Playa de Es Trenc a 35\u0027\n\nExisten también dos supermercados (Eroski y Miguel) a escasos metros de casa que facilitarán que tu estancia sea lo más cómoda posible."
+          }
+        ],
+        "apartment": "3C",
+        "bedType": "Real Bed",
+        "formattedAddressNative": "Carrer Ramon i Cajal, 18, 07638 Colònia de Sant Jordi, Balearic Islands, Spain",
+        "stateNative": "Balearic Islands",
+        "instantBook": true,
+        "instantBookWelcomeMessage": "Gracias por mostrar interés en mi apartamento y encantado de saludarte.\n\nSi necesitas cualquier información por favor házmelo saber al igual que los detalles de tu viaje para que me pueda organizar."
+      },
+      {
+        "amenities": [
+          "tv",
+          "wireless_internet",
+          "ac",
+          "kitchen",
+          "free_parking",
+          "elevator",
+          "family_friendly",
+          "washer",
+          "hair_dryer",
+          "iron",
+          "laptop_friendly_workspace",
+          "self_checkin",
+          "lockbox"
+        ],
+        "country": "ES",
+        "hostUserId": 6252715,
+        "availableByDefault": true,
+        "city": "Barcelona",
+        "precision": "address",
+        "infantsAllowed": true,
+        "streetNative": "Catalonia",
+        "language": "es",
+        "userDefinedLocation": true,
+        "photos": [
+          {
+            "name": "6fcfe26b_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1372189629.000000000
+          },
+          {
+            "name": "9585a8be_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1372189715.000000000
+          },
+          {
+            "name": "6f6a15e1_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1372189678.000000000
+          },
+          {
+            "name": "b782566d_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1372189584.000000000
+          },
+          {
+            "name": "be26160a_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1372189779.000000000
+          },
+          {
+            "name": "d97b428b_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1370344587.000000000
+          },
+          {
+            "name": "e70a1795_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1370344719.000000000
+          },
+          {
+            "name": "45c4f213_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1372190001.000000000
+          },
+          {
+            "name": "1b02c07e_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1370344409.000000000
+          },
+          {
+            "name": "0c038bc7_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1370344551.000000000
+          },
+          {
+            "name": "8b11576d_original.jpg",
+            "fileType": "JPEG",
+            "createdAt": 1370344565.000000000
+          }
+        ],
+        "personCapacity": 2,
+        "phoneCountry": "ES",
+        "childrenAlloewd": true,
+        "formattedAddress": "08004 Barcelona, Spain",
+        "propertyType": "Apartment",
+        "cityNative": "Barcelona",
+        "id": 1234325,
+        "state": "Catalonia",
+        "lat": 41.37097930908203,
+        "roomType": "Entire home/apt",
+        "lng": 2.146177053451538,
+        "bathrooms": 1.0,
+        "bedrooms": 1,
+        "zipcode": "08004",
+        "instantBookLeadTimeHours": 24,
+        "phone": "34659578959",
+        "neighborhood": "Sants-Montjuïc",
+        "beds": 1,
+        "listingDescriptions": [
+          {
+            "tier": "MARKETPLACE",
+            "name": "Apartment in Barcelona city center",
+            "description": "Renovated 55m2 apartment in a quiet area of Barcelona, parquet, kitchen, a double bedroom, a bathroom and a terrace. The flat is completely outside and bright all day.\r\n\r\nIt has a sofa bed so the apartment is ideal for a couple and / or three.\r\n\r\nIt is a first floor apartment in a five-storey building with elevator.\r\n\r\nSurrounded by nature in the Montjuic neighborhood, ideal for sports and to visit the Olympic\r\n\r\nThe neighborhood is very quiet and has all kinds of stores for home consumption and 5 \u0027walk you will find the Plaza Spain with connections to all parts of the city.\r\n\r\nVery easy access to the airport as it is a 15 \u0027by car.",
+            "language": "en",
+            "space": "Renovated 55m2 apartment in a quiet area of Barcelona, parquet, kitchen, a double bedroom, a bathroom and a terrace. The flat is completely outside and bright all day.\r\n\r\nIt has a sofa bed so the apartment is ideal for a couple and / or three.\r\n\r\nIt is a first floor apartment in a five-storey building with elevator.\r\n\r\nSurrounded by nature in the Montjuic neighborhood, ideal for sports and to visit the Olympic\r\n\r\nThe neighborhood is very quiet and has all kinds of stores for home consumption and 5 \u0027walk you will find the Plaza Spain with connections to all parts of the city.\r\n\r\nVery easy access to the airport as it is a 15 \u0027by car."
+          },
+          {
+            "tier": "MARKETPLACE",
+            "name": "Apartamento centro de Barcelona",
+            "description": "Apartamento de 55m2 reformado y en una zona muy tranquila de Barcelona, parquet, cocina americana, una habitación doble, un baño y una terraza. El piso es totalmente exterior y con mucha luz todo el día. Dispone de un sofá cama así que el piso es ideal para una pareja y/o tres (website hidden) un primer piso en un edificio de cinco plantas con ascensor.Rodeado de naturaleza en el barrio de Montjuich, ideal para realizar deporte y para visitar la zona olímpicaEl barrio es muy tranquilo y dispone de todo tipo de tiendas para el consumo del hogar y a 5\u0027 andando encontrarás la Plaza España con conexiones a todos los lugares de la ciudad.Muy buenas conexiones con el aeropuerto ya que se encuentra a 15\u0027 en coche.",
+            "language": "es",
+            "houseRules": "Cuidar el apartamento como si fuera vuestro",
+            "space": "Apartamento de 55m2 reformado y en una zona muy tranquila de Barcelona, parquet, cocina americana, una habitación doble, un baño y una terraza. El piso es totalmente exterior y con mucha luz todo el día. Dispone de un sofá cama así que el piso es ideal para una pareja y/o tres (website hidden) un primer piso en un edificio de cinco plantas con ascensor.Rodeado de naturaleza en el barrio de Montjuich, ideal para realizar deporte y para visitar la zona olímpicaEl barrio es muy tranquilo y dispone de todo tipo de tiendas para el consumo del hogar y a 5\u0027 andando encontrarás la Plaza España con conexiones a todos los lugares de la ciudad.Muy buenas conexiones con el aeropuerto ya que se encuentra a 15\u0027 en coche."
+          }
+        ],
+        "bedType": "Real Bed",
+        "formattedAddressNative": "08004 Barcelona, Spain",
+        "stateNative": "Catalonia",
+        "instantBook": true
+      }
+    ]
+  }
+]

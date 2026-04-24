@@ -1,0 +1,263 @@
+[
+  {
+    "userDetails": {
+      "htFrictionVerificationResult": [
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2026-02-03T09:37:55.373Z",
+          "airlockId": 6040333376,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1717059488_NGI0YzBmM2JkODYx"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2025-11-10T12:22:56.669Z",
+          "airlockId": 6118647284,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1717059488_NGI0YzBmM2JkODYx"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2025-11-09T20:45:50.782Z",
+          "airlockId": 6118498272,
+          "trafficType": "UNDEFINED",
+          "deviceId": "Airbnb/25.44 Name/GLOBAL_TRAVEL AppVersion/25.44 ReleaseStage/live iPhone/18.6.2 Type/Phone"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2025-07-23T08:12:46.616Z",
+          "airlockId": 6084271364,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1717059488_NGI0YzBmM2JkODYx"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2025-06-17T20:09:29.042Z",
+          "airlockId": 6070833527,
+          "trafficType": "UNDEFINED",
+          "deviceId": "Airbnb/25.22 Name/GLOBAL_TRAVEL AppVersion/25.22 ReleaseStage/live iPhone/18.5 Type/Phone"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2025-03-21T14:35:55.761Z",
+          "airlockId": 6037077100,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1717059488_NGI0YzBmM2JkODYx"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2025-03-12T20:06:12.503Z",
+          "airlockId": 5896195520,
+          "trafficType": "UNDEFINED",
+          "deviceId": "Airbnb/25.09.1 Name/GLOBAL_TRAVEL AppVersion/25.09.1 ReleaseStage/live iPhone/18.3.1 Type/Phone"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2025-01-30T21:09:12.355Z",
+          "airlockId": 6020062018,
+          "trafficType": "UNDEFINED",
+          "deviceId": "Airbnb/25.03 Name/GLOBAL_TRAVEL AppVersion/25.03 ReleaseStage/live iPhone/18.1.1 Type/Phone"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2024-12-02T14:34:17.941Z",
+          "airlockId": 5974250218,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1717059488_NGI0YzBmM2JkODYx"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2024-06-12T13:42:29.613Z",
+          "airlockId": 5896960267,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1717059488_NGI0YzBmM2JkODYx"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2024-01-02T07:36:44.111Z",
+          "airlockId": 5896195521,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2023-12-27T11:30:08.460Z",
+          "airlockId": 5894761471,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2023-12-12T07:49:24.245Z",
+          "airlockId": 5891689769,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2023-12-04T14:36:41.206Z",
+          "airlockId": 5890038539,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2023-09-27T09:28:10.584Z",
+          "airlockId": 5875566911,
+          "trafficType": "UNDEFINED",
+          "deviceId": "Airbnb/23.38 Name/GLOBAL_TRAVEL AppVersion/23.38 ReleaseStage/live iPhone/16.6.1 Type/Phone"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2023-09-26T15:32:22.318Z",
+          "airlockId": 5875385876,
+          "trafficType": "UNDEFINED",
+          "deviceId": "Airbnb/23.37 Name/GLOBAL_TRAVEL AppVersion/23.37 ReleaseStage/live iPhone/16.6.1 Type/Phone"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2023-07-14T12:47:55.666Z",
+          "airlockId": 5854922290,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2023-06-08T09:18:52.201Z",
+          "airlockId": 5748076339,
+          "trafficType": "UNDEFINED",
+          "deviceId": "Airbnb/23.21 Name/GLOBAL_TRAVEL AppVersion/23.21 ReleaseStage/live iPhone/16.5 Type/Phone"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2023-01-31T07:47:32.679Z",
+          "airlockId": 5811049454,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2023-01-30T14:55:33.172Z",
+          "airlockId": 5811049453,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2023-01-30T14:46:23.563Z",
+          "airlockId": 5811047462,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2023-01-30T14:16:55.411Z",
+          "airlockId": 5811040743,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2023-01-30T14:09:42.264Z",
+          "airlockId": 5811039421,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2023-01-24T11:41:36.676Z",
+          "airlockId": 5809635845,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2023-01-24T11:28:17.532Z",
+          "airlockId": 5809633635,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2023-01-23T11:25:10.248Z",
+          "airlockId": 5809335625,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2022-09-30T08:34:21.832Z",
+          "airlockId": 5783495454,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2022-09-30T08:28:51.178Z",
+          "airlockId": 5783494445,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2022-09-30T07:57:04.305Z",
+          "airlockId": 5783489455,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2022-09-30T07:46:45.504Z",
+          "airlockId": 5756846345,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2022-09-29T13:57:05.179Z",
+          "airlockId": 5756846344,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2022-09-29T13:43:06.797Z",
+          "airlockId": 5783325622,
+          "trafficType": "UNDEFINED",
+          "deviceId": "1658750131_NGEzZDE2ZjNiNjM4"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2022-04-28T13:33:00.979Z",
+          "airlockId": 5730853051,
+          "trafficType": "UNDEFINED",
+          "deviceId": "Airbnb/22.16 Name/GLOBAL_TRAVEL AppVersion/22.16 ReleaseStage/live iPhone/15.4.1 Type/Phone"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2022-03-29T14:54:23.335Z",
+          "airlockId": 5725145188,
+          "trafficType": "UNDEFINED",
+          "deviceId": "Airbnb/22.11 Name/GLOBAL_TRAVEL AppVersion/22.11 ReleaseStage/live iPhone/15.3.1 Type/Phone"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2022-03-02T21:26:01.775Z",
+          "airlockId": 5716836062,
+          "trafficType": "UNDEFINED",
+          "deviceId": "Airbnb/22.08 Name/GLOBAL_TRAVEL AppVersion/22.08 ReleaseStage/live iPhone/15.3.1 Type/Phone"
+        },
+        {
+          "result": "SUCCEEDED",
+          "createdAt": "2022-02-17T22:08:12.027Z",
+          "airlockId": 5719747067,
+          "trafficType": "UNDEFINED",
+          "deviceId": "Airbnb/22.06 Name/GLOBAL_TRAVEL AppVersion/22.06 ReleaseStage/live iPhone/15.2.1 Type/Phone"
+        }
+      ],
+      "userId": 6252715,
+      "userSubmittedPinAt": "2022-02-17T22:08:35.036Z",
+      "updatedAt": "2022-02-17T22:08:35.036Z"
+    }
+  }
+]
