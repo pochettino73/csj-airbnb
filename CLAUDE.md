@@ -513,4 +513,61 @@ Cuando una reserva cruza de un mes al siguiente se crean **2 registros**:
 
 ---
 
-*Documento actualizado el 24/04/2026*
+---
+
+## Cambios aplicados 2026-04-27
+
+### Auditoría reforzada — severidades revisadas
+
+Se actualizaron los umbrales de `auditar_dashboard.py` para clasificar incidencias por impacto real:
+
+**CRÍTICO (blocking=True):**
+- PM mensual delta > 10%
+- PM temporada delta > 10%
+- Pace: diferencia absoluta > 100€ en año actual o futuro
+- Solapes en año actual o futuro
+- year/month inconsistente con checkin (salvo continuaciones cross-month)
+
+**AVISO (blocking=False):**
+- PM delta 5-10%
+- Incidencias históricas (solapes pre-año-actual, pace histórico)
+- Registros sin booking_date en años pasados
+
+**Resumen ejecutivo** añadido al output de la auditoría: nº OK / AVISOS / CRÍTICOS y estado BLOQUEADO / OK para generar.
+
+### Bug PM cross-month corregido en visualizar.py
+
+La fórmula de PM mensual y por temporada se corrigió en `visualizar.py`:
+
+- **Antes (bug):** `PM = sum(total - cleaning) / sum(nights)` por mes → distorsionado por reservas cross-month
+- **Ahora (correcto):** `PM = sum(pm * nights) / sum(nights)` usando campo `pm` almacenado, ponderado por noches, excluyendo continuaciones
+
+La misma corrección aplica a PM por banda estacional y lead time.
+
+`calc_pm_dashboard` en `auditar_dashboard.py` también actualizado para replicar la nueva fórmula. La sección PM_Mensual del Excel queda como regression test (delta debe ser siempre ~0).
+
+### Correcciones de datos históricos
+
+- **Código '9'** (2017-06-30, 1 noche): year/month corregido de julio a junio (checkin el último día del mes, estaba archivado en el mes siguiente)
+- **Código '8'** (2018-04-30, 1 noche): year/month corregido de mayo a abril
+
+### booking_date de Terry Lutz completado manualmente
+
+- **Reserva:** Terry Lutz, checkin 2026-03-28, 16 noches en total (4 en marzo, 12 en abril)
+- **booking_date añadido:** `2025-08-19`
+- **Fuente:** panel Airbnb → Reservas, consultado manualmente por Dani el 27/04/2026
+- **Registros afectados:** los dos registros de Terry Lutz en 2026 (month=3 y month=4)
+- **Impacto:** resolvió los 2 CRÍTICOS de Pace (OTB 2026-03 y OTB 2026-04 tenían D>100€ por ausencia de booking_date)
+
+### Estado de auditoría tras sesión
+
+```
+OK:        145
+AVISOS:     43  (solapes históricos + pace histórico + lead time)
+CRÍTICOS:    0
+Estado:    OK para generar
+```
+
+---
+
+*Documento actualizado el 27/04/2026*

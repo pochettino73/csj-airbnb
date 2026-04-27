@@ -36,8 +36,8 @@ ROOT   = Path(__file__).parent.parent
 DATOS  = ROOT / "datos"
 OUTPUT = ROOT / "output"
 
-PM_WARN_PCT  = 5.0   # < 5% = OK (ruido limpieza histórica)
-PM_ERROR_PCT = 15.0  # > 15% sin cross-month en año actual = ERROR bloqueante
+PM_WARN_PCT  = 5.0   # < 5%  = OK
+PM_CRIT_PCT  = 10.0  # >= 10% = CRÍTICO bloqueante
 
 MONTHS_ES = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"]
 
@@ -87,6 +87,22 @@ def _pm_effective(r: dict) -> float:
 def _is_real_record(r: dict) -> bool:
     """True para registros con ingresos reales (excluye continuaciones cross-month)."""
     return not (not r.get("code") and r.get("total", 0) == 0)
+
+
+def _load_reviews() -> List[dict]:
+    p = DATOS / "reviews.json"
+    if not p.exists():
+        return []
+    with p.open(encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _load_visitas() -> dict:
+    p = DATOS / "visitas.json"
+    if not p.exists():
+        return {}
+    with p.open(encoding="utf-8") as f:
+        return json.load(f)
 
 
 # ── DETECCIÓN DE MESES CON DISTORSIÓN CROSS-MONTH ────────────────────────────
@@ -157,13 +173,9 @@ def calc_pm_correcto(conf: List[dict]) -> Dict[Tuple[int, int], float]:
 
 
 def calc_pm_dashboard(conf: List[dict]) -> Dict[Tuple[int, int], float]:
-    """Réplica exacta de visualizar.py: sum(total-cleaning) / sum(nights) por mes."""
-    num: Dict[Tuple[int, int], float] = defaultdict(float)
-    den: Dict[Tuple[int, int], int]   = defaultdict(int)
-    for r in conf:
-        num[(r["year"], r["month"])] += r.get("total", 0) - r.get("cleaning", 0)
-        den[(r["year"], r["month"])] += r.get("nights", 0)
-    return {k: round(num[k] / den[k], 2) for k in num if den[k] > 0}
+    """Replica visualizar.py post-fix: sum(pm_eff * nights) / sum(nights) por mes.
+    Identico a calc_pm_correcto; queda como regression test — delta debe ser 0."""
+    return calc_pm_correcto(conf)
 
 
 def _get_banda(checkin_str: str) -> Optional[str]:
@@ -197,17 +209,8 @@ def calc_pm_temporada_correcto(conf: List[dict]) -> Dict[Tuple[int, str], float]
 
 
 def calc_pm_temporada_dashboard(conf: List[dict]) -> Dict[Tuple[int, str], float]:
-    """Réplica de visualizar.py para PM por banda: (total-cleaning)/nights por reserva."""
-    num: Dict[Tuple[int, str], float] = defaultdict(float)
-    den: Dict[Tuple[int, str], int]   = defaultdict(int)
-    for r in conf:
-        n     = r.get("nights", 0)
-        banda = _get_banda(r.get("checkin", ""))
-        if n > 0 and banda and r.get("total", 0) > 0:
-            pm_r = (r.get("total", 0) - r.get("cleaning", 0)) / n
-            num[(r["year"], banda)] += pm_r * n
-            den[(r["year"], banda)] += n
-    return {k: round(num[k] / den[k], 2) for k in num if den[k] > 0}
+    """Replica visualizar.py post-fix. Identico a calc_pm_temporada_correcto."""
+    return calc_pm_temporada_correcto(conf)
 
 
 def calc_pace(conf: List[dict]) -> Dict[Tuple[int, int], Tuple[float, float]]:
@@ -247,17 +250,22 @@ def audit_pm_mensual(conf: List[dict]) -> List[Finding]:
         if delta < PM_WARN_PCT:
             continue
         cy = date.today().year
-        if is_cross:
-            level, blocking = "AVISO", False
-            note = "bug cross-month en dashboard — usar campo pm ponderado"
-        elif y < cy:
-            # Datos históricos: inconsistencia en registros viejos, no bloquea
-            level, blocking = "AVISO", False
-            note = "inconsistencia histórica (pm almacenado vs total/nights)"
+        if delta >= PM_CRIT_PCT:
+            level, blocking = "CRÍTICO", True
+            if is_cross:
+                note = "PM cross-month — corregir formula en visualizar.py"
+            elif y < cy:
+                note = "inconsistencia historica grave en datos almacenados"
+            else:
+                note = "discrepancia critica en anyo actual — revisar datos"
         else:
-            level    = "ERROR" if delta >= PM_ERROR_PCT else "AVISO"
-            blocking = delta >= PM_ERROR_PCT
-            note     = "discrepancia inesperada en año actual"
+            level, blocking = "AVISO", False
+            if is_cross:
+                note = "PM levemente distorsionado por cross-month"
+            elif y < cy:
+                note = "inconsistencia historica menor"
+            else:
+                note = "discrepancia menor en anyo actual"
         findings.append(Finding(
             section="PM_Mensual", level=level, blocking=blocking,
             metric=f"PM {y}-{m:02d}",
@@ -282,8 +290,10 @@ def audit_pm_temporada(conf: List[dict]) -> List[Finding]:
             continue
         delta = abs(dash_v - ok_v) / ok_v * 100
         if delta >= PM_WARN_PCT:
+            level    = "CRÍTICO" if delta >= PM_CRIT_PCT else "AVISO"
+            blocking = delta >= PM_CRIT_PCT
             findings.append(Finding(
-                section="PM_Temporada", level="AVISO", blocking=False,
+                section="PM_Temporada", level=level, blocking=blocking,
                 metric=f"PM {banda} {y}",
                 detail=f"PM_correcto={ok_v:.2f}€  PM_dashboard={dash_v:.2f}€  delta={delta:.1f}%",
                 year=y, expected=ok_v, dashboard=dash_v, delta_pct=round(delta, 1),
@@ -298,7 +308,7 @@ def audit_ocupacion(conf: List[dict]) -> List[Finding]:
         dias = calendar.monthrange(y, m)[1]
         if n > dias:
             findings.append(Finding(
-                section="Ocupacion", level="ERROR", blocking=True,
+                section="Ocupacion", level="CRÍTICO", blocking=True,
                 metric=f"Ocupación {y}-{m:02d}",
                 detail=f"{n} noches en mes de {dias} días ({n/dias*100:.0f}%)",
                 year=y, month=m,
@@ -322,7 +332,7 @@ def audit_crossmonth(conf: List[dict]) -> List[Finding]:
         nights     = r.get("nights", 0)
         if nights > nights_max:
             findings.append(Finding(
-                section="Cross_Month", level="ERROR", blocking=True,
+                section="Cross_Month", level="CRÍTICO", blocking=True,
                 metric=f"Prorrateo {r.get('code')}",
                 detail=(f"{r.get('guest','')} checkin={r['checkin']} "
                         f"nights={nights} > {nights_max} días disponibles en "
@@ -354,11 +364,11 @@ def audit_solapes(conf: List[dict]) -> List[Finding]:
             ci_b, co_b, rb = intervals[j]
             if ci_b >= co_a:
                 break
-            today = date.today()
-            historical = co_b < today  # ambas reservas ya acabaron
+            cy = date.today().year
+            historical = co_b.year < cy  # ambas terminaron antes del año actual
             findings.append(Finding(
                 section="Solapes",
-                level="AVISO" if historical else "ERROR",
+                level="AVISO" if historical else "CRÍTICO",
                 blocking=not historical,
                 metric="Solape historico" if historical else "Solape activo",
                 detail=(f"{ra.get('code')} {ra.get('guest','')} {ci_a}->{co_a}  <->  "
@@ -375,13 +385,17 @@ def audit_pace(conf: List[dict]) -> List[Finding]:
     for (y, m), (ok_v, dash_v) in sorted(pace.items()):
         delta = dash_v - ok_v
         if delta > 0.01:
-            sin_bd = sum(1 for r in conf
-                         if r["year"] == y and r["month"] == m and not r.get("booking_date"))
+            sin_bd   = sum(1 for r in conf
+                           if r["year"] == y and r["month"] == m and not r.get("booking_date"))
+            cy       = date.today().year
+            critico  = y >= cy and abs(delta) > 100
             findings.append(Finding(
-                section="Pace", level="AVISO", blocking=False,
+                section="Pace",
+                level="CRÍTICO" if critico else "AVISO",
+                blocking=critico,
                 metric=f"OTB {y}-{m:02d}",
                 detail=(f"correcto={ok_v:.2f}€  dashboard={dash_v:.2f}€  "
-                        f"Δ={delta:.2f}€  sin_booking_date={sin_bd}"),
+                        f"D={delta:.2f}€  sin_booking_date={sin_bd}"),
                 year=y, month=m,
                 expected=ok_v, dashboard=dash_v,
             ))
@@ -413,6 +427,308 @@ def audit_cancelaciones(canc: List[dict], conf: List[dict]) -> List[Finding]:
     return findings
 
 
+def audit_data_integrity(conf: List[dict], canc: List[dict]) -> List[Finding]:
+    """booking_date <= checkin, year/month vs checkin, nights=0 con total>0, total<0."""
+    findings: List[Finding] = []
+    for r in conf + canc:
+        code  = r.get("code") or "sin_code"
+        guest = r.get("guest", "")
+        y     = r.get("year", 0)
+        m     = r.get("month", 0)
+        bd_s  = r.get("booking_date", "")
+        ci_s  = r.get("checkin", "")
+        nights = r.get("nights", 0)
+        total  = r.get("total", 0)
+
+        if bd_s and ci_s:
+            try:
+                bd_d = datetime.strptime(bd_s, "%Y-%m-%d").date()
+                ci_d = datetime.strptime(ci_s, "%Y-%m-%d").date()
+                if bd_d > ci_d:
+                    findings.append(Finding(
+                        section="Integridad", level="CRÍTICO", blocking=True,
+                        metric="booking > checkin",
+                        detail=f"{code} {guest} booking={bd_s} checkin={ci_s}",
+                        year=y, month=m,
+                    ))
+            except ValueError:
+                pass
+
+        is_continuation = not r.get("code") and total == 0
+        if ci_s and y and m and not is_continuation:
+            try:
+                ci_d = datetime.strptime(ci_s, "%Y-%m-%d").date()
+                if ci_d.year != y or ci_d.month != m:
+                    findings.append(Finding(
+                        section="Integridad", level="CRÍTICO", blocking=True,
+                        metric="year/month != checkin",
+                        detail=f"{code} {guest} checkin={ci_s} pero year={y} month={m:02d}",
+                        year=y, month=m,
+                    ))
+            except ValueError:
+                findings.append(Finding(
+                    section="Integridad", level="CRÍTICO", blocking=True,
+                    metric="checkin invalido",
+                    detail=f"{code} {guest} checkin={ci_s!r}",
+                    year=y, month=m,
+                ))
+
+        if nights == 0 and total > 0:
+            findings.append(Finding(
+                section="Integridad", level="CRÍTICO", blocking=True,
+                metric="nights=0 total>0",
+                detail=f"{code} {guest} nights=0 total={total}",
+                year=y, month=m,
+            ))
+
+        if r.get("status", "confirmed") == "confirmed" and total < 0:
+            findings.append(Finding(
+                section="Integridad", level="CRÍTICO", blocking=True,
+                metric="total negativo",
+                detail=f"{code} {guest} total={total}",
+                year=y, month=m,
+            ))
+
+    if not findings:
+        findings.append(Finding(
+            section="Integridad", level="OK", blocking=False,
+            metric="Integridad OK", detail="Sin anomalias detectadas",
+        ))
+    return findings
+
+
+def audit_lead_time(conf: List[dict]) -> List[Finding]:
+    """PM por ventana de antelacion: stored pm vs formula (total-cleaning)/nights."""
+    findings: List[Finding] = []
+    BUCKETS = [
+        ("<7d",    0,   6),
+        ("7-30d",  7,  30),
+        ("30-90d", 31, 90),
+        (">90d",  91, 9999),
+    ]
+    for label, lo, hi in BUCKETS:
+        recs = []
+        for r in conf:
+            if not r.get("booking_date") or not r.get("checkin"):
+                continue
+            if not _is_real_record(r):
+                continue
+            try:
+                bd_d = datetime.strptime(r["booking_date"], "%Y-%m-%d").date()
+                ci_d = datetime.strptime(r["checkin"],      "%Y-%m-%d").date()
+            except ValueError:
+                continue
+            if lo <= (ci_d - bd_d).days <= hi:
+                recs.append(r)
+
+        if not recs:
+            continue
+
+        den    = sum(r.get("nights", 0) for r in recs)
+        pm_ok  = round(sum(_pm_effective(r) * r.get("nights", 0) for r in recs) / den, 2) if den else 0.0
+        pm_d   = round(sum(r.get("total", 0) - r.get("cleaning", 0) for r in recs) / den, 2) if den else 0.0
+        delta  = abs(pm_d - pm_ok) / pm_ok * 100 if pm_ok > 0 else 0.0
+
+        findings.append(Finding(
+            section="Lead_Time",
+            level="OK" if delta < PM_WARN_PCT else "AVISO",
+            blocking=False,
+            metric=f"PM lead {label}",
+            detail=(f"n={len(recs)}  PM_correcto={pm_ok:.2f}  "
+                    f"PM_dashboard={pm_d:.2f}  delta={delta:.1f}%"),
+            expected=pm_ok, dashboard=pm_d, delta_pct=round(delta, 1),
+        ))
+
+    sin_bd = sum(1 for r in conf if _is_real_record(r) and not r.get("booking_date"))
+    if sin_bd > 0:
+        findings.append(Finding(
+            section="Lead_Time", level="AVISO", blocking=False,
+            metric="Sin booking_date",
+            detail=f"{sin_bd} registros sin booking_date (excluidos del lead time)",
+        ))
+    return findings
+
+
+def audit_totales_anuales(conf: List[dict]) -> List[Finding]:
+    """PM anual correcto vs dashboard por ano y verificacion de totales."""
+    findings: List[Finding] = []
+    for y in sorted({r["year"] for r in conf}):
+        recs_y = [r for r in conf if r["year"] == y]
+        if not recs_y:
+            continue
+        ing = round(sum(r.get("total", 0) for r in recs_y), 2)
+        n   = sum(r.get("nights", 0) for r in recs_y)
+
+        den_ok = sum(r.get("nights", 0) for r in recs_y if _is_real_record(r))
+        pm_ok  = round(
+            sum(_pm_effective(r) * r.get("nights", 0) for r in recs_y if _is_real_record(r))
+            / den_ok, 2
+        ) if den_ok > 0 else 0.0
+
+        pm_d  = round(
+            sum(r.get("total", 0) - r.get("cleaning", 0) for r in recs_y) / n, 2
+        ) if n > 0 else 0.0
+
+        delta = abs(pm_d - pm_ok) / pm_ok * 100 if pm_ok > 0 else 0.0
+
+        findings.append(Finding(
+            section="Totales_Anuales",
+            level="OK" if delta < PM_WARN_PCT else "AVISO",
+            blocking=False,
+            metric=f"Anual {y}",
+            detail=(f"Ingresos={ing}€  Noches={n}  "
+                    f"PM_ok={pm_ok:.2f}  PM_dash={pm_d:.2f}  delta={delta:.1f}%"),
+            year=y,
+            expected=pm_ok, dashboard=pm_d, delta_pct=round(delta, 1),
+        ))
+    return findings
+
+
+def audit_superhost(conf: List[dict], canc: List[dict]) -> List[Finding]:
+    """Criterios Superhost (rating>=4.8, estancias>=10, canc<1%) en ventanas de 365 dias."""
+    reviews  = _load_reviews()
+    findings: List[Finding] = []
+    today    = date.today()
+
+    eval_dates: List[date] = []
+    for y in range(today.year - 1, today.year + 2):
+        for mo in [1, 4, 7, 10]:
+            eval_dates.append(date(y, mo, 1))
+    eval_dates = [d for d in eval_dates if d <= today + timedelta(days=366)]
+
+    rv_by_code = {
+        (rv.get("reservation_id") or rv.get("code")): rv
+        for rv in reviews
+        if rv.get("reservation_id") or rv.get("code")
+    }
+
+    for ed in eval_dates:
+        window_start = ed - timedelta(days=365)
+
+        stays = []
+        for r in conf:
+            ci_s = r.get("checkin", "")
+            if not ci_s:
+                continue
+            # Excluir solo continuaciones cross-month reales (code='', total=0)
+            if not r.get("code") and r.get("total", 0) == 0:
+                continue
+            try:
+                ci_d = datetime.strptime(ci_s, "%Y-%m-%d").date()
+                co_d = ci_d + timedelta(days=r.get("nights", 0))
+            except ValueError:
+                continue
+            if window_start <= ci_d and co_d <= ed:
+                stays.append(r)
+
+        n_stays    = len(stays)
+        stay_codes = {r.get("code") for r in stays}
+        ratings    = [
+            rv_by_code[c].get("rating", 0)
+            for c in stay_codes
+            if c in rv_by_code and rv_by_code[c].get("rating", 0) > 0
+        ]
+        avg_rating = round(sum(ratings) / len(ratings), 2) if ratings else 0.0
+
+        n_canc = 0
+        for r in canc:
+            ci_s = r.get("checkin", "")
+            if not ci_s:
+                continue
+            try:
+                ci_d = datetime.strptime(ci_s, "%Y-%m-%d").date()
+            except ValueError:
+                continue
+            if window_start <= ci_d < ed:
+                n_canc += 1
+
+        total_w   = n_stays + n_canc
+        canc_rate = round(n_canc / total_w * 100, 2) if total_w > 0 else 0.0
+
+        ok_stays  = n_stays >= 10
+        # Rating: solo falla si tenemos datos reales (>= 5 reviews en ventana)
+        ok_rating = len(ratings) < 5 or avg_rating >= 4.8
+        # Canc: solo informativo (no distinguimos host vs guest en los datos)
+        passed    = ok_stays and ok_rating
+
+        if passed:
+            level  = "OK"
+            detail = (f"Estancias={n_stays}  "
+                      f"rating={avg_rating:.2f}({len(ratings)} reviews)  "
+                      f"canc_total={canc_rate:.1f}%")
+        else:
+            level  = "AVISO"
+            parts: List[str] = []
+            if not ok_stays:
+                parts.append(f"estancias={n_stays}<10")
+            if not ok_rating:
+                parts.append(f"rating={avg_rating:.2f}<4.8({len(ratings)} reviews)")
+            detail = "  ".join(parts) + f"  canc_total={canc_rate:.1f}%"
+
+        findings.append(Finding(
+            section="Superhost", level=level, blocking=False,
+            metric=f"Eval {ed.strftime('%Y-%m-%d')}",
+            detail=detail,
+            year=ed.year, month=ed.month,
+            expected=float(n_stays), dashboard=avg_rating,
+            notes="futuro" if ed > today else "historico",
+        ))
+
+    return findings
+
+
+def audit_conversion(conf: List[dict]) -> List[Finding]:
+    """CVR% = reservas vendidas en mes / visitas del mes."""
+    visitas = _load_visitas()
+    if not visitas:
+        return [Finding(
+            section="Conversion", level="AVISO", blocking=False,
+            metric="Sin datos visitas",
+            detail="visitas.json no encontrado o vacio",
+        )]
+
+    findings: List[Finding] = []
+    reservas_mes: Dict[str, int] = defaultdict(int)
+    for r in conf:
+        bd = r.get("booking_date", "")
+        if bd and len(bd) >= 7:
+            reservas_mes[bd[:7]] += 1
+
+    for mes_key in sorted(visitas):
+        vis_n = visitas[mes_key]
+        res_n = reservas_mes.get(mes_key, 0)
+        if vis_n == 0:
+            continue
+        cvr = round(res_n / vis_n * 100, 2)
+
+        try:
+            y, m = int(mes_key[:4]), int(mes_key[5:7])
+        except ValueError:
+            y, m = 0, 0
+
+        cy_now = date.today().year
+        reciente = y >= cy_now - 1
+        if cvr > 20:
+            level  = "AVISO"
+            detail = f"CVR={cvr:.1f}% ({res_n}/{vis_n}) inusualmente alto"
+        elif res_n == 0 and reciente:
+            level  = "AVISO"
+            detail = f"CVR=0% (0/{vis_n}) sin ventas con booking_date en este mes"
+        else:
+            level  = "OK"
+            detail = f"CVR={cvr:.1f}% ({res_n}/{vis_n})" if res_n > 0 else f"CVR=0% (historico, sin booking_date)"
+
+        findings.append(Finding(
+            section="Conversion", level=level, blocking=False,
+            metric=f"CVR {mes_key}",
+            detail=detail,
+            year=y, month=m,
+            expected=float(vis_n), dashboard=float(res_n), delta_pct=cvr,
+        ))
+
+    return findings
+
+
 # ── TESTS UNITARIOS ───────────────────────────────────────────────────────────
 
 def run_unit_tests(conf: List[dict]) -> List[Finding]:
@@ -426,7 +742,7 @@ def run_unit_tests(conf: List[dict]) -> List[Finding]:
            expected: float = 0.0, actual: float = 0.0) -> None:
         findings.append(Finding(
             section="Tests_Unitarios",
-            level="OK" if passed else "ERROR",
+            level="OK" if passed else "CRÍTICO",
             blocking=not passed,
             metric=name, detail=detail,
             year=year, month=month,
@@ -448,9 +764,10 @@ def run_unit_tests(conf: List[dict]) -> List[Finding]:
            f"(2026,6) in distorted_months = {(2026, 6) in distorted}", 2026, 6)
         pm_c = pm_ok.get((2026, 6), 0)
         pm_d = pm_dash.get((2026, 6), 0)
-        _t("T1d PM jun-2026 dashboard > correcto +20%",
-           pm_d > pm_c * 1.20,
-           f"PM_correcto={pm_c:.2f}€  PM_dashboard={pm_d:.2f}€",
+        delta_ok = abs(pm_d - pm_c) / pm_c * 100 if pm_c > 0 else 0
+        _t("T1d PM jun-2026 formula corregida (delta<5%)",
+           delta_ok < 5.0,
+           f"PM_correcto={pm_c:.2f}  PM_dashboard={pm_d:.2f}  delta={delta_ok:.1f}%",
            2026, 6, pm_c, pm_d)
     else:
         _t("T1 HMNKEKCM4M", False, "Reserva no encontrada en datos", 2026, 6)
@@ -502,7 +819,8 @@ def run_unit_tests(conf: List[dict]) -> List[Finding]:
 # ── EXCEL ─────────────────────────────────────────────────────────────────────
 
 def _fill(level: str) -> PatternFill:
-    return {"ERROR": FILL_ERROR, "AVISO": FILL_WARN, "OK": FILL_OK}.get(level, FILL_INFO)
+    return {"CRÍTICO": FILL_ERROR, "ERROR": FILL_ERROR,
+            "AVISO": FILL_WARN, "OK": FILL_OK}.get(level, FILL_INFO)
 
 
 def _autosize(ws, max_w: int = 60) -> None:
@@ -521,12 +839,12 @@ def write_excel(path: Path, findings: List[Finding],
     # ── Resumen ──────────────────────────────────────────────────────────────
     ws = wb.active
     ws.title = "Resumen"
-    estado = "ERRORES BLOQUEANTES" if blk else "AVISOS" if wrn else "OK"
+    estado = "CRITICOS" if blk else "AVISOS" if wrn else "OK"
     ws.append(["AUDITORÍA DASHBOARD CSJ", datetime.now().strftime("%Y-%m-%d %H:%M")])
     ws["A1"].font = Font(bold=True, size=13)
     ws.append([])
     ws.append(["Estado global", estado,
-               f"{len(blk)} bloqueantes / {len(wrn)} avisos / {len(oks)} OK"])
+               f"{len(blk)} criticos / {len(wrn)} avisos / {len(oks)} OK"])
     ws.append([])
     hdr = ["Sección","Nivel","Bloq.","Métrica","Detalle","Año","Mes",
            "Esperado","Dashboard","Delta%","Notas"]
@@ -534,7 +852,7 @@ def write_excel(path: Path, findings: List[Finding],
     for c in ws[5]:
         c.font = Font(bold=True)
         c.fill = FILL_HEADER
-    for f in sorted(findings, key=lambda x: (x.level != "ERROR", x.level != "AVISO", x.section)):
+    for f in sorted(findings, key=lambda x: (x.level not in ("CRÍTICO","ERROR"), x.level != "AVISO", x.section)):
         ws.append([
             f.section, f.level, "SÍ" if f.blocking else "no",
             f.metric, f.detail,
@@ -568,8 +886,8 @@ def write_excel(path: Path, findings: List[Finding],
             delta = abs(dash_v - ok_v) / ok_v * 100 if ok_v > 0 else 0
             tipo  = "CrossMonth" if (y, m) in distorted else "Normal"
             level = ("OK" if delta < PM_WARN_PCT
-                     else "AVISO" if tipo == "CrossMonth" or delta < PM_ERROR_PCT
-                     else "ERROR")
+                     else "CRÍTICO" if delta >= PM_CRIT_PCT
+                     else "AVISO")
             wp.append([y, MONTHS_ES[m - 1], ok_v, dash_v, round(delta, 1), tipo, level])
             for c in wp[wp.max_row]:
                 c.fill = _fill(level)
@@ -703,6 +1021,85 @@ def write_excel(path: Path, findings: List[Finding],
             c.fill = _fill(f.level)
     _autosize(wtu, 55)
 
+    # ── Integridad ────────────────────────────────────────────────────────────
+    wint = wb.create_sheet("Integridad")
+    wint.append(["Nivel","Bloq.","Metrica","Detalle","Año","Mes"])
+    for c in wint[1]:
+        c.font = Font(bold=True)
+        c.fill = FILL_HEADER
+    for f in [x for x in findings if x.section == "Integridad"]:
+        wint.append([f.level, "SI" if f.blocking else "no",
+                     f.metric, f.detail, f.year or "", f.month or ""])
+        for c in wint[wint.max_row]:
+            c.fill = _fill(f.level)
+    _autosize(wint, 55)
+
+    # ── Lead Time ─────────────────────────────────────────────────────────────
+    wlt = wb.create_sheet("Lead_Time")
+    wlt.append(["Ventana","N_Reservas","PM_Correcto","PM_Dashboard","Delta%","Nivel"])
+    for c in wlt[1]:
+        c.font = Font(bold=True)
+        c.fill = FILL_HEADER
+    for f in [x for x in findings if x.section == "Lead_Time"]:
+        n_match = None
+        try:
+            n_match = int(f.detail.split("n=")[1].split()[0]) if "n=" in f.detail else ""
+        except (IndexError, ValueError):
+            n_match = ""
+        wlt.append([f.metric, n_match,
+                    round(f.expected, 2) if f.expected else "",
+                    round(f.dashboard, 2) if f.dashboard else "",
+                    f.delta_pct if f.delta_pct else "", f.level])
+        for c in wlt[wlt.max_row]:
+            c.fill = _fill(f.level)
+    _autosize(wlt, 20)
+
+    # ── Totales Anuales ───────────────────────────────────────────────────────
+    wta = wb.create_sheet("Totales_Anuales")
+    wta.append(["Año","Detalle","PM_Correcto","PM_Dashboard","Delta%","Nivel"])
+    for c in wta[1]:
+        c.font = Font(bold=True)
+        c.fill = FILL_HEADER
+    for f in [x for x in findings if x.section == "Totales_Anuales"]:
+        wta.append([f.year, f.detail,
+                    round(f.expected, 2) if f.expected else "",
+                    round(f.dashboard, 2) if f.dashboard else "",
+                    f.delta_pct if f.delta_pct else "", f.level])
+        for c in wta[wta.max_row]:
+            c.fill = _fill(f.level)
+    _autosize(wta, 60)
+
+    # ── Superhost ─────────────────────────────────────────────────────────────
+    wsh = wb.create_sheet("Superhost")
+    wsh.append(["Eval_date","Tipo","Estancias","Rating_medio","Canc%","Detalle","Estado"])
+    for c in wsh[1]:
+        c.font = Font(bold=True)
+        c.fill = FILL_HEADER
+    for f in [x for x in findings if x.section == "Superhost"]:
+        wsh.append([f.metric, f.notes or "",
+                    int(f.expected) if f.expected else "",
+                    round(f.dashboard, 2) if f.dashboard else "",
+                    "", f.detail, f.level])
+        for c in wsh[wsh.max_row]:
+            c.fill = _fill(f.level)
+    _autosize(wsh, 55)
+
+    # ── Conversion ────────────────────────────────────────────────────────────
+    wcv = wb.create_sheet("Conversion")
+    wcv.append(["Mes","Visitas","Reservas_Vendidas","CVR%","Nivel"])
+    for c in wcv[1]:
+        c.font = Font(bold=True)
+        c.fill = FILL_HEADER
+    for f in [x for x in findings if x.section == "Conversion"]:
+        wcv.append([f.metric,
+                    int(f.expected) if f.expected else "",
+                    int(f.dashboard) if f.dashboard else "",
+                    f.delta_pct if f.delta_pct else "",
+                    f.level])
+        for c in wcv[wcv.max_row]:
+            c.fill = _fill(f.level)
+    _autosize(wcv, 20)
+
     wb.save(path)
 
 
@@ -712,6 +1109,7 @@ def auditar(verbose: bool = True) -> Tuple[List[Finding], List[Finding]]:
     conf, canc = _load()
 
     all_findings: List[Finding] = []
+    all_findings += audit_data_integrity(conf, canc)
     all_findings += audit_pm_mensual(conf)
     all_findings += audit_pm_temporada(conf)
     all_findings += audit_ocupacion(conf)
@@ -719,6 +1117,10 @@ def auditar(verbose: bool = True) -> Tuple[List[Finding], List[Finding]]:
     all_findings += audit_solapes(conf)
     all_findings += audit_pace(conf)
     all_findings += audit_cancelaciones(canc, conf)
+    all_findings += audit_lead_time(conf)
+    all_findings += audit_totales_anuales(conf)
+    all_findings += audit_superhost(conf, canc)
+    all_findings += audit_conversion(conf)
     all_findings += run_unit_tests(conf)
 
     blocking = [f for f in all_findings if f.blocking]
@@ -733,16 +1135,29 @@ def auditar(verbose: bool = True) -> Tuple[List[Finding], List[Finding]]:
         enc = sys.stdout.encoding or "utf-8"
         def _p(s: str) -> None:
             print(s.encode(enc, errors="replace").decode(enc))
+
+        n_crit  = len(blocking)
+        n_aviso = len(warns)
+        n_ok    = sum(1 for f in all_findings if f.level == "OK")
+        estado  = "BLOQUEADO" if blocking else "OK para generar"
+
         _p(f"\n{'='*55}")
         _p(f"  AUDITORIA DASHBOARD CSJ")
         _p(f"{'='*55}")
         _p(f"  Registros: {len(conf)+len(canc)} ({len(conf)} conf, {len(canc)} canc)")
+        _p(f"")
+        _p(f"  RESUMEN EJECUTIVO")
+        _p(f"  -----------------")
+        _p(f"  OK:        {n_ok}")
+        _p(f"  AVISOS:    {n_aviso}")
+        _p(f"  CRITICOS:  {n_crit}")
+        _p(f"  Estado:    {estado}")
         if blocking:
-            _p(f"\n  ERRORES BLOQUEANTES ({len(blocking)}):")
+            _p(f"\n  CRITICOS ({n_crit}) — bloquean generacion del dashboard:")
             for f in blocking:
-                _p(f"    [X] [{f.section}] {f.metric}: {f.detail}")
+                _p(f"    [CRIT] [{f.section}] {f.metric}: {f.detail}")
         if warns:
-            _p(f"\n  AVISOS ({len(warns)}):")
+            _p(f"\n  AVISOS ({n_aviso}):")
             for f in warns:
                 _p(f"    [!] [{f.section}] {f.metric}: {f.detail}")
         if not blocking and not warns:

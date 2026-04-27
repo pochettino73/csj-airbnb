@@ -611,7 +611,7 @@
   },
   {
     "year": 2017,
-    "month": 7,
+    "month": 6,
     "code": "9",
     "guest": "",
     "checkin": "2017-06-30",
@@ -963,7 +963,7 @@
   },
   {
     "year": 2018,
-    "month": 5,
+    "month": 4,
     "code": "8",
     "guest": "",
     "checkin": "2018-04-30",
@@ -6340,7 +6340,8 @@
     "pm": 57.38,
     "cleaning": 15.0,
     "total": 244.5,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2025-08-19"
   },
   {
     "year": 2026,
@@ -6422,7 +6423,8 @@
     "pm": 57.38,
     "cleaning": 45.0,
     "total": 733.5,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2025-08-19"
   },
   {
     "year": 2026,
@@ -8243,5 +8245,19 @@
     "status": "confirmed",
     "rate_type": "nrf",
     "country": "US"
+  },
+  {
+    "year": 2026,
+    "month": 7,
+    "code": "HMDBD3SJA4",
+    "guest": "Xepe De Lucas",
+    "checkin": "2026-07-17",
+    "nights": 4,
+    "pm": 103.54,
+    "cleaning": 60.0,
+    "total": 474.14,
+    "booking_date": "2026-04-25",
+    "rate_type": "nrf",
+    "status": "confirmed"
   }
 ]

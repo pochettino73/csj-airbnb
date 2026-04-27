@@ -43,15 +43,25 @@ def load_reservas():
     if len(reservas) < before:
         print(f"  AVISO: {before - len(reservas)} entradas filtradas por datos imposibles")
 
-    # Acumular por (año, mes): total ingresos, noches, total sin limpieza
+    # Acumular por (año, mes): total ingresos, noches, PM ponderado
     from collections import defaultdict
-    acc = defaultdict(lambda: {"total": 0, "nights": 0, "total_sin_limp": 0, "count": 0})
+    acc = defaultdict(lambda: {"total": 0, "nights": 0, "total_sin_limp": 0, "count": 0,
+                                "pm_num": 0.0, "pm_den": 0})
     for r in reservas:
         key = (r["year"], r["month"])
         acc[key]["total"] += r["total"]
         acc[key]["nights"] += r["nights"]
         acc[key]["total_sin_limp"] += r["total"] - r["cleaning"]
         acc[key]["count"] += 1
+        # PM = sum(pm * nights) / sum(nights), excluye continuaciones cross-month (code='', total=0)
+        is_cont = not r.get("code") and r.get("total", 0) == 0
+        if not is_cont and r["nights"] > 0:
+            pm_eff = r.get("pm", 0) or 0
+            if pm_eff <= 0:
+                pm_eff = (r["total"] - r["cleaning"]) / r["nights"]
+            if pm_eff > 0:
+                acc[key]["pm_num"] += pm_eff * r["nights"]
+                acc[key]["pm_den"] += r["nights"]
 
     years = sorted(set(k[0] for k in acc))
     ing, ocu, pm = {}, {}, {}
@@ -65,7 +75,7 @@ def load_reservas():
             if d and d["total"] > 0:
                 ing[y].append(round(d["total"], 2))
                 ocu[y].append(round(d["nights"] / days, 4))  # fracción 0-1
-                pm[y].append(round(d["total_sin_limp"] / d["nights"], 2) if d["nights"] > 0 else 0)
+                pm[y].append(round(d["pm_num"] / d["pm_den"], 2) if d["pm_den"] > 0 else 0)
             else:
                 ing[y].append(0)
                 ocu[y].append(0)
@@ -348,26 +358,33 @@ def build(data, ing, ocu, pm, rev):
     pm_banda = {}
     for y in active:
         sy = str(y)
-        bandas = {"alta": [], "media": [], "baja": []}
+        bandas = {"alta": [], "media": [], "baja": []}  # list of (pm, nights)
         for r in reservas:
-            if r["year"] != y or r["nights"] <= 0 or r["total"] <= 0:
+            if r["year"] != y or r["nights"] <= 0:
+                continue
+            # Excluir continuaciones cross-month (code='', total=0)
+            if not r.get("code") and r.get("total", 0) == 0:
                 continue
             ci = r.get("checkin")
-            pm_r = (r["total"] - r["cleaning"]) / r["nights"] if r["nights"] > 0 else 0
-            if ci and pm_r > 0:
+            pm_eff = r.get("pm", 0) or 0
+            if pm_eff <= 0 and r.get("total", 0) > 0:
+                pm_eff = (r["total"] - r["cleaning"]) / r["nights"]
+            if pm_eff <= 0:
+                continue
+            n = r["nights"]
+            if ci:
                 banda = get_banda(ci)
-                bandas[banda].append(pm_r)
-            elif not ci and pm_r > 0:
-                # Sin checkin: asignar por mes (fallback)
+                bandas[banda].append((pm_eff, n))
+            else:
                 m = r["month"]
                 if m in (7, 8):
-                    bandas["alta"].append(pm_r)
+                    bandas["alta"].append((pm_eff, n))
                 elif m in (11, 12, 1, 2, 3):
-                    bandas["baja"].append(pm_r)
+                    bandas["baja"].append((pm_eff, n))
                 else:
-                    bandas["media"].append(pm_r)
+                    bandas["media"].append((pm_eff, n))
         pm_banda[sy] = {
-            b: round(sum(vs)/len(vs), 1) if vs else 0
+            b: round(sum(v * n for v, n in vs) / sum(n for _, n in vs), 1) if vs else 0
             for b, vs in bandas.items()
         }
 
@@ -419,7 +436,7 @@ def build(data, ing, ocu, pm, rev):
         lt = (ci - bd).days
         if lt < 0 or r['nights'] <= 0:
             continue
-        pm_n = (r['total'] - r['cleaning']) / r['nights']
+        pm_n = r.get('pm', 0) or (r['total'] - r['cleaning']) / r['nights']
         for bname, blo, bhi in lt_buckets_def:
             if blo <= lt < bhi:
                 lt_bucket_data[bname].append({"lt": lt, "pm": pm_n, "total": r['total']})
