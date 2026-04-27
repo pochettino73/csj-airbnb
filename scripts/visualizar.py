@@ -223,6 +223,78 @@ def calc_cancelaciones(reservas_all):
     return result
 
 
+def calc_cancelaciones_ytd(reservas_all, today=None):
+    """Tasa de cancelación por año filtrada a la misma fecha (mismo mes/día) en cada año."""
+    from datetime import date as date_
+    import calendar as cal_
+    if today is None:
+        today = date_.today()
+
+    years = sorted(set(r["year"] for r in reservas_all if r.get("year")))
+    result = {}
+    for y in years:
+        try:
+            cutoff = date_(y, today.month, today.day)
+        except ValueError:
+            cutoff = date_(y, today.month, cal_.monthrange(y, today.month)[1])
+
+        def in_ytd(r, c=cutoff):
+            bd = r.get("booking_date")
+            if not bd:
+                return True
+            try:
+                return date_.fromisoformat(bd) <= c
+            except:
+                return True
+
+        canc = [r for r in reservas_all if r.get("status") == "cancelled" and r.get("year") == y and in_ytd(r)]
+        conf = [r for r in reservas_all if r.get("status", "confirmed") == "confirmed" and r.get("year") == y and in_ytd(r)]
+        total = len(canc) + len(conf)
+        result[y] = {
+            "conf": len(conf),
+            "canc": len(canc),
+            "tasa": round(len(canc) / total * 100, 1) if total else 0,
+        }
+    return result
+
+
+def calc_pm_ytd(reservas_all, today=None):
+    """PM ponderado por noches de todas las estancias de cada año vendidas hasta la misma fecha."""
+    from datetime import date as date_
+    import calendar as cal_
+    if today is None:
+        today = date_.today()
+
+    years = sorted(set(r["year"] for r in reservas_all if r.get("year")))
+    result = {}
+    for y in years:
+        try:
+            cutoff = date_(y, today.month, today.day)
+        except ValueError:
+            cutoff = date_(y, today.month, cal_.monthrange(y, today.month)[1])
+
+        pm_num = pm_den = 0
+        for r in reservas_all:
+            if r.get("status", "confirmed") != "confirmed": continue
+            if r.get("year") != y: continue
+            is_cont = not r.get("code") and r.get("total", 0) == 0
+            if is_cont: continue
+            bd = r.get("booking_date")
+            if not bd: continue
+            try:
+                if date_.fromisoformat(bd) > cutoff: continue
+            except:
+                continue
+            n = r.get("nights", 0)
+            pm = r.get("pm", 0) or 0
+            if n > 0 and pm > 0:
+                pm_num += pm * n
+                pm_den += n
+
+        result[y] = round(pm_num / pm_den, 1) if pm_den else 0
+    return result
+
+
 def build(data, ing, ocu, pm, rev):
     reservas = data.get("reservas", [])
     visitas_raw = data.get("visitas", {})
@@ -238,7 +310,7 @@ def build(data, ing, ocu, pm, rev):
 
     ann_ing = {str(y): round(sum(ing[y])) for y in active}
     ann_ocu = {str(y): round(sum(v for v in ocu[y] if v > 0) / max(1, sum(1 for v in ocu[y] if v > 0)) * 100, 1) for y in active}
-    ann_pm = {str(y): round(sum(v for v in pm.get(y, [0]*12) if v > 0) / max(1, sum(1 for v in pm.get(y, [0]*12) if v > 0)), 1) for y in active}
+    ann_pm = {str(y): round(sum(pm.get(y, [0]*12)) / 12, 1) for y in active}
 
     # Resumen from local data (replaces Sheet "Resumen" tab)
     res_y = [str(y) for y in active]
@@ -971,6 +1043,9 @@ const SH_CHECKS={J(sh_checks)};
 const NEXT_SH={J(next_sh)};
 const FUTURE_SH={J(future_sh)};
 const CANC_KPIS={J({str(k): v for k, v in data.get("canc_kpis", {}).items()})};
+const CANC_KPIS_YTD={J({str(k): v for k, v in data.get("canc_kpis_ytd", {}).items()})};
+const PM_YTD={J({str(k): v for k, v in data.get("pm_ytd", {}).items()})};
+const TOTALES={J({str(k): v for k, v in data.get("totales", {}).items()})};
 
 // Globals
 let charts = {{}};
@@ -1030,32 +1105,34 @@ function drawKPIs() {{
   }}
 
   let h = '';
+  const tot2 = TOTALES[y2] || {{}};
   // Card 1 — Ventas a misma fecha
   h += card('Ventas '+y1+' a misma fecha', fmt(otb1)+'€', pct(otb1,otb2),
     y2+' misma fecha: '+fmt(otb2)+'€',
-    'Total final '+y2+': '+fmt(ing2)+'€');
+    'Total final '+y2+': '+fmt(tot2.income||ing2)+'€');
   // Card 2 — Ocupación a misma fecha
   h += card('Ocupaci&oacute;n '+y1+' a misma fecha', ocuOtb1.toFixed(1)+'%', pct(ocuOtb1,ocuOtb2),
-    y2+' misma fecha: '+ocuOtb2.toFixed(1)+'%',
-    noc1+' noches vs '+noc2+' noches '+y2);
-  // PM computations
+    y2+' misma fecha: '+ocuOtb2.toFixed(1)+'% ('+noc2+' noches)',
+    'Total final '+y2+': '+(tot2.ocu!=null?tot2.ocu.toFixed(1):'-')+'% ('+tot2.nights+' noches)');
+  // PM computations — ponderado por noches, estancias vendidas hasta misma fecha
   const pmAvg = (a) => {{ const vs=a.filter(v=>v>0); return vs.length?vs.reduce((s,v)=>s+v,0)/vs.length:0; }};
-  const pmGlobal1 = pmAvg(p1), pmGlobal2 = pmAvg(p2);
+  const pmGlobal1 = PM_YTD[y1] || 0, pmGlobal2 = PM_YTD[y2] || 0;
   // Card 3 — Cancelaciones
   const ck1 = CANC_KPIS[y1] || null;
-  const ck2 = CANC_KPIS[y2] || null;
+  const ck2ytd = CANC_KPIS_YTD[y2] || null;
   if (ck1) {{
-    const tasa1 = ck1.tasa, tasa2 = ck2 ? ck2.tasa : 0;
-    const neto1c = ck1.neto, canc1 = ck1.canc, rec1 = ck1.recuperado;
-    h += card('Cancelaciones '+y1, canc1+' ('+tasa1.toFixed(1)+'%)', pct(tasa2,tasa1),
-      y2+': '+(ck2?ck2.canc:'-')+' ('+(ck2?ck2.tasa.toFixed(1):'-')+'%)',
-      'P&eacute;rdida neta: '+fmt(Math.round(neto1c))+'&euro; &mdash; Rec.: '+fmt(Math.round(rec1))+'&euro;');
+    const tasa1 = ck1.tasa, tasa2 = ck2ytd ? ck2ytd.tasa : 0;
+    const canc1 = ck1.canc;
+    h += card('Cancelaciones '+y1, canc1+' ('+tasa1.toFixed(1)+'%)', pct(tasa1,tasa2),
+      y2+' misma fecha: '+(ck2ytd?ck2ytd.canc:'-')+' ('+(ck2ytd?ck2ytd.tasa.toFixed(1):'-')+'%)',
+      'Total final '+y2+': '+(tot2.canc||'-')+' ('+(tot2.tasa_canc!=null?tot2.tasa_canc.toFixed(1):'-')+'%)');
   }} else {{
     h += card('Cancelaciones '+y1, 'Sin datos', 0, '', '');
   }}
-  // Card 4 — PM medio (meses con reservas = a misma fecha de facto)
+  // Card 4 — PM medio a misma fecha
   h += card('PM medio '+y1+' a misma fecha', pmGlobal1.toFixed(1)+'€', pct(pmGlobal1,pmGlobal2),
-    y2+' misma fecha: '+pmGlobal2.toFixed(1)+'€/noche', '');
+    y2+' misma fecha: '+pmGlobal2.toFixed(1)+'€/noche',
+    'Total final '+y2+': '+(tot2.pm||'-')+'€/noche');
   // Card 5 — Rating trimestre en curso (próxima evaluación = FUTURE_SH[0])
   const shd = FUTURE_SH && FUTURE_SH.length ? FUTURE_SH[0] : null;
   if(shd) {{
@@ -1835,7 +1912,29 @@ def main():
     visitas = load_visitas()
     all_reservas = json.load(open(os.path.join(_DATOS, "reservas.json"), encoding="utf-8"))
     canc_kpis = calc_cancelaciones(all_reservas)
-    data = {"reservas": reservas, "reviews_list": reviews_list, "visitas": visitas, "canc_kpis": canc_kpis}
+    canc_kpis_ytd = calc_cancelaciones_ytd(all_reservas)
+    pm_ytd = calc_pm_ytd(all_reservas)
+    import calendar as _cal
+    totales = {}
+    for _y in sorted(set(r["year"] for r in all_reservas if r.get("year"))):
+        _conf = [r for r in all_reservas if r.get("status", "confirmed") == "confirmed" and r.get("year") == _y]
+        _nights = sum(r.get("nights", 0) for r in _conf)
+        _income = sum(r.get("total", 0) for r in _conf if r.get("total", 0) > 0)
+        _ck = canc_kpis.get(_y, {})
+        _pm_num = sum(r.get("pm", 0) * r.get("nights", 0) for r in _conf
+                      if not (not r.get("code") and r.get("total", 0) == 0) and r.get("pm", 0) > 0 and r.get("nights", 0) > 0)
+        _pm_den = sum(r.get("nights", 0) for r in _conf
+                      if not (not r.get("code") and r.get("total", 0) == 0) and r.get("pm", 0) > 0 and r.get("nights", 0) > 0)
+        _dias = 366 if _cal.isleap(_y) else 365
+        totales[_y] = {
+            "income": round(_income, 2),
+            "ocu": round(_nights / _dias * 100, 1),
+            "nights": _nights,
+            "canc": _ck.get("canc", 0),
+            "tasa_canc": _ck.get("tasa", 0),
+            "pm": round(_pm_num / _pm_den, 1) if _pm_den else 0,
+        }
+    data = {"reservas": reservas, "reviews_list": reviews_list, "visitas": visitas, "canc_kpis": canc_kpis, "canc_kpis_ytd": canc_kpis_ytd, "pm_ytd": pm_ytd, "totales": totales}
     html = build(data, ing, ocu, pm, rev)
     out = os.path.join(_ROOT, "dashboard.html")
     with open(out, "w", encoding="utf-8") as f:

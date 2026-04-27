@@ -559,11 +559,59 @@ La misma corrección aplica a PM por banda estacional y lead time.
 - **Registros afectados:** los dos registros de Terry Lutz en 2026 (month=3 y month=4)
 - **Impacto:** resolvió los 2 CRÍTICOS de Pace (OTB 2026-03 y OTB 2026-04 tenían D>100€ por ausencia de booking_date)
 
-### Estado de auditoría tras sesión
+### Estado de auditoría tras sesión (mañana)
 
 ```
 OK:        145
 AVISOS:     43  (solapes históricos + pace histórico + lead time)
+CRÍTICOS:    0
+Estado:    OK para generar
+```
+
+---
+
+## Cambios aplicados 2026-04-27 (sesión tarde)
+
+### Terry Lutz — datos completados (HMF8YAQAKN)
+
+- **code:** `HMF8YAQAKN` añadido al registro principal (month=3)
+- **Formato cross-month corregido:** income íntegro en marzo (total=977.89, cleaning=60.0); continuación abril con total=0, cleaning=0
+- **rate_type:** `"refundable"` añadido (política Flexible confirmada en PDF)
+- **PDF:** procesado y movido a `buzon/procesado/2026/03/`
+
+### booking_date estimado en 27 registros históricos
+
+Todos los registros confirmados con code pero sin `booking_date` recibieron fecha estimada: `checkin - 4 meses` (o `1º del mes - 4 meses` para los 7 sin checkin). Cubre registros de 2015 a 2019.
+
+### KPIs del dashboard — comparativa "misma fecha" en todas las tarjetas
+
+Todas las tarjetas de KPI usan ahora el corte por `booking_date` para comparar y1 vs y2 a mismo día:
+
+**Nuevas funciones en `visualizar.py`:**
+- `calc_cancelaciones_ytd(reservas_all, today)` — tasa de cancelación filtrada a mismo día del año anterior
+- `calc_pm_ytd(reservas_all, today)` — PM ponderado por noches de estancias vendidas hasta misma fecha
+
+**Nuevo objeto `TOTALES` en JS:** ingresos, ocupación, cancelaciones y PM del año completo de y2, mostrado como "Total final y2" en cada tarjeta.
+
+**Cambios por tarjeta:**
+| Tarjeta | Antes | Ahora |
+|---------|-------|-------|
+| Ventas | ✓ ya usaba booking_date | + histLine "Total final y2" desde TOTALES |
+| Ocupación | ✓ ya usaba booking_date | + histLine "Total final y2: X% (Y noches)" |
+| Cancelaciones | comparaba vs año completo y2 | misma fecha + signo corregido (pct(tasa1,tasa2)) + histLine "Total final y2" |
+| PM medio | media de meses con datos | ponderado por noches vía PM_YTD + histLine "Total final y2" |
+
+### PM anual (gráfico evolución) — criterio operativa 12 meses
+
+`ANN_PM` cambiado de media de meses activos a `sum(pm_mensual) / 12`, coherente con el spreadsheet histórico y con la realidad de operativa 12 meses. Meses sin reservas cuentan como €0, no se excluyen.
+
+2022 no tiene campo `pm` almacenado → usa media mensual como fallback.
+
+### Estado de auditoría tras sesión tarde
+
+```
+OK:        145
+AVISOS:     22  (solapes históricos + pace histórico + lead time)
 CRÍTICOS:    0
 Estado:    OK para generar
 ```
