@@ -135,7 +135,8 @@
     "pm": 82.35,
     "cleaning": 30.0,
     "total": 1430.0,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2015-04-03"
   },
   {
     "year": 2015,
@@ -161,7 +162,8 @@
     "pm": 78.5,
     "cleaning": 30.0,
     "total": 418.0,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2015-04-27"
   },
   {
     "year": 2015,
@@ -213,7 +215,8 @@
     "pm": 68.0,
     "cleaning": 30.0,
     "total": 348.0,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2015-05-19"
   },
   {
     "year": 2015,
@@ -253,7 +256,8 @@
     "pm": 19.35,
     "cleaning": 0,
     "total": 600.0,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2015-11-01"
   },
   {
     "year": 2016,
@@ -265,7 +269,8 @@
     "pm": 20.0,
     "cleaning": 0,
     "total": 600.0,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2015-12-01"
   },
   {
     "year": 2016,
@@ -277,7 +282,8 @@
     "pm": 21.43,
     "cleaning": 0,
     "total": 150.0,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2016-01-01"
   },
   {
     "year": 2016,
@@ -303,7 +309,8 @@
     "pm": 60.0,
     "cleaning": 30.0,
     "total": 330.0,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2016-01-20"
   },
   {
     "year": 2016,
@@ -441,7 +448,8 @@
     "pm": 95.0,
     "cleaning": 50.0,
     "total": 1000.0,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2016-04-14"
   },
   {
     "year": 2016,
@@ -579,7 +587,8 @@
     "pm": 74.0,
     "cleaning": 60.0,
     "total": 834.0,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2017-02-01"
   },
   {
     "year": 2017,
@@ -619,7 +628,8 @@
     "pm": 90.0,
     "cleaning": 0,
     "total": 90.0,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2017-02-28"
   },
   {
     "year": 2017,
@@ -673,7 +683,8 @@
     "pm": 110.0,
     "cleaning": 60.0,
     "total": 986.62,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2017-03-23"
   },
   {
     "year": 2017,
@@ -685,7 +696,8 @@
     "pm": 110.0,
     "cleaning": 0,
     "total": 767.38,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2017-04-01"
   },
   {
     "year": 2017,
@@ -767,7 +779,8 @@
     "pm": 110.0,
     "cleaning": 60.0,
     "total": 905.0,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2017-05-10"
   },
   {
     "year": 2017,
@@ -821,7 +834,8 @@
     "pm": 44.0,
     "cleaning": 30.0,
     "total": 407.0,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2017-07-01"
   },
   {
     "year": 2017,
@@ -903,7 +917,8 @@
     "pm": 49.0,
     "cleaning": 30.0,
     "total": 216.81,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2017-12-01"
   },
   {
     "year": 2018,
@@ -971,7 +986,8 @@
     "pm": 46.2,
     "cleaning": 15.0,
     "total": 58.98,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2017-12-30"
   },
   {
     "year": 2018,
@@ -1053,7 +1069,8 @@
     "pm": 66.7,
     "cleaning": 51.43,
     "total": 435.23,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2018-02-01"
   },
   {
     "year": 2018,
@@ -1331,7 +1348,8 @@
     "pm": 57.4,
     "cleaning": 25.71,
     "total": 190.73,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2018-06-01"
   },
   {
     "year": 2018,
@@ -1385,7 +1403,8 @@
     "pm": 42.0,
     "cleaning": 51.43,
     "total": 303.43,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2018-07-01"
   },
   {
     "year": 2018,
@@ -2013,7 +2032,8 @@
     "pm": 35.0,
     "cleaning": 60.0,
     "total": 293.83,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2019-08-08"
   },
   {
     "year": 2019,
@@ -2235,7 +2255,8 @@
     "pm": 49.0,
     "cleaning": 60.0,
     "total": 140.0,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2020-11-01"
   },
   {
     "year": 2021,
@@ -2401,7 +2422,8 @@
     "pm": 99.0,
     "cleaning": 60.0,
     "total": 534.85,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2021-03-01"
   },
   {
     "year": 2021,
@@ -2511,7 +2533,8 @@
     "pm": 50.0,
     "cleaning": 17.0,
     "total": 112.93,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2021-05-01"
   },
   {
     "year": 2021,
@@ -2579,7 +2602,8 @@
     "pm": 50.0,
     "cleaning": 24.0,
     "total": 92.01,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2021-06-01"
   },
   {
     "year": 2021,
@@ -2703,7 +2727,8 @@
     "pm": 0,
     "cleaning": 60.0,
     "total": 239.0,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2021-11-01"
   },
   {
     "year": 2022,
@@ -3162,7 +3187,8 @@
     "pm": 0,
     "cleaning": 60.0,
     "total": 191.0,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2022-07-01"
   },
   {
     "year": 2022,
@@ -3174,7 +3200,8 @@
     "pm": 0,
     "cleaning": 60.0,
     "total": 313.0,
-    "status": "confirmed"
+    "status": "confirmed",
+    "booking_date": "2022-07-01"
   },
   {
     "year": 2022,
@@ -6333,13 +6360,14 @@
   {
     "year": 2026,
     "month": 3,
-    "code": "",
+    "code": "HMF8YAQAKN",
     "guest": "Terry Lutz",
     "checkin": "2026-03-28",
     "nights": 4,
     "pm": 57.38,
-    "cleaning": 15.0,
-    "total": 244.5,
+    "cleaning": 60.0,
+    "total": 977.89,
+    "rate_type": "refundable",
     "status": "confirmed",
     "booking_date": "2025-08-19"
   },
@@ -6421,8 +6449,8 @@
     "checkin": "2026-04-01",
     "nights": 12,
     "pm": 57.38,
-    "cleaning": 45.0,
-    "total": 733.5,
+    "cleaning": 0.0,
+    "total": 0,
     "status": "confirmed",
     "booking_date": "2025-08-19"
   },
