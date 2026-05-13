@@ -6589,10 +6589,11 @@
     "nights": 4,
     "pm": 102.5,
     "cleaning": 60.0,
-    "total": 470.0,
+    "total": 0,
     "confirmation_code": "HMD89CY5N3",
     "booking_date": "2026-02-23",
-    "status": "confirmed"
+    "status": "cancelled",
+    "impacto": 470.0
   },
   {
     "year": 2026,
