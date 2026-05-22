@@ -1401,7 +1401,7 @@ function drawSpark() {{
 }}
 
 // === Review cards by year ===
-let shIdx = 1;
+let shIdx = 0;
 function drawNextSH(idx) {{
   if(idx !== undefined) shIdx = idx;
   const ct = document.getElementById('nextShPanel');
