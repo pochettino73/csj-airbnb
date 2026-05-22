@@ -10,7 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-:root { --bg:#0f172a; --c:#1e293b; --b:#334155; --t:#f1f5f9; --m:#94a3b8; --a:#3b82f6; --g:#22c55e; --r:#ef4444; }
+:root { --bg:#0f172a; --c:#1e293b; --b:#334155; --t:#f1f5f9; --m:#94a3b8; --a:#3b82f6; --g:#22c55e; --r:#ef4444; --cy1:#3b82f6; --cy2:#f97316; --adr:#eab308; --pos:#22c55e; --warn:#f59e0b; --risk:#ef4444; --hist:#94a3b8; }
 * { margin:0;padding:0;box-sizing:border-box; }
 body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); padding:20px 24px; max-width:100%; overflow-x:hidden; }
 
@@ -34,11 +34,17 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 .kpi { background:var(--c); border:1px solid var(--b); border-radius:10px; padding:16px; }
 .kpi:hover { border-color:var(--a); }
 .kpi .lbl { font-size:10px; font-weight:600; color:var(--m); text-transform:uppercase; letter-spacing:.5px; margin-bottom:5px; }
-.kpi .val { font-size:26px; font-weight:700; letter-spacing:-0.5px; }
+.kpi .val { font-size:24px; font-weight:700; letter-spacing:-0.5px; }
 .kpi .chg { font-size:11px; font-weight:600; margin-top:2px; }
 .kpi .chg.up { color:var(--g); } .kpi .chg.down { color:var(--r); } .kpi .chg.eq { color:var(--m); }
 .kpi .det { font-size:9px; color:var(--m); margin-top:1px; }
 .kpi .hist { font-size:9px; color:var(--m); margin-top:3px; border-top:1px solid var(--b); padding-top:3px; }
+.kpi.primary { border-left:3px solid var(--a); }
+.kpi.primary .val { font-size:28px; }
+.kpi.primary .lbl { color:var(--t); }
+.kpi.secondary { opacity:0.8; }
+.kpi.secondary .val { font-size:20px; }
+.kpi-icon { font-size:13px; margin-right:3px; }
 @media(max-width:700px) { .kpis { grid-template-columns:repeat(2,1fr); gap:10px; } }
 @media(max-width:440px) { .kpis { grid-template-columns:1fr; gap:8px; } .kpi .val { font-size:20px; } }
 @media(max-width:600px) {
@@ -79,7 +85,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 .spark-table th { color:var(--m); font-size:9px; font-weight:600; text-transform:uppercase; padding:4px 6px; text-align:center; }
 .spark-table td { padding:4px 6px; text-align:center; }
 .spark-table .yr { color:var(--m); font-weight:600; text-align:left; white-space:nowrap; }
-.spark-table .bar { height:20px; border-radius:3px; display:inline-block; vertical-align:middle; }
+.spark-table .bar { height:26px; border-radius:3px; display:block; line-height:26px; overflow:hidden; font-size:9px; color:rgba(255,255,255,0.9); text-align:center; }
 
 /* Reviews */
 .rvs { display:grid; grid-template-columns:repeat(auto-fit,minmax(90px,1fr)); gap:8px; }
@@ -97,7 +103,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ Airbnb <span>Revenue Cockpit</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 22/05/2026 22:22</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 22/05/2026 22:45</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -197,19 +203,19 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
   <div class="cd">
     <h3>Tasa de conversi&oacute;n anual</h3>
     <div class="s">Reservas creadas / Visitas al listing &mdash; desde 2018</div>
-    <div class="ch lg"><canvas id="c15"></canvas></div>
+    <div class="ch md"><canvas id="c15"></canvas></div>
   </div>
   <div class="cd">
     <h3>Visitas y reservas mensuales (fecha de venta)</h3>
     <div class="s">Cu&aacute;ndo se reserv&oacute;, no cu&aacute;ndo se aloja &mdash; barras=visitas al listing, l&iacute;nea=reservas creadas</div>
-    <div class="ch lg"><canvas id="c16"></canvas></div>
+    <div class="ch md"><canvas id="c16"></canvas></div>
   </div>
 </div>
 
 <!-- ============================================ -->
 <!-- SECTION 7: SALUD                             -->
 <!-- ============================================ -->
-<div class="sh">Salud <span>Reviews &amp; Cancellations</span></div>
+<div class="sh">Salud del anuncio <span>Reviews &amp; Superhost</span></div>
 <div class="row r1">
   <div class="cd" id="nextShPanel"></div>
 </div>
@@ -382,7 +388,7 @@ function drawKPIs() {
   const periodLabel = period === 12 ? 'anual' : period+'m';
   const pmLabel = period <= 3 ? 'PM' : period <= 7 ? 'PM' : 'PM';
 
-  function card(label, val, chg, det, histLine, invert) {
+  function card(label, val, chg, det, histLine, invert, klass, icon, accentCol) {
     const good = invert ? chg <= 0 : chg >= 0;
     const cls = good ? 'up' : 'down';
     const arr = good ? '&#9650;' : '&#9660;';
@@ -393,7 +399,9 @@ function drawKPIs() {
       chgStr = '<div class="chg eq">= 0.0% vs '+y2+'</div>';
     }
     const histStr = histLine ? '<div class="hist">'+histLine+'</div>' : '';
-    return '<div class="kpi"><div class="lbl">'+label+'</div><div class="val">'+val+'</div>'+chgStr+'<div class="det">'+det+'</div>'+histStr+'</div>';
+    const iconHtml = icon ? '<span class="kpi-icon">'+icon+'</span>' : '';
+    const st = accentCol ? ' style="border-left:3px solid '+accentCol+';"' : '';
+    return '<div class="kpi'+(klass?' '+klass:'')+'"'+st+'><div class="lbl">'+iconHtml+label+'</div><div class="val">'+val+'</div>'+chgStr+'<div class="det">'+det+'</div>'+histStr+'</div>';
   }
 
   let h = '';
@@ -401,11 +409,11 @@ function drawKPIs() {
   // Card 1 — Ventas a misma fecha
   h += card('Ventas '+y1+' a misma fecha', fmt(otb1)+'€', pct(otb1,otb2),
     y2+' misma fecha: '+fmt(otb2)+'€',
-    'Total final '+y2+': '+fmt(tot2.income||ing2)+'€');
+    'Total final '+y2+': '+fmt(tot2.income||ing2)+'€', false, 'primary', '&#x1F4B0;', 'var(--cy1)');
   // Card 2 — Ocupación a misma fecha
   h += card('Ocupaci&oacute;n '+y1+' a misma fecha', ocuOtb1.toFixed(1)+'%', pct(ocuOtb1,ocuOtb2),
     y2+' misma fecha: '+ocuOtb2.toFixed(1)+'% ('+noc2+' noches)',
-    'Total final '+y2+': '+(tot2.ocu!=null?tot2.ocu.toFixed(1):'-')+'% ('+tot2.nights+' noches)');
+    'Total final '+y2+': '+(tot2.ocu!=null?tot2.ocu.toFixed(1):'-')+'% ('+tot2.nights+' noches)', false, 'secondary', '&#x1F4CA;');
   // PM computations — ponderado por noches, estancias vendidas hasta misma fecha
   const pmAvg = (a) => { const vs=a.filter(v=>v>0); return vs.length?vs.reduce((s,v)=>s+v,0)/vs.length:0; };
   const pmGlobal1 = PM_YTD[y1] || 0, pmGlobal2 = PM_YTD[y2] || 0;
@@ -417,14 +425,14 @@ function drawKPIs() {
     const canc1 = ck1.canc;
     h += card('Cancelaciones '+y1, canc1+' ('+tasa1.toFixed(1)+'%)', pct(tasa1,tasa2),
       y2+' misma fecha: '+(ck2ytd?ck2ytd.canc:'-')+' ('+(ck2ytd?ck2ytd.tasa.toFixed(1):'-')+'%)',
-      'Total final '+y2+': '+(tot2.canc||'-')+' ('+(tot2.tasa_canc!=null?tot2.tasa_canc.toFixed(1):'-')+'%)', true);
+      'Total final '+y2+': '+(tot2.canc||'-')+' ('+(tot2.tasa_canc!=null?tot2.tasa_canc.toFixed(1):'-')+'%)', true, 'secondary', '&#x26A0;');
   } else {
-    h += card('Cancelaciones '+y1, 'Sin datos', 0, '', '');
+    h += card('Cancelaciones '+y1, 'Sin datos', 0, '', '', false, 'secondary', '&#x26A0;');
   }
   // Card 4 — PM medio a misma fecha
   h += card('PM medio '+y1+' a misma fecha', pmGlobal1.toFixed(1)+'€', pct(pmGlobal1,pmGlobal2),
     y2+' misma fecha: '+pmGlobal2.toFixed(1)+'€/noche',
-    'Total final '+y2+': '+(tot2.pm||'-')+'€/noche');
+    'Total final '+y2+': '+(tot2.pm||'-')+'€/noche', false, 'primary', '&#x20AC;', 'var(--adr)');
   // Card 5 — Rating trimestre en curso (próxima evaluación = FUTURE_SH[0])
   const shd = FUTURE_SH && FUTURE_SH.length ? FUTURE_SH[0] : null;
   if(shd) {
@@ -434,14 +442,14 @@ function drawKPIs() {
     const shDiff = (shd.rating_exact - 4.8).toFixed(2);
     const shSign = shd.rating_exact >= 4.8 ? '+' : '';
     const pendTxt = shd.pending > 0 ? '<div style="font-size:9px;color:var(--m);margin-top:3px;border-top:1px solid var(--b);padding-top:3px">'+shd.pending+' pendientes &rarr; si 5&#9733;: <b style="color:'+(shd.if_pending_5>=4.8?'#22c55e':'#f59e0b')+'">'+shd.if_pending_5.toFixed(2)+'</b></div>' : '';
-    h += '<div class="kpi"><div class="lbl">Rating '+shd.label+'</div><div class="val" style="color:'+shCol+'">'+shd.rating_exact.toFixed(2)+'</div><div class="chg" style="color:'+shCol+'">'+shIcon+' '+shStatus+'</div><div class="det">'+shSign+shDiff+' vs 4.80 &mdash; '+shd.n+' reviews</div><div class="hist">Eval: '+shd.eval_date+' ('+shd.days_left+'d)</div>'+pendTxt+'</div>';
+    h += '<div class="kpi secondary"><div class="lbl"><span class="kpi-icon">&#x2605;</span>Rating '+shd.label+'</div><div class="val" style="color:'+shCol+'">'+shd.rating_exact.toFixed(2)+'</div><div class="chg" style="color:'+shCol+'">'+shIcon+' '+shStatus+'</div><div class="det">'+shSign+shDiff+' vs 4.80 &mdash; '+shd.n+' reviews</div><div class="hist">Eval: '+shd.eval_date+' ('+shd.days_left+'d)</div>'+pendTxt+'</div>';
   }
   // Card 6 — Huecos abiertos
   if(PRICING_GAPS && PRICING_GAPS.length > 0) {
     const nH = PRICING_GAPS.length;
     const avgRMS = PRICING_GAPS.reduce((s,g)=>s+g.recommended_price,0)/nH;
     const nextGap = PRICING_GAPS[0].start_date ? PRICING_GAPS[0].start_date.slice(5) : '';
-    h += '<div class="kpi"><div class="lbl">Huecos abiertos</div><div class="val">'+nH+'</div><div class="det">RMS medio: '+avgRMS.toFixed(0)+'€/n</div><div class="hist">Próximo: '+nextGap+'</div></div>';
+    h += '<div class="kpi primary" style="border-left:3px solid var(--warn);"><div class="lbl"><span class="kpi-icon">&#x1F4C5;</span>Huecos abiertos</div><div class="val">'+nH+'</div><div class="det">RMS medio: '+avgRMS.toFixed(0)+'€/n</div><div class="hist">Próximo: '+nextGap+'</div></div>';
   }
 
   ct.innerHTML = h;
@@ -585,7 +593,12 @@ function drawC7() {
 // === Spark table (occupancy visual) ===
 function drawSpark() {
   const ct = document.getElementById('sparktable');
-  let h = '<table class="spark-table"><thead><tr><th></th>';
+  let h = '<div style="display:flex;gap:14px;margin-bottom:8px;font-size:10px;color:var(--m);">';
+  h += '<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#22c55e;vertical-align:middle;margin-right:3px;"></span>&gt;80%</span>';
+  h += '<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#eab308;vertical-align:middle;margin-right:3px;"></span>50&ndash;80%</span>';
+  h += '<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#ef4444;vertical-align:middle;margin-right:3px;"></span>&lt;50%</span>';
+  h += '</div>';
+  h += '<table class="spark-table"><thead><tr><th></th>';
   M.forEach(m => h += '<th>'+m+'</th>');
   h += '<th>Media</th></tr></thead><tbody>';
   ACTIVE.slice().reverse().forEach(y => {
@@ -599,7 +612,8 @@ function drawSpark() {
       const days = new Date(parseInt(y), midx+1, 0).getDate();
       const noches = Math.round(v * days / 100);
       const tip = v > 0 ? y+' · '+M[midx]+' · '+v.toFixed(1)+'% · '+noches+'/'+days+' noches' : '';
-      h += '<td title="'+tip+'"><div class="bar" style="width:'+w+'%;background:'+col+'">&nbsp;</div></td>';
+      const pctLabel = v >= 35 ? v.toFixed(0)+'%' : '';
+      h += '<td title="'+tip+'"><div class="bar" style="width:'+w+'%;background:'+col+'">'+pctLabel+'</div></td>';
     });
     h += '<td style="font-weight:600;color:'+(parseFloat(mean)>=80?'#22c55e':parseFloat(mean)>=50?'#eab308':'#ef4444')+'">'+mean+'%</td>';
     h += '</tr>';
@@ -689,8 +703,8 @@ function drawNextSH(idx) {
   // Bad reviews
   const bad = d.bad_reviews || [];
   if(bad.length > 0) {
-    h += '<div style="margin-top:12px"><div style="font-size:11px;font-weight:600;color:var(--m);margin-bottom:6px">REVIEWS QUE PENALIZAN (< 5&#9733;)</div>';
-    h += '<div style="max-height:200px;overflow-y:auto">';
+    h += '<details style="margin-top:12px"><summary style="cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--m);padding:4px 0;">&#9660; REVIEWS QUE PENALIZAN ('+bad.length+' &mdash; &lt; 5&#9733;)</summary>';
+    h += '<div style="margin-top:8px;max-height:200px;overflow-y:auto">';
     bad.forEach(r => {
       const rc = r.rating <= 3 ? '#ef4444' : '#f59e0b';
       h += '<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--b);font-size:11px">';
@@ -699,20 +713,20 @@ function drawNextSH(idx) {
       h += '<div style="color:var(--m);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+r.comment+'</div>';
       h += '</div>';
     });
-    h += '</div></div>';
+    h += '</div></details>';
   }
 
   // Simulation
   if(!d.is_super) {
-    h += '<div style="margin-top:12px;padding:12px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:8px">';
-    h += '<div style="font-size:11px;font-weight:600;color:#ef4444;margin-bottom:6px">&#x1F4CA; SIMULACI&Oacute;N</div>';
+    h += '<details style="margin-top:12px"><summary style="cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:#ef4444;padding:4px 0;">&#9660; &#x1F4CA; SIMULACI&Oacute;N &mdash; cu&aacute;ntas reviews necesito</summary>';
+    h += '<div style="margin-top:8px;padding:12px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:8px">';
     for(let extra = 1; extra <= 5; extra++) {
       const newAvg = (d.total_pts + 5*extra) / (d.n + extra);
       const ok = newAvg >= 4.8;
       const ic = ok ? '&#x2705;' : '&#x274C;';
       h += '<div style="font-size:11px;color:var(--t);margin:2px 0">'+ic+' +'+extra+' review(s) de 5&#9733; &rarr; <b>'+newAvg.toFixed(4)+'</b></div>';
     }
-    h += '</div>';
+    h += '</div></details>';
   }
 
   ct.innerHTML = h;
@@ -812,11 +826,11 @@ function drawC17() {
     data: {
       labels,
       datasets: [
-        { label:'OTB '+y1, data:otb1, backgroundColor:PALETTE[y1]+'cc', borderRadius:6, borderSkipped:false, yAxisID:'y', order:4 },
-        { label:'OTB '+y2+' (misma fecha)', data:otb2, backgroundColor:PALETTE[y2]+'88', borderRadius:6, borderSkipped:false, yAxisID:'y', order:3 },
-        { label:'Final '+y2, data:fin2, type:'line', borderColor:'rgba(148,163,184,0.4)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false, yAxisID:'y', order:2 },
-        { label:'ADR '+y1, data:adr1, type:'line', borderColor:PALETTE[y1], borderWidth:0, pointRadius:6, pointBackgroundColor:PALETTE[y1], pointHoverRadius:8, showLine:false, fill:false, yAxisID:'y1', order:1 },
-        { label:'ADR '+y2, data:adr2, type:'line', borderColor:PALETTE[y2], borderWidth:0, pointRadius:4, pointBackgroundColor:PALETTE[y2], pointHoverRadius:6, showLine:false, fill:false, yAxisID:'y1', order:0 },
+        { label:'OTB '+y1, data:otb1, backgroundColor:COL_Y1+'cc', borderRadius:6, borderSkipped:false, yAxisID:'y', order:4 },
+        { label:'OTB '+y2+' (misma fecha)', data:otb2, backgroundColor:COL_Y2+'55', borderRadius:6, borderSkipped:false, yAxisID:'y', order:3 },
+        { label:'Final '+y2, data:fin2, type:'line', borderColor:'rgba(148,163,184,0.35)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false, yAxisID:'y', order:2 },
+        { label:'ADR '+y1, data:adr1, type:'line', borderColor:'transparent', borderWidth:0, pointRadius:9, pointBackgroundColor:'#eab308', pointBorderColor:'#92400e', pointBorderWidth:2, pointHoverRadius:11, showLine:false, fill:false, yAxisID:'y1', order:1 },
+        { label:'ADR '+y2, data:adr2, type:'line', borderColor:'transparent', borderWidth:0, pointRadius:6, pointBackgroundColor:'transparent', pointBorderColor:'#eab308', pointBorderWidth:2, pointHoverRadius:8, showLine:false, fill:false, yAxisID:'y1', order:0 },
       ]
     },
     options: {
@@ -841,7 +855,7 @@ function drawC17() {
       },
       scales: {
         y:  { position:'left',  ticks:{callback:v=>(v/1000).toFixed(0)+'k€',color:'#94a3b8'}, grid:{color:GC} },
-        y1: { position:'right', title:{display:true,text:'ADR €/n',color:'#94a3b8'}, ticks:{color:'#94a3b8',callback:v=>v+'€'}, grid:{drawOnChartArea:false}, min:0, max:maxADR },
+        y1: { position:'right', title:{display:true,text:'ADR €/n',color:'#eab308'}, ticks:{color:'#eab308',callback:v=>v+'€'}, grid:{drawOnChartArea:false}, min:0, max:maxADR },
         x:  { grid:{display:false} }
       }
     }
@@ -1031,8 +1045,8 @@ function drawHuecos() {
   const seasMap={'alta':'Alta','media':'Media','baja':'Baja'};
   let h='<table style="width:100%;border-collapse:collapse;font-size:13px;">';
   h+='<thead><tr style="background:var(--c);color:var(--m);font-size:11px;">';
-  ['Hueco','n','Temp','Estrategia','RMS','Actual','Riesgo','Acci&oacute;n'].forEach(function(col,ci) {
-    const al = (ci===0||ci===3)?'left':(ci>=4?'right':'center');
+  ['Fechas','n','Temp','RMS','Tu precio','&#916; vs RMS','Acci&oacute;n + Riesgo'].forEach(function(col,ci) {
+    const al = ci===0?'left':ci===6?'left':(ci>=3?'right':'center');
     h+='<th style="padding:7px 6px;text-align:'+al+';white-space:nowrap;">'+col+'</th>';
   });
   h+='</tr></thead><tbody>';
@@ -1045,25 +1059,32 @@ function drawHuecos() {
     const mktSold=mkt?parseFloat(mkt.sold||0):0;
     const mpi=(mktSold&&cur)?cur/mktSold:null;
     const act=actionOf(g,cur,mkt);
-    // MPI badge inline
-    let mpiHtml='';
-    if(mpi!==null) { const [ml,mc]=mpiLabel(mpi); mpiHtml=' <span style="font-size:10px;background:'+mc+'22;color:'+mc+';border:1px solid '+mc+'44;border-radius:3px;padding:1px 4px;">'+mpi.toFixed(2)+' '+ml+'</span>'; }
-    const stratShort=(g.strategy||'').replace('Rentabilidad','Rentab.').replace('Equilibrio','Equilib.').replace('Ocupación','Ocupac.');
+    // Delta vs RMS
+    const delta=cur!==null?cur-rms:null;
+    const deltaStr=delta!==null?(delta>=0?'+':'')+delta.toFixed(0)+'&#8364;':'&#8212;';
+    const deltaAbs=delta!==null?Math.abs(delta):0;
+    const deltaCol=delta===null?'var(--m)':deltaAbs<5?'var(--m)':delta>0?'var(--cy1)':'var(--warn)';
+    // Badges
+    let mpiBadge='';
+    if(mpi!==null) { const [ml,mc]=mpiLabel(mpi); mpiBadge='<span style="display:inline-block;font-size:9px;font-weight:600;background:'+mc+'22;color:'+mc+';border:1px solid '+mc+'44;border-radius:3px;padding:1px 5px;margin-left:4px;">'+mpi.toFixed(2)+' '+ml+'</span>'; }
+    const riskBadge='<span style="display:inline-block;font-size:9px;font-weight:600;background:'+rc+'22;color:'+rc+';border:1px solid '+rc+'44;border-radius:3px;padding:1px 5px;">'+rl+'</span>';
     const bg=i%2===0?'var(--bg)':'var(--c)';
     h+='<tr id="gap-row-'+i+'" onclick="toggleGapExp('+i+')" style="background:'+bg+';border-bottom:1px solid var(--b);cursor:pointer;" title="Click para datos de mercado">';
     h+='<td style="padding:8px 6px;white-space:nowrap;font-weight:500;">'+g.start_date.slice(5)+' &rarr; '+g.end_date.slice(5)+'</td>';
     h+='<td style="padding:8px 6px;text-align:center;color:var(--m);">'+g.nights+'</td>';
     h+='<td style="padding:8px 6px;text-align:center;font-size:11px;color:var(--m);">'+(seasMap[g.season]||g.season)+'</td>';
-    h+='<td style="padding:8px 6px;font-size:11px;color:var(--m);">'+stratShort+'</td>';
-    h+='<td style="padding:8px 6px;text-align:right;font-weight:600;color:#60a5fa;">'+rms.toFixed(0)+'&#8364;</td>';
+    h+='<td style="padding:8px 6px;text-align:right;font-weight:600;color:var(--cy1);">'+rms.toFixed(0)+'&#8364;</td>';
     h+='<td style="padding:8px 4px;text-align:right;" onclick="event.stopPropagation()"><input type="number" value="'+(cur!==null?cur:'')+'" placeholder="&#8212;" data-key="'+key+'" onchange="savePG(this)" style="width:56px;background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:3px 5px;text-align:right;font-size:12px;"></td>';
-    h+='<td style="padding:8px 6px;text-align:center;color:'+rc+';font-weight:600;font-size:12px;">'+rl+'</td>';
-    h+='<td style="padding:8px 6px;text-align:left;color:'+act.col+';font-weight:600;font-size:12px;cursor:help;" title="'+act.reason+'">'+act.text+mpiHtml+'</td>';
+    h+='<td style="padding:8px 6px;text-align:right;font-weight:600;font-size:12px;color:'+deltaCol+';">'+deltaStr+'</td>';
+    h+='<td style="padding:8px 6px;text-align:left;cursor:help;" title="'+act.reason+'">';
+    h+='<div style="font-size:14px;font-weight:700;color:'+act.col+'">'+act.text+'</div>';
+    h+='<div style="display:flex;gap:4px;margin-top:3px;flex-wrap:wrap;">'+riskBadge+mpiBadge+'</div>';
+    h+='</td>';
     h+='</tr>';
     // Expandable market row
     const mSold=mkt?(mkt.sold||''):'', mAvail=mkt?(mkt.avail||''):'', mPress=mkt?(mkt.pressure||''):'', mFecha=mkt?(mkt.fecha||''):'', mUpd=mkt?(mkt.updated||''):'';
-    h+='<tr id="gap-exp-'+i+'" data-key="'+key+'" style="display:none;background:rgba(59,130,246,0.04);">';
-    h+='<td colspan="8" style="padding:10px 14px;border-bottom:2px solid var(--a);">';
+    h+='<tr id="gap-exp-'+i+'" data-key="'+key+'" style="display:none;background:rgba(59,130,246,0.07);border-left:3px solid var(--cy1);">';
+    h+='<td colspan="7" style="padding:12px 16px;border-bottom:1px solid var(--b);">';
     h+='<div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">';
     h+='<div><label style="font-size:10px;color:var(--m);display:block;margin-bottom:3px;">Mkt vendido (&#8364;/n)</label>';
     h+='<input id="gms'+i+'" type="number" value="'+mSold+'" placeholder="ej. 102" style="width:90px;background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:4px 6px;font-size:12px;"></div>';
