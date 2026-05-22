@@ -31,7 +31,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 .kpis { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-bottom:16px; }
 .kpi { background:var(--c); border:1px solid var(--b); border-radius:10px; padding:16px; }
 .kpi:hover { border-color:var(--a); }
-.kpi:nth-child(5) { grid-column:1 / -1; }
+.kpi-full { grid-column:1 / -1; }
 .kpi .lbl { font-size:10px; font-weight:600; color:var(--m); text-transform:uppercase; letter-spacing:.5px; margin-bottom:5px; }
 .kpi .val { font-size:26px; font-weight:700; letter-spacing:-0.5px; }
 .kpi .chg { font-size:11px; font-weight:600; margin-top:2px; }
@@ -93,7 +93,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ <span>Airbnb</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 22/05/2026 15:36</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 22/05/2026 22:09</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -113,7 +113,19 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="kpis" id="kpiContainer"></div>
 
 <!-- ============================================ -->
-<!-- SECTION 1: PACE + ADR                        -->
+<!-- SECTION 1: HUECOS Y PRICING                  -->
+<!-- ============================================ -->
+<div class="sh">Huecos y Pricing <span>Revenue Decisions</span></div>
+<div class="row r1">
+  <div class="cd">
+    <h3>Huecos en calendario &mdash; propuestas de precio</h3>
+    <div class="s">Datos calculados por el RMS (pricing.py). Precio RMS = tarifa flexible recomendada. Introduce tu precio actual para ver la acci&oacute;n. Click en una fila para a&ntilde;adir datos de mercado.</div>
+    <div id="huecos-panel" style="margin-top:8px;overflow-x:auto;"></div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 2: PACE + ADR                        -->
 <!-- ============================================ -->
 <div class="sh">Ritmo de ventas <span>Pace &amp; ADR</span></div>
 <div class="row r1">
@@ -121,30 +133,6 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
     <h3>Pace Report &mdash; On The Books + ADR</h3>
     <div class="s">&iquest;Voy mejor vendido? &iquest;A mejor precio? Barras = ingresos OTB &mdash; Puntos = ADR (eje dcho)</div>
     <div class="ch xl"><canvas id="c17"></canvas></div>
-  </div>
-</div>
-
-<!-- ============================================ -->
-<!-- SECTION 2: HUECOS Y PRICING                  -->
-<!-- ============================================ -->
-<div class="sh">Huecos y Pricing <span>Revenue Decisions</span></div>
-<div class="row r1">
-  <div class="cd">
-    <h3>Huecos en calendario &mdash; propuestas de precio</h3>
-    <div class="s">Datos calculados por el RMS (pricing.py). Precio RMS = tarifa flexible recomendada. Introduce tu precio actual para ver la acci&oacute;n.</div>
-    <div id="huecos-panel" style="margin-top:8px;overflow-x:auto;"></div>
-  </div>
-</div>
-
-<!-- ============================================ -->
-<!-- SECTION 3: MARKET POSITIONING                -->
-<!-- ============================================ -->
-<div class="sh">Posicionamiento <span>Market Positioning</span></div>
-<div class="row r1">
-  <div class="cd">
-    <h3>Posici&oacute;n vs mercado</h3>
-    <div class="s">Introduce manualmente los datos del mercado para calcular tu &iacute;ndice de posicionamiento (MPI = mi precio / mercado vendido).</div>
-    <div id="mkt-panel" style="margin-top:8px;"></div>
   </div>
 </div>
 
@@ -202,9 +190,9 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 </div>
 
 <!-- ============================================ -->
-<!-- SECTION 6: CONVERSIÓN                        -->
+<!-- SECTION 5: DEMANDA AIRBNB                    -->
 <!-- ============================================ -->
-<div class="sh">Conversi&oacute;n <span>Funnel &amp; Lead Time</span></div>
+<div class="sh">Demanda Airbnb <span>Funnel &amp; Lead Time</span></div>
 <div id="lead-kpi" style="margin:0 0 12px 0;padding:0 4px;"></div>
 <div class="row r2">
   <div class="cd">
@@ -244,6 +232,10 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="ft">CSJ Airbnb CEO Dashboard &mdash; visualizar.py &mdash; 22/05/2026</div>
 
 <script>
+if(typeof Chart==='undefined'){document.querySelectorAll('canvas').forEach(c=>{c.parentNode.innerHTML='<p style="color:#ef4444;padding:20px;font-size:12px;">Chart.js no cargó &mdash; verifica conexión</p>';});}
+window.onerror=function(msg,src,line){const b=document.getElementById('err-banner');if(b){b.style.display='block';b.textContent='Error JS (línea '+line+'): '+msg;}return false;};
+function safeDraw(fn,name){try{fn();}catch(e){console.error('draw['+name+']: '+e.message);}}
+
 Chart.defaults.color='#94a3b8';
 Chart.defaults.borderColor='#334155';
 Chart.defaults.font.family="'Inter',sans-serif";
@@ -449,6 +441,13 @@ function drawKPIs() {
     const pendTxt = shd.pending > 0 ? '<div style="font-size:9px;color:var(--m);margin-top:3px;border-top:1px solid var(--b);padding-top:3px">'+shd.pending+' pendientes &rarr; si 5&#9733;: <b style="color:'+(shd.if_pending_5>=4.8?'#22c55e':'#f59e0b')+'">'+shd.if_pending_5.toFixed(2)+'</b></div>' : '';
     h += '<div class="kpi"><div class="lbl">Rating '+shd.label+'</div><div class="val" style="color:'+shCol+'">'+shd.rating_exact.toFixed(2)+'</div><div class="chg" style="color:'+shCol+'">'+shIcon+' '+shStatus+'</div><div class="det">'+shSign+shDiff+' vs 4.80 &mdash; '+shd.n+' reviews</div><div class="hist">Eval: '+shd.eval_date+' ('+shd.days_left+'d)</div>'+pendTxt+'</div>';
   }
+  // Card 6 — Huecos abiertos
+  if(PRICING_GAPS && PRICING_GAPS.length > 0) {
+    const nH = PRICING_GAPS.length;
+    const avgRMS = PRICING_GAPS.reduce((s,g)=>s+g.recommended_price,0)/nH;
+    const nextGap = PRICING_GAPS[0].start_date ? PRICING_GAPS[0].start_date.slice(5) : '';
+    h += '<div class="kpi"><div class="lbl">Huecos abiertos</div><div class="val">'+nH+'</div><div class="det">RMS medio: '+avgRMS.toFixed(0)+'€/n</div><div class="hist">Próximo: '+nextGap+'</div></div>';
+  }
 
   ct.innerHTML = h;
 }
@@ -502,27 +501,7 @@ function drawC1() {
   });
 }
 
-// === C2: Ingresos anuales ===
-function drawC2() {
-  if(charts.c2) charts.c2.destroy();
-  const yrs = ACTIVE;
-  const vals = yrs.map(y => ANN_ING[y]||0);
-  const cols = yrs.map(y => (y===y1||y===y2) ? PALETTE[y] : 'rgba(148,163,184,0.3)');
-  const avgI = vals.filter(v=>v>0);
-  const meanI = avgI.length ? avgI.reduce((a,b)=>a+b,0)/avgI.length : 0;
-  charts.c2 = new Chart(document.getElementById('c2'), {
-    type:'bar',
-    data: { labels:yrs, datasets:[
-      { data:vals, backgroundColor:cols, borderRadius:6, borderSkipped:false },
-      { label:'Media: '+meanI.toLocaleString('es-ES',{maximumFractionDigits:0})+'€', data:Array(yrs.length).fill(meanI), type:'line', borderColor:'rgba(251,191,36,0.6)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false }
-    ] },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{position:'top',labels:{usePointStyle:true,font:{size:10},filter:i=>i.text&&i.text.startsWith('Media')}}, tooltip:{callbacks:{label:c=>c.parsed.y.toLocaleString('es-ES',{maximumFractionDigits:0})+'€'}} },
-      scales:{ y:{ticks:{callback:v=>(v/1000).toFixed(0)+'k€'},grid:{color:GC}}, x:{grid:{display:false}} }
-    }
-  });
-}
+// drawC2 removed (no canvas in HTML)
 
 // === C3: Ocupación mensual ===
 function drawC3() {
@@ -547,27 +526,7 @@ function drawC3() {
   });
 }
 
-// === C4: Ocupación anual ===
-function drawC4() {
-  if(charts.c4) charts.c4.destroy();
-  const yrs = ACTIVE;
-  const vals = yrs.map(y => ANN_OCU[y]||0);
-  const cols = yrs.map(y => (y===y1||y===y2) ? PALETTE[y] : 'rgba(148,163,184,0.3)');
-  const avgO = vals.filter(v=>v>0);
-  const meanO = avgO.length ? avgO.reduce((a,b)=>a+b,0)/avgO.length : 0;
-  charts.c4 = new Chart(document.getElementById('c4'), {
-    type:'bar',
-    data: { labels:yrs, datasets:[
-      { data:vals, backgroundColor:cols, borderRadius:6, borderSkipped:false },
-      { label:'Media: '+meanO.toFixed(1)+'%', data:Array(yrs.length).fill(meanO), type:'line', borderColor:'rgba(251,191,36,0.6)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false }
-    ] },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{position:'top',labels:{usePointStyle:true,font:{size:10},filter:i=>i.text&&i.text.startsWith('Media')}}, tooltip:{callbacks:{label:c=>c.parsed.y.toFixed(1)+'%'}} },
-      scales:{ y:{max:100,ticks:{callback:v=>v+'%'},grid:{color:GC}}, x:{grid:{display:false}} }
-    }
-  });
-}
+// drawC4 removed (no canvas in HTML)
 
 // === C5: PM mensual ===
 function drawC5() {
@@ -646,26 +605,7 @@ function drawC7() {
   });
 }
 
-// === C8: RevPAR ===
-// === C9: Radar estacionalidad y1 vs y2 ===
-function drawC9() {
-  if(charts.c9) charts.c9.destroy();
-  charts.c9 = new Chart(document.getElementById('c9'), {
-    type:'radar',
-    data: {
-      labels:M,
-      datasets: [
-        { label:y1, data:ALL_ING[y1]||Array(12).fill(0), borderColor:PALETTE[y1], backgroundColor:PALETTE[y1]+'22', borderWidth:2, pointRadius:3, pointBackgroundColor:PALETTE[y1] },
-        { label:y2, data:ALL_ING[y2]||Array(12).fill(0), borderColor:PALETTE[y2], backgroundColor:PALETTE[y2]+'11', borderWidth:1.5, borderDash:[4,4], pointRadius:2, pointBackgroundColor:PALETTE[y2] },
-      ]
-    },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{position:'top',labels:{usePointStyle:true}} },
-      scales:{ r:{ beginAtZero:true, ticks:{display:false}, grid:{color:GC}, pointLabels:{font:{size:10}} } }
-    }
-  });
-}
+// drawC9 removed (no canvas in HTML)
 
 // === Spark table (occupancy visual) ===
 function drawSpark() {
@@ -678,10 +618,13 @@ function drawSpark() {
     const avg = d.filter(v=>v>0);
     const mean = avg.length ? (avg.reduce((a,b)=>a+b,0)/avg.length).toFixed(1) : '0';
     h += '<tr><td class="yr" style="color:'+PALETTE[y]+'">'+y+'</td>';
-    d.forEach(v => {
+    d.forEach(function(v, midx) {
       const w = Math.max(v, 0);
       const col = v >= 80 ? '#22c55e' : v >= 50 ? '#eab308' : v > 0 ? '#ef4444' : '#1e293b';
-      h += '<td><div class="bar" style="width:'+w+'%;background:'+col+'">&nbsp;</div></td>';
+      const days = new Date(parseInt(y), midx+1, 0).getDate();
+      const noches = Math.round(v * days / 100);
+      const tip = v > 0 ? y+' · '+M[midx]+' · '+v.toFixed(1)+'% · '+noches+'/'+days+' noches' : '';
+      h += '<td title="'+tip+'"><div class="bar" style="width:'+w+'%;background:'+col+'">&nbsp;</div></td>';
     });
     h += '<td style="font-weight:600;color:'+(parseFloat(mean)>=80?'#22c55e':parseFloat(mean)>=50?'#eab308':'#ef4444')+'">'+mean+'%</td>';
     h += '</tr>';
@@ -800,29 +743,7 @@ function drawNextSH(idx) {
   ct.innerHTML = h;
 }
 
-// === C10: Reviews radar y1 vs y2 ===
-function drawC10() {
-  if(charts.c10) charts.c10.destroy();
-  const r1 = REV_BY_YEAR[y1] || {};
-  const r2 = REV_BY_YEAR[y2] || {};
-  const d1 = CATS_KEY.map(c => r1[c] || 0);
-  const d2 = CATS_KEY.map(c => r2[c] || 0);
-  const ds = [
-    { label:y1, data:d1, borderColor:PALETTE[y1], backgroundColor:(PALETTE[y1]||'#3b82f6')+'22', borderWidth:2, pointRadius:4, pointBackgroundColor:PALETTE[y1] },
-  ];
-  if (d2.some(v => v > 0)) {
-    ds.push({ label:y2, data:d2, borderColor:PALETTE[y2], backgroundColor:(PALETTE[y2]||'#94a3b8')+'11', borderWidth:1.5, borderDash:[4,4], pointRadius:3, pointBackgroundColor:PALETTE[y2] });
-  }
-  charts.c10 = new Chart(document.getElementById('c10'), {
-    type:'radar',
-    data: { labels:CATS_SUB, datasets:ds },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{position:'top',labels:{usePointStyle:true,font:{size:10}}} },
-      scales:{ r:{ min:4, max:5, ticks:{stepSize:0.2,font:{size:9}}, grid:{color:GC}, pointLabels:{font:{size:10}} } }
-    }
-  });
-}
+// drawC10 removed (no canvas in HTML)
 
 
 // === C14: PM por banda estacional ===
@@ -952,65 +873,7 @@ function drawC17() {
   });
 }
 
-// === C18: Lead Time distribution + PM ===
-function drawC18() {
-  if(charts.c18) charts.c18.destroy();
-  const buckets = ['<7d','7-30d','30-90d','>90d'];
-  const bucketLabels = ['< 7 días','7-30 días','30-90 días','> 90 días'];
-  const counts = buckets.map(b => LT_SUMMARY[b].n);
-  const pms = buckets.map(b => LT_SUMMARY[b].avg_pm);
-  const total = counts.reduce((a,b)=>a+b,0);
-  const pcts = counts.map(c => total > 0 ? Math.round(c/total*100) : 0);
-  charts.c18 = new Chart(document.getElementById('c18'), {
-    type:'bar',
-    data: {
-      labels: bucketLabels,
-      datasets: [
-        { label:'Reservas', data:counts, backgroundColor:['#ef4444cc','#f59e0bcc','#22c55ecc','#3b82f6cc'], borderRadius:6, borderSkipped:false, yAxisID:'y' },
-        { label:'PM €/noche', data:pms, type:'line', borderColor:'#f59e0b', borderWidth:2.5, pointRadius:5, pointBackgroundColor:'#f59e0b', tension:0.3, fill:false, yAxisID:'y1' },
-      ]
-    },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins: {
-        legend:{position:'top',labels:{usePointStyle:true,font:{size:10}}},
-        tooltip:{callbacks:{
-          label:function(c) {
-            if(c.dataset.yAxisID==='y') return c.parsed.y+' reservas ('+pcts[c.dataIndex]+'%)';
-            return 'PM: '+c.parsed.y.toFixed(1)+'€/noche';
-          }
-        }}
-      },
-      scales: {
-        y: { position:'left', title:{display:true,text:'Reservas',color:'#60a5fa'}, ticks:{color:'#60a5fa'}, grid:{color:GC} },
-        y1: { position:'right', title:{display:true,text:'PM €/noche',color:'#f59e0b'}, ticks:{color:'#f59e0b',callback:v=>v+'€'}, grid:{drawOnChartArea:false} },
-        x: { grid:{display:false} }
-      }
-    }
-  });
-}
-
-// === C19: Lead Time trend by year ===
-function drawC19() {
-  if(charts.c19) charts.c19.destroy();
-  const yrs = ACTIVE.filter(y => LT_AVG_YEAR[y] && LT_AVG_YEAR[y] > 0);
-  const vals = yrs.map(y => LT_AVG_YEAR[y]);
-  const cols = yrs.map(y => (y===y1||y===y2) ? PALETTE[y] : 'rgba(148,163,184,0.3)');
-  const avgLT = vals.filter(v=>v>0);
-  const meanLT = avgLT.length ? avgLT.reduce((a,b)=>a+b,0)/avgLT.length : 0;
-  charts.c19 = new Chart(document.getElementById('c19'), {
-    type:'bar',
-    data: { labels:yrs, datasets:[
-      { data:vals, backgroundColor:cols, borderRadius:6, borderSkipped:false },
-      { label:'Media: '+meanLT.toFixed(0)+' días', data:Array(yrs.length).fill(meanLT), type:'line', borderColor:'rgba(251,191,36,0.6)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false }
-    ] },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{position:'top',labels:{usePointStyle:true,font:{size:10},filter:i=>i.text&&i.text.startsWith('Media')}}, tooltip:{callbacks:{label:c=>c.parsed.y.toFixed(0)+' días de media'}} },
-      scales:{ y:{title:{display:true,text:'Días'},grid:{color:GC}}, x:{grid:{display:false}} }
-    }
-  });
-}
+// drawC18, drawC19 removed (no canvas in HTML)
 
 
 
@@ -1139,71 +1002,9 @@ function drawC22() {
   });
 }
 
-// === C23: Impacto económico cancelaciones ===
-function drawC23() {
-  const el = document.getElementById('c23');
-  if (!el) return;
-  if (el._chart) el._chart.destroy();
-  const years    = Object.keys(CANC_KPIS).sort();
-  const perdido  = years.map(y => Math.round(CANC_KPIS[y].perdido));
-  const recup    = years.map(y => Math.round(CANC_KPIS[y].recuperado));
-  const neto     = years.map(y => Math.round(CANC_KPIS[y].neto));
-  el._chart = new Chart(el, {
-    type: 'bar',
-    data: {
-      labels: years,
-      datasets: [
-        { label: 'Precio estimado perdido', data: perdido, backgroundColor: 'rgba(239,68,68,0.5)' },
-        { label: 'Recuperado',              data: recup,   backgroundColor: 'rgba(34,197,94,0.6)' },
-        { label: 'Pérdida neta',        data: neto,    backgroundColor: 'rgba(239,68,68,0.85)', borderWidth: 1, borderColor: 'rgba(239,68,68,1)' },
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { position: 'top', labels: { usePointStyle: true, font: { size: 10 } } },
-        tooltip: { callbacks: { label: c => c.dataset.label + ': ' + c.raw.toLocaleString('es-ES') + '€' } }
-      },
-      scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 10 } } },
-        y: { ticks: { color: '#94a3b8', callback: v => v.toLocaleString('es-ES') + '€' }, grid: { color: GC } }
-      }
-    }
-  });
-}
+// drawC23, drawC24 removed (no canvas in HTML)
 
-// === C24: Lead time confirmadas vs canceladas ===
-function drawC24() {
-  const el = document.getElementById('c24');
-  if (!el) return;
-  if (el._chart) el._chart.destroy();
-  const years = Object.keys(CANC_KPIS).sort();
-  const ltConf = years.map(y => CANC_KPIS[y].lt_conf);
-  const ltCanc = years.map(y => CANC_KPIS[y].lt_canc);
-  el._chart = new Chart(el, {
-    type: 'bar',
-    data: {
-      labels: years,
-      datasets: [
-        { label: 'Confirmadas (días)', data: ltConf, backgroundColor: 'rgba(59,130,246,0.7)' },
-        { label: 'Canceladas (días)',  data: ltCanc, backgroundColor: 'rgba(239,68,68,0.7)' },
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { position: 'top', labels: { usePointStyle: true, font: { size: 10 } } },
-        tooltip: { callbacks: { label: c => c.dataset.label + ': ' + c.raw + ' días' } }
-      },
-      scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 10 } } },
-        y: { ticks: { color: '#94a3b8', callback: v => v + 'd' }, grid: { color: GC } }
-      }
-    }
-  });
-}
-
-// === HUECOS Y PRICING ===
+// === HUECOS Y PRICING (con mercado por hueco expandible) ===
 function drawHuecos() {
   const ct = document.getElementById('huecos-panel');
   if (!ct) return;
@@ -1212,8 +1013,7 @@ function drawHuecos() {
     return;
   }
   const stored = JSON.parse(localStorage.getItem('csj_prices')||'{}');
-  const mkt = JSON.parse(localStorage.getItem('csj_mkt')||'{}');
-  const mktSold = parseFloat(mkt.sold||0);
+  function getMkt(key) { try { return JSON.parse(localStorage.getItem('csj_mkt_'+key)||'null'); } catch(e) { return null; } }
   function riskOf(g) {
     let s=0;
     if(g.nights<=2) s+=2; else if(g.nights<=3) s+=1;
@@ -1227,122 +1027,122 @@ function drawHuecos() {
     if(s>=1) return ['Medio','#f59e0b'];
     return ['Bajo','#22c55e'];
   }
+  function mpiLabel(mpi) {
+    if(mpi<0.80) return ['Muy barato','#ef4444'];
+    if(mpi<0.95) return ['Competitivo','#22c55e'];
+    if(mpi<=1.10) return ['En mercado','#60a5fa'];
+    return ['Agresivo','#f59e0b'];
+  }
+  function actionOf(g, cur, mkt) {
+    const rms=g.recommended_price, floor=g.floor_price||0, ceil=g.ceiling_price||9999;
+    if(cur===null) return {text:rms.toFixed(0)+'&#8364; RMS',col:'#60a5fa'};
+    const mktSold = mkt ? parseFloat(mkt.sold||0) : 0;
+    const pressure = mkt ? (mkt.pressure||'') : '';
+    const highPress = pressure==='alta'||pressure==='extrema';
+    const mpi = (mktSold&&cur) ? cur/mktSold : null;
+    if(cur<floor*0.95) return {text:'&#9650; Subir'+(mpi&&mpi<0.85?' + mkt':''),col:'#22c55e'};
+    if(cur>ceil&&!highPress) return {text:'&#9660; Bajar',col:'#ef4444'};
+    if(cur>ceil&&highPress) return {text:'= Mantener*',col:'#f59e0b'};
+    if(mpi!==null) {
+      if(mpi<0.80) return {text:'&#9650; Subir (mkt)',col:'#22c55e'};
+      if(mpi>1.10&&!highPress) return {text:'&#9660; Revisar',col:'#f59e0b'};
+      if(highPress&&mpi<=1.05) return {text:'&#9650; Oportunidad',col:'#84cc16'};
+    }
+    if(cur>=floor&&cur<=rms*1.05&&highPress) return {text:'&#9650; Subir leve',col:'#84cc16'};
+    return {text:'= Mantener',col:'#94a3b8'};
+  }
+  const seasMap={'alta':'Alta','media':'Media','baja':'Baja'};
   let h='<table style="width:100%;border-collapse:collapse;font-size:13px;">';
   h+='<thead><tr style="background:var(--c);color:var(--m);font-size:11px;">';
-  ['Hueco','n','Temp','Estrategia','RMS','Actual','Riesgo','Acción','vs Mkt'].forEach(col=>{
-    const align = ['RMS','Actual','vs Mkt'].includes(col)?'right':'center';
-    const alignL = col==='Hueco'||col==='Estrategia'?'left':align;
-    h+='<th style="padding:7px 6px;text-align:'+alignL+';white-space:nowrap;">'+col+'</th>';
+  ['Hueco','n','Temp','Estrategia','RMS','Actual','Riesgo','Acci&oacute;n'].forEach(function(col,ci) {
+    const al = (ci===0||ci===3)?'left':(ci>=4?'right':'center');
+    h+='<th style="padding:7px 6px;text-align:'+al+';white-space:nowrap;">'+col+'</th>';
   });
   h+='</tr></thead><tbody>';
   PRICING_GAPS.forEach(function(g,i) {
-    const rs = riskOf(g); const [rl,rc] = riskLabel(rs);
-    const rms = g.recommended_price;
-    const floor = g.floor_price||0; const ceil = g.ceiling_price||0;
-    const key = g.start_date;
-    const cur = stored[key]!==undefined ? parseFloat(stored[key]) : null;
-    let act='',ac='#94a3b8';
-    if(cur!==null) {
-      if(cur<floor*0.95)  { act='&#9650; Subir';   ac='#22c55e'; }
-      else if(cur>ceil)   { act='&#9660; Bajar';   ac='#ef4444'; }
-      else                { act='= Mantener'; ac='#94a3b8'; }
-    } else { act=rms.toFixed(0)+'€'; ac='#60a5fa'; }
-    const vsMkt = (mktSold&&cur) ? ((cur-mktSold>=0?'+':'')+(cur-mktSold).toFixed(0)+'€') : '';
-    const seasMap={'alta':'☀️ Alta','media':'⛅ Media','baja':'❄️ Baja'};
-    const stratShort = (g.strategy||'').replace('Rentabilidad','Rentab.').replace('Equilibrio','Equilib.').replace('Ocupación','Ocupac.');
-    const bg = i%2===0?'var(--bg)':'var(--c)';
-    h+='<tr style="background:'+bg+';border-bottom:1px solid var(--b);">';
+    const rs=riskOf(g); const [rl,rc]=riskLabel(rs);
+    const rms=g.recommended_price, floor=g.floor_price||0, ceil=g.ceiling_price||0;
+    const key=g.start_date;
+    const cur=stored[key]!==undefined?parseFloat(stored[key]):null;
+    const mkt=getMkt(key);
+    const mktSold=mkt?parseFloat(mkt.sold||0):0;
+    const mpi=(mktSold&&cur)?cur/mktSold:null;
+    const act=actionOf(g,cur,mkt);
+    // MPI badge inline
+    let mpiHtml='';
+    if(mpi!==null) { const [ml,mc]=mpiLabel(mpi); mpiHtml=' <span style="font-size:10px;background:'+mc+'22;color:'+mc+';border:1px solid '+mc+'44;border-radius:3px;padding:1px 4px;">'+mpi.toFixed(2)+' '+ml+'</span>'; }
+    const stratShort=(g.strategy||'').replace('Rentabilidad','Rentab.').replace('Equilibrio','Equilib.').replace('Ocupación','Ocupac.');
+    const bg=i%2===0?'var(--bg)':'var(--c)';
+    h+='<tr id="gap-row-'+i+'" onclick="toggleGapExp('+i+')" style="background:'+bg+';border-bottom:1px solid var(--b);cursor:pointer;" title="Click para datos de mercado">';
     h+='<td style="padding:8px 6px;white-space:nowrap;font-weight:500;">'+g.start_date.slice(5)+' &rarr; '+g.end_date.slice(5)+'</td>';
     h+='<td style="padding:8px 6px;text-align:center;color:var(--m);">'+g.nights+'</td>';
     h+='<td style="padding:8px 6px;text-align:center;font-size:11px;color:var(--m);">'+(seasMap[g.season]||g.season)+'</td>';
     h+='<td style="padding:8px 6px;font-size:11px;color:var(--m);">'+stratShort+'</td>';
-    h+='<td style="padding:8px 6px;text-align:right;font-weight:600;color:#60a5fa;">'+rms.toFixed(0)+'€</td>';
-    h+='<td style="padding:8px 4px;text-align:right;"><input type="number" value="'+(cur!==null?cur:'')+'" placeholder="—" data-key="'+key+'" onchange="savePG(this)" style="width:56px;background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:3px 5px;text-align:right;font-size:12px;"></td>';
+    h+='<td style="padding:8px 6px;text-align:right;font-weight:600;color:#60a5fa;">'+rms.toFixed(0)+'&#8364;</td>';
+    h+='<td style="padding:8px 4px;text-align:right;" onclick="event.stopPropagation()"><input type="number" value="'+(cur!==null?cur:'')+'" placeholder="&#8212;" data-key="'+key+'" onchange="savePG(this)" style="width:56px;background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:3px 5px;text-align:right;font-size:12px;"></td>';
     h+='<td style="padding:8px 6px;text-align:center;color:'+rc+';font-weight:600;font-size:12px;">'+rl+'</td>';
-    h+='<td style="padding:8px 6px;text-align:center;color:'+ac+';font-weight:600;font-size:12px;">'+act+'</td>';
-    h+='<td style="padding:8px 6px;text-align:right;color:var(--m);font-size:12px;">'+vsMkt+'</td>';
+    h+='<td style="padding:8px 6px;text-align:left;color:'+act.col+';font-weight:600;font-size:12px;">'+act.text+mpiHtml+'</td>';
     h+='</tr>';
+    // Expandable market row
+    const mSold=mkt?(mkt.sold||''):'', mAvail=mkt?(mkt.avail||''):'', mPress=mkt?(mkt.pressure||''):'', mFecha=mkt?(mkt.fecha||''):'', mUpd=mkt?(mkt.updated||''):'';
+    h+='<tr id="gap-exp-'+i+'" data-key="'+key+'" style="display:none;background:rgba(59,130,246,0.04);">';
+    h+='<td colspan="8" style="padding:10px 14px;border-bottom:2px solid var(--a);">';
+    h+='<div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">';
+    h+='<div><label style="font-size:10px;color:var(--m);display:block;margin-bottom:3px;">Mkt vendido (&#8364;/n)</label>';
+    h+='<input id="gms'+i+'" type="number" value="'+mSold+'" placeholder="ej. 102" style="width:90px;background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:4px 6px;font-size:12px;"></div>';
+    h+='<div><label style="font-size:10px;color:var(--m);display:block;margin-bottom:3px;">Mkt disponible (&#8364;/n)</label>';
+    h+='<input id="gma'+i+'" type="number" value="'+mAvail+'" placeholder="ej. 115" style="width:90px;background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:4px 6px;font-size:12px;"></div>';
+    h+='<div><label style="font-size:10px;color:var(--m);display:block;margin-bottom:3px;">Presi&oacute;n mercado</label>';
+    h+='<select id="gmp'+i+'" style="background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:4px 6px;font-size:12px;">';
+    h+='<option value="">&#8212;</option>';
+    ['baja','media','alta','extrema'].forEach(function(p) { h+='<option value="'+p+'"'+(mPress===p?' selected':'')+'>'+p.charAt(0).toUpperCase()+p.slice(1)+'</option>'; });
+    h+='</select></div>';
+    h+='<div><label style="font-size:10px;color:var(--m);display:block;margin-bottom:3px;">Fecha revisi&oacute;n</label>';
+    h+='<input id="gmf'+i+'" type="date" value="'+mFecha+'" style="background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:4px 6px;font-size:12px;"></div>';
+    h+='<button data-idx="'+i+'" onclick="saveMktForGap(parseInt(this.dataset.idx))" style="background:#0B3D60;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:12px;cursor:pointer;">Guardar</button>';
+    if(mUpd) h+='<span style="font-size:10px;color:var(--m);">Actualizado: '+mUpd+'</span>';
+    h+='</div>';
+    if(mkt&&mkt.sold&&cur) {
+      const gS=cur-parseFloat(mkt.sold); const gcS=gS>=0?'#22c55e':'#f59e0b';
+      const gA=mkt.avail?(cur-parseFloat(mkt.avail)):null; const gcA=gA!==null?(gA<=0?'#22c55e':'#f59e0b'):'';
+      h+='<div style="margin-top:6px;display:flex;gap:16px;font-size:11px;">';
+      h+='<span style="color:var(--m);">vs vendido: <b style="color:'+gcS+'">'+(gS>=0?'+':'')+gS.toFixed(0)+'&#8364;</b></span>';
+      if(gA!==null) h+='<span style="color:var(--m);">vs disponible: <b style="color:'+gcA+'">'+(gA>=0?'+':'')+gA.toFixed(0)+'&#8364;</b></span>';
+      if(mPress) h+='<span style="color:var(--m);">Presi&oacute;n: <b>'+mPress.toUpperCase()+'</b></span>';
+      h+='</div>';
+    }
+    h+='</td></tr>';
   });
   h+='</tbody></table>';
   ct.innerHTML=h;
+}
+function toggleGapExp(i) {
+  const el=document.getElementById('gap-exp-'+i);
+  if(el) el.style.display=el.style.display==='none'?'table-row':'none';
+}
+function saveMktForGap(i) {
+  const expRow=document.getElementById('gap-exp-'+i);
+  if(!expRow) return;
+  const key=expRow.dataset.key;
+  const s=document.getElementById('gms'+i)?.value||'';
+  const a=document.getElementById('gma'+i)?.value||'';
+  const p=document.getElementById('gmp'+i)?.value||'';
+  const f=document.getElementById('gmf'+i)?.value||'';
+  const prev=JSON.parse(localStorage.getItem('csj_mkt_'+key)||'null')||{};
+  localStorage.setItem('csj_mkt_'+key,JSON.stringify({
+    sold:s||prev.sold||'',avail:a||prev.avail||'',
+    pressure:p||prev.pressure||'',fecha:f||prev.fecha||'',
+    updated:new Date().toLocaleDateString('es-ES')
+  }));
+  drawHuecos();
+  const restored=document.getElementById('gap-exp-'+i);
+  if(restored) restored.style.display='table-row';
 }
 function savePG(el) {
   const s=JSON.parse(localStorage.getItem('csj_prices')||'{}');
   if(el.value) s[el.dataset.key]=el.value; else delete s[el.dataset.key];
   localStorage.setItem('csj_prices',JSON.stringify(s));
   drawHuecos();
-}
-
-// === MARKET POSITIONING ===
-function drawMarketPos() {
-  const ct = document.getElementById('mkt-panel');
-  if (!ct) return;
-  const mkt  = JSON.parse(localStorage.getItem('csj_mkt')||'{}');
-  const myP  = parseFloat(localStorage.getItem('csj_my_price')||'0');
-  const sold = parseFloat(mkt.sold||0);
-  const avail= parseFloat(mkt.avail||0);
-  const press= mkt.pressure||'';
-  const upd  = mkt.updated||'';
-  const mpi  = (sold&&myP) ? myP/sold : null;
-  let mpiLbl='',mpiCol='#94a3b8';
-  if(mpi!==null) {
-    if(mpi<0.80)       { mpiLbl='Muy barato'; mpiCol='#ef4444'; }
-    else if(mpi<0.95)  { mpiLbl='Competitivo'; mpiCol='#22c55e'; }
-    else if(mpi<=1.10) { mpiLbl='En mercado';  mpiCol='#60a5fa'; }
-    else               { mpiLbl='Agresivo';    mpiCol='#f59e0b'; }
-  }
-  const gS = (sold&&myP) ? myP-sold : null;
-  const gA = (avail&&myP) ? myP-avail : null;
-  const pCol = {baja:'#22c55e',media:'#f59e0b',alta:'#f97316',extrema:'#ef4444'};
-  let h='<div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;">';
-  // form
-  h+='<div style="flex:1;min-width:210px;background:var(--c);border:1px solid var(--b);border-radius:8px;padding:14px;">';
-  h+='<div style="font-size:11px;color:var(--m);margin-bottom:10px;font-weight:600;">ACTUALIZAR DATOS DE MERCADO</div>';
-  const inp=(id,lbl,val,ph)=>'<label style="font-size:12px;color:var(--m);display:block;margin-bottom:7px;">'+lbl+'<input id="'+id+'" type="number" value="'+(val||'')+'" placeholder="'+ph+'" style="display:block;width:100%;margin-top:3px;background:var(--bg);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:5px 8px;font-size:13px;box-sizing:border-box;"></label>';
-  h+=inp('mkt-my','Mi precio actual (€)',myP||'','ej. 95');
-  h+=inp('mkt-sold','Mercado vendido (€/noche)',mkt.sold||'','ej. 102');
-  h+=inp('mkt-avail','Mercado disponible (€/noche)',mkt.avail||'','ej. 115');
-  h+='<label style="font-size:12px;color:var(--m);display:block;margin-bottom:10px;">Presión de mercado<select id="mkt-press" style="display:block;width:100%;margin-top:3px;background:var(--bg);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:5px 8px;font-size:13px;box-sizing:border-box;">';
-  h+='<option value="">— seleccionar —</option>';
-  ['baja','media','alta','extrema'].forEach(p=>h+='<option value="'+p+'"'+(press===p?' selected':'')+'>'+p.charAt(0).toUpperCase()+p.slice(1)+'</option>');
-  h+='</select></label>';
-  h+='<button onclick="saveMkt()" style="background:#0B3D60;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:13px;cursor:pointer;width:100%;">Actualizar</button>';
-  h+='</div>';
-  // results
-  if(mpi!==null||sold) {
-    h+='<div style="flex:1;min-width:170px;display:flex;flex-direction:column;gap:10px;">';
-    if(mpi!==null) {
-      const barW=Math.max(4,Math.min(100,Math.round((mpi-0.7)/0.6*100)));
-      h+='<div style="background:var(--c);border:1px solid var(--b);border-radius:8px;padding:14px;">';
-      h+='<div style="font-size:11px;color:var(--m);margin-bottom:4px;">MPI &mdash; Market Price Index</div>';
-      h+='<div style="font-size:28px;font-weight:700;color:'+mpiCol+';">'+mpi.toFixed(2)+'</div>';
-      h+='<div style="font-size:12px;color:'+mpiCol+';margin-top:2px;">'+mpiLbl+'</div>';
-      h+='<div style="margin-top:8px;background:var(--b);border-radius:4px;height:6px;"><div style="width:'+barW+'%;background:'+mpiCol+';height:6px;border-radius:4px;"></div></div>';
-      h+='<div style="display:flex;justify-content:space-between;font-size:9px;color:var(--m);margin-top:2px;"><span>&lt;0.80</span><span>0.80-0.95</span><span>0.95-1.10</span><span>&gt;1.10</span></div>';
-      h+='</div>';
-    }
-    if(gS!==null||gA!==null) {
-      h+='<div style="background:var(--c);border:1px solid var(--b);border-radius:8px;padding:12px 14px;">';
-      h+='<div style="font-size:11px;color:var(--m);margin-bottom:8px;font-weight:600;">GAP VS MERCADO</div>';
-      if(gS!==null) { const gc=gS>=0?'#22c55e':'#f59e0b'; h+='<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--b);font-size:13px;"><span style="color:var(--m);">vs vendido</span><span style="font-weight:700;color:'+gc+';">'+(gS>=0?'+':'')+gS.toFixed(0)+'€</span></div>'; }
-      if(gA!==null) { const gc=gA<=0?'#22c55e':'#f59e0b'; h+='<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;"><span style="color:var(--m);">vs disponible</span><span style="font-weight:700;color:'+gc+';">'+(gA>=0?'+':'')+gA.toFixed(0)+'€</span></div>'; }
-      h+='</div>';
-    }
-    if(press) { h+='<div style="background:var(--c);border:1px solid var(--b);border-radius:8px;padding:10px 14px;"><div style="font-size:11px;color:var(--m);">PRESIÓN MERCADO</div><div style="font-size:18px;font-weight:700;color:'+(pCol[press]||'var(--t)')+';">'+press.toUpperCase()+'</div></div>'; }
-    h+='</div>';
-  }
-  h+='</div>';
-  if(upd) h+='<div style="font-size:11px;color:var(--m);margin-top:6px;">Actualizado: '+upd+'</div>';
-  ct.innerHTML=h;
-}
-function saveMkt() {
-  const my=document.getElementById('mkt-my')?.value;
-  const s=document.getElementById('mkt-sold')?.value;
-  const a=document.getElementById('mkt-avail')?.value;
-  const p=document.getElementById('mkt-press')?.value;
-  if(my) localStorage.setItem('csj_my_price',my);
-  localStorage.setItem('csj_mkt',JSON.stringify({sold:s,avail:a,pressure:p,updated:new Date().toLocaleDateString('es-ES')}));
-  drawMarketPos(); drawHuecos();
 }
 
 // === LEAD TIME KPI ===
@@ -1362,7 +1162,12 @@ function drawLeadKPI() {
 
 // === DRAW ALL ===
 function drawAll() {
-  drawKPIs(); drawHuecos(); drawMarketPos(); drawC17(); drawC1(); drawC7(); drawC3(); drawC5(); drawC14(); drawC6(); drawSpark(); drawC15(); drawC16(); drawLeadKPI(); drawNextSH(); drawC21(); drawC22();
+  safeDraw(drawKPIs,'KPIs'); safeDraw(drawHuecos,'Huecos');
+  safeDraw(drawC17,'C17'); safeDraw(drawC1,'C1'); safeDraw(drawC7,'C7');
+  safeDraw(drawC3,'C3'); safeDraw(drawC5,'C5'); safeDraw(drawC14,'C14');
+  safeDraw(drawC6,'C6'); safeDraw(drawSpark,'Spark');
+  safeDraw(drawC15,'C15'); safeDraw(drawC16,'C16'); safeDraw(drawLeadKPI,'LeadKPI');
+  safeDraw(drawNextSH,'NextSH'); safeDraw(drawC21,'C21'); safeDraw(drawC22,'C22');
 }
 drawAll();
 
