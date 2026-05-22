@@ -1611,7 +1611,7 @@ function drawC17() {{
             if(deltaRev[i]!=='—') lines.push('Δ Rev: '+(parseFloat(deltaRev[i])>=0?'+':'')+deltaRev[i]+'%');
             if(deltaAdr[i]!=='—') lines.push('Δ ADR: '+(parseFloat(deltaAdr[i])>=0?'+':'')+deltaAdr[i]+'%');
             if(deltaN[i]!=='—') lines.push('Δ Noches: '+(parseFloat(deltaN[i])>=0?'+':'')+deltaN[i]+'%');
-            return lines.length ? ['\n'+lines.join('  ·  ')] : [];
+            return lines.length ? ['\\n'+lines.join('  |  ')] : [];
           }}
         }}}}
       }},

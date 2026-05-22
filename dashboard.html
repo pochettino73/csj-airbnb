@@ -93,7 +93,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ <span>Airbnb</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 22/05/2026 15:25</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 22/05/2026 15:36</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -939,8 +939,7 @@ function drawC17() {
             if(deltaRev[i]!=='—') lines.push('Δ Rev: '+(parseFloat(deltaRev[i])>=0?'+':'')+deltaRev[i]+'%');
             if(deltaAdr[i]!=='—') lines.push('Δ ADR: '+(parseFloat(deltaAdr[i])>=0?'+':'')+deltaAdr[i]+'%');
             if(deltaN[i]!=='—') lines.push('Δ Noches: '+(parseFloat(deltaN[i])>=0?'+':'')+deltaN[i]+'%');
-            return lines.length ? ['
-'+lines.join('  ·  ')] : [];
+            return lines.length ? ['\n'+lines.join('  |  ')] : [];
           }
         }}
       },
