@@ -28,17 +28,17 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 .filters button.active { background:var(--a); border-color:var(--a); }
 
 /* KPIs */
-.kpis { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:16px; }
+.kpis { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-bottom:16px; }
 .kpi { background:var(--c); border:1px solid var(--b); border-radius:10px; padding:16px; }
 .kpi:hover { border-color:var(--a); }
+.kpi:nth-child(5) { grid-column:1 / -1; }
 .kpi .lbl { font-size:10px; font-weight:600; color:var(--m); text-transform:uppercase; letter-spacing:.5px; margin-bottom:5px; }
-.kpi .val { font-size:28px; font-weight:700; letter-spacing:-0.5px; }
+.kpi .val { font-size:26px; font-weight:700; letter-spacing:-0.5px; }
 .kpi .chg { font-size:11px; font-weight:600; margin-top:2px; }
-.kpi .chg.up { color:var(--g); } .kpi .chg.down { color:var(--r); }
+.kpi .chg.up { color:var(--g); } .kpi .chg.down { color:var(--r); } .kpi .chg.eq { color:var(--m); }
 .kpi .det { font-size:9px; color:var(--m); margin-top:1px; }
 .kpi .hist { font-size:9px; color:var(--m); margin-top:3px; border-top:1px solid var(--b); padding-top:3px; }
-@media(max-width:900px) { .kpis { grid-template-columns:repeat(2,1fr); } }
-@media(max-width:500px) { .kpis { grid-template-columns:1fr; } }
+@media(max-width:500px) { .kpis { gap:8px; } .kpi .val { font-size:20px; } }
 @media(max-width:600px) {
   body { padding:10px 8px; }
   .top h1 { font-size:18px; }
@@ -93,7 +93,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ <span>Airbnb</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 22/05/2026 08:29</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 22/05/2026 08:44</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -320,13 +320,21 @@ const tooltipExternal = function(context) {
     if (line) html += '<div class="tt-row"><span class="tt-dot" style="background:' + col + '"></span>' + line + '</div>';
   });
   box.innerHTML = html;
-  // Posición: esquina superior derecha del contenedor (encima de la leyenda)
+  // Posición: esquina inferior derecha del área de datos
   const cw = chart.canvas.offsetWidth;
+  const ch = chart.canvas.offsetHeight;
   box.style.right = (cw - ca.right + 4) + 'px';
   box.style.left = 'auto';
-  box.style.top = '6px';
+  box.style.bottom = (ch - ca.bottom + 8) + 'px';
+  box.style.top = 'auto';
   box.style.opacity = '1';
 };
+// Click fuera de cualquier gráfico cierra todos los tooltips
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.cd')) {
+    document.querySelectorAll('.tt-box').forEach(function(b) { b.style.opacity = '0'; });
+  }
+});
 Chart.defaults.plugins.tooltip.enabled = false;
 Chart.defaults.plugins.tooltip.external = tooltipExternal;
 
@@ -424,10 +432,16 @@ function drawKPIs() {
   const periodLabel = period === 12 ? 'anual' : period+'m';
   const pmLabel = period <= 3 ? 'PM' : period <= 7 ? 'PM' : 'PM';
 
-  function card(label, val, chg, det, histLine) {
-    const cls = chg >= 0 ? 'up' : 'down';
-    const arr = chg >= 0 ? '&#9650;' : '&#9660;';
-    const chgStr = isFinite(chg) && chg !== 0 ? '<div class="chg '+cls+'">'+arr+' '+Math.abs(chg).toFixed(1)+'% vs '+y2+'</div>' : '';
+  function card(label, val, chg, det, histLine, invert) {
+    const good = invert ? chg <= 0 : chg >= 0;
+    const cls = good ? 'up' : 'down';
+    const arr = good ? '&#9650;' : '&#9660;';
+    let chgStr = '';
+    if (isFinite(chg) && chg !== 0) {
+      chgStr = '<div class="chg '+cls+'">'+arr+' '+Math.abs(chg).toFixed(1)+'% vs '+y2+'</div>';
+    } else if (isFinite(chg) && chg === 0 && det) {
+      chgStr = '<div class="chg eq">= 0.0% vs '+y2+'</div>';
+    }
     const histStr = histLine ? '<div class="hist">'+histLine+'</div>' : '';
     return '<div class="kpi"><div class="lbl">'+label+'</div><div class="val">'+val+'</div>'+chgStr+'<div class="det">'+det+'</div>'+histStr+'</div>';
   }
@@ -453,7 +467,7 @@ function drawKPIs() {
     const canc1 = ck1.canc;
     h += card('Cancelaciones '+y1, canc1+' ('+tasa1.toFixed(1)+'%)', pct(tasa1,tasa2),
       y2+' misma fecha: '+(ck2ytd?ck2ytd.canc:'-')+' ('+(ck2ytd?ck2ytd.tasa.toFixed(1):'-')+'%)',
-      'Total final '+y2+': '+(tot2.canc||'-')+' ('+(tot2.tasa_canc!=null?tot2.tasa_canc.toFixed(1):'-')+'%)');
+      'Total final '+y2+': '+(tot2.canc||'-')+' ('+(tot2.tasa_canc!=null?tot2.tasa_canc.toFixed(1):'-')+'%)', true);
   } else {
     h += card('Cancelaciones '+y1, 'Sin datos', 0, '', '');
   }
