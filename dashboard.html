@@ -104,7 +104,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ Airbnb <span>Revenue Cockpit</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 25/05/2026 14:44</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 25/05/2026 14:47</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -1087,9 +1087,9 @@ function drawHuecos() {
     baja:  {label:'Baja',  col:'#3b82f6', icon:'&#10052;'}
   };
   // Cabecera
-  let h = '<div style="display:grid;grid-template-columns:32px 1fr 52px 70px 52px 52px 96px;gap:0;padding:6px 16px;margin-bottom:4px;">';
-  ['#','Fechas','Noches','Temporada','Ant.','Occ.','RMS'].forEach(function(c,i) {
-    const al = i===0?'center':i>=4?'center':i===6?'right':'left';
+  let h = '<div style="display:grid;grid-template-columns:32px 1fr 52px 70px 52px 96px;gap:0;padding:6px 16px;margin-bottom:4px;">';
+  ['#','Fechas','Noches','Temporada','Ant.','RMS'].forEach(function(c,i) {
+    const al = i===0?'center':i===4?'center':i===5?'right':'left';
     h += '<div style="font-size:10px;font-weight:600;color:var(--m);text-transform:uppercase;letter-spacing:.6px;text-align:'+al+';">'+c+'</div>';
   });
   h += '</div>';
@@ -1099,10 +1099,8 @@ function drawHuecos() {
     const rms = Math.round(g.recommended_price);
     const floor = Math.round(g.floor_price||0);
     const ceil  = Math.round(g.ceiling_price||0);
-    const occ   = g.future_occ_pct != null ? Math.round(g.future_occ_pct)+'%' : '—';
-    const occCol= g.future_occ_pct>=70?'#22c55e':g.future_occ_pct>=40?'#f59e0b':'#ef4444';
     const dates = fmtD(g.start_date)+' &rarr; '+fmtD(g.end_date);
-    h += '<div style="display:grid;grid-template-columns:32px 1fr 52px 70px 52px 52px 96px;gap:0;align-items:center;'
+    h += '<div style="display:grid;grid-template-columns:32px 1fr 52px 70px 52px 96px;gap:0;align-items:center;'
        + 'background:var(--c);border:1px solid var(--b);border-left:4px solid '+sc.col+';border-radius:10px;'
        + 'padding:14px 16px;margin-bottom:8px;">';
     // #
@@ -1118,8 +1116,6 @@ function drawHuecos() {
        + 'border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;">'+sc.label+'</span></div>';
     // Antelación
     h += '<div style="text-align:center;font-size:13px;font-weight:600;color:var(--t);">'+g.lead_days+'d</div>';
-    // Ocupación futura
-    h += '<div style="text-align:center;font-size:13px;font-weight:600;color:'+occCol+';">'+occ+'</div>';
     // RMS
     h += '<div style="text-align:right;">'
        + '<div style="font-size:22px;font-weight:800;color:'+COL_ADR+';line-height:1;">'+rms+'&#8364;</div>'
