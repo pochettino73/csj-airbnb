@@ -805,7 +805,7 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
 <div class="row r1">
   <div class="cd">
     <h3>Huecos en calendario &mdash; propuestas de precio</h3>
-    <div class="s">Datos calculados por el RMS (pricing.py). Precio RMS = tarifa flexible recomendada. Introduce tu precio actual para ver la acci&oacute;n. Click en una fila para a&ntilde;adir datos de mercado.</div>
+    <div class="s">Calculado por pricing.py &mdash; Precio RMS = tarifa flexible recomendada &middot; Suelo m&iacute;nimo &mdash; Techo m&aacute;ximo &middot; Ant. = antelaci&oacute;n en d&iacute;as desde hoy.</div>
     <div id="huecos-panel" style="margin-top:8px;overflow-x:auto;"></div>
   </div>
 </div>
