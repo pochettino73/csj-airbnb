@@ -103,7 +103,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ Airbnb <span>Revenue Cockpit</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 25/05/2026 11:24</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 25/05/2026 11:27</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -934,7 +934,7 @@ function drawC21() {
   });
 }
 
-// === C22: Cancelaciones por año + tasa ===
+// === C22: Cancelaciones por año ===
 function drawC22() {
   const el = document.getElementById('c22');
   if (!el) return;
@@ -944,15 +944,37 @@ function drawC22() {
   const canc  = years.map(y => CANC_KPIS[y].canc);
   const tasas = years.map(y => CANC_KPIS[y].tasa);
   const deltaTasa = tasas.map((t,i) => i>0 && tasas[i-1]>0 ? (t-tasas[i-1]).toFixed(1) : '—');
-  const maxTasa = Math.max(...tasas) * 2 + 5;
+  const c22labels = {
+    id: 'c22labels',
+    afterDatasetsDraw(chart) {
+      const ctx = chart.ctx;
+      chart.data.datasets.forEach(function(dataset, di) {
+        if (dataset.label !== 'Canceladas') return;
+        const meta = chart.getDatasetMeta(di);
+        meta.data.forEach(function(bar, idx) {
+          const tasa = tasas[idx];
+          if (!tasa) return;
+          const barH = Math.abs(bar.base - bar.y);
+          if (barH < 12) return;
+          ctx.save();
+          ctx.fillStyle = '#fff';
+          ctx.font = 'bold 9px Inter,sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(tasa.toFixed(1)+'%', bar.x, (bar.y + bar.base) / 2);
+          ctx.restore();
+        });
+      });
+    }
+  };
   el._chart = new Chart(el, {
     type: 'bar',
+    plugins: [c22labels],
     data: {
       labels: years,
       datasets: [
         { label: 'Confirmadas', data: conf, backgroundColor: 'rgba(59,130,246,0.7)', stack: 'a', yAxisID:'y' },
         { label: 'Canceladas',  data: canc, backgroundColor: 'rgba(239,68,68,0.7)',  stack: 'a', yAxisID:'y' },
-        { label: 'Tasa (%)', data: tasas, type:'line', borderColor:'#f59e0b', borderWidth:2, pointRadius:4, pointBackgroundColor:'#f59e0b', fill:false, yAxisID:'y1' },
       ]
     },
     options: {
@@ -961,10 +983,10 @@ function drawC22() {
         legend: { position: 'top', labels: { usePointStyle: true, font: { size: 10 } } },
         tooltip: { callbacks: {
           label: function(c) {
-            if(c.dataset.yAxisID==='y1') return 'Tasa: '+c.parsed.y.toFixed(1)+'%';
+            if(c.dataset.label==='Canceladas') return 'Canceladas: '+c.parsed.y+' ('+tasas[c.dataIndex].toFixed(1)+'%)';
             return c.dataset.label+': '+c.parsed.y;
           },
-          afterBody: (items) => {
+          afterBody: function(items) {
             const i = items[0].dataIndex;
             const d = deltaTasa[i];
             if(d==='—') return [];
@@ -974,9 +996,8 @@ function drawC22() {
         } }
       },
       scales: {
-        x:  { stacked: true, grid: { display: false }, ticks: { font: { size: 10 } } },
-        y:  { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: GC } },
-        y1: { position:'right', title:{display:true,text:'Tasa %',color:'#f59e0b'}, ticks:{color:'#f59e0b',callback:v=>v+'%'}, grid:{drawOnChartArea:false}, min:0, max:maxTasa }
+        x: { stacked: true, grid: { display: false }, ticks: { font: { size: 10 } } },
+        y: { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: GC } }
       }
     }
   });
