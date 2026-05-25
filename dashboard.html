@@ -103,7 +103,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ Airbnb <span>Revenue Cockpit</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 25/05/2026 11:21</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 25/05/2026 11:24</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -215,18 +215,9 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <!-- ============================================ -->
 <!-- SECTION 7: SALUD                             -->
 <!-- ============================================ -->
-<div class="sh">Salud del anuncio <span>Reviews &amp; Superhost</span></div>
-<div class="row r1">
+<div class="sh">Reputaci&oacute;n y Cancelaciones <span>Reviews &amp; Superhost</span></div>
+<div class="row r2">
   <div class="cd" id="nextShPanel"></div>
-</div>
-<div class="row r1">
-  <div class="cd">
-    <h3>Superhost &mdash; Historial trimestral</h3>
-    <div class="s">Rating medio por trimestre Airbnb (ventana 365d). Verde = Superhost &mdash; Rojo = por debajo de 4.8</div>
-    <div class="ch lg"><canvas id="c21"></canvas></div>
-  </div>
-</div>
-<div class="row r1">
   <div class="cd">
     <h3>Cancelaciones por a&ntilde;o</h3>
     <div class="s">Reservas confirmadas vs canceladas. % tasa + variaci&oacute;n vs a&ntilde;o anterior</div>
@@ -1168,7 +1159,7 @@ function drawAll() {
   safeDraw(drawC3,'C3'); safeDraw(drawC5,'C5'); safeDraw(drawC14,'C14');
   safeDraw(drawSpark,'Spark');
   safeDraw(drawC15,'C15'); safeDraw(drawC16,'C16'); safeDraw(drawLeadKPI,'LeadKPI');
-  safeDraw(drawNextSH,'NextSH'); safeDraw(drawC21,'C21'); safeDraw(drawC22,'C22');
+  safeDraw(drawNextSH,'NextSH'); safeDraw(drawC22,'C22');
 }
 if(typeof Chart!=='undefined') { drawAll(); }
 
