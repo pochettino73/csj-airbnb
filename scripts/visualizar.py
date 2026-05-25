@@ -1528,7 +1528,7 @@ function drawC17() {{
       const cpts=[];
       fin2.forEach(function(v,i) {{
         if (!v) return;
-        const cx = (bx1[i]!=null && bx2[i]!=null) ? (bx1[i]+bx2[i])/2 : (bx1[i]||bx2[i]||0);
+        const cx = bx2[i] != null ? bx2[i] : (bx1[i]||0);
         cpts.push({{x:cx, y:ysc.getPixelForValue(v)}});
       }});
       if (cpts.length>1) {{
