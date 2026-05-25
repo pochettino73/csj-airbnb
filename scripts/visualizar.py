@@ -53,12 +53,11 @@ def load_reservas():
         acc[key]["nights"] += r["nights"]
         acc[key]["total_sin_limp"] += r["total"] - r["cleaning"]
         acc[key]["count"] += 1
-        # PM = sum(pm * nights) / sum(nights), excluye continuaciones cross-month (code='', total=0)
-        is_cont = not r.get("code") and r.get("total", 0) == 0
-        if not is_cont and r["nights"] > 0:
+        # PM = sum(pm * nights) / sum(nights) — incluye continuaciones (tienen pm correcto desde prorrateo)
+        if r["nights"] > 0:
             pm_eff = r.get("pm", 0) or 0
             if pm_eff <= 0:
-                pm_eff = (r["total"] - r["cleaning"]) / r["nights"]
+                pm_eff = (r["total"] - r["cleaning"]) / r["nights"] if r["total"] > 0 else 0
             if pm_eff > 0:
                 acc[key]["pm_num"] += pm_eff * r["nights"]
                 acc[key]["pm_den"] += r["nights"]
@@ -277,8 +276,6 @@ def calc_pm_ytd(reservas_all, today=None):
         for r in reservas_all:
             if r.get("status", "confirmed") != "confirmed": continue
             if r.get("year") != y: continue
-            is_cont = not r.get("code") and r.get("total", 0) == 0
-            if is_cont: continue
             bd = r.get("booking_date")
             if not bd: continue
             try:
@@ -482,9 +479,6 @@ def build(data, ing, ocu, pm, rev):
             for r in otb_r:
                 n = r.get('nights', 0)
                 if n <= 0:
-                    continue
-                is_cont = not r.get('code') and r.get('total', 0) == 0
-                if is_cont:
                     continue
                 pm_eff = r.get('pm', 0) or 0
                 if pm_eff <= 0 and r.get('total', 0) > 0:

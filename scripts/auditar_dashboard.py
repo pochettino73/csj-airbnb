@@ -85,8 +85,8 @@ def _pm_effective(r: dict) -> float:
 
 
 def _is_real_record(r: dict) -> bool:
-    """True para registros con ingresos reales (excluye continuaciones cross-month)."""
-    return not (not r.get("code") and r.get("total", 0) == 0)
+    """True para registros reales (excluye continuaciones cross-month)."""
+    return not r.get("is_continuation", False)
 
 
 def _load_reviews() -> List[dict]:
@@ -116,12 +116,12 @@ def _distorted_months(conf: List[dict]) -> Set[Tuple[int, int]]:
     """
     distorted: Set[Tuple[int, int]] = set()
     for r in conf:
-        # Continuacion directa: code vacio, total=0, tiene noches
-        if not r.get("code") and r.get("total", 0) == 0 and r.get("nights", 0) > 0:
+        # Continuacion directa: is_continuation=True, tiene noches
+        if r.get("is_continuation") and r.get("nights", 0) > 0:
             y, m = r.get("year"), r.get("month")
-            distorted.add((y, m))          # mes de continuacion (PM deflactado)
+            distorted.add((y, m))
             py, pm = (y, m - 1) if m > 1 else (y - 1, 12)
-            distorted.add((py, pm))        # mes principal (PM inflado)
+            distorted.add((py, pm))
         # Principal con continuacion identificable
         if r.get("code") and r.get("total", 0) > 0:
             guest = r.get("guest", "")
@@ -129,8 +129,7 @@ def _distorted_months(conf: List[dict]) -> Set[Tuple[int, int]]:
             ny, nm = (y, m + 1) if m < 12 else (y + 1, 1)
             has_cont = any(
                 c.get("guest") == guest
-                and not c.get("code")
-                and c.get("total", 0) == 0
+                and c.get("is_continuation")
                 and c.get("year") == ny
                 and c.get("month") == nm
                 for c in conf
@@ -347,11 +346,10 @@ def audit_solapes(conf: List[dict]) -> List[Finding]:
     findings: List[Finding] = []
     intervals: List[Tuple[date, date, dict]] = []
     for r in conf:
-        # Incluye registros sin código si tienen checkin y total>0 (registros históricos sin code Airbnb)
+        if r.get("is_continuation"):
+            continue  # continuación cross-month: no tiene estancia propia
         if not r.get("checkin") or r.get("total", 0) == 0:
             continue
-        if not r.get("code") and r.get("total", 0) == 0:
-            continue  # continuación real
         try:
             ci = datetime.strptime(r["checkin"], "%Y-%m-%d").date()
         except ValueError:
@@ -547,8 +545,7 @@ def audit_data_integrity(conf: List[dict], canc: List[dict]) -> List[Finding]:
             except ValueError:
                 pass
 
-        is_continuation = not r.get("code") and total == 0
-        if ci_s and y and m and not is_continuation:
+        if ci_s and y and m and not r.get("is_continuation"):
             try:
                 ci_d = datetime.strptime(ci_s, "%Y-%m-%d").date()
                 if ci_d.year != y or ci_d.month != m:
@@ -703,8 +700,7 @@ def audit_superhost(conf: List[dict], canc: List[dict]) -> List[Finding]:
             ci_s = r.get("checkin", "")
             if not ci_s:
                 continue
-            # Excluir solo continuaciones cross-month reales (code='', total=0)
-            if not r.get("code") and r.get("total", 0) == 0:
+            if r.get("is_continuation"):
                 continue
             try:
                 ci_d = datetime.strptime(ci_s, "%Y-%m-%d").date()

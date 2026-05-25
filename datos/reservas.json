@@ -2587,8 +2587,8 @@
     "checkin": "2021-09-29",
     "nights": 2,
     "pm": 92.0,
-    "cleaning": 39.0,
-    "total": 835.76,
+    "cleaning": 8.67,
+    "total": 185.72,
     "confirmation_code": "HMDQD3H4YJ",
     "booking_date": "2021-03-30",
     "status": "confirmed"
@@ -2642,8 +2642,8 @@
     "checkin": "2021-10-30",
     "nights": 2,
     "pm": 50.0,
-    "cleaning": 43.0,
-    "total": 282.82,
+    "cleaning": 17.2,
+    "total": 113.13,
     "confirmation_code": "HMQY9AXFFQ",
     "booking_date": "2021-06-14",
     "status": "confirmed"
@@ -2879,8 +2879,8 @@
     "checkin": "2022-05-27",
     "nights": 5,
     "pm": 0,
-    "cleaning": 60.0,
-    "total": 308.0,
+    "cleaning": 42.86,
+    "total": 220.0,
     "confirmation_code": "HM3FRY5MPK",
     "booking_date": "2022-03-14",
     "status": "confirmed"
@@ -6357,8 +6357,8 @@
     "checkin": "2026-03-28",
     "nights": 4,
     "pm": 57.38,
-    "cleaning": 60.0,
-    "total": 977.89,
+    "cleaning": 15.0,
+    "total": 244.47,
     "rate_type": "refundable",
     "status": "confirmed",
     "booking_date": "2025-08-19"
@@ -6427,10 +6427,11 @@
     "checkin": "2026-04-01",
     "nights": 12,
     "pm": 57.38,
-    "cleaning": 0.0,
-    "total": 0,
+    "cleaning": 45.0,
+    "total": 733.42,
     "status": "confirmed",
-    "booking_date": "2025-08-19"
+    "booking_date": "2025-08-19",
+    "is_continuation": true
   },
   {
     "year": 2026,
@@ -8085,8 +8086,8 @@
     "checkin": "2026-06-30",
     "nights": 1,
     "pm": 105.07,
-    "cleaning": 60.0,
-    "total": 1110.66,
+    "cleaning": 6.0,
+    "total": 111.07,
     "confirmation_code": "HMNKEKCM4M",
     "booking_date": "2025-11-03",
     "status": "confirmed"
@@ -8099,11 +8100,12 @@
     "checkin": "2026-07-01",
     "nights": 9,
     "pm": 105.07,
-    "cleaning": 0.0,
-    "total": 0.0,
+    "cleaning": 54.0,
+    "total": 999.59,
     "confirmation_code": "HMNKEKCM4M",
     "booking_date": "2025-11-03",
-    "status": "confirmed"
+    "status": "confirmed",
+    "is_continuation": true
   },
   {
     "year": 2026,
@@ -8113,8 +8115,8 @@
     "checkin": "2026-07-30",
     "nights": 2,
     "pm": 105.01,
-    "cleaning": 60.0,
-    "total": 900.1,
+    "cleaning": 15.0,
+    "total": 225.03,
     "confirmation_code": "HMHM4FQMHK",
     "booking_date": "2025-11-02",
     "status": "confirmed"
@@ -8127,11 +8129,12 @@
     "checkin": "2026-08-01",
     "nights": 6,
     "pm": 105.01,
-    "cleaning": 0.0,
-    "total": 0.0,
+    "cleaning": 45.0,
+    "total": 675.08,
     "confirmation_code": "HMHM4FQMHK",
     "booking_date": "2025-11-02",
-    "status": "confirmed"
+    "status": "confirmed",
+    "is_continuation": true
   },
   {
     "year": 2026,
@@ -8183,9 +8186,11 @@
     "checkin": "2021-10-01",
     "nights": 7,
     "pm": 92.0,
-    "cleaning": 0,
-    "total": 0.0,
-    "status": "confirmed"
+    "cleaning": 30.33,
+    "total": 650.04,
+    "status": "confirmed",
+    "is_continuation": true,
+    "booking_date": "2021-03-30"
   },
   {
     "year": 2021,
@@ -8195,9 +8200,11 @@
     "checkin": "2021-11-01",
     "nights": 3,
     "pm": 50.0,
-    "cleaning": 0,
-    "total": 0.0,
-    "status": "confirmed"
+    "cleaning": 25.8,
+    "total": 169.69,
+    "status": "confirmed",
+    "is_continuation": true,
+    "booking_date": "2021-06-14"
   },
   {
     "year": 2022,
@@ -8206,10 +8213,12 @@
     "guest": "Elisabeth Liwadas Kreutz",
     "checkin": "2022-06-01",
     "nights": 2,
-    "pm": 0,
-    "cleaning": 0,
-    "total": 0.0,
-    "status": "confirmed"
+    "pm": 35.43,
+    "cleaning": 17.14,
+    "total": 88.0,
+    "status": "confirmed",
+    "is_continuation": true,
+    "booking_date": "2022-03-14"
   },
   {
     "year": 2026,
@@ -8219,8 +8228,8 @@
     "checkin": "2026-02-26",
     "nights": 3,
     "pm": 39.35,
-    "cleaning": 60.0,
-    "total": 217.41,
+    "cleaning": 45.0,
+    "total": 163.06,
     "confirmation_code": "HMZRBPTXRS",
     "booking_date": "2026-02-11",
     "status": "confirmed"
@@ -8233,9 +8242,11 @@
     "checkin": "2026-03-01",
     "nights": 1,
     "pm": 39.35,
-    "cleaning": 0,
-    "total": 0.0,
-    "status": "confirmed"
+    "cleaning": 15.0,
+    "total": 54.35,
+    "status": "confirmed",
+    "is_continuation": true,
+    "booking_date": "2026-02-11"
   },
   {
     "year": 2026,
