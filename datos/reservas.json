@@ -6311,20 +6311,6 @@
     "year": 2026,
     "month": 2,
     "code": "",
-    "guest": "Arthur Schaber",
-    "checkin": "2026-02-07",
-    "nights": 3,
-    "pm": 39.25,
-    "cleaning": 45.0,
-    "total": 162.75,
-    "confirmation_code": "HMB8WYS8Q2",
-    "booking_date": "2025-11-18",
-    "status": "confirmed"
-  },
-  {
-    "year": 2026,
-    "month": 2,
-    "code": "",
     "guest": "Shishi Choi",
     "checkin": "2026-02-07",
     "nights": 4,
@@ -6376,20 +6362,6 @@
     "rate_type": "refundable",
     "status": "confirmed",
     "booking_date": "2025-08-19"
-  },
-  {
-    "year": 2026,
-    "month": 3,
-    "code": "",
-    "guest": "Arthur Schaber",
-    "checkin": "2026-03-01",
-    "nights": 1,
-    "pm": 39.25,
-    "cleaning": 15.0,
-    "total": 54.25,
-    "confirmation_code": "HMB8WYS8Q2",
-    "booking_date": "2025-11-18",
-    "status": "confirmed"
   },
   {
     "year": 2026,
