@@ -1153,6 +1153,21 @@ function bandDatasets(hmax, hmin, havg, n) {{
   ];
 }}
 function bandLegendFilter(item) {{ return item.text && item.text !== '_min'; }}
+// Leyenda: líneas discontinuas muestran icono discontinuo en lugar de círculo
+function makeLegendLabels(extra) {{
+  return Object.assign({{
+    usePointStyle: true,
+    font: {{size: 10}},
+    generateLabels: function(chart) {{
+      const items = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+      items.forEach(function(item) {{
+        const ds = chart.data.datasets[item.datasetIndex];
+        if (ds && ds.borderDash && ds.borderDash.length) {{ item.pointStyle = 'line'; }}
+      }});
+      return items;
+    }}
+  }}, extra || {{}});
+}}
 
 // === C1: Ingresos mensuales comparativa + banda ===
 function drawC1() {{
@@ -1171,7 +1186,7 @@ function drawC1() {{
     options: {{
       responsive:true, maintainAspectRatio:false,
       interaction:{{mode:'index',intersect:false}},
-      plugins:{{ legend:{{position:'top',labels:{{usePointStyle:true,padding:12,font:{{size:10}},filter:bandLegendFilter}}}}, tooltip:{{filter:t=>t.dataset.label!=='_min',callbacks:{{label:c=>c.dataset.label+': '+c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€'}}}} }},
+      plugins:{{ legend:{{position:'top',labels:makeLegendLabels({{padding:12,filter:bandLegendFilter}})}}, tooltip:{{filter:t=>t.dataset.label!=='_min',callbacks:{{label:c=>c.dataset.label+': '+c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€'}}}} }},
       scales:{{ y:{{ticks:{{callback:v=>v.toLocaleString('es-ES')+'€'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
     }}
   }});
@@ -1196,7 +1211,7 @@ function drawC3() {{
     options: {{
       responsive:true, maintainAspectRatio:false,
       interaction:{{mode:'index',intersect:false}},
-      plugins:{{ legend:{{position:'top',labels:{{usePointStyle:true,padding:12,font:{{size:10}},filter:bandLegendFilter}}}}, tooltip:{{filter:t=>t.dataset.label!=='_min',callbacks:{{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(1)+'%'}}}} }},
+      plugins:{{ legend:{{position:'top',labels:makeLegendLabels({{padding:12,filter:bandLegendFilter}})}}, tooltip:{{filter:t=>t.dataset.label!=='_min',callbacks:{{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(1)+'%'}}}} }},
       scales:{{ y:{{max:100,ticks:{{callback:v=>v+'%'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
     }}
   }});
@@ -1221,7 +1236,7 @@ function drawC5() {{
     options: {{
       responsive:true, maintainAspectRatio:false,
       interaction:{{mode:'index',intersect:false}},
-      plugins:{{ legend:{{position:'top',labels:{{usePointStyle:true,padding:12,font:{{size:10}},filter:bandLegendFilter}}}}, tooltip:{{filter:t=>t.dataset.label!=='_min',callbacks:{{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(1)+'€'}}}} }},
+      plugins:{{ legend:{{position:'top',labels:makeLegendLabels({{padding:12,filter:bandLegendFilter}})}}, tooltip:{{filter:t=>t.dataset.label!=='_min',callbacks:{{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(1)+'€'}}}} }},
       scales:{{ y:{{ticks:{{callback:v=>v+'€'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
     }}
   }});
@@ -1246,7 +1261,7 @@ function drawC7() {{
       responsive:true, maintainAspectRatio:false,
       interaction:{{mode:'index',intersect:false}},
       plugins: {{
-        legend:{{position:'top',labels:{{usePointStyle:true,padding:14}}}},
+        legend:{{position:'top',labels:makeLegendLabels({{padding:14}})}},
         tooltip:{{ callbacks:{{ label:function(c){{
           if(c.dataset.yAxisID==='y') return c.dataset.label+': '+c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€';
           return c.dataset.label+': '+c.parsed.y.toFixed(1)+'€/noche';
@@ -1421,7 +1436,7 @@ function drawC14() {{
     ] }},
     options: {{
       responsive:true, maintainAspectRatio:false,
-      plugins:{{ legend:{{position:'top',labels:{{usePointStyle:true,font:{{size:10}}}}}}, tooltip:{{callbacks:{{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(1)+'€/noche'}}}} }},
+      plugins:{{ legend:{{position:'top',labels:makeLegendLabels()}}, tooltip:{{callbacks:{{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(1)+'€/noche'}}}} }},
       scales:{{ y:{{ticks:{{callback:v=>v+'€'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
     }}
   }});
@@ -1441,7 +1456,7 @@ function drawC15() {{
     ] }},
     options: {{
       responsive:true, maintainAspectRatio:false,
-      plugins:{{ legend:{{position:'top',labels:{{usePointStyle:true,font:{{size:10}}}}}}, tooltip:{{callbacks:{{label:c=>c.dataset.yAxisID==='y'?c.parsed.y.toFixed(2)+'%':c.parsed.y+' reservas'}}}} }},
+      plugins:{{ legend:{{position:'top',labels:makeLegendLabels()}}, tooltip:{{callbacks:{{label:c=>c.dataset.yAxisID==='y'?c.parsed.y.toFixed(2)+'%':c.parsed.y+' reservas'}}}} }},
       scales: {{
         y: {{ position:'left', title:{{display:true,text:'CVR %',color:COL_VIS}}, ticks:{{callback:v=>v.toFixed(1)+'%',color:COL_VIS}}, grid:{{color:GC}} }},
         y1: {{ position:'right', title:{{display:true,text:'Reservas',color:COL_RES}}, ticks:{{color:COL_RES}}, grid:{{drawOnChartArea:false}} }},
@@ -1469,7 +1484,7 @@ function drawC16() {{
     options: {{
       responsive:true, maintainAspectRatio:false,
       interaction:{{mode:'index',intersect:false}},
-      plugins:{{ legend:{{position:'top',labels:{{usePointStyle:true,font:{{size:10}}}}}}, tooltip:{{}} }},
+      plugins:{{ legend:{{position:'top',labels:makeLegendLabels()}}, tooltip:{{}} }},
       scales: {{
         y: {{ position:'left', title:{{display:true,text:'Visitas',color:COL_VIS}}, ticks:{{color:COL_VIS}}, grid:{{color:GC}} }},
         y1: {{ position:'right', title:{{display:true,text:'Reservas',color:COL_RES}}, ticks:{{color:COL_RES,stepSize:1}}, grid:{{drawOnChartArea:false}} }},
@@ -1542,7 +1557,7 @@ function drawC17() {{
       responsive:true, maintainAspectRatio:false,
       interaction:{{mode:'index',intersect:false}},
       plugins: {{
-        legend:{{position:'top',labels:{{usePointStyle:true,font:{{size:10}}}}}},
+        legend:{{position:'top',labels:makeLegendLabels()}},
         tooltip:{{
           filter:function(item) {{ return item.dataset.label && !item.dataset.label.startsWith('ADR'); }},
           callbacks:{{
@@ -1625,7 +1640,7 @@ function drawC21() {{
       responsive:true, maintainAspectRatio:false,
       interaction:{{mode:'index',intersect:false}},
       plugins: {{
-        legend:{{position:'top',labels:{{usePointStyle:true,font:{{size:10}}}}}},
+        legend:{{position:'top',labels:makeLegendLabels()}},
         tooltip:{{callbacks:{{
           title: function(items) {{
             const i = items[0].dataIndex;
@@ -1702,7 +1717,7 @@ function drawC22() {{
     options: {{
       responsive: true, maintainAspectRatio: false,
       plugins: {{
-        legend: {{ position: 'top', labels: {{ usePointStyle: true, font: {{ size: 10 }} }} }},
+        legend: {{ position: 'top', labels: makeLegendLabels() }},
         tooltip: {{ callbacks: {{
           label: function(c) {{
             if(c.dataset.label==='Canceladas') return 'Canceladas: '+c.parsed.y+' ('+tasas[c.dataIndex].toFixed(1)+'%)';
