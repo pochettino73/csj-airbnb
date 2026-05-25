@@ -1762,7 +1762,8 @@ function drawHuecos() {{
     baja:  {{label:'Baja',  col:'#3b82f6', icon:'&#10052;'}}
   }};
   // Cabecera
-  let h = '<div style="display:grid;grid-template-columns:32px 1fr 52px 70px 52px 96px;gap:0;padding:6px 16px;margin-bottom:4px;">';
+  const GCOLS = '36px 1fr 64px 88px 56px 108px';
+  let h = '<div style="display:grid;grid-template-columns:'+GCOLS+';column-gap:16px;padding:6px 20px;margin-bottom:4px;">';
   ['#','Fechas','Noches','Temporada','Ant.','RMS'].forEach(function(c,i) {{
     const al = i===0?'center':i===4?'center':i===5?'right':'left';
     h += '<div style="font-size:10px;font-weight:600;color:var(--m);text-transform:uppercase;letter-spacing:.6px;text-align:'+al+';">'+c+'</div>';
@@ -1775,9 +1776,9 @@ function drawHuecos() {{
     const floor = Math.round(g.floor_price||0);
     const ceil  = Math.round(g.ceiling_price||0);
     const dates = fmtD(g.start_date)+' &rarr; '+fmtD(g.end_date);
-    h += '<div style="display:grid;grid-template-columns:32px 1fr 52px 70px 52px 96px;gap:0;align-items:center;'
+    h += '<div style="display:grid;grid-template-columns:'+GCOLS+';column-gap:16px;align-items:center;'
        + 'background:var(--c);border:1px solid var(--b);border-left:4px solid '+sc.col+';border-radius:10px;'
-       + 'padding:14px 16px;margin-bottom:8px;">';
+       + 'padding:14px 20px;margin-bottom:8px;">';
     // #
     h += '<div style="width:26px;height:26px;border-radius:50%;background:'+sc.col+'22;border:1px solid '+sc.col+'55;'
        + 'color:'+sc.col+';font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+(i+1)+'</div>';
