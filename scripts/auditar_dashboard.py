@@ -347,8 +347,11 @@ def audit_solapes(conf: List[dict]) -> List[Finding]:
     findings: List[Finding] = []
     intervals: List[Tuple[date, date, dict]] = []
     for r in conf:
-        if not r.get("code") or not r.get("checkin") or r.get("total", 0) == 0:
+        # Incluye registros sin código si tienen checkin y total>0 (registros históricos sin code Airbnb)
+        if not r.get("checkin") or r.get("total", 0) == 0:
             continue
+        if not r.get("code") and r.get("total", 0) == 0:
+            continue  # continuación real
         try:
             ci = datetime.strptime(r["checkin"], "%Y-%m-%d").date()
         except ValueError:
@@ -376,6 +379,96 @@ def audit_solapes(conf: List[dict]) -> List[Finding]:
                 year=ra["year"], month=ra["month"],
                 notes="histórico, no bloquea" if historical else "activo, requiere corrección",
             ))
+    return findings
+
+
+def audit_duplicados(conf: List[dict]) -> List[Finding]:
+    """Detecta registros duplicados: mismo código, mismo guest+mes con ingreso, continuaciones con ingreso."""
+    findings: List[Finding] = []
+    cy = date.today().year
+
+    # ── Check 1: mismo código Airbnb con ingreso en más de un registro ──────────
+    # Solo aplica a códigos Airbnb reales (≥6 chars, alfanumérico, no puramente numérico)
+    def _is_airbnb_code(c: str) -> bool:
+        return bool(c) and len(c) >= 6 and not c.isdigit() and c.isalnum()
+
+    code_recs: Dict[str, List[dict]] = defaultdict(list)
+    for r in conf:
+        code = r.get("code", "")
+        if _is_airbnb_code(code) and r.get("total", 0) > 0:
+            code_recs[code].append(r)
+    for code, recs in code_recs.items():
+        if len(recs) > 1:
+            detail = " | ".join(
+                f"{r['year']}-{r['month']:02d} {r.get('guest','')} {r.get('total')}€"
+                for r in recs
+            )
+            findings.append(Finding(
+                section="Duplicados", level="CRÍTICO", blocking=True,
+                metric=f"Código duplicado: {code}",
+                detail=detail,
+                year=recs[0]["year"], month=recs[0]["month"],
+                notes="Mismo código Airbnb en múltiples registros con ingreso",
+            ))
+
+    # ── Check 2: mismo guest + mismo mes con múltiples registros con ingreso ────
+    groups: Dict[Tuple, List[dict]] = defaultdict(list)
+    for r in conf:
+        if r.get("total", 0) <= 0:
+            continue
+        guest_norm = r.get("guest", "").strip().lower()
+        if not guest_norm:
+            continue
+        groups[(r["year"], r["month"], guest_norm)].append(r)
+
+    for (y, m, guest_norm), recs in groups.items():
+        if len(recs) <= 1:
+            continue
+        has_code = [r for r in recs if r.get("code")]
+        no_code  = [r for r in recs if not r.get("code")]
+        total_no_code   = sum(r.get("total", 0) for r in no_code)
+        total_with_code = sum(r.get("total", 0) for r in has_code)
+        # Patrón duplicado clásico: suma sin-código ≈ total con-código
+        is_dup = (has_code and no_code
+                  and total_with_code > 0
+                  and abs(total_no_code - total_with_code) < max(total_with_code * 0.03, 5))
+        level    = "CRÍTICO" if is_dup else "AVISO"
+        blocking = is_dup
+        note     = (f"Suma sin-código ({total_no_code:.2f}€) ≈ con-código ({total_with_code:.2f}€) — duplicado"
+                    if is_dup else "Mismo huésped, mismo mes, múltiples ingresos")
+        detail   = " | ".join(
+            f"code={repr(r.get('code',''))} {r.get('nights')}n {r.get('total')}€ bd={r.get('booking_date','?')}"
+            for r in recs
+        )
+        findings.append(Finding(
+            section="Duplicados", level=level, blocking=blocking,
+            metric=f"Guest×mes {y}-{m:02d}: {recs[0].get('guest','')}",
+            detail=detail,
+            year=y, month=m, notes=note,
+        ))
+
+    # ── Check 3: continuación con ingreso (code='', total>0, sin checkin) ───────
+    # Registros sin código, sin fecha de checkin y con total>0 son casi siempre duplicados
+    for r in conf:
+        if r.get("code") or r.get("checkin") or r.get("total", 0) <= 0:
+            continue
+        # Solo alertar en años recientes donde los datos deben ser completos
+        if r.get("year", 0) < cy - 3:
+            continue
+        findings.append(Finding(
+            section="Duplicados", level="AVISO", blocking=False,
+            metric=f"Registro sin código ni checkin con ingreso {r.get('year')}-{r.get('month',0):02d}",
+            detail=(f"{r.get('guest','')} code='' checkin='' "
+                    f"total={r.get('total')}€ nights={r.get('nights')} — posible duplicado"),
+            year=r.get("year", 0), month=r.get("month", 0),
+            notes="Registro sin code ni checkin pero con ingreso — verificar",
+        ))
+
+    if not findings:
+        findings.append(Finding(
+            section="Duplicados", level="OK", blocking=False,
+            metric="Sin duplicados", detail="No se detectaron registros duplicados",
+        ))
     return findings
 
 
@@ -991,6 +1084,23 @@ def write_excel(path: Path, findings: List[Finding],
         wc["A2"].fill = FILL_OK
     _autosize(wc, 30)
 
+    # ── Duplicados ────────────────────────────────────────────────────────────
+    wdup = wb.create_sheet("Duplicados")
+    wdup.append(["Nivel","Bloq.","Métrica","Detalle","Año","Mes","Notas"])
+    for c in wdup[1]:
+        c.font = Font(bold=True)
+        c.fill = FILL_HEADER
+    dup_findings = [f for f in findings if f.section == "Duplicados"]
+    if not dup_findings:
+        wdup.append(["OK", "no", "Sin duplicados", "No se detectaron registros duplicados", "", "", ""])
+        wdup["A2"].fill = FILL_OK
+    for f in dup_findings:
+        wdup.append([f.level, "SÍ" if f.blocking else "no",
+                     f.metric, f.detail, f.year or "", f.month or "", f.notes])
+        for c in wdup[wdup.max_row]:
+            c.fill = _fill(f.level)
+    _autosize(wdup, 80)
+
     # ── Solapes ───────────────────────────────────────────────────────────────
     ws2 = wb.create_sheet("Solapes")
     ws2.append(["Detalle del solape"])
@@ -1110,6 +1220,7 @@ def auditar(verbose: bool = True) -> Tuple[List[Finding], List[Finding]]:
 
     all_findings: List[Finding] = []
     all_findings += audit_data_integrity(conf, canc)
+    all_findings += audit_duplicados(conf)
     all_findings += audit_pm_mensual(conf)
     all_findings += audit_pm_temporada(conf)
     all_findings += audit_ocupacion(conf)
