@@ -1509,13 +1509,37 @@ function drawC17() {{
   const deltaRev = otb1.map((v,i) => otb2[i]>0 ? ((v-otb2[i])/otb2[i]*100).toFixed(1) : '—');
   const deltaAdr = adr1.map((v,i) => (v&&adr2[i]) ? ((v-adr2[i])/adr2[i]*100).toFixed(1) : '—');
   const deltaN   = n1.map((v,i) => n2[i]>0 ? ((v-n2[i])/n2[i]*100).toFixed(1) : '—');
+  const fin2  = (PACE_FINAL[y2]||Array(12).fill(0)).slice(0,period);
   const maxADR = niceMax(Math.max(...[...adr1,...adr2].filter(v=>v!=null)) * 1.35 || 150);
-  // Plugin: ADR sobre cada barra, posicionado por el eje y1
+  // Plugin: Cierre y2 centrado en barra + ADR posicionado por eje y1
   const paceAdr = {{
     id:'paceAdr',
     afterDatasetsDraw(chart) {{
-      const ctx = chart.ctx, sc = chart.scales['y1'];
-      if (!sc) return;
+      const ctx = chart.ctx, sc = chart.scales['y1'], ysc = chart.scales['y'];
+      if (!sc || !ysc) return;
+      // 1. Recoger bar.x de cada dataset OTB para calcular el centro exacto
+      const bx1=[], bx2=[];
+      chart.data.datasets.forEach(function(ds, di) {{
+        const meta = chart.getDatasetMeta(di);
+        if (ds.label==='OTB '+y1) meta.data.forEach(function(b,i){{ bx1[i]=b.x; }});
+        if (ds.label==='OTB '+y2+' (misma fecha)') meta.data.forEach(function(b,i){{ bx2[i]=b.x; }});
+      }});
+      // 2. Dibujar línea Cierre y2 centrada entre ambas barras
+      const cpts=[];
+      fin2.forEach(function(v,i) {{
+        if (!v) return;
+        const cx = (bx1[i]!=null && bx2[i]!=null) ? (bx1[i]+bx2[i])/2 : (bx1[i]||bx2[i]||0);
+        cpts.push({{x:cx, y:ysc.getPixelForValue(v)}});
+      }});
+      if (cpts.length>1) {{
+        ctx.save();
+        ctx.strokeStyle=COL_ING+'70'; ctx.lineWidth=1.5;
+        ctx.setLineDash([6,4]); ctx.lineJoin='round';
+        ctx.beginPath(); ctx.moveTo(cpts[0].x,cpts[0].y);
+        cpts.slice(1).forEach(function(p){{ ctx.lineTo(p.x,p.y); }});
+        ctx.stroke(); ctx.restore();
+      }}
+      // 3. Puntos ADR sobre cada barra (bar.x exacto del dataset correspondiente)
       chart.data.datasets.forEach(function(ds, di) {{
         let adrArr=null, pri=false;
         if (ds.label==='OTB '+y1) {{ adrArr=adr1; pri=true; }}
@@ -1551,7 +1575,7 @@ function drawC17() {{
     data: {{
       labels,
       datasets: [
-        {{ label:'Cierre '+y2, data:(PACE_FINAL[y2]||Array(12).fill(0)).slice(0,period), type:'line', borderColor:COL_ING+'70', borderDash:[6,4], borderWidth:1.5, pointRadius:0, pointHitRadius:0, fill:false, yAxisID:'y', order:10 }},
+        {{ label:'Cierre '+y2, data:Array(period).fill(null), type:'line', borderColor:COL_ING+'70', borderDash:[6,4], borderWidth:1.5, pointRadius:0, showLine:false, yAxisID:'y', order:10 }},
         {{ label:'OTB '+y2+' (misma fecha)', data:otb2, backgroundColor:COL_ING+'40', borderRadius:4, borderSkipped:false, yAxisID:'y', order:3 }},
         {{ label:'OTB '+y1, data:otb1, backgroundColor:COL_ING+'cc', borderRadius:4, borderSkipped:false, yAxisID:'y', order:2 }},
         {{ label:'ADR '+y1, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:7, pointBackgroundColor:COL_ADR, pointBorderColor:'#713f12', pointBorderWidth:2, showLine:false, yAxisID:'y1' }},
