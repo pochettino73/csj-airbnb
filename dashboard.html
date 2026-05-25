@@ -103,7 +103,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ Airbnb <span>Revenue Cockpit</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 25/05/2026 09:07</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 25/05/2026 11:21</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -826,8 +826,8 @@ function drawC17() {
     data: {
       labels,
       datasets: [
-        { label:'OTB '+y1, data:otb1, backgroundColor:COL_Y1+'cc', borderRadius:6, borderSkipped:false, yAxisID:'y', order:4 },
-        { label:'OTB '+y2+' (misma fecha)', data:otb2, backgroundColor:COL_Y2+'55', borderRadius:6, borderSkipped:false, yAxisID:'y', order:3 },
+        { label:'OTB '+y2+' (misma fecha)', data:otb2, backgroundColor:COL_Y2+'44', borderRadius:6, borderSkipped:false, yAxisID:'y', order:5, grouped:false, barPercentage:0.95 },
+        { label:'OTB '+y1, data:otb1, backgroundColor:COL_Y1+'cc', borderRadius:6, borderSkipped:false, yAxisID:'y', order:4, grouped:false, barPercentage:0.65 },
         { label:'Final '+y2, data:fin2, type:'line', borderColor:'rgba(148,163,184,0.35)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false, yAxisID:'y', order:2 },
         { label:'ADR '+y1, data:adr1, type:'line', borderColor:'transparent', borderWidth:0, pointRadius:9, pointBackgroundColor:'#eab308', pointBorderColor:'#92400e', pointBorderWidth:2, pointHoverRadius:11, showLine:false, fill:false, yAxisID:'y1', order:1 },
         { label:'ADR '+y2, data:adr2, type:'line', borderColor:'transparent', borderWidth:0, pointRadius:6, pointBackgroundColor:'transparent', pointBorderColor:'#eab308', pointBorderWidth:2, pointHoverRadius:8, showLine:false, fill:false, yAxisID:'y1', order:0 },
