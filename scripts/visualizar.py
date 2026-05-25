@@ -384,34 +384,6 @@ def build(data, ing, ocu, pm, rev):
         cvr = round(tr / tv * 100, 2) if tv > 0 else 0
         conv_ann[sy] = {"v": tv, "r": tr, "cvr": cvr}
 
-    # === COSTES Y BENEFICIO NETO ===
-    # Costes estimados por año — TODO: reemplazar con datos reales de pestañas Gastos
-    COSTE_RESERVA = 40  # EUR/reserva (30€ Tania + 10€ amenities/desgaste)
-    COSTES_FIJOS = {
-        2015: 6000, 2016: 6000, 2017: 6500, 2018: 7000, 2019: 7200,
-        2020: 7200, 2021: 7500, 2022: 8000, 2023: 8500, 2024: 9090,
-        2025: 9090, 2026: 9090, 2027: 9090,
-    }
-    # Contar reservas por año desde _reservas.json (solo las que tienen code, evitar prorrateos duplicados)
-    reservas_por_anyo = {}
-    for r in reservas:
-        y = r["year"]
-        reservas_por_anyo.setdefault(y, 0)
-        if r.get("code"):  # solo contar la reserva principal, no la parte prorrateada
-            reservas_por_anyo[y] += 1
-
-    costes_ann = {}
-    neto_ann = {}
-    for y in active:
-        sy = str(y)
-        ingreso = sum(ing[y])
-        fijos = COSTES_FIJOS.get(y, 9090)
-        n_reservas = reservas_por_anyo.get(y, 0)
-        if n_reservas == 0:
-            n_reservas = max(1, round(sum(ocu[y]) * 365 / 5))
-        total_costes = fijos + n_reservas * COSTE_RESERVA
-        costes_ann[sy] = round(total_costes)
-        neto_ann[sy] = round(ingreso - total_costes)
 
     # === PM POR BANDA ESTACIONAL ===
     # Alta: 15/6 al 15/9 — Media: 1/4 al 15/6 y 15/9 al 31/10 — Baja: 1/11 al 31/3
@@ -491,6 +463,37 @@ def build(data, ing, ocu, pm, rev):
         pace_otb[sy] = otb
         pace_final[sy] = final
         pace_nights_otb[sy] = nights_otb
+
+    # ADR OTB por año/mes: sum(pm * nights) / sum(nights) — excluye limpieza y fees
+    pace_adr_otb = {}
+    for y in active:
+        sy = str(y)
+        try:
+            cutoff = today_d.replace(year=y)
+        except ValueError:
+            cutoff = today_d.replace(year=y, day=28)
+        cutoff_str = cutoff.strftime("%Y-%m-%d")
+        adr_months = []
+        for m in range(1, 13):
+            mr = [r for r in reservas if r['year'] == y and r['month'] == m]
+            otb_r = [r for r in mr if r.get('booking_date') and r['booking_date'] <= cutoff_str]
+            otb_r += [r for r in mr if not r.get('booking_date')]
+            pm_num = pm_den = 0
+            for r in otb_r:
+                n = r.get('nights', 0)
+                if n <= 0:
+                    continue
+                is_cont = not r.get('code') and r.get('total', 0) == 0
+                if is_cont:
+                    continue
+                pm_eff = r.get('pm', 0) or 0
+                if pm_eff <= 0 and r.get('total', 0) > 0:
+                    pm_eff = (r['total'] - r.get('cleaning', 0)) / n
+                if pm_eff > 0:
+                    pm_num += pm_eff * n
+                    pm_den += n
+            adr_months.append(round(pm_num / pm_den, 1) if pm_den > 0 else None)
+        pace_adr_otb[sy] = adr_months
 
     # === LEAD TIME ===
     lt_buckets_def = [("<7d", 0, 7), ("7-30d", 7, 30), ("30-90d", 30, 90), (">90d", 90, 9999)]
@@ -678,11 +681,11 @@ def build(data, ing, ocu, pm, rev):
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>CSJ Airbnb — CEO Dashboard</title>
+<title>CSJ Airbnb — Revenue Cockpit</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-:root {{ --bg:#0f172a; --c:#1e293b; --b:#334155; --t:#f1f5f9; --m:#94a3b8; --a:#3b82f6; --g:#22c55e; --r:#ef4444; }}
+:root {{ --bg:#0f172a; --c:#1e293b; --b:#334155; --t:#f1f5f9; --m:#94a3b8; --a:#3b82f6; --g:#22c55e; --r:#ef4444; --cy1:#3b82f6; --cy2:#f97316; --adr:#eab308; --pos:#22c55e; --warn:#f59e0b; --risk:#ef4444; --hist:#94a3b8; }}
 * {{ margin:0;padding:0;box-sizing:border-box; }}
 body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); padding:20px 24px; max-width:100%; overflow-x:hidden; }}
 
@@ -699,18 +702,26 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
 .filters select:focus, .filters button:hover {{ border-color:var(--a); outline:none; }}
 .filters button.active {{ background:var(--a); border-color:var(--a); }}
 
+/* Error banner */
+.err-banner {{ display:none; background:#ef4444; color:#fff; padding:10px 16px; border-radius:8px; margin-bottom:14px; font-size:12px; font-weight:600; }}
 /* KPIs */
-.kpis {{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-bottom:16px; }}
+.kpis {{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:16px; }}
 .kpi {{ background:var(--c); border:1px solid var(--b); border-radius:10px; padding:16px; }}
 .kpi:hover {{ border-color:var(--a); }}
-.kpi:nth-child(5) {{ grid-column:1 / -1; }}
 .kpi .lbl {{ font-size:10px; font-weight:600; color:var(--m); text-transform:uppercase; letter-spacing:.5px; margin-bottom:5px; }}
-.kpi .val {{ font-size:26px; font-weight:700; letter-spacing:-0.5px; }}
+.kpi .val {{ font-size:24px; font-weight:700; letter-spacing:-0.5px; }}
 .kpi .chg {{ font-size:11px; font-weight:600; margin-top:2px; }}
 .kpi .chg.up {{ color:var(--g); }} .kpi .chg.down {{ color:var(--r); }} .kpi .chg.eq {{ color:var(--m); }}
 .kpi .det {{ font-size:9px; color:var(--m); margin-top:1px; }}
 .kpi .hist {{ font-size:9px; color:var(--m); margin-top:3px; border-top:1px solid var(--b); padding-top:3px; }}
-@media(max-width:500px) {{ .kpis {{ gap:8px; }} .kpi .val {{ font-size:20px; }} }}
+.kpi.primary {{ border-left:3px solid var(--a); }}
+.kpi.primary .val {{ font-size:28px; }}
+.kpi.primary .lbl {{ color:var(--t); }}
+.kpi.secondary {{ opacity:0.8; }}
+.kpi.secondary .val {{ font-size:20px; }}
+.kpi-icon {{ font-size:13px; margin-right:3px; }}
+@media(max-width:700px) {{ .kpis {{ grid-template-columns:repeat(2,1fr); gap:10px; }} }}
+@media(max-width:440px) {{ .kpis {{ grid-template-columns:1fr; gap:8px; }} .kpi .val {{ font-size:20px; }} }}
 @media(max-width:600px) {{
   body {{ padding:10px 8px; }}
   .top h1 {{ font-size:18px; }}
@@ -749,7 +760,7 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
 .spark-table th {{ color:var(--m); font-size:9px; font-weight:600; text-transform:uppercase; padding:4px 6px; text-align:center; }}
 .spark-table td {{ padding:4px 6px; text-align:center; }}
 .spark-table .yr {{ color:var(--m); font-weight:600; text-align:left; white-space:nowrap; }}
-.spark-table .bar {{ height:20px; border-radius:3px; display:inline-block; vertical-align:middle; }}
+.spark-table .bar {{ height:26px; border-radius:3px; display:block; line-height:26px; overflow:hidden; font-size:9px; color:rgba(255,255,255,0.9); text-align:center; }}
 
 /* Reviews */
 .rvs {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(90px,1fr)); gap:8px; }}
@@ -762,9 +773,11 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
 </head>
 <body>
 
+<div id="err-banner" class="err-banner"></div>
+
 <div class="top">
   <div>
-    <h1>CSJ <span>Airbnb</span></h1>
+    <h1>CSJ Airbnb <span>Revenue Cockpit</span></h1>
     <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; {now.strftime("%d/%m/%Y %H:%M")}</div>
   </div>
   <div class="filters">
@@ -785,38 +798,26 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
 <div class="kpis" id="kpiContainer"></div>
 
 <!-- ============================================ -->
-<!-- SECTION 1: PACE + ADR                        -->
-<!-- ============================================ -->
-<div class="sh">Ritmo de ventas <span>Pace &amp; ADR</span></div>
-<div class="row r1">
-  <div class="cd">
-    <h3>Pace Report &mdash; On The Books + ADR</h3>
-    <div class="s">&iquest;Voy mejor vendido? &iquest;A mejor precio? Barras = ingresos OTB &mdash; Puntos = ADR (eje dcho)</div>
-    <div class="ch xl"><canvas id="c17"></canvas></div>
-  </div>
-</div>
-
-<!-- ============================================ -->
-<!-- SECTION 2: HUECOS Y PRICING                  -->
+<!-- SECTION 1: HUECOS Y PRICING                  -->
 <!-- ============================================ -->
 <div class="sh">Huecos y Pricing <span>Revenue Decisions</span></div>
 <div class="row r1">
   <div class="cd">
     <h3>Huecos en calendario &mdash; propuestas de precio</h3>
-    <div class="s">Datos calculados por el RMS (pricing.py). Precio RMS = tarifa flexible recomendada. Introduce tu precio actual para ver la acci&oacute;n.</div>
+    <div class="s">Datos calculados por el RMS (pricing.py). Precio RMS = tarifa flexible recomendada. Introduce tu precio actual para ver la acci&oacute;n. Click en una fila para a&ntilde;adir datos de mercado.</div>
     <div id="huecos-panel" style="margin-top:8px;overflow-x:auto;"></div>
   </div>
 </div>
 
 <!-- ============================================ -->
-<!-- SECTION 3: MARKET POSITIONING                -->
+<!-- SECTION 2: PACE + ADR                        -->
 <!-- ============================================ -->
-<div class="sh">Posicionamiento <span>Market Positioning</span></div>
+<div class="sh">Ritmo de ventas <span>Pace &amp; ADR</span></div>
 <div class="row r1">
   <div class="cd">
-    <h3>Posici&oacute;n vs mercado</h3>
-    <div class="s">Introduce manualmente los datos del mercado para calcular tu &iacute;ndice de posicionamiento (MPI = mi precio / mercado vendido).</div>
-    <div id="mkt-panel" style="margin-top:8px;"></div>
+    <h3>Pace Report &mdash; On The Books + ADR</h3>
+    <div class="s">Barras agrupadas: azul = {cy} / naranja = {cy-1}. Punto amarillo sobre cada barra = ADR de esa serie. Etiqueta = ADR {cy}. L&iacute;nea gris = total final {cy-1}.</div>
+    <div class="ch xl"><canvas id="c17"></canvas></div>
   </div>
 </div>
 
@@ -853,16 +854,11 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
     <div class="ch xl"><canvas id="c5"></canvas></div>
   </div>
 </div>
-<div class="row r2">
+<div class="row r1">
   <div class="cd">
     <h3>PM por banda estacional</h3>
     <div class="s">Alta (15jun-15sep) / Media (1abr-14jun, 16sep-31oct) / Baja (1nov-31mar) &mdash; &euro;/noche</div>
     <div class="ch lg"><canvas id="c14"></canvas></div>
-  </div>
-  <div class="cd">
-    <h3>ADR anual &mdash; evoluci&oacute;n</h3>
-    <div class="s">Precio medio anual con media hist&oacute;rica</div>
-    <div class="ch lg"><canvas id="c6"></canvas></div>
   </div>
 </div>
 <div class="row r1">
@@ -874,38 +870,29 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
 </div>
 
 <!-- ============================================ -->
-<!-- SECTION 6: CONVERSIÓN                        -->
+<!-- SECTION 5: DEMANDA AIRBNB                    -->
 <!-- ============================================ -->
-<div class="sh">Conversi&oacute;n <span>Funnel &amp; Lead Time</span></div>
+<div class="sh">Demanda Airbnb <span>Funnel &amp; Lead Time</span></div>
 <div id="lead-kpi" style="margin:0 0 12px 0;padding:0 4px;"></div>
 <div class="row r2">
   <div class="cd">
     <h3>Tasa de conversi&oacute;n anual</h3>
     <div class="s">Reservas creadas / Visitas al listing &mdash; desde 2018</div>
-    <div class="ch lg"><canvas id="c15"></canvas></div>
+    <div class="ch md"><canvas id="c15"></canvas></div>
   </div>
   <div class="cd">
     <h3>Visitas y reservas mensuales (fecha de venta)</h3>
     <div class="s">Cu&aacute;ndo se reserv&oacute;, no cu&aacute;ndo se aloja &mdash; barras=visitas al listing, l&iacute;nea=reservas creadas</div>
-    <div class="ch lg"><canvas id="c16"></canvas></div>
+    <div class="ch md"><canvas id="c16"></canvas></div>
   </div>
 </div>
 
 <!-- ============================================ -->
 <!-- SECTION 7: SALUD                             -->
 <!-- ============================================ -->
-<div class="sh">Salud <span>Reviews &amp; Cancellations</span></div>
-<div class="row r1">
+<div class="sh">Reputaci&oacute;n y Cancelaciones <span>Reviews &amp; Superhost</span></div>
+<div class="row r2">
   <div class="cd" id="nextShPanel"></div>
-</div>
-<div class="row r1">
-  <div class="cd">
-    <h3>Superhost &mdash; Historial trimestral</h3>
-    <div class="s">Rating medio por trimestre Airbnb (ventana 365d). Verde = Superhost &mdash; Rojo = por debajo de 4.8</div>
-    <div class="ch lg"><canvas id="c21"></canvas></div>
-  </div>
-</div>
-<div class="row r1">
   <div class="cd">
     <h3>Cancelaciones por a&ntilde;o</h3>
     <div class="s">Reservas confirmadas vs canceladas. % tasa + variaci&oacute;n vs a&ntilde;o anterior</div>
@@ -913,12 +900,21 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
   </div>
 </div>
 
-<div class="ft">CSJ Airbnb CEO Dashboard &mdash; visualizar.py &mdash; {now.strftime("%d/%m/%Y")}</div>
+<div class="ft">CSJ Airbnb Revenue Cockpit &mdash; visualizar.py &mdash; {now.strftime("%d/%m/%Y")}</div>
 
 <script>
-Chart.defaults.color='#94a3b8';
-Chart.defaults.borderColor='#334155';
-Chart.defaults.font.family="'Inter',sans-serif";
+window.onerror=function(msg,src,line){{const b=document.getElementById('err-banner');if(b){{b.style.display='block';b.textContent='Error JS (l.'+line+'): '+msg;}}return false;}};
+function safeDraw(fn,name){{try{{fn();}}catch(e){{console.error('draw['+name+']: '+e.message);}}}}
+
+if(typeof Chart==='undefined'){{
+  const b=document.getElementById('err-banner');
+  if(b){{b.style.display='block';b.textContent='Chart.js no cargó — verifica tu conexión a internet y recarga la página.';}}
+  document.querySelectorAll('canvas').forEach(c=>{{c.parentNode.innerHTML='<p style="color:#ef4444;padding:16px;font-size:12px;">Sin gráfica (Chart.js no cargó)</p>';}});
+}} else {{
+  Chart.defaults.color='#94a3b8';
+  Chart.defaults.borderColor='#334155';
+  Chart.defaults.font.family="'Inter',sans-serif";
+}}
 
 // === Tooltip externo: caja flotante anclada en esquina superior derecha del área de datos ===
 const tooltipExternal = function(context) {{
@@ -969,8 +965,10 @@ document.addEventListener('click', function(e) {{
     document.querySelectorAll('.tt-box').forEach(function(b) {{ b.style.opacity = '0'; }});
   }}
 }});
-Chart.defaults.plugins.tooltip.enabled = false;
-Chart.defaults.plugins.tooltip.external = tooltipExternal;
+if(typeof Chart!=='undefined'){{
+  Chart.defaults.plugins.tooltip.enabled = false;
+  Chart.defaults.plugins.tooltip.external = tooltipExternal;
+}}
 
 const M={J(MESES)};
 const GC='rgba(51,65,85,0.5)';
@@ -995,14 +993,13 @@ const RES_Y={J(res_y)};
 const RES_I={J(res_i)};
 const RES_O={J(res_o)};
 const RES_P={J(res_p)};
-const COSTES_ANN={J(costes_ann)};
-const NETO_ANN={J(neto_ann)};
 const PM_BANDA={J(pm_banda)};
 const CONV_DATA={J({str(y): conv_data[str(y)] for y in conv_years if str(y) in conv_data})};
 const CONV_ANN={J(conv_ann)};
 const PACE_OTB={J(pace_otb)};
 const PACE_FINAL={J(pace_final)};
 const PACE_NIGHTS_OTB={J(pace_nights_otb)};
+const PACE_ADR_OTB={J(pace_adr_otb)};
 const LT_SUMMARY={J(lt_summary)};
 const LT_AVG_YEAR={J(lt_avg_year)};
 const REV_BY_YEAR={J(rev_by_year)};
@@ -1055,19 +1052,10 @@ function drawKPIs() {{
   const pmAlta = (a) => {{ const vs=[a[5],a[6],a[7]].filter(v=>v>0); return vs.length?vs.reduce((s,v)=>s+v,0)/vs.length:0; }};
   const pm1 = pmAlta(p1), pm2 = pmAlta(p2);
 
-  // Beneficio neto prorrateado al periodo
-  const costesAnn1 = COSTES_ANN[y1] || 0;
-  const costesAnn2 = COSTES_ANN[y2] || 0;
-  const costesPeriod1 = Math.round(costesAnn1 * period / 12);
-  const costesPeriod2 = Math.round(costesAnn2 * period / 12);
-  const neto1 = Math.round(ing1 - costesPeriod1);
-  const neto2 = Math.round(ing2 - costesPeriod2);
-  const margen1 = ing1 > 0 ? Math.round((ing1 - costesPeriod1) / ing1 * 100) : 0;
-
   const periodLabel = period === 12 ? 'anual' : period+'m';
   const pmLabel = period <= 3 ? 'PM' : period <= 7 ? 'PM' : 'PM';
 
-  function card(label, val, chg, det, histLine, invert) {{
+  function card(label, val, chg, det, histLine, invert, klass, icon, accentCol) {{
     const good = invert ? chg <= 0 : chg >= 0;
     const cls = good ? 'up' : 'down';
     const arr = good ? '&#9650;' : '&#9660;';
@@ -1078,7 +1066,9 @@ function drawKPIs() {{
       chgStr = '<div class="chg eq">= 0.0% vs '+y2+'</div>';
     }}
     const histStr = histLine ? '<div class="hist">'+histLine+'</div>' : '';
-    return '<div class="kpi"><div class="lbl">'+label+'</div><div class="val">'+val+'</div>'+chgStr+'<div class="det">'+det+'</div>'+histStr+'</div>';
+    const iconHtml = icon ? '<span class="kpi-icon">'+icon+'</span>' : '';
+    const st = accentCol ? ' style="border-left:3px solid '+accentCol+';"' : '';
+    return '<div class="kpi'+(klass?' '+klass:'')+'"'+st+'><div class="lbl">'+iconHtml+label+'</div><div class="val">'+val+'</div>'+chgStr+'<div class="det">'+det+'</div>'+histStr+'</div>';
   }}
 
   let h = '';
@@ -1086,11 +1076,11 @@ function drawKPIs() {{
   // Card 1 — Ventas a misma fecha
   h += card('Ventas '+y1+' a misma fecha', fmt(otb1)+'€', pct(otb1,otb2),
     y2+' misma fecha: '+fmt(otb2)+'€',
-    'Total final '+y2+': '+fmt(tot2.income||ing2)+'€');
+    'Total final '+y2+': '+fmt(tot2.income||ing2)+'€', false, 'primary', '&#x1F4B0;', 'var(--cy1)');
   // Card 2 — Ocupación a misma fecha
   h += card('Ocupaci&oacute;n '+y1+' a misma fecha', ocuOtb1.toFixed(1)+'%', pct(ocuOtb1,ocuOtb2),
     y2+' misma fecha: '+ocuOtb2.toFixed(1)+'% ('+noc2+' noches)',
-    'Total final '+y2+': '+(tot2.ocu!=null?tot2.ocu.toFixed(1):'-')+'% ('+tot2.nights+' noches)');
+    'Total final '+y2+': '+(tot2.ocu!=null?tot2.ocu.toFixed(1):'-')+'% ('+tot2.nights+' noches)', false, 'secondary', '&#x1F4CA;');
   // PM computations — ponderado por noches, estancias vendidas hasta misma fecha
   const pmAvg = (a) => {{ const vs=a.filter(v=>v>0); return vs.length?vs.reduce((s,v)=>s+v,0)/vs.length:0; }};
   const pmGlobal1 = PM_YTD[y1] || 0, pmGlobal2 = PM_YTD[y2] || 0;
@@ -1102,14 +1092,14 @@ function drawKPIs() {{
     const canc1 = ck1.canc;
     h += card('Cancelaciones '+y1, canc1+' ('+tasa1.toFixed(1)+'%)', pct(tasa1,tasa2),
       y2+' misma fecha: '+(ck2ytd?ck2ytd.canc:'-')+' ('+(ck2ytd?ck2ytd.tasa.toFixed(1):'-')+'%)',
-      'Total final '+y2+': '+(tot2.canc||'-')+' ('+(tot2.tasa_canc!=null?tot2.tasa_canc.toFixed(1):'-')+'%)', true);
+      'Total final '+y2+': '+(tot2.canc||'-')+' ('+(tot2.tasa_canc!=null?tot2.tasa_canc.toFixed(1):'-')+'%)', true, 'secondary', '&#x26A0;');
   }} else {{
-    h += card('Cancelaciones '+y1, 'Sin datos', 0, '', '');
+    h += card('Cancelaciones '+y1, 'Sin datos', 0, '', '', false, 'secondary', '&#x26A0;');
   }}
   // Card 4 — PM medio a misma fecha
   h += card('PM medio '+y1+' a misma fecha', pmGlobal1.toFixed(1)+'€', pct(pmGlobal1,pmGlobal2),
     y2+' misma fecha: '+pmGlobal2.toFixed(1)+'€/noche',
-    'Total final '+y2+': '+(tot2.pm||'-')+'€/noche');
+    'Total final '+y2+': '+(tot2.pm||'-')+'€/noche', false, 'primary', '&#x20AC;', 'var(--adr)');
   // Card 5 — Rating trimestre en curso (próxima evaluación = FUTURE_SH[0])
   const shd = FUTURE_SH && FUTURE_SH.length ? FUTURE_SH[0] : null;
   if(shd) {{
@@ -1119,7 +1109,14 @@ function drawKPIs() {{
     const shDiff = (shd.rating_exact - 4.8).toFixed(2);
     const shSign = shd.rating_exact >= 4.8 ? '+' : '';
     const pendTxt = shd.pending > 0 ? '<div style="font-size:9px;color:var(--m);margin-top:3px;border-top:1px solid var(--b);padding-top:3px">'+shd.pending+' pendientes &rarr; si 5&#9733;: <b style="color:'+(shd.if_pending_5>=4.8?'#22c55e':'#f59e0b')+'">'+shd.if_pending_5.toFixed(2)+'</b></div>' : '';
-    h += '<div class="kpi"><div class="lbl">Rating '+shd.label+'</div><div class="val" style="color:'+shCol+'">'+shd.rating_exact.toFixed(2)+'</div><div class="chg" style="color:'+shCol+'">'+shIcon+' '+shStatus+'</div><div class="det">'+shSign+shDiff+' vs 4.80 &mdash; '+shd.n+' reviews</div><div class="hist">Eval: '+shd.eval_date+' ('+shd.days_left+'d)</div>'+pendTxt+'</div>';
+    h += '<div class="kpi secondary"><div class="lbl"><span class="kpi-icon">&#x2605;</span>Rating '+shd.label+'</div><div class="val" style="color:'+shCol+'">'+shd.rating_exact.toFixed(2)+'</div><div class="chg" style="color:'+shCol+'">'+shIcon+' '+shStatus+'</div><div class="det">'+shSign+shDiff+' vs 4.80 &mdash; '+shd.n+' reviews</div><div class="hist">Eval: '+shd.eval_date+' ('+shd.days_left+'d)</div>'+pendTxt+'</div>';
+  }}
+  // Card 6 — Huecos abiertos
+  if(PRICING_GAPS && PRICING_GAPS.length > 0) {{
+    const nH = PRICING_GAPS.length;
+    const avgRMS = PRICING_GAPS.reduce((s,g)=>s+g.recommended_price,0)/nH;
+    const nextGap = PRICING_GAPS[0].start_date ? PRICING_GAPS[0].start_date.slice(5) : '';
+    h += '<div class="kpi primary" style="border-left:3px solid var(--warn);"><div class="lbl"><span class="kpi-icon">&#x1F4C5;</span>Huecos abiertos</div><div class="val">'+nH+'</div><div class="det">RMS medio: '+avgRMS.toFixed(0)+'€/n</div><div class="hist">Próximo: '+nextGap+'</div></div>';
   }}
 
   ct.innerHTML = h;
@@ -1174,27 +1171,7 @@ function drawC1() {{
   }});
 }}
 
-// === C2: Ingresos anuales ===
-function drawC2() {{
-  if(charts.c2) charts.c2.destroy();
-  const yrs = ACTIVE;
-  const vals = yrs.map(y => ANN_ING[y]||0);
-  const cols = yrs.map(y => (y===y1||y===y2) ? PALETTE[y] : 'rgba(148,163,184,0.3)');
-  const avgI = vals.filter(v=>v>0);
-  const meanI = avgI.length ? avgI.reduce((a,b)=>a+b,0)/avgI.length : 0;
-  charts.c2 = new Chart(document.getElementById('c2'), {{
-    type:'bar',
-    data: {{ labels:yrs, datasets:[
-      {{ data:vals, backgroundColor:cols, borderRadius:6, borderSkipped:false }},
-      {{ label:'Media: '+meanI.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€', data:Array(yrs.length).fill(meanI), type:'line', borderColor:'rgba(251,191,36,0.6)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false }}
-    ] }},
-    options: {{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{{ legend:{{position:'top',labels:{{usePointStyle:true,font:{{size:10}},filter:i=>i.text&&i.text.startsWith('Media')}}}}, tooltip:{{callbacks:{{label:c=>c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€'}}}} }},
-      scales:{{ y:{{ticks:{{callback:v=>(v/1000).toFixed(0)+'k€'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
-    }}
-  }});
-}}
+// drawC2 removed (no canvas in HTML)
 
 // === C3: Ocupación mensual ===
 function drawC3() {{
@@ -1219,27 +1196,7 @@ function drawC3() {{
   }});
 }}
 
-// === C4: Ocupación anual ===
-function drawC4() {{
-  if(charts.c4) charts.c4.destroy();
-  const yrs = ACTIVE;
-  const vals = yrs.map(y => ANN_OCU[y]||0);
-  const cols = yrs.map(y => (y===y1||y===y2) ? PALETTE[y] : 'rgba(148,163,184,0.3)');
-  const avgO = vals.filter(v=>v>0);
-  const meanO = avgO.length ? avgO.reduce((a,b)=>a+b,0)/avgO.length : 0;
-  charts.c4 = new Chart(document.getElementById('c4'), {{
-    type:'bar',
-    data: {{ labels:yrs, datasets:[
-      {{ data:vals, backgroundColor:cols, borderRadius:6, borderSkipped:false }},
-      {{ label:'Media: '+meanO.toFixed(1)+'%', data:Array(yrs.length).fill(meanO), type:'line', borderColor:'rgba(251,191,36,0.6)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false }}
-    ] }},
-    options: {{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{{ legend:{{position:'top',labels:{{usePointStyle:true,font:{{size:10}},filter:i=>i.text&&i.text.startsWith('Media')}}}}, tooltip:{{callbacks:{{label:c=>c.parsed.y.toFixed(1)+'%'}}}} }},
-      scales:{{ y:{{max:100,ticks:{{callback:v=>v+'%'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
-    }}
-  }});
-}}
+// drawC4 removed (no canvas in HTML)
 
 // === C5: PM mensual ===
 function drawC5() {{
@@ -1264,27 +1221,7 @@ function drawC5() {{
   }});
 }}
 
-// === C6: PM anual ===
-function drawC6() {{
-  if(charts.c6) charts.c6.destroy();
-  const yrs = ACTIVE;
-  const vals = yrs.map(y => ANN_PM[y]||0);
-  const cols = yrs.map(y => (y===y1||y===y2) ? PALETTE[y] : 'rgba(148,163,184,0.3)');
-  const avgP = vals.filter(v=>v>0);
-  const meanP = avgP.length ? avgP.reduce((a,b)=>a+b,0)/avgP.length : 0;
-  charts.c6 = new Chart(document.getElementById('c6'), {{
-    type:'bar',
-    data: {{ labels:yrs, datasets:[
-      {{ data:vals, backgroundColor:cols, borderRadius:6, borderSkipped:false }},
-      {{ label:'Media: '+meanP.toFixed(1)+'€', data:Array(yrs.length).fill(meanP), type:'line', borderColor:'rgba(251,191,36,0.6)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false }}
-    ] }},
-    options: {{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{{ legend:{{position:'top',labels:{{usePointStyle:true,font:{{size:10}},filter:i=>i.text&&i.text.startsWith('Media')}}}}, tooltip:{{callbacks:{{label:c=>c.parsed.y.toFixed(1)+'€/noche'}}}} }},
-      scales:{{ y:{{ticks:{{callback:v=>v+'€'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
-    }}
-  }});
-}}
+// drawC6 removed (redundante con C7 que ya muestra ADR anual)
 
 // === C7: Evolución anual — Ingresos y ADR ===
 function drawC7() {{
@@ -1318,31 +1255,17 @@ function drawC7() {{
   }});
 }}
 
-// === C8: RevPAR ===
-// === C9: Radar estacionalidad y1 vs y2 ===
-function drawC9() {{
-  if(charts.c9) charts.c9.destroy();
-  charts.c9 = new Chart(document.getElementById('c9'), {{
-    type:'radar',
-    data: {{
-      labels:M,
-      datasets: [
-        {{ label:y1, data:ALL_ING[y1]||Array(12).fill(0), borderColor:PALETTE[y1], backgroundColor:PALETTE[y1]+'22', borderWidth:2, pointRadius:3, pointBackgroundColor:PALETTE[y1] }},
-        {{ label:y2, data:ALL_ING[y2]||Array(12).fill(0), borderColor:PALETTE[y2], backgroundColor:PALETTE[y2]+'11', borderWidth:1.5, borderDash:[4,4], pointRadius:2, pointBackgroundColor:PALETTE[y2] }},
-      ]
-    }},
-    options: {{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{{ legend:{{position:'top',labels:{{usePointStyle:true}}}} }},
-      scales:{{ r:{{ beginAtZero:true, ticks:{{display:false}}, grid:{{color:GC}}, pointLabels:{{font:{{size:10}}}} }} }}
-    }}
-  }});
-}}
+// drawC9 removed (no canvas in HTML)
 
 // === Spark table (occupancy visual) ===
 function drawSpark() {{
   const ct = document.getElementById('sparktable');
-  let h = '<table class="spark-table"><thead><tr><th></th>';
+  let h = '<div style="display:flex;gap:14px;margin-bottom:8px;font-size:10px;color:var(--m);">';
+  h += '<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#22c55e;vertical-align:middle;margin-right:3px;"></span>&gt;80%</span>';
+  h += '<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#eab308;vertical-align:middle;margin-right:3px;"></span>50&ndash;80%</span>';
+  h += '<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#ef4444;vertical-align:middle;margin-right:3px;"></span>&lt;50%</span>';
+  h += '</div>';
+  h += '<table class="spark-table"><thead><tr><th></th>';
   M.forEach(m => h += '<th>'+m+'</th>');
   h += '<th>Media</th></tr></thead><tbody>';
   ACTIVE.slice().reverse().forEach(y => {{
@@ -1350,10 +1273,14 @@ function drawSpark() {{
     const avg = d.filter(v=>v>0);
     const mean = avg.length ? (avg.reduce((a,b)=>a+b,0)/avg.length).toFixed(1) : '0';
     h += '<tr><td class="yr" style="color:'+PALETTE[y]+'">'+y+'</td>';
-    d.forEach(v => {{
+    d.forEach(function(v, midx) {{
       const w = Math.max(v, 0);
       const col = v >= 80 ? '#22c55e' : v >= 50 ? '#eab308' : v > 0 ? '#ef4444' : '#1e293b';
-      h += '<td><div class="bar" style="width:'+w+'%;background:'+col+'">&nbsp;</div></td>';
+      const days = new Date(parseInt(y), midx+1, 0).getDate();
+      const noches = Math.round(v * days / 100);
+      const tip = v > 0 ? y+' · '+M[midx]+' · '+v.toFixed(1)+'% · '+noches+'/'+days+' noches' : '';
+      const pctLabel = v >= 35 ? v.toFixed(0)+'%' : '';
+      h += '<td title="'+tip+'"><div class="bar" style="width:'+w+'%;background:'+col+'">'+pctLabel+'</div></td>';
     }});
     h += '<td style="font-weight:600;color:'+(parseFloat(mean)>=80?'#22c55e':parseFloat(mean)>=50?'#eab308':'#ef4444')+'">'+mean+'%</td>';
     h += '</tr>';
@@ -1443,8 +1370,8 @@ function drawNextSH(idx) {{
   // Bad reviews
   const bad = d.bad_reviews || [];
   if(bad.length > 0) {{
-    h += '<div style="margin-top:12px"><div style="font-size:11px;font-weight:600;color:var(--m);margin-bottom:6px">REVIEWS QUE PENALIZAN (< 5&#9733;)</div>';
-    h += '<div style="max-height:200px;overflow-y:auto">';
+    h += '<details style="margin-top:12px"><summary style="cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--m);padding:4px 0;">&#9660; REVIEWS QUE PENALIZAN ('+bad.length+' &mdash; &lt; 5&#9733;)</summary>';
+    h += '<div style="margin-top:8px;max-height:200px;overflow-y:auto">';
     bad.forEach(r => {{
       const rc = r.rating <= 3 ? '#ef4444' : '#f59e0b';
       h += '<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--b);font-size:11px">';
@@ -1453,48 +1380,26 @@ function drawNextSH(idx) {{
       h += '<div style="color:var(--m);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+r.comment+'</div>';
       h += '</div>';
     }});
-    h += '</div></div>';
+    h += '</div></details>';
   }}
 
   // Simulation
   if(!d.is_super) {{
-    h += '<div style="margin-top:12px;padding:12px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:8px">';
-    h += '<div style="font-size:11px;font-weight:600;color:#ef4444;margin-bottom:6px">&#x1F4CA; SIMULACI&Oacute;N</div>';
+    h += '<details style="margin-top:12px"><summary style="cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:#ef4444;padding:4px 0;">&#9660; &#x1F4CA; SIMULACI&Oacute;N &mdash; cu&aacute;ntas reviews necesito</summary>';
+    h += '<div style="margin-top:8px;padding:12px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:8px">';
     for(let extra = 1; extra <= 5; extra++) {{
       const newAvg = (d.total_pts + 5*extra) / (d.n + extra);
       const ok = newAvg >= 4.8;
       const ic = ok ? '&#x2705;' : '&#x274C;';
       h += '<div style="font-size:11px;color:var(--t);margin:2px 0">'+ic+' +'+extra+' review(s) de 5&#9733; &rarr; <b>'+newAvg.toFixed(4)+'</b></div>';
     }}
-    h += '</div>';
+    h += '</div></details>';
   }}
 
   ct.innerHTML = h;
 }}
 
-// === C10: Reviews radar y1 vs y2 ===
-function drawC10() {{
-  if(charts.c10) charts.c10.destroy();
-  const r1 = REV_BY_YEAR[y1] || {{}};
-  const r2 = REV_BY_YEAR[y2] || {{}};
-  const d1 = CATS_KEY.map(c => r1[c] || 0);
-  const d2 = CATS_KEY.map(c => r2[c] || 0);
-  const ds = [
-    {{ label:y1, data:d1, borderColor:PALETTE[y1], backgroundColor:(PALETTE[y1]||'#3b82f6')+'22', borderWidth:2, pointRadius:4, pointBackgroundColor:PALETTE[y1] }},
-  ];
-  if (d2.some(v => v > 0)) {{
-    ds.push({{ label:y2, data:d2, borderColor:PALETTE[y2], backgroundColor:(PALETTE[y2]||'#94a3b8')+'11', borderWidth:1.5, borderDash:[4,4], pointRadius:3, pointBackgroundColor:PALETTE[y2] }});
-  }}
-  charts.c10 = new Chart(document.getElementById('c10'), {{
-    type:'radar',
-    data: {{ labels:CATS_SUB, datasets:ds }},
-    options: {{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{{ legend:{{position:'top',labels:{{usePointStyle:true,font:{{size:10}}}}}} }},
-      scales:{{ r:{{ min:4, max:5, ticks:{{stepSize:0.2,font:{{size:9}}}}, grid:{{color:GC}}, pointLabels:{{font:{{size:10}}}} }} }}
-    }}
-  }});
-}}
+// drawC10 removed (no canvas in HTML)
 
 
 // === C14: PM por banda estacional ===
@@ -1568,31 +1473,63 @@ function drawC16() {{
   }});
 }}
 
-// === C17: Pace Report — OTB + ADR ===
+// === C17: Pace Report — barras agrupadas + ADR sobre cada barra (plugin) ===
 function drawC17() {{
   if(charts.c17) charts.c17.destroy();
   const labels = M.slice(0,period);
   const otb1 = (PACE_OTB[y1]||Array(12).fill(0)).slice(0,period);
   const otb2 = (PACE_OTB[y2]||Array(12).fill(0)).slice(0,period);
-  const fin2 = (PACE_FINAL[y2]||Array(12).fill(0)).slice(0,period);
+  const adr1 = (PACE_ADR_OTB[y1]||Array(12).fill(null)).slice(0,period);
+  const adr2 = (PACE_ADR_OTB[y2]||Array(12).fill(null)).slice(0,period);
   const n1   = (PACE_NIGHTS_OTB[y1]||Array(12).fill(0)).slice(0,period);
   const n2   = (PACE_NIGHTS_OTB[y2]||Array(12).fill(0)).slice(0,period);
-  const adr1 = otb1.map((v,i) => n1[i]>0 ? Math.round(v/n1[i]*10)/10 : null);
-  const adr2 = otb2.map((v,i) => n2[i]>0 ? Math.round(v/n2[i]*10)/10 : null);
   const deltaRev = otb1.map((v,i) => otb2[i]>0 ? ((v-otb2[i])/otb2[i]*100).toFixed(1) : '—');
   const deltaAdr = adr1.map((v,i) => (v&&adr2[i]) ? ((v-adr2[i])/adr2[i]*100).toFixed(1) : '—');
   const deltaN   = n1.map((v,i) => n2[i]>0 ? ((v-n2[i])/n2[i]*100).toFixed(1) : '—');
-  const maxADR = Math.max(...[...adr1,...adr2].filter(v=>v!=null)) * 1.35 || 150;
+  // Plugin: ADR overlay — punto fijo encima de la barra (bar.y - offset), sin eje y1
+  const paceAdr = {{
+    id:'paceAdr',
+    afterDatasetsDraw(chart) {{
+      const ctx = chart.ctx;
+      chart.data.datasets.forEach(function(ds, di) {{
+        let adrArr=null, pri=false;
+        if (ds.label==='OTB '+y1) {{ adrArr=adr1; pri=true; }}
+        else if (ds.label==='OTB '+y2+' (misma fecha)') {{ adrArr=adr2; }}
+        if (!adrArr) return;
+        const meta = chart.getDatasetMeta(di);
+        meta.data.forEach(function(bar, idx) {{
+          const adr=adrArr[idx]; if (adr==null || bar.y==null) return;
+          const x=bar.x, dotY=bar.y - 10;
+          ctx.save();
+          ctx.beginPath(); ctx.arc(x, dotY, pri?7:5, 0, Math.PI*2);
+          if (pri) {{
+            ctx.fillStyle='#eab308'; ctx.strokeStyle='#78350f'; ctx.lineWidth=2;
+            ctx.fill(); ctx.stroke();
+            ctx.fillStyle='#fef08a'; ctx.font='bold 9px Inter,sans-serif';
+            ctx.textAlign='center'; ctx.textBaseline='bottom';
+            ctx.fillText(Math.round(adr)+'€', x, dotY-9);
+          }} else {{
+            ctx.fillStyle='rgba(234,179,8,0.15)'; ctx.strokeStyle='#eab308'; ctx.lineWidth=1.5;
+            ctx.fill(); ctx.stroke();
+            ctx.fillStyle='#94a3b8'; ctx.font='9px Inter,sans-serif';
+            ctx.textAlign='center'; ctx.textBaseline='bottom';
+            ctx.fillText(Math.round(adr)+'€', x, dotY-7);
+          }}
+          ctx.restore();
+        }});
+      }});
+    }}
+  }};
   charts.c17 = new Chart(document.getElementById('c17'), {{
     type:'bar',
+    plugins:[paceAdr],
     data: {{
       labels,
       datasets: [
-        {{ label:'OTB '+y1, data:otb1, backgroundColor:PALETTE[y1]+'cc', borderRadius:6, borderSkipped:false, yAxisID:'y', order:4 }},
-        {{ label:'OTB '+y2+' (misma fecha)', data:otb2, backgroundColor:PALETTE[y2]+'88', borderRadius:6, borderSkipped:false, yAxisID:'y', order:3 }},
-        {{ label:'Final '+y2, data:fin2, type:'line', borderColor:'rgba(148,163,184,0.4)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false, yAxisID:'y', order:2 }},
-        {{ label:'ADR '+y1, data:adr1, type:'line', borderColor:PALETTE[y1], borderWidth:0, pointRadius:6, pointBackgroundColor:PALETTE[y1], pointHoverRadius:8, showLine:false, fill:false, yAxisID:'y1', order:1 }},
-        {{ label:'ADR '+y2, data:adr2, type:'line', borderColor:PALETTE[y2], borderWidth:0, pointRadius:4, pointBackgroundColor:PALETTE[y2], pointHoverRadius:6, showLine:false, fill:false, yAxisID:'y1', order:0 }},
+        {{ label:'OTB '+y2+' (misma fecha)', data:otb2, backgroundColor:COL_Y2+'55', borderRadius:4, borderSkipped:false, yAxisID:'y', order:3 }},
+        {{ label:'OTB '+y1, data:otb1, backgroundColor:COL_Y1+'cc', borderRadius:4, borderSkipped:false, yAxisID:'y', order:2 }},
+        {{ label:'ADR '+y1, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:7, pointBackgroundColor:'#eab308', pointBorderColor:'#78350f', pointBorderWidth:2, showLine:false }},
+        {{ label:'ADR '+y2, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:5, pointBackgroundColor:'rgba(234,179,8,0.15)', pointBorderColor:'#eab308', pointBorderWidth:1.5, showLine:false }},
       ]
     }},
     options: {{
@@ -1600,89 +1537,39 @@ function drawC17() {{
       interaction:{{mode:'index',intersect:false}},
       plugins: {{
         legend:{{position:'top',labels:{{usePointStyle:true,font:{{size:10}}}}}},
-        tooltip:{{callbacks:{{
-          label:function(c) {{
-            if(c.dataset.yAxisID==='y1') return c.dataset.label+': '+(c.parsed.y!=null ? c.parsed.y.toFixed(0)+'€/n' : '—');
-            return c.dataset.label+': '+c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€';
-          }},
-          afterBody:function(items) {{
-            const i = items[0].dataIndex;
-            const lines = [];
-            if(deltaRev[i]!=='—') lines.push('Δ Rev: '+(parseFloat(deltaRev[i])>=0?'+':'')+deltaRev[i]+'%');
-            if(deltaAdr[i]!=='—') lines.push('Δ ADR: '+(parseFloat(deltaAdr[i])>=0?'+':'')+deltaAdr[i]+'%');
-            if(deltaN[i]!=='—') lines.push('Δ Noches: '+(parseFloat(deltaN[i])>=0?'+':'')+deltaN[i]+'%');
-            return lines.length ? ['\\n'+lines.join('  |  ')] : [];
+        tooltip:{{
+          filter:function(item) {{ return item.dataset.label && !item.dataset.label.startsWith('ADR'); }},
+          callbacks:{{
+            label:function(c) {{
+              const i=c.dataIndex;
+              const rev=c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€';
+              if(c.dataset.label==='OTB '+y1) {{
+                const a=adr1[i]; return c.dataset.label+': '+rev+(a!=null?' | ADR: '+a.toFixed(0)+'€/n':'');
+              }}
+              if(c.dataset.label==='OTB '+y2+' (misma fecha)') {{
+                const a=adr2[i]; return c.dataset.label+': '+rev+(a!=null?' | ADR: '+a.toFixed(0)+'€/n':'');
+              }}
+              return c.dataset.label+': '+rev;
+            }},
+            afterBody:function(items) {{
+              const i=items[0].dataIndex, lines=[];
+              if(deltaRev[i]!=='—') lines.push('Δ Rev: '+(parseFloat(deltaRev[i])>=0?'+':'')+deltaRev[i]+'%');
+              if(deltaAdr[i]!=='—') lines.push('Δ ADR: '+(parseFloat(deltaAdr[i])>=0?'+':'')+deltaAdr[i]+'%');
+              if(deltaN[i]!=='—') lines.push('Δ Noches: '+(parseFloat(deltaN[i])>=0?'+':'')+deltaN[i]+'%');
+              return lines.length?['\\n'+lines.join('  |  ')]:[];
+            }}
           }}
-        }}}}
+        }}
       }},
       scales: {{
-        y:  {{ position:'left',  ticks:{{callback:v=>(v/1000).toFixed(0)+'k€',color:'#94a3b8'}}, grid:{{color:GC}} }},
-        y1: {{ position:'right', title:{{display:true,text:'ADR €/n',color:'#94a3b8'}}, ticks:{{color:'#94a3b8',callback:v=>v+'€'}}, grid:{{drawOnChartArea:false}}, min:0, max:maxADR }},
-        x:  {{ grid:{{display:false}} }}
-      }}
-    }}
-  }});
-}}
-
-// === C18: Lead Time distribution + PM ===
-function drawC18() {{
-  if(charts.c18) charts.c18.destroy();
-  const buckets = ['<7d','7-30d','30-90d','>90d'];
-  const bucketLabels = ['< 7 días','7-30 días','30-90 días','> 90 días'];
-  const counts = buckets.map(b => LT_SUMMARY[b].n);
-  const pms = buckets.map(b => LT_SUMMARY[b].avg_pm);
-  const total = counts.reduce((a,b)=>a+b,0);
-  const pcts = counts.map(c => total > 0 ? Math.round(c/total*100) : 0);
-  charts.c18 = new Chart(document.getElementById('c18'), {{
-    type:'bar',
-    data: {{
-      labels: bucketLabels,
-      datasets: [
-        {{ label:'Reservas', data:counts, backgroundColor:['#ef4444cc','#f59e0bcc','#22c55ecc','#3b82f6cc'], borderRadius:6, borderSkipped:false, yAxisID:'y' }},
-        {{ label:'PM €/noche', data:pms, type:'line', borderColor:'#f59e0b', borderWidth:2.5, pointRadius:5, pointBackgroundColor:'#f59e0b', tension:0.3, fill:false, yAxisID:'y1' }},
-      ]
-    }},
-    options: {{
-      responsive:true, maintainAspectRatio:false,
-      plugins: {{
-        legend:{{position:'top',labels:{{usePointStyle:true,font:{{size:10}}}}}},
-        tooltip:{{callbacks:{{
-          label:function(c) {{
-            if(c.dataset.yAxisID==='y') return c.parsed.y+' reservas ('+pcts[c.dataIndex]+'%)';
-            return 'PM: '+c.parsed.y.toFixed(1)+'€/noche';
-          }}
-        }}}}
-      }},
-      scales: {{
-        y: {{ position:'left', title:{{display:true,text:'Reservas',color:'#60a5fa'}}, ticks:{{color:'#60a5fa'}}, grid:{{color:GC}} }},
-        y1: {{ position:'right', title:{{display:true,text:'PM €/noche',color:'#f59e0b'}}, ticks:{{color:'#f59e0b',callback:v=>v+'€'}}, grid:{{drawOnChartArea:false}} }},
+        y: {{ position:'left', ticks:{{callback:v=>(v/1000).toFixed(0)+'k€',color:'#94a3b8'}}, grid:{{color:GC}} }},
         x: {{ grid:{{display:false}} }}
       }}
     }}
   }});
 }}
 
-// === C19: Lead Time trend by year ===
-function drawC19() {{
-  if(charts.c19) charts.c19.destroy();
-  const yrs = ACTIVE.filter(y => LT_AVG_YEAR[y] && LT_AVG_YEAR[y] > 0);
-  const vals = yrs.map(y => LT_AVG_YEAR[y]);
-  const cols = yrs.map(y => (y===y1||y===y2) ? PALETTE[y] : 'rgba(148,163,184,0.3)');
-  const avgLT = vals.filter(v=>v>0);
-  const meanLT = avgLT.length ? avgLT.reduce((a,b)=>a+b,0)/avgLT.length : 0;
-  charts.c19 = new Chart(document.getElementById('c19'), {{
-    type:'bar',
-    data: {{ labels:yrs, datasets:[
-      {{ data:vals, backgroundColor:cols, borderRadius:6, borderSkipped:false }},
-      {{ label:'Media: '+meanLT.toFixed(0)+' días', data:Array(yrs.length).fill(meanLT), type:'line', borderColor:'rgba(251,191,36,0.6)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false }}
-    ] }},
-    options: {{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{{ legend:{{position:'top',labels:{{usePointStyle:true,font:{{size:10}},filter:i=>i.text&&i.text.startsWith('Media')}}}}, tooltip:{{callbacks:{{label:c=>c.parsed.y.toFixed(0)+' días de media'}}}} }},
-      scales:{{ y:{{title:{{display:true,text:'Días'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
-    }}
-  }});
-}}
+// drawC18, drawC19 removed (no canvas in HTML)
 
 
 
@@ -1763,7 +1650,7 @@ function drawC21() {{
   }});
 }}
 
-// === C22: Cancelaciones por año + tasa ===
+// === C22: Cancelaciones por año ===
 function drawC22() {{
   const el = document.getElementById('c22');
   if (!el) return;
@@ -1773,15 +1660,37 @@ function drawC22() {{
   const canc  = years.map(y => CANC_KPIS[y].canc);
   const tasas = years.map(y => CANC_KPIS[y].tasa);
   const deltaTasa = tasas.map((t,i) => i>0 && tasas[i-1]>0 ? (t-tasas[i-1]).toFixed(1) : '—');
-  const maxTasa = Math.max(...tasas) * 2 + 5;
+  const c22labels = {{
+    id: 'c22labels',
+    afterDatasetsDraw(chart) {{
+      const ctx = chart.ctx;
+      chart.data.datasets.forEach(function(dataset, di) {{
+        if (dataset.label !== 'Canceladas') return;
+        const meta = chart.getDatasetMeta(di);
+        meta.data.forEach(function(bar, idx) {{
+          const tasa = tasas[idx];
+          if (!tasa) return;
+          const barH = Math.abs(bar.base - bar.y);
+          if (barH < 12) return;
+          ctx.save();
+          ctx.fillStyle = '#fff';
+          ctx.font = 'bold 9px Inter,sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(tasa.toFixed(1)+'%', bar.x, (bar.y + bar.base) / 2);
+          ctx.restore();
+        }});
+      }});
+    }}
+  }};
   el._chart = new Chart(el, {{
     type: 'bar',
+    plugins: [c22labels],
     data: {{
       labels: years,
       datasets: [
         {{ label: 'Confirmadas', data: conf, backgroundColor: 'rgba(59,130,246,0.7)', stack: 'a', yAxisID:'y' }},
         {{ label: 'Canceladas',  data: canc, backgroundColor: 'rgba(239,68,68,0.7)',  stack: 'a', yAxisID:'y' }},
-        {{ label: 'Tasa (%)', data: tasas, type:'line', borderColor:'#f59e0b', borderWidth:2, pointRadius:4, pointBackgroundColor:'#f59e0b', fill:false, yAxisID:'y1' }},
       ]
     }},
     options: {{
@@ -1790,10 +1699,10 @@ function drawC22() {{
         legend: {{ position: 'top', labels: {{ usePointStyle: true, font: {{ size: 10 }} }} }},
         tooltip: {{ callbacks: {{
           label: function(c) {{
-            if(c.dataset.yAxisID==='y1') return 'Tasa: '+c.parsed.y.toFixed(1)+'%';
+            if(c.dataset.label==='Canceladas') return 'Canceladas: '+c.parsed.y+' ('+tasas[c.dataIndex].toFixed(1)+'%)';
             return c.dataset.label+': '+c.parsed.y;
           }},
-          afterBody: (items) => {{
+          afterBody: function(items) {{
             const i = items[0].dataIndex;
             const d = deltaTasa[i];
             if(d==='—') return [];
@@ -1803,79 +1712,17 @@ function drawC22() {{
         }} }}
       }},
       scales: {{
-        x:  {{ stacked: true, grid: {{ display: false }}, ticks: {{ font: {{ size: 10 }} }} }},
-        y:  {{ stacked: true, ticks: {{ color: '#94a3b8' }}, grid: {{ color: GC }} }},
-        y1: {{ position:'right', title:{{display:true,text:'Tasa %',color:'#f59e0b'}}, ticks:{{color:'#f59e0b',callback:v=>v+'%'}}, grid:{{drawOnChartArea:false}}, min:0, max:maxTasa }}
+        x: {{ stacked: true, grid: {{ display: false }}, ticks: {{ font: {{ size: 10 }} }} }},
+        y: {{ stacked: true, ticks: {{ color: '#94a3b8' }}, grid: {{ color: GC }} }}
       }}
     }}
   }});
 }}
 
-// === C23: Impacto económico cancelaciones ===
-function drawC23() {{
-  const el = document.getElementById('c23');
-  if (!el) return;
-  if (el._chart) el._chart.destroy();
-  const years    = Object.keys(CANC_KPIS).sort();
-  const perdido  = years.map(y => Math.round(CANC_KPIS[y].perdido));
-  const recup    = years.map(y => Math.round(CANC_KPIS[y].recuperado));
-  const neto     = years.map(y => Math.round(CANC_KPIS[y].neto));
-  el._chart = new Chart(el, {{
-    type: 'bar',
-    data: {{
-      labels: years,
-      datasets: [
-        {{ label: 'Precio estimado perdido', data: perdido, backgroundColor: 'rgba(239,68,68,0.5)' }},
-        {{ label: 'Recuperado',              data: recup,   backgroundColor: 'rgba(34,197,94,0.6)' }},
-        {{ label: 'P\u00e9rdida neta',        data: neto,    backgroundColor: 'rgba(239,68,68,0.85)', borderWidth: 1, borderColor: 'rgba(239,68,68,1)' }},
-      ]
-    }},
-    options: {{
-      responsive: true, maintainAspectRatio: false,
-      plugins: {{
-        legend: {{ position: 'top', labels: {{ usePointStyle: true, font: {{ size: 10 }} }} }},
-        tooltip: {{ callbacks: {{ label: c => c.dataset.label + ': ' + c.raw.toLocaleString('es-ES') + '\u20ac' }} }}
-      }},
-      scales: {{
-        x: {{ grid: {{ display: false }}, ticks: {{ font: {{ size: 10 }} }} }},
-        y: {{ ticks: {{ color: '#94a3b8', callback: v => v.toLocaleString('es-ES') + '\u20ac' }}, grid: {{ color: GC }} }}
-      }}
-    }}
-  }});
-}}
+// drawC23, drawC24 removed (no canvas in HTML)
 
-// === C24: Lead time confirmadas vs canceladas ===
-function drawC24() {{
-  const el = document.getElementById('c24');
-  if (!el) return;
-  if (el._chart) el._chart.destroy();
-  const years = Object.keys(CANC_KPIS).sort();
-  const ltConf = years.map(y => CANC_KPIS[y].lt_conf);
-  const ltCanc = years.map(y => CANC_KPIS[y].lt_canc);
-  el._chart = new Chart(el, {{
-    type: 'bar',
-    data: {{
-      labels: years,
-      datasets: [
-        {{ label: 'Confirmadas (d\u00edas)', data: ltConf, backgroundColor: 'rgba(59,130,246,0.7)' }},
-        {{ label: 'Canceladas (d\u00edas)',  data: ltCanc, backgroundColor: 'rgba(239,68,68,0.7)' }},
-      ]
-    }},
-    options: {{
-      responsive: true, maintainAspectRatio: false,
-      plugins: {{
-        legend: {{ position: 'top', labels: {{ usePointStyle: true, font: {{ size: 10 }} }} }},
-        tooltip: {{ callbacks: {{ label: c => c.dataset.label + ': ' + c.raw + ' d\u00edas' }} }}
-      }},
-      scales: {{
-        x: {{ grid: {{ display: false }}, ticks: {{ font: {{ size: 10 }} }} }},
-        y: {{ ticks: {{ color: '#94a3b8', callback: v => v + 'd' }}, grid: {{ color: GC }} }}
-      }}
-    }}
-  }});
-}}
-
-// === HUECOS Y PRICING ===
+let _saveFlash = -1;
+// === HUECOS Y PRICING (con mercado por hueco expandible) ===
 function drawHuecos() {{
   const ct = document.getElementById('huecos-panel');
   if (!ct) return;
@@ -1884,8 +1731,7 @@ function drawHuecos() {{
     return;
   }}
   const stored = JSON.parse(localStorage.getItem('csj_prices')||'{{}}');
-  const mkt = JSON.parse(localStorage.getItem('csj_mkt')||'{{}}');
-  const mktSold = parseFloat(mkt.sold||0);
+  function getMkt(key) {{ try {{ return JSON.parse(localStorage.getItem('csj_mkt_'+key)||'null'); }} catch(e) {{ return null; }} }}
   function riskOf(g) {{
     let s=0;
     if(g.nights<=2) s+=2; else if(g.nights<=3) s+=1;
@@ -1899,122 +1745,133 @@ function drawHuecos() {{
     if(s>=1) return ['Medio','#f59e0b'];
     return ['Bajo','#22c55e'];
   }}
+  function mpiLabel(mpi) {{
+    if(mpi<0.80) return ['Muy barato','#ef4444'];
+    if(mpi<0.95) return ['Competitivo','#22c55e'];
+    if(mpi<=1.10) return ['En mercado','#60a5fa'];
+    return ['Agresivo','#f59e0b'];
+  }}
+  function actionOf(g, cur, mkt) {{
+    const rms=g.recommended_price, floor=g.floor_price||0, ceil=g.ceiling_price||9999;
+    if(cur===null) return {{text:rms.toFixed(0)+'&#8364; RMS',col:'#60a5fa',reason:'Sin precio — RMS referencia. Suelo='+floor+'€, Techo='+ceil+'€'}};
+    const mktSold = mkt ? parseFloat(mkt.sold||0) : 0;
+    const pressure = mkt ? (mkt.pressure||'') : '';
+    const highPress = pressure==='alta'||pressure==='extrema';
+    const mpi = (mktSold&&cur) ? cur/mktSold : null;
+    const mktNote = (mpi&&mpi<0.85) ? '. Tb. bajo vs mkt vendido (MPI='+mpi.toFixed(2)+')' : '';
+    if(cur<floor*0.95) return {{text:'&#9650; Subir'+(mpi&&mpi<0.85?' + mkt':''),col:'#22c55e',reason:'Actual ('+cur+'€) bajo el suelo RMS ('+floor+'€)'+mktNote}};
+    if(cur>ceil&&!highPress) return {{text:'&#9660; Bajar',col:'#ef4444',reason:'Precio actual ('+cur+'€) supera el techo RMS ('+ceil+'€) sin presión de mercado que lo justifique'}};
+    if(cur>ceil&&highPress) return {{text:'= Mantener*',col:'#f59e0b',reason:'Encima del techo RMS pero presión '+pressure+' — puede sostenerse'}};
+    if(mpi!==null) {{
+      if(mpi<0.80) return {{text:'&#9650; Subir (mkt)',col:'#22c55e',reason:'MPI='+mpi.toFixed(2)+' — muy por debajo del mercado vendido ('+mktSold+'€). Hay margen para subir.'}};
+      if(mpi>1.10&&!highPress) return {{text:'&#9660; Revisar',col:'#f59e0b',reason:'MPI='+mpi.toFixed(2)+' — precio por encima del mercado sin presión que lo sostenga. Riesgo de perder la reserva.'}};
+      if(highPress&&mpi<=1.05) return {{text:'&#9650; Oportunidad',col:'#84cc16',reason:'Presión '+pressure+' y precio competitivo (MPI='+mpi.toFixed(2)+') — hay margen para subir aprovechando la demanda'}};
+    }}
+    if(cur>=floor&&cur<=rms*1.05&&highPress) return {{text:'&#9650; Subir leve',col:'#84cc16',reason:'Precio en zona RMS y presión '+pressure+' — subida leve posible'}};
+    return {{text:'= Mantener',col:'#94a3b8',reason:'Precio en zona RMS (suelo='+floor+'€, techo='+ceil+'€)'+(mpi?'. MPI='+mpi.toFixed(2):'.')}};
+  }}
+  const seasMap={{'alta':'Alta','media':'Media','baja':'Baja'}};
   let h='<table style="width:100%;border-collapse:collapse;font-size:13px;">';
   h+='<thead><tr style="background:var(--c);color:var(--m);font-size:11px;">';
-  ['Hueco','n','Temp','Estrategia','RMS','Actual','Riesgo','Acción','vs Mkt'].forEach(col=>{{
-    const align = ['RMS','Actual','vs Mkt'].includes(col)?'right':'center';
-    const alignL = col==='Hueco'||col==='Estrategia'?'left':align;
-    h+='<th style="padding:7px 6px;text-align:'+alignL+';white-space:nowrap;">'+col+'</th>';
+  ['Fechas','n','Temp','RMS','Tu precio','&#916; vs RMS','Acci&oacute;n + Riesgo'].forEach(function(col,ci) {{
+    const al = ci===0?'left':ci===6?'left':(ci>=3?'right':'center');
+    h+='<th style="padding:7px 6px;text-align:'+al+';white-space:nowrap;">'+col+'</th>';
   }});
   h+='</tr></thead><tbody>';
   PRICING_GAPS.forEach(function(g,i) {{
-    const rs = riskOf(g); const [rl,rc] = riskLabel(rs);
-    const rms = g.recommended_price;
-    const floor = g.floor_price||0; const ceil = g.ceiling_price||0;
-    const key = g.start_date;
-    const cur = stored[key]!==undefined ? parseFloat(stored[key]) : null;
-    let act='',ac='#94a3b8';
-    if(cur!==null) {{
-      if(cur<floor*0.95)  {{ act='&#9650; Subir';   ac='#22c55e'; }}
-      else if(cur>ceil)   {{ act='&#9660; Bajar';   ac='#ef4444'; }}
-      else                {{ act='= Mantener'; ac='#94a3b8'; }}
-    }} else {{ act=rms.toFixed(0)+'€'; ac='#60a5fa'; }}
-    const vsMkt = (mktSold&&cur) ? ((cur-mktSold>=0?'+':'')+(cur-mktSold).toFixed(0)+'€') : '';
-    const seasMap={{'alta':'☀️ Alta','media':'⛅ Media','baja':'❄️ Baja'}};
-    const stratShort = (g.strategy||'').replace('Rentabilidad','Rentab.').replace('Equilibrio','Equilib.').replace('Ocupación','Ocupac.');
-    const bg = i%2===0?'var(--bg)':'var(--c)';
-    h+='<tr style="background:'+bg+';border-bottom:1px solid var(--b);">';
+    const rs=riskOf(g); const [rl,rc]=riskLabel(rs);
+    const rms=g.recommended_price, floor=g.floor_price||0, ceil=g.ceiling_price||0;
+    const key=g.start_date;
+    const cur=stored[key]!==undefined?parseFloat(stored[key]):null;
+    const mkt=getMkt(key);
+    const mktSold=mkt?parseFloat(mkt.sold||0):0;
+    const mpi=(mktSold&&cur)?cur/mktSold:null;
+    const act=actionOf(g,cur,mkt);
+    // Delta vs RMS
+    const delta=cur!==null?cur-rms:null;
+    const deltaStr=delta!==null?(delta>=0?'+':'')+delta.toFixed(0)+'&#8364;':'&#8212;';
+    const deltaAbs=delta!==null?Math.abs(delta):0;
+    const deltaCol=delta===null?'var(--m)':deltaAbs<5?'var(--m)':delta>0?'var(--cy1)':'var(--warn)';
+    // Badges
+    let mpiBadge='';
+    if(mpi!==null) {{ const [ml,mc]=mpiLabel(mpi); mpiBadge='<span style="display:inline-block;font-size:9px;font-weight:600;background:'+mc+'22;color:'+mc+';border:1px solid '+mc+'44;border-radius:3px;padding:1px 5px;margin-left:4px;">'+mpi.toFixed(2)+' '+ml+'</span>'; }}
+    const riskBadge='<span style="display:inline-block;font-size:9px;font-weight:600;background:'+rc+'22;color:'+rc+';border:1px solid '+rc+'44;border-radius:3px;padding:1px 5px;">'+rl+'</span>';
+    const bg=i%2===0?'var(--bg)':'var(--c)';
+    h+='<tr id="gap-row-'+i+'" onclick="toggleGapExp('+i+')" style="background:'+bg+';border-bottom:1px solid var(--b);cursor:pointer;" title="Click para datos de mercado">';
     h+='<td style="padding:8px 6px;white-space:nowrap;font-weight:500;">'+g.start_date.slice(5)+' &rarr; '+g.end_date.slice(5)+'</td>';
     h+='<td style="padding:8px 6px;text-align:center;color:var(--m);">'+g.nights+'</td>';
     h+='<td style="padding:8px 6px;text-align:center;font-size:11px;color:var(--m);">'+(seasMap[g.season]||g.season)+'</td>';
-    h+='<td style="padding:8px 6px;font-size:11px;color:var(--m);">'+stratShort+'</td>';
-    h+='<td style="padding:8px 6px;text-align:right;font-weight:600;color:#60a5fa;">'+rms.toFixed(0)+'€</td>';
-    h+='<td style="padding:8px 4px;text-align:right;"><input type="number" value="'+(cur!==null?cur:'')+'" placeholder="—" data-key="'+key+'" onchange="savePG(this)" style="width:56px;background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:3px 5px;text-align:right;font-size:12px;"></td>';
-    h+='<td style="padding:8px 6px;text-align:center;color:'+rc+';font-weight:600;font-size:12px;">'+rl+'</td>';
-    h+='<td style="padding:8px 6px;text-align:center;color:'+ac+';font-weight:600;font-size:12px;">'+act+'</td>';
-    h+='<td style="padding:8px 6px;text-align:right;color:var(--m);font-size:12px;">'+vsMkt+'</td>';
+    h+='<td style="padding:8px 6px;text-align:right;font-weight:600;color:var(--cy1);">'+rms.toFixed(0)+'&#8364;</td>';
+    h+='<td style="padding:8px 4px;text-align:right;" onclick="event.stopPropagation()"><input type="number" value="'+(cur!==null?cur:'')+'" placeholder="&#8212;" data-key="'+key+'" onchange="savePG(this)" style="width:56px;background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:3px 5px;text-align:right;font-size:12px;"></td>';
+    h+='<td style="padding:8px 6px;text-align:right;font-weight:600;font-size:12px;color:'+deltaCol+';">'+deltaStr+'</td>';
+    h+='<td style="padding:8px 6px;text-align:left;cursor:help;" title="'+act.reason+'">';
+    h+='<div style="font-size:14px;font-weight:700;color:'+act.col+'">'+act.text+'</div>';
+    h+='<div style="display:flex;gap:4px;margin-top:3px;flex-wrap:wrap;">'+riskBadge+mpiBadge+'</div>';
+    h+='</td>';
     h+='</tr>';
+    // Expandable market row
+    const mSold=mkt?(mkt.sold||''):'', mAvail=mkt?(mkt.avail||''):'', mPress=mkt?(mkt.pressure||''):'', mFecha=mkt?(mkt.fecha||''):'', mUpd=mkt?(mkt.updated||''):'';
+    h+='<tr id="gap-exp-'+i+'" data-key="'+key+'" style="display:none;background:rgba(59,130,246,0.07);border-left:3px solid var(--cy1);">';
+    h+='<td colspan="7" style="padding:12px 16px;border-bottom:1px solid var(--b);">';
+    h+='<div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">';
+    h+='<div><label style="font-size:10px;color:var(--m);display:block;margin-bottom:3px;">Mkt vendido (&#8364;/n)</label>';
+    h+='<input id="gms'+i+'" type="number" value="'+mSold+'" placeholder="ej. 102" style="width:90px;background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:4px 6px;font-size:12px;"></div>';
+    h+='<div><label style="font-size:10px;color:var(--m);display:block;margin-bottom:3px;">Mkt disponible (&#8364;/n)</label>';
+    h+='<input id="gma'+i+'" type="number" value="'+mAvail+'" placeholder="ej. 115" style="width:90px;background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:4px 6px;font-size:12px;"></div>';
+    h+='<div><label style="font-size:10px;color:var(--m);display:block;margin-bottom:3px;">Presi&oacute;n mercado</label>';
+    h+='<select id="gmp'+i+'" style="background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:4px 6px;font-size:12px;">';
+    h+='<option value="">&#8212;</option>';
+    ['baja','media','alta','extrema'].forEach(function(p) {{ h+='<option value="'+p+'"'+(mPress===p?' selected':'')+'>'+p.charAt(0).toUpperCase()+p.slice(1)+'</option>'; }});
+    h+='</select></div>';
+    h+='<div><label style="font-size:10px;color:var(--m);display:block;margin-bottom:3px;">Fecha revisi&oacute;n</label>';
+    h+='<input id="gmf'+i+'" type="date" value="'+mFecha+'" style="background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:4px 6px;font-size:12px;"></div>';
+    const isSaved = (_saveFlash===i);
+    h+='<button data-idx="'+i+'" onclick="saveMktForGap(parseInt(this.dataset.idx))" style="background:'+(isSaved?'#22c55e':'#0B3D60')+';color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:12px;cursor:pointer;">'+(isSaved?'&#10003; Guardado':'Guardar')+'</button>';
+    if(mUpd) h+='<span style="font-size:10px;color:'+(isSaved?'#22c55e':'var(--m)')+';">'+(isSaved?'&#10003; ':'')+'Actualizado: '+mUpd+'</span>';
+    h+='</div>';
+    if(mkt&&mkt.sold&&cur) {{
+      const gS=cur-parseFloat(mkt.sold); const gcS=gS>=0?'#22c55e':'#f59e0b';
+      const gA=mkt.avail?(cur-parseFloat(mkt.avail)):null; const gcA=gA!==null?(gA<=0?'#22c55e':'#f59e0b'):'';
+      h+='<div style="margin-top:6px;display:flex;gap:16px;font-size:11px;">';
+      h+='<span style="color:var(--m);">vs vendido: <b style="color:'+gcS+'">'+(gS>=0?'+':'')+gS.toFixed(0)+'&#8364;</b></span>';
+      if(gA!==null) h+='<span style="color:var(--m);">vs disponible: <b style="color:'+gcA+'">'+(gA>=0?'+':'')+gA.toFixed(0)+'&#8364;</b></span>';
+      if(mPress) h+='<span style="color:var(--m);">Presi&oacute;n: <b>'+mPress.toUpperCase()+'</b></span>';
+      h+='</div>';
+    }}
+    h+='</td></tr>';
   }});
   h+='</tbody></table>';
   ct.innerHTML=h;
+}}
+function toggleGapExp(i) {{
+  const el=document.getElementById('gap-exp-'+i);
+  if(el) el.style.display=el.style.display==='none'?'table-row':'none';
+}}
+function saveMktForGap(i) {{
+  const expRow=document.getElementById('gap-exp-'+i);
+  if(!expRow) return;
+  const key=expRow.dataset.key;
+  const s=document.getElementById('gms'+i)?.value||'';
+  const a=document.getElementById('gma'+i)?.value||'';
+  const p=document.getElementById('gmp'+i)?.value||'';
+  const f=document.getElementById('gmf'+i)?.value||'';
+  const prev=JSON.parse(localStorage.getItem('csj_mkt_'+key)||'null')||{{}};
+  localStorage.setItem('csj_mkt_'+key,JSON.stringify({{
+    sold:s||prev.sold||'',avail:a||prev.avail||'',
+    pressure:p||prev.pressure||'',fecha:f||prev.fecha||'',
+    updated:new Date().toLocaleDateString('es-ES')
+  }}));
+  _saveFlash=i;
+  drawHuecos();
+  const restored=document.getElementById('gap-exp-'+i);
+  if(restored) restored.style.display='table-row';
+  setTimeout(function(){{_saveFlash=-1;drawHuecos();const r2=document.getElementById('gap-exp-'+i);if(r2)r2.style.display='table-row';}},2500);
 }}
 function savePG(el) {{
   const s=JSON.parse(localStorage.getItem('csj_prices')||'{{}}');
   if(el.value) s[el.dataset.key]=el.value; else delete s[el.dataset.key];
   localStorage.setItem('csj_prices',JSON.stringify(s));
   drawHuecos();
-}}
-
-// === MARKET POSITIONING ===
-function drawMarketPos() {{
-  const ct = document.getElementById('mkt-panel');
-  if (!ct) return;
-  const mkt  = JSON.parse(localStorage.getItem('csj_mkt')||'{{}}');
-  const myP  = parseFloat(localStorage.getItem('csj_my_price')||'0');
-  const sold = parseFloat(mkt.sold||0);
-  const avail= parseFloat(mkt.avail||0);
-  const press= mkt.pressure||'';
-  const upd  = mkt.updated||'';
-  const mpi  = (sold&&myP) ? myP/sold : null;
-  let mpiLbl='',mpiCol='#94a3b8';
-  if(mpi!==null) {{
-    if(mpi<0.80)       {{ mpiLbl='Muy barato'; mpiCol='#ef4444'; }}
-    else if(mpi<0.95)  {{ mpiLbl='Competitivo'; mpiCol='#22c55e'; }}
-    else if(mpi<=1.10) {{ mpiLbl='En mercado';  mpiCol='#60a5fa'; }}
-    else               {{ mpiLbl='Agresivo';    mpiCol='#f59e0b'; }}
-  }}
-  const gS = (sold&&myP) ? myP-sold : null;
-  const gA = (avail&&myP) ? myP-avail : null;
-  const pCol = {{baja:'#22c55e',media:'#f59e0b',alta:'#f97316',extrema:'#ef4444'}};
-  let h='<div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;">';
-  // form
-  h+='<div style="flex:1;min-width:210px;background:var(--c);border:1px solid var(--b);border-radius:8px;padding:14px;">';
-  h+='<div style="font-size:11px;color:var(--m);margin-bottom:10px;font-weight:600;">ACTUALIZAR DATOS DE MERCADO</div>';
-  const inp=(id,lbl,val,ph)=>'<label style="font-size:12px;color:var(--m);display:block;margin-bottom:7px;">'+lbl+'<input id="'+id+'" type="number" value="'+(val||'')+'" placeholder="'+ph+'" style="display:block;width:100%;margin-top:3px;background:var(--bg);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:5px 8px;font-size:13px;box-sizing:border-box;"></label>';
-  h+=inp('mkt-my','Mi precio actual (€)',myP||'','ej. 95');
-  h+=inp('mkt-sold','Mercado vendido (€/noche)',mkt.sold||'','ej. 102');
-  h+=inp('mkt-avail','Mercado disponible (€/noche)',mkt.avail||'','ej. 115');
-  h+='<label style="font-size:12px;color:var(--m);display:block;margin-bottom:10px;">Presión de mercado<select id="mkt-press" style="display:block;width:100%;margin-top:3px;background:var(--bg);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:5px 8px;font-size:13px;box-sizing:border-box;">';
-  h+='<option value="">— seleccionar —</option>';
-  ['baja','media','alta','extrema'].forEach(p=>h+='<option value="'+p+'"'+(press===p?' selected':'')+'>'+p.charAt(0).toUpperCase()+p.slice(1)+'</option>');
-  h+='</select></label>';
-  h+='<button onclick="saveMkt()" style="background:#0B3D60;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:13px;cursor:pointer;width:100%;">Actualizar</button>';
-  h+='</div>';
-  // results
-  if(mpi!==null||sold) {{
-    h+='<div style="flex:1;min-width:170px;display:flex;flex-direction:column;gap:10px;">';
-    if(mpi!==null) {{
-      const barW=Math.max(4,Math.min(100,Math.round((mpi-0.7)/0.6*100)));
-      h+='<div style="background:var(--c);border:1px solid var(--b);border-radius:8px;padding:14px;">';
-      h+='<div style="font-size:11px;color:var(--m);margin-bottom:4px;">MPI &mdash; Market Price Index</div>';
-      h+='<div style="font-size:28px;font-weight:700;color:'+mpiCol+';">'+mpi.toFixed(2)+'</div>';
-      h+='<div style="font-size:12px;color:'+mpiCol+';margin-top:2px;">'+mpiLbl+'</div>';
-      h+='<div style="margin-top:8px;background:var(--b);border-radius:4px;height:6px;"><div style="width:'+barW+'%;background:'+mpiCol+';height:6px;border-radius:4px;"></div></div>';
-      h+='<div style="display:flex;justify-content:space-between;font-size:9px;color:var(--m);margin-top:2px;"><span>&lt;0.80</span><span>0.80-0.95</span><span>0.95-1.10</span><span>&gt;1.10</span></div>';
-      h+='</div>';
-    }}
-    if(gS!==null||gA!==null) {{
-      h+='<div style="background:var(--c);border:1px solid var(--b);border-radius:8px;padding:12px 14px;">';
-      h+='<div style="font-size:11px;color:var(--m);margin-bottom:8px;font-weight:600;">GAP VS MERCADO</div>';
-      if(gS!==null) {{ const gc=gS>=0?'#22c55e':'#f59e0b'; h+='<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--b);font-size:13px;"><span style="color:var(--m);">vs vendido</span><span style="font-weight:700;color:'+gc+';">'+(gS>=0?'+':'')+gS.toFixed(0)+'€</span></div>'; }}
-      if(gA!==null) {{ const gc=gA<=0?'#22c55e':'#f59e0b'; h+='<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;"><span style="color:var(--m);">vs disponible</span><span style="font-weight:700;color:'+gc+';">'+(gA>=0?'+':'')+gA.toFixed(0)+'€</span></div>'; }}
-      h+='</div>';
-    }}
-    if(press) {{ h+='<div style="background:var(--c);border:1px solid var(--b);border-radius:8px;padding:10px 14px;"><div style="font-size:11px;color:var(--m);">PRESIÓN MERCADO</div><div style="font-size:18px;font-weight:700;color:'+(pCol[press]||'var(--t)')+';">'+press.toUpperCase()+'</div></div>'; }}
-    h+='</div>';
-  }}
-  h+='</div>';
-  if(upd) h+='<div style="font-size:11px;color:var(--m);margin-top:6px;">Actualizado: '+upd+'</div>';
-  ct.innerHTML=h;
-}}
-function saveMkt() {{
-  const my=document.getElementById('mkt-my')?.value;
-  const s=document.getElementById('mkt-sold')?.value;
-  const a=document.getElementById('mkt-avail')?.value;
-  const p=document.getElementById('mkt-press')?.value;
-  if(my) localStorage.setItem('csj_my_price',my);
-  localStorage.setItem('csj_mkt',JSON.stringify({{sold:s,avail:a,pressure:p,updated:new Date().toLocaleDateString('es-ES')}}));
-  drawMarketPos(); drawHuecos();
 }}
 
 // === LEAD TIME KPI ===
@@ -2034,9 +1891,14 @@ function drawLeadKPI() {{
 
 // === DRAW ALL ===
 function drawAll() {{
-  drawKPIs(); drawHuecos(); drawMarketPos(); drawC17(); drawC1(); drawC7(); drawC3(); drawC5(); drawC14(); drawC6(); drawSpark(); drawC15(); drawC16(); drawLeadKPI(); drawNextSH(); drawC21(); drawC22();
+  safeDraw(drawKPIs,'KPIs'); safeDraw(drawHuecos,'Huecos');
+  safeDraw(drawC17,'C17'); safeDraw(drawC1,'C1'); safeDraw(drawC7,'C7');
+  safeDraw(drawC3,'C3'); safeDraw(drawC5,'C5'); safeDraw(drawC14,'C14');
+  safeDraw(drawSpark,'Spark');
+  safeDraw(drawC15,'C15'); safeDraw(drawC16,'C16'); safeDraw(drawLeadKPI,'LeadKPI');
+  safeDraw(drawNextSH,'NextSH'); safeDraw(drawC22,'C22');
 }}
-drawAll();
+if(typeof Chart!=='undefined') {{ drawAll(); }}
 
 // === FILTER HANDLERS ===
 document.getElementById('fYear1').addEventListener('change', e => {{ y1 = e.target.value; drawAll(); }});
