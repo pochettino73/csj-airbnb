@@ -1168,6 +1168,8 @@ function makeLegendLabels(extra) {{
     }}
   }}, extra || {{}});
 }}
+// Redondea hacia arriba al múltiplo de `step` más cercano → eje siempre acaba en número entero limpio
+function niceMax(v, step) {{ step = step || 10; return Math.ceil(v / step) * step; }}
 
 // === C1: Ingresos mensuales comparativa + banda ===
 function drawC1() {{
@@ -1247,7 +1249,7 @@ function drawC5() {{
 // === C7: Evolución anual — Ingresos y ADR ===
 function drawC7() {{
   if(charts.c7) charts.c7.destroy();
-  const maxADR = Math.max(...RES_P.filter(v=>v>0)) * 1.3 || 150;
+  const maxADR = niceMax(Math.max(...RES_P.filter(v=>v>0)) * 1.3 || 150);
   charts.c7 = new Chart(document.getElementById('c7'), {{
     type:'bar',
     data: {{
@@ -1507,7 +1509,7 @@ function drawC17() {{
   const deltaRev = otb1.map((v,i) => otb2[i]>0 ? ((v-otb2[i])/otb2[i]*100).toFixed(1) : '—');
   const deltaAdr = adr1.map((v,i) => (v&&adr2[i]) ? ((v-adr2[i])/adr2[i]*100).toFixed(1) : '—');
   const deltaN   = n1.map((v,i) => n2[i]>0 ? ((v-n2[i])/n2[i]*100).toFixed(1) : '—');
-  const maxADR = Math.max(...[...adr1,...adr2].filter(v=>v!=null)) * 1.35 || 150;
+  const maxADR = niceMax(Math.max(...[...adr1,...adr2].filter(v=>v!=null)) * 1.35 || 150);
   // Plugin: ADR sobre cada barra, posicionado por el eje y1
   const paceAdr = {{
     id:'paceAdr',
