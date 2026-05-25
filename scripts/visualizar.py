@@ -1551,6 +1551,7 @@ function drawC17() {{
     data: {{
       labels,
       datasets: [
+        {{ label:'Cierre '+y2, data:(PACE_FINAL[y2]||Array(12).fill(0)).slice(0,period), type:'line', borderColor:COL_ING+'70', borderDash:[6,4], borderWidth:1.5, pointRadius:0, pointHitRadius:0, fill:false, yAxisID:'y', order:10 }},
         {{ label:'OTB '+y2+' (misma fecha)', data:otb2, backgroundColor:COL_ING+'40', borderRadius:4, borderSkipped:false, yAxisID:'y', order:3 }},
         {{ label:'OTB '+y1, data:otb1, backgroundColor:COL_ING+'cc', borderRadius:4, borderSkipped:false, yAxisID:'y', order:2 }},
         {{ label:'ADR '+y1, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:7, pointBackgroundColor:COL_ADR, pointBorderColor:'#713f12', pointBorderWidth:2, showLine:false, yAxisID:'y1' }},
