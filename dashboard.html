@@ -104,7 +104,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ Airbnb <span>Revenue Cockpit</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 25/05/2026 14:18</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 25/05/2026 14:25</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -832,11 +832,13 @@ function drawC17() {
   const deltaRev = otb1.map((v,i) => otb2[i]>0 ? ((v-otb2[i])/otb2[i]*100).toFixed(1) : '—');
   const deltaAdr = adr1.map((v,i) => (v&&adr2[i]) ? ((v-adr2[i])/adr2[i]*100).toFixed(1) : '—');
   const deltaN   = n1.map((v,i) => n2[i]>0 ? ((v-n2[i])/n2[i]*100).toFixed(1) : '—');
-  // Plugin: ADR overlay — punto fijo encima de la barra (bar.y - offset), sin eje y1
+  const maxADR = Math.max(...[...adr1,...adr2].filter(v=>v!=null)) * 1.35 || 150;
+  // Plugin: ADR sobre cada barra, posicionado por el eje y1
   const paceAdr = {
     id:'paceAdr',
     afterDatasetsDraw(chart) {
-      const ctx = chart.ctx;
+      const ctx = chart.ctx, sc = chart.scales['y1'];
+      if (!sc) return;
       chart.data.datasets.forEach(function(ds, di) {
         let adrArr=null, pri=false;
         if (ds.label==='OTB '+y1) { adrArr=adr1; pri=true; }
@@ -844,8 +846,8 @@ function drawC17() {
         if (!adrArr) return;
         const meta = chart.getDatasetMeta(di);
         meta.data.forEach(function(bar, idx) {
-          const adr=adrArr[idx]; if (adr==null || bar.y==null) return;
-          const x=bar.x, dotY=bar.y - 10;
+          const adr=adrArr[idx]; if (adr==null) return;
+          const x=bar.x, dotY=sc.getPixelForValue(adr);
           ctx.save();
           ctx.beginPath(); ctx.arc(x, dotY, pri?7:5, 0, Math.PI*2);
           if (pri) {
@@ -874,8 +876,8 @@ function drawC17() {
       datasets: [
         { label:'OTB '+y2+' (misma fecha)', data:otb2, backgroundColor:COL_ING+'40', borderRadius:4, borderSkipped:false, yAxisID:'y', order:3 },
         { label:'OTB '+y1, data:otb1, backgroundColor:COL_ING+'cc', borderRadius:4, borderSkipped:false, yAxisID:'y', order:2 },
-        { label:'ADR '+y1, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:7, pointBackgroundColor:COL_ADR, pointBorderColor:'#78350f', pointBorderWidth:2, showLine:false },
-        { label:'ADR '+y2, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:5, pointBackgroundColor:COL_ADR+'30', pointBorderColor:COL_ADR, pointBorderWidth:1.5, showLine:false },
+        { label:'ADR '+y1, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:7, pointBackgroundColor:COL_ADR, pointBorderColor:'#713f12', pointBorderWidth:2, showLine:false, yAxisID:'y1' },
+        { label:'ADR '+y2, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:5, pointBackgroundColor:COL_ADR+'30', pointBorderColor:COL_ADR, pointBorderWidth:1.5, showLine:false, yAxisID:'y1' },
       ]
     },
     options: {
@@ -908,7 +910,8 @@ function drawC17() {
         }
       },
       scales: {
-        y: { position:'left', ticks:{callback:v=>(v/1000).toFixed(0)+'k€',color:'#94a3b8'}, grid:{color:GC} },
+        y:  { position:'left',  ticks:{callback:v=>(v/1000).toFixed(0)+'k€',color:'#94a3b8'}, grid:{color:GC} },
+        y1: { position:'right', title:{display:true,text:'ADR €/n',color:COL_ADR}, ticks:{color:COL_ADR,callback:v=>v+'€'}, grid:{drawOnChartArea:false}, min:0, max:maxADR },
         x: { grid:{display:false} }
       }
     }
