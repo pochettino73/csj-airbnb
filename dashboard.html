@@ -104,7 +104,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ Airbnb <span>Revenue Cockpit</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 25/05/2026 14:36</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 25/05/2026 14:44</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -1072,157 +1072,62 @@ function drawC22() {
 
 // drawC23, drawC24 removed (no canvas in HTML)
 
-let _saveFlash = -1;
-// === HUECOS Y PRICING (con mercado por hueco expandible) ===
+// === HUECOS — tabla visual de huecos con precio RMS ===
 function drawHuecos() {
   const ct = document.getElementById('huecos-panel');
   if (!ct) return;
   if (!PRICING_GAPS || !PRICING_GAPS.length) {
-    ct.innerHTML = '<div style="color:var(--m);padding:12px;font-size:13px;">Sin datos. Ejecuta <code>python scripts/pricing.py</code> para calcular los huecos.</div>';
+    ct.innerHTML = '<div style="color:var(--m);padding:16px;font-size:13px;">Sin datos. Ejecuta <code>python scripts/pricing.py</code> para calcular los huecos.</div>';
     return;
   }
-  const stored = JSON.parse(localStorage.getItem('csj_prices')||'{}');
-  function getMkt(key) { try { return JSON.parse(localStorage.getItem('csj_mkt_'+key)||'null'); } catch(e) { return null; } }
-  function riskOf(g) {
-    let s=0;
-    if(g.nights<=2) s+=2; else if(g.nights<=3) s+=1;
-    if(g.lead_days<14) s+=3; else if(g.lead_days<30) s+=2; else if(g.lead_days<60) s+=1;
-    if(g.future_occ_pct<30) s+=2; else if(g.future_occ_pct<50) s+=1;
-    return s;
-  }
-  function riskLabel(s) {
-    if(s>=5) return ['Cr&iacute;tico','#ef4444'];
-    if(s>=3) return ['Alto','#f97316'];
-    if(s>=1) return ['Medio','#f59e0b'];
-    return ['Bajo','#22c55e'];
-  }
-  function mpiLabel(mpi) {
-    if(mpi<0.80) return ['Muy barato','#ef4444'];
-    if(mpi<0.95) return ['Competitivo','#22c55e'];
-    if(mpi<=1.10) return ['En mercado','#60a5fa'];
-    return ['Agresivo','#f59e0b'];
-  }
-  function actionOf(g, cur, mkt) {
-    const rms=g.recommended_price, floor=g.floor_price||0, ceil=g.ceiling_price||9999;
-    if(cur===null) return {text:rms.toFixed(0)+'&#8364; RMS',col:'#60a5fa',reason:'Sin precio — RMS referencia. Suelo='+floor+'€, Techo='+ceil+'€'};
-    const mktSold = mkt ? parseFloat(mkt.sold||0) : 0;
-    const pressure = mkt ? (mkt.pressure||'') : '';
-    const highPress = pressure==='alta'||pressure==='extrema';
-    const mpi = (mktSold&&cur) ? cur/mktSold : null;
-    const mktNote = (mpi&&mpi<0.85) ? '. Tb. bajo vs mkt vendido (MPI='+mpi.toFixed(2)+')' : '';
-    if(cur<floor*0.95) return {text:'&#9650; Subir'+(mpi&&mpi<0.85?' + mkt':''),col:'#22c55e',reason:'Actual ('+cur+'€) bajo el suelo RMS ('+floor+'€)'+mktNote};
-    if(cur>ceil&&!highPress) return {text:'&#9660; Bajar',col:'#ef4444',reason:'Precio actual ('+cur+'€) supera el techo RMS ('+ceil+'€) sin presión de mercado que lo justifique'};
-    if(cur>ceil&&highPress) return {text:'= Mantener*',col:'#f59e0b',reason:'Encima del techo RMS pero presión '+pressure+' — puede sostenerse'};
-    if(mpi!==null) {
-      if(mpi<0.80) return {text:'&#9650; Subir (mkt)',col:'#22c55e',reason:'MPI='+mpi.toFixed(2)+' — muy por debajo del mercado vendido ('+mktSold+'€). Hay margen para subir.'};
-      if(mpi>1.10&&!highPress) return {text:'&#9660; Revisar',col:'#f59e0b',reason:'MPI='+mpi.toFixed(2)+' — precio por encima del mercado sin presión que lo sostenga. Riesgo de perder la reserva.'};
-      if(highPress&&mpi<=1.05) return {text:'&#9650; Oportunidad',col:'#84cc16',reason:'Presión '+pressure+' y precio competitivo (MPI='+mpi.toFixed(2)+') — hay margen para subir aprovechando la demanda'};
-    }
-    if(cur>=floor&&cur<=rms*1.05&&highPress) return {text:'&#9650; Subir leve',col:'#84cc16',reason:'Precio en zona RMS y presión '+pressure+' — subida leve posible'};
-    return {text:'= Mantener',col:'#94a3b8',reason:'Precio en zona RMS (suelo='+floor+'€, techo='+ceil+'€)'+(mpi?'. MPI='+mpi.toFixed(2):'.')};
-  }
-  const seasMap={'alta':'Alta','media':'Media','baja':'Baja'};
-  let h='<table style="width:100%;border-collapse:collapse;font-size:13px;">';
-  h+='<thead><tr style="background:var(--c);color:var(--m);font-size:11px;">';
-  ['Fechas','n','Temp','RMS','Tu precio','&#916; vs RMS','Acci&oacute;n + Riesgo'].forEach(function(col,ci) {
-    const al = ci===0?'left':ci===6?'left':(ci>=3?'right':'center');
-    h+='<th style="padding:7px 6px;text-align:'+al+';white-space:nowrap;">'+col+'</th>';
+  function fmtD(s) { const p=s.split('-'); return p[2]+'/'+p[1]+'/'+p[0].slice(2); }
+  const SC = {
+    alta:  {label:'Alta',  col:'#ef4444', icon:'&#9728;'},
+    media: {label:'Media', col:'#f59e0b', icon:'&#9670;'},
+    baja:  {label:'Baja',  col:'#3b82f6', icon:'&#10052;'}
+  };
+  // Cabecera
+  let h = '<div style="display:grid;grid-template-columns:32px 1fr 52px 70px 52px 52px 96px;gap:0;padding:6px 16px;margin-bottom:4px;">';
+  ['#','Fechas','Noches','Temporada','Ant.','Occ.','RMS'].forEach(function(c,i) {
+    const al = i===0?'center':i>=4?'center':i===6?'right':'left';
+    h += '<div style="font-size:10px;font-weight:600;color:var(--m);text-transform:uppercase;letter-spacing:.6px;text-align:'+al+';">'+c+'</div>';
   });
-  h+='</tr></thead><tbody>';
-  PRICING_GAPS.forEach(function(g,i) {
-    const rs=riskOf(g); const [rl,rc]=riskLabel(rs);
-    const rms=g.recommended_price, floor=g.floor_price||0, ceil=g.ceiling_price||0;
-    const key=g.start_date;
-    const cur=stored[key]!==undefined?parseFloat(stored[key]):null;
-    const mkt=getMkt(key);
-    const mktSold=mkt?parseFloat(mkt.sold||0):0;
-    const mpi=(mktSold&&cur)?cur/mktSold:null;
-    const act=actionOf(g,cur,mkt);
-    // Delta vs RMS
-    const delta=cur!==null?cur-rms:null;
-    const deltaStr=delta!==null?(delta>=0?'+':'')+delta.toFixed(0)+'&#8364;':'&#8212;';
-    const deltaAbs=delta!==null?Math.abs(delta):0;
-    const deltaCol=delta===null?'var(--m)':deltaAbs<5?'var(--m)':delta>0?'var(--cy1)':'var(--warn)';
-    // Badges
-    let mpiBadge='';
-    if(mpi!==null) { const [ml,mc]=mpiLabel(mpi); mpiBadge='<span style="display:inline-block;font-size:9px;font-weight:600;background:'+mc+'22;color:'+mc+';border:1px solid '+mc+'44;border-radius:3px;padding:1px 5px;margin-left:4px;">'+mpi.toFixed(2)+' '+ml+'</span>'; }
-    const riskBadge='<span style="display:inline-block;font-size:9px;font-weight:600;background:'+rc+'22;color:'+rc+';border:1px solid '+rc+'44;border-radius:3px;padding:1px 5px;">'+rl+'</span>';
-    const bg=i%2===0?'var(--bg)':'var(--c)';
-    h+='<tr id="gap-row-'+i+'" onclick="toggleGapExp('+i+')" style="background:'+bg+';border-bottom:1px solid var(--b);cursor:pointer;" title="Click para datos de mercado">';
-    h+='<td style="padding:8px 6px;white-space:nowrap;font-weight:500;">'+g.start_date.slice(5)+' &rarr; '+g.end_date.slice(5)+'</td>';
-    h+='<td style="padding:8px 6px;text-align:center;color:var(--m);">'+g.nights+'</td>';
-    h+='<td style="padding:8px 6px;text-align:center;font-size:11px;color:var(--m);">'+(seasMap[g.season]||g.season)+'</td>';
-    h+='<td style="padding:8px 6px;text-align:right;font-weight:600;color:var(--cy1);">'+rms.toFixed(0)+'&#8364;</td>';
-    h+='<td style="padding:8px 4px;text-align:right;" onclick="event.stopPropagation()"><input type="number" value="'+(cur!==null?cur:'')+'" placeholder="&#8212;" data-key="'+key+'" onchange="savePG(this)" style="width:56px;background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:3px 5px;text-align:right;font-size:12px;"></td>';
-    h+='<td style="padding:8px 6px;text-align:right;font-weight:600;font-size:12px;color:'+deltaCol+';">'+deltaStr+'</td>';
-    h+='<td style="padding:8px 6px;text-align:left;cursor:help;" title="'+act.reason+'">';
-    h+='<div style="font-size:14px;font-weight:700;color:'+act.col+'">'+act.text+'</div>';
-    h+='<div style="display:flex;gap:4px;margin-top:3px;flex-wrap:wrap;">'+riskBadge+mpiBadge+'</div>';
-    h+='</td>';
-    h+='</tr>';
-    // Expandable market row
-    const mSold=mkt?(mkt.sold||''):'', mAvail=mkt?(mkt.avail||''):'', mPress=mkt?(mkt.pressure||''):'', mFecha=mkt?(mkt.fecha||''):'', mUpd=mkt?(mkt.updated||''):'';
-    h+='<tr id="gap-exp-'+i+'" data-key="'+key+'" style="display:none;background:rgba(59,130,246,0.07);border-left:3px solid var(--cy1);">';
-    h+='<td colspan="7" style="padding:12px 16px;border-bottom:1px solid var(--b);">';
-    h+='<div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">';
-    h+='<div><label style="font-size:10px;color:var(--m);display:block;margin-bottom:3px;">Mkt vendido (&#8364;/n)</label>';
-    h+='<input id="gms'+i+'" type="number" value="'+mSold+'" placeholder="ej. 102" style="width:90px;background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:4px 6px;font-size:12px;"></div>';
-    h+='<div><label style="font-size:10px;color:var(--m);display:block;margin-bottom:3px;">Mkt disponible (&#8364;/n)</label>';
-    h+='<input id="gma'+i+'" type="number" value="'+mAvail+'" placeholder="ej. 115" style="width:90px;background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:4px 6px;font-size:12px;"></div>';
-    h+='<div><label style="font-size:10px;color:var(--m);display:block;margin-bottom:3px;">Presi&oacute;n mercado</label>';
-    h+='<select id="gmp'+i+'" style="background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:4px 6px;font-size:12px;">';
-    h+='<option value="">&#8212;</option>';
-    ['baja','media','alta','extrema'].forEach(function(p) { h+='<option value="'+p+'"'+(mPress===p?' selected':'')+'>'+p.charAt(0).toUpperCase()+p.slice(1)+'</option>'; });
-    h+='</select></div>';
-    h+='<div><label style="font-size:10px;color:var(--m);display:block;margin-bottom:3px;">Fecha revisi&oacute;n</label>';
-    h+='<input id="gmf'+i+'" type="date" value="'+mFecha+'" style="background:var(--c);border:1px solid var(--b);color:var(--t);border-radius:4px;padding:4px 6px;font-size:12px;"></div>';
-    const isSaved = (_saveFlash===i);
-    h+='<button data-idx="'+i+'" onclick="saveMktForGap(parseInt(this.dataset.idx))" style="background:'+(isSaved?'#22c55e':'#0B3D60')+';color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:12px;cursor:pointer;">'+(isSaved?'&#10003; Guardado':'Guardar')+'</button>';
-    if(mUpd) h+='<span style="font-size:10px;color:'+(isSaved?'#22c55e':'var(--m)')+';">'+(isSaved?'&#10003; ':'')+'Actualizado: '+mUpd+'</span>';
-    h+='</div>';
-    if(mkt&&mkt.sold&&cur) {
-      const gS=cur-parseFloat(mkt.sold); const gcS=gS>=0?'#22c55e':'#f59e0b';
-      const gA=mkt.avail?(cur-parseFloat(mkt.avail)):null; const gcA=gA!==null?(gA<=0?'#22c55e':'#f59e0b'):'';
-      h+='<div style="margin-top:6px;display:flex;gap:16px;font-size:11px;">';
-      h+='<span style="color:var(--m);">vs vendido: <b style="color:'+gcS+'">'+(gS>=0?'+':'')+gS.toFixed(0)+'&#8364;</b></span>';
-      if(gA!==null) h+='<span style="color:var(--m);">vs disponible: <b style="color:'+gcA+'">'+(gA>=0?'+':'')+gA.toFixed(0)+'&#8364;</b></span>';
-      if(mPress) h+='<span style="color:var(--m);">Presi&oacute;n: <b>'+mPress.toUpperCase()+'</b></span>';
-      h+='</div>';
-    }
-    h+='</td></tr>';
+  h += '</div>';
+  // Filas
+  PRICING_GAPS.forEach(function(g, i) {
+    const sc = SC[g.season] || {label:g.season, col:'#94a3b8', icon:''};
+    const rms = Math.round(g.recommended_price);
+    const floor = Math.round(g.floor_price||0);
+    const ceil  = Math.round(g.ceiling_price||0);
+    const occ   = g.future_occ_pct != null ? Math.round(g.future_occ_pct)+'%' : '—';
+    const occCol= g.future_occ_pct>=70?'#22c55e':g.future_occ_pct>=40?'#f59e0b':'#ef4444';
+    const dates = fmtD(g.start_date)+' &rarr; '+fmtD(g.end_date);
+    h += '<div style="display:grid;grid-template-columns:32px 1fr 52px 70px 52px 52px 96px;gap:0;align-items:center;'
+       + 'background:var(--c);border:1px solid var(--b);border-left:4px solid '+sc.col+';border-radius:10px;'
+       + 'padding:14px 16px;margin-bottom:8px;">';
+    // #
+    h += '<div style="width:26px;height:26px;border-radius:50%;background:'+sc.col+'22;border:1px solid '+sc.col+'55;'
+       + 'color:'+sc.col+';font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+(i+1)+'</div>';
+    // Fechas
+    h += '<div style="font-size:14px;font-weight:600;color:var(--t);white-space:nowrap;">'+dates+'</div>';
+    // Noches
+    h += '<div style="text-align:center;"><span style="background:var(--bg);border:1px solid var(--b);border-radius:20px;'
+       + 'padding:3px 8px;font-size:11px;font-weight:600;color:var(--m);">'+g.nights+'n</span></div>';
+    // Temporada
+    h += '<div style="text-align:center;"><span style="background:'+sc.col+'18;color:'+sc.col+';border:1px solid '+sc.col+'44;'
+       + 'border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;">'+sc.label+'</span></div>';
+    // Antelación
+    h += '<div style="text-align:center;font-size:13px;font-weight:600;color:var(--t);">'+g.lead_days+'d</div>';
+    // Ocupación futura
+    h += '<div style="text-align:center;font-size:13px;font-weight:600;color:'+occCol+';">'+occ+'</div>';
+    // RMS
+    h += '<div style="text-align:right;">'
+       + '<div style="font-size:22px;font-weight:800;color:'+COL_ADR+';line-height:1;">'+rms+'&#8364;</div>'
+       + '<div style="font-size:9px;color:var(--m);margin-top:2px;">'+floor+'&#8364; &mdash; '+ceil+'&#8364;</div>'
+       + '</div>';
+    h += '</div>';
   });
-  h+='</tbody></table>';
-  ct.innerHTML=h;
-}
-function toggleGapExp(i) {
-  const el=document.getElementById('gap-exp-'+i);
-  if(el) el.style.display=el.style.display==='none'?'table-row':'none';
-}
-function saveMktForGap(i) {
-  const expRow=document.getElementById('gap-exp-'+i);
-  if(!expRow) return;
-  const key=expRow.dataset.key;
-  const s=document.getElementById('gms'+i)?.value||'';
-  const a=document.getElementById('gma'+i)?.value||'';
-  const p=document.getElementById('gmp'+i)?.value||'';
-  const f=document.getElementById('gmf'+i)?.value||'';
-  const prev=JSON.parse(localStorage.getItem('csj_mkt_'+key)||'null')||{};
-  localStorage.setItem('csj_mkt_'+key,JSON.stringify({
-    sold:s||prev.sold||'',avail:a||prev.avail||'',
-    pressure:p||prev.pressure||'',fecha:f||prev.fecha||'',
-    updated:new Date().toLocaleDateString('es-ES')
-  }));
-  _saveFlash=i;
-  drawHuecos();
-  const restored=document.getElementById('gap-exp-'+i);
-  if(restored) restored.style.display='table-row';
-  setTimeout(function(){_saveFlash=-1;drawHuecos();const r2=document.getElementById('gap-exp-'+i);if(r2)r2.style.display='table-row';},2500);
-}
-function savePG(el) {
-  const s=JSON.parse(localStorage.getItem('csj_prices')||'{}');
-  if(el.value) s[el.dataset.key]=el.value; else delete s[el.dataset.key];
-  localStorage.setItem('csj_prices',JSON.stringify(s));
-  drawHuecos();
+  ct.innerHTML = h;
 }
 
 // === LEAD TIME KPI ===
