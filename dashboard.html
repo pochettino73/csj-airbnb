@@ -103,7 +103,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ Airbnb <span>Revenue Cockpit</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 25/05/2026 11:27</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 25/05/2026 11:31</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -141,7 +141,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="row r1">
   <div class="cd">
     <h3>Pace Report &mdash; On The Books + ADR</h3>
-    <div class="s">&iquest;Voy mejor vendido? &iquest;A mejor precio? Barras = ingresos OTB &mdash; Puntos = ADR (eje dcho)</div>
+    <div class="s">Barras agrupadas: azul = 2026 / naranja = 2025. Punto amarillo sobre cada barra = ADR de esa serie. Etiqueta = ADR 2026. L&iacute;nea gris = total final 2025.</div>
     <div class="ch xl"><canvas id="c17"></canvas></div>
   </div>
 </div>
@@ -797,7 +797,7 @@ function drawC16() {
   });
 }
 
-// === C17: Pace Report — OTB + ADR ===
+// === C17: Pace Report — barras agrupadas + ADR sobre cada barra (plugin) ===
 function drawC17() {
   if(charts.c17) charts.c17.destroy();
   const labels = M.slice(0,period);
@@ -811,17 +811,50 @@ function drawC17() {
   const deltaRev = otb1.map((v,i) => otb2[i]>0 ? ((v-otb2[i])/otb2[i]*100).toFixed(1) : '—');
   const deltaAdr = adr1.map((v,i) => (v&&adr2[i]) ? ((v-adr2[i])/adr2[i]*100).toFixed(1) : '—');
   const deltaN   = n1.map((v,i) => n2[i]>0 ? ((v-n2[i])/n2[i]*100).toFixed(1) : '—');
-  const maxADR = Math.max(...[...adr1,...adr2].filter(v=>v!=null)) * 1.35 || 150;
+  const maxADR = Math.max(...[...adr1,...adr2].filter(v=>v!=null)) * 1.4 || 150;
+  // Plugin: dibuja círculo ADR exactamente sobre el centro de su barra
+  const paceAdr = {
+    id:'paceAdr',
+    afterDatasetsDraw(chart) {
+      const ctx = chart.ctx, sc = chart.scales['y1'];
+      if (!sc) return;
+      chart.data.datasets.forEach(function(ds, di) {
+        let adrArr=null, pri=false;
+        if (ds.label==='OTB '+y1) { adrArr=adr1; pri=true; }
+        else if (ds.label==='OTB '+y2+' (misma fecha)') { adrArr=adr2; }
+        if (!adrArr) return;
+        const meta = chart.getDatasetMeta(di);
+        meta.data.forEach(function(bar, idx) {
+          const adr=adrArr[idx]; if (adr==null) return;
+          const x=bar.x, y=sc.getPixelForValue(adr);
+          ctx.save();
+          ctx.beginPath(); ctx.arc(x, y, pri?7:5, 0, Math.PI*2);
+          if (pri) {
+            ctx.fillStyle='#eab308'; ctx.strokeStyle='#78350f'; ctx.lineWidth=2;
+            ctx.fill(); ctx.stroke();
+            ctx.fillStyle='#fef08a'; ctx.font='bold 9px Inter,sans-serif';
+            ctx.textAlign='center'; ctx.textBaseline='bottom';
+            ctx.fillText(Math.round(adr)+'€', x, y-11);
+          } else {
+            ctx.fillStyle='rgba(234,179,8,0.15)'; ctx.strokeStyle='#eab308'; ctx.lineWidth=1.5;
+            ctx.fill(); ctx.stroke();
+          }
+          ctx.restore();
+        });
+      });
+    }
+  };
   charts.c17 = new Chart(document.getElementById('c17'), {
     type:'bar',
+    plugins:[paceAdr],
     data: {
       labels,
       datasets: [
-        { label:'OTB '+y2+' (misma fecha)', data:otb2, backgroundColor:COL_Y2+'44', borderRadius:6, borderSkipped:false, yAxisID:'y', order:5, grouped:false, barPercentage:0.95 },
-        { label:'OTB '+y1, data:otb1, backgroundColor:COL_Y1+'cc', borderRadius:6, borderSkipped:false, yAxisID:'y', order:4, grouped:false, barPercentage:0.65 },
-        { label:'Final '+y2, data:fin2, type:'line', borderColor:'rgba(148,163,184,0.35)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false, yAxisID:'y', order:2 },
-        { label:'ADR '+y1, data:adr1, type:'line', borderColor:'transparent', borderWidth:0, pointRadius:9, pointBackgroundColor:'#eab308', pointBorderColor:'#92400e', pointBorderWidth:2, pointHoverRadius:11, showLine:false, fill:false, yAxisID:'y1', order:1 },
-        { label:'ADR '+y2, data:adr2, type:'line', borderColor:'transparent', borderWidth:0, pointRadius:6, pointBackgroundColor:'transparent', pointBorderColor:'#eab308', pointBorderWidth:2, pointHoverRadius:8, showLine:false, fill:false, yAxisID:'y1', order:0 },
+        { label:'Final '+y2, data:fin2, type:'line', borderColor:'rgba(148,163,184,0.3)', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false, yAxisID:'y', order:10 },
+        { label:'OTB '+y2+' (misma fecha)', data:otb2, backgroundColor:COL_Y2+'55', borderRadius:4, borderSkipped:false, yAxisID:'y', order:3 },
+        { label:'OTB '+y1, data:otb1, backgroundColor:COL_Y1+'cc', borderRadius:4, borderSkipped:false, yAxisID:'y', order:2 },
+        { label:'ADR '+y1, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:7, pointBackgroundColor:'#eab308', pointBorderColor:'#78350f', pointBorderWidth:2, showLine:false, yAxisID:'y1' },
+        { label:'ADR '+y2, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:5, pointBackgroundColor:'rgba(234,179,8,0.15)', pointBorderColor:'#eab308', pointBorderWidth:1.5, showLine:false, yAxisID:'y1' },
       ]
     },
     options: {
@@ -829,20 +862,29 @@ function drawC17() {
       interaction:{mode:'index',intersect:false},
       plugins: {
         legend:{position:'top',labels:{usePointStyle:true,font:{size:10}}},
-        tooltip:{callbacks:{
-          label:function(c) {
-            if(c.dataset.yAxisID==='y1') return c.dataset.label+': '+(c.parsed.y!=null ? c.parsed.y.toFixed(0)+'€/n' : '—');
-            return c.dataset.label+': '+c.parsed.y.toLocaleString('es-ES',{maximumFractionDigits:0})+'€';
-          },
-          afterBody:function(items) {
-            const i = items[0].dataIndex;
-            const lines = [];
-            if(deltaRev[i]!=='—') lines.push('Δ Rev: '+(parseFloat(deltaRev[i])>=0?'+':'')+deltaRev[i]+'%');
-            if(deltaAdr[i]!=='—') lines.push('Δ ADR: '+(parseFloat(deltaAdr[i])>=0?'+':'')+deltaAdr[i]+'%');
-            if(deltaN[i]!=='—') lines.push('Δ Noches: '+(parseFloat(deltaN[i])>=0?'+':'')+deltaN[i]+'%');
-            return lines.length ? ['\n'+lines.join('  |  ')] : [];
+        tooltip:{
+          filter:function(item) { return item.dataset.label && !item.dataset.label.startsWith('ADR'); },
+          callbacks:{
+            label:function(c) {
+              const i=c.dataIndex;
+              const rev=c.parsed.y.toLocaleString('es-ES',{maximumFractionDigits:0})+'€';
+              if(c.dataset.label==='OTB '+y1) {
+                const a=adr1[i]; return c.dataset.label+': '+rev+(a!=null?' | ADR: '+a.toFixed(0)+'€/n':'');
+              }
+              if(c.dataset.label==='OTB '+y2+' (misma fecha)') {
+                const a=adr2[i]; return c.dataset.label+': '+rev+(a!=null?' | ADR: '+a.toFixed(0)+'€/n':'');
+              }
+              return c.dataset.label+': '+rev;
+            },
+            afterBody:function(items) {
+              const i=items[0].dataIndex, lines=[];
+              if(deltaRev[i]!=='—') lines.push('Δ Rev: '+(parseFloat(deltaRev[i])>=0?'+':'')+deltaRev[i]+'%');
+              if(deltaAdr[i]!=='—') lines.push('Δ ADR: '+(parseFloat(deltaAdr[i])>=0?'+':'')+deltaAdr[i]+'%');
+              if(deltaN[i]!=='—') lines.push('Δ Noches: '+(parseFloat(deltaN[i])>=0?'+':'')+deltaN[i]+'%');
+              return lines.length?['\n'+lines.join('  |  ')]:[];
+            }
           }
-        }}
+        }
       },
       scales: {
         y:  { position:'left',  ticks:{callback:v=>(v/1000).toFixed(0)+'k€',color:'#94a3b8'}, grid:{color:GC} },
