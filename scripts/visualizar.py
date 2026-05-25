@@ -685,7 +685,8 @@ def build(data, ing, ocu, pm, rev):
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-:root {{ --bg:#0f172a; --c:#1e293b; --b:#334155; --t:#f1f5f9; --m:#94a3b8; --a:#3b82f6; --g:#22c55e; --r:#ef4444; --cy1:#3b82f6; --cy2:#f97316; --adr:#eab308; --pos:#22c55e; --warn:#f59e0b; --risk:#ef4444; --hist:#94a3b8; }}
+:root {{ --bg:#0f172a; --c:#1e293b; --b:#334155; --t:#f1f5f9; --m:#94a3b8; --a:#3b82f6; --g:#22c55e; --r:#ef4444; --pos:#22c55e; --warn:#f59e0b; --risk:#ef4444; --hist:#94a3b8;
+  --col-ing:#3b82f6; --col-ocu:#22d3ee; --col-adr:#facc15; --col-vis:#a78bfa; --col-res:#22c55e; --col-canc:#ef4444; }}
 * {{ margin:0;padding:0;box-sizing:border-box; }}
 body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); padding:20px 24px; max-width:100%; overflow-x:hidden; }}
 
@@ -1122,17 +1123,22 @@ function drawKPIs() {{
   ct.innerHTML = h;
 }}
 
-const COL_Y1 = '#3b82f6';  // azul fuerte — año principal
-const COL_Y2 = '#f97316';  // naranja — año comparación
-function makeDatasetLine(year, data, isPrimary) {{
-  const col = isPrimary ? COL_Y1 : COL_Y2;
+const COL_ING  = '#3b82f6';  // Ingresos — azul
+const COL_OCU  = '#22d3ee';  // Ocupación — cian
+const COL_ADR  = '#facc15';  // ADR / PM — amarillo
+const COL_VIS  = '#a78bfa';  // Visitas — violeta
+const COL_RES  = '#22c55e';  // Reservas — verde
+const COL_CANC = '#ef4444';  // Cancelaciones — rojo
+// makeDatasetLine: col = variable color; año secundario = mismo color, tenue + discontinuo
+function makeDatasetLine(year, data, isPrimary, col) {{
   return {{
     label: year,
     data: data,
-    borderColor: col,
-    borderWidth: isPrimary ? 3 : 2,
+    borderColor: isPrimary ? col : col + '70',
+    borderWidth: isPrimary ? 3 : 1.5,
+    borderDash: isPrimary ? [] : [5, 5],
     pointRadius: isPrimary ? 4 : 2,
-    pointBackgroundColor: col,
+    pointBackgroundColor: isPrimary ? col : col + '70',
     tension: 0.3,
     fill: false,
   }};
@@ -1158,8 +1164,8 @@ function drawC1() {{
       labels,
       datasets: [
         ...bandDatasets(HMAX, HMIN, HAVG, period),
-        makeDatasetLine(y2, (ALL_ING[y2]||Array(12).fill(0)).slice(0,period), false),
-        makeDatasetLine(y1, (ALL_ING[y1]||Array(12).fill(0)).slice(0,period), true),
+        makeDatasetLine(y2, (ALL_ING[y2]||Array(12).fill(0)).slice(0,period), false, COL_ING),
+        makeDatasetLine(y1, (ALL_ING[y1]||Array(12).fill(0)).slice(0,period), true,  COL_ING),
       ]
     }},
     options: {{
@@ -1183,8 +1189,8 @@ function drawC3() {{
       labels,
       datasets: [
         ...bandDatasets(HMAX_OCU, HMIN_OCU, HAVG_OCU, period),
-        makeDatasetLine(y2, (ALL_OCU[y2]||Array(12).fill(0)).slice(0,period), false),
-        makeDatasetLine(y1, (ALL_OCU[y1]||Array(12).fill(0)).slice(0,period), true),
+        makeDatasetLine(y2, (ALL_OCU[y2]||Array(12).fill(0)).slice(0,period), false, COL_OCU),
+        makeDatasetLine(y1, (ALL_OCU[y1]||Array(12).fill(0)).slice(0,period), true,  COL_OCU),
       ]
     }},
     options: {{
@@ -1208,8 +1214,8 @@ function drawC5() {{
       labels,
       datasets: [
         ...bandDatasets(HMAX_PM, HMIN_PM, HAVG_PM, period),
-        makeDatasetLine(y2, (ALL_PM[y2]||Array(12).fill(0)).slice(0,period), false),
-        makeDatasetLine(y1, (ALL_PM[y1]||Array(12).fill(0)).slice(0,period), true),
+        makeDatasetLine(y2, (ALL_PM[y2]||Array(12).fill(0)).slice(0,period), false, COL_ADR),
+        makeDatasetLine(y1, (ALL_PM[y1]||Array(12).fill(0)).slice(0,period), true,  COL_ADR),
       ]
     }},
     options: {{
@@ -1232,8 +1238,8 @@ function drawC7() {{
     data: {{
       labels: RES_Y,
       datasets: [
-        {{ label:'Ingresos (€)', data:RES_I, backgroundColor:'rgba(59,130,246,0.6)', borderRadius:6, borderSkipped:false, yAxisID:'y', order:2 }},
-        {{ label:'ADR (€/noche)', data:RES_P, type:'line', borderColor:'#f59e0b', borderWidth:2.5, pointRadius:4, pointBackgroundColor:'#f59e0b', tension:0.3, fill:false, yAxisID:'y1', order:1 }},
+        {{ label:'Ingresos (€)', data:RES_I, backgroundColor:COL_ING+'99', borderRadius:6, borderSkipped:false, yAxisID:'y', order:2 }},
+        {{ label:'ADR (€/noche)', data:RES_P, type:'line', borderColor:COL_ADR, borderWidth:2.5, pointRadius:4, pointBackgroundColor:COL_ADR, tension:0.3, fill:false, yAxisID:'y1', order:1 }},
       ]
     }},
     options: {{
@@ -1247,8 +1253,8 @@ function drawC7() {{
         }} }} }}
       }},
       scales: {{
-        y: {{ position:'left', title:{{display:true,text:'Ingresos €',color:'#60a5fa'}}, ticks:{{callback:v=>(v/1000).toFixed(0)+'k€',color:'#60a5fa'}}, grid:{{color:GC}} }},
-        y1: {{ position:'right', title:{{display:true,text:'ADR €/noche',color:'#f59e0b'}}, ticks:{{color:'#f59e0b',callback:v=>v+'€'}}, grid:{{drawOnChartArea:false}}, min:0, max:maxADR }},
+        y: {{ position:'left', title:{{display:true,text:'Ingresos €',color:COL_ING}}, ticks:{{callback:v=>(v/1000).toFixed(0)+'k€',color:COL_ING}}, grid:{{color:GC}} }},
+        y1: {{ position:'right', title:{{display:true,text:'ADR €/noche',color:COL_ADR}}, ticks:{{color:COL_ADR,callback:v=>v+'€'}}, grid:{{drawOnChartArea:false}}, min:0, max:maxADR }},
         x: {{ grid:{{display:false}} }}
       }}
     }}
@@ -1431,14 +1437,14 @@ function drawC15() {{
     type:'bar',
     data: {{ labels:cyrs, datasets:[
       {{ label:'CVR %', data:cvrs, backgroundColor:cyrs.map(y=>(y===y1||y===y2)?PALETTE[y]||'#3b82f6':'rgba(148,163,184,0.3)'), borderRadius:6, borderSkipped:false, yAxisID:'y' }},
-      {{ label:'Reservas', data:reservas, type:'line', borderColor:'#22c55e', borderWidth:2, pointRadius:3, pointBackgroundColor:'#22c55e', tension:0.3, fill:false, yAxisID:'y1' }},
+      {{ label:'Reservas', data:reservas, type:'line', borderColor:COL_RES, borderWidth:2, pointRadius:3, pointBackgroundColor:COL_RES, tension:0.3, fill:false, yAxisID:'y1' }},
     ] }},
     options: {{
       responsive:true, maintainAspectRatio:false,
       plugins:{{ legend:{{position:'top',labels:{{usePointStyle:true,font:{{size:10}}}}}}, tooltip:{{callbacks:{{label:c=>c.dataset.yAxisID==='y'?c.parsed.y.toFixed(2)+'%':c.parsed.y+' reservas'}}}} }},
       scales: {{
-        y: {{ position:'left', title:{{display:true,text:'CVR %',color:'#60a5fa'}}, ticks:{{callback:v=>v.toFixed(1)+'%',color:'#60a5fa'}}, grid:{{color:GC}} }},
-        y1: {{ position:'right', title:{{display:true,text:'Reservas',color:'#22c55e'}}, ticks:{{color:'#22c55e'}}, grid:{{drawOnChartArea:false}} }},
+        y: {{ position:'left', title:{{display:true,text:'CVR %',color:COL_VIS}}, ticks:{{callback:v=>v.toFixed(1)+'%',color:COL_VIS}}, grid:{{color:GC}} }},
+        y1: {{ position:'right', title:{{display:true,text:'Reservas',color:COL_RES}}, ticks:{{color:COL_RES}}, grid:{{drawOnChartArea:false}} }},
         x: {{ grid:{{display:false}} }}
       }}
     }}
@@ -1454,8 +1460,8 @@ function drawC16() {{
     const cd = CONV_DATA[y];
     if (!cd) return;
     const alpha = idx === 0 ? 'b3' : '55';
-    ds.push({{ label:'Visitas '+y, data:cd.v.slice(0,period), backgroundColor:(PALETTE[y]||'#94a3b8')+alpha, borderRadius:4, yAxisID:'y', order:2+idx }});
-    ds.push({{ label:'Reservas '+y, data:cd.r.slice(0,period), type:'line', borderColor:idx===0?'#22c55e':'#22c55e88', borderWidth:idx===0?2.5:1.5, borderDash:idx===0?[]:[5,5], pointRadius:idx===0?3:2, pointBackgroundColor:idx===0?'#22c55e':'#22c55e88', tension:0.3, fill:false, yAxisID:'y1', order:idx }});
+    ds.push({{ label:'Visitas '+y, data:cd.v.slice(0,period), backgroundColor:COL_VIS+(idx===0?'b3':'50'), borderRadius:4, yAxisID:'y', order:2+idx }});
+    ds.push({{ label:'Reservas '+y, data:cd.r.slice(0,period), type:'line', borderColor:idx===0?COL_RES:COL_RES+'70', borderWidth:idx===0?2.5:1.5, borderDash:idx===0?[]:[5,5], pointRadius:idx===0?3:2, pointBackgroundColor:idx===0?COL_RES:COL_RES+'70', tension:0.3, fill:false, yAxisID:'y1', order:idx }});
   }});
   charts.c16 = new Chart(document.getElementById('c16'), {{
     type:'bar',
@@ -1465,8 +1471,8 @@ function drawC16() {{
       interaction:{{mode:'index',intersect:false}},
       plugins:{{ legend:{{position:'top',labels:{{usePointStyle:true,font:{{size:10}}}}}}, tooltip:{{}} }},
       scales: {{
-        y: {{ position:'left', title:{{display:true,text:'Visitas',color:'#60a5fa'}}, ticks:{{color:'#60a5fa'}}, grid:{{color:GC}} }},
-        y1: {{ position:'right', title:{{display:true,text:'Reservas',color:'#22c55e'}}, ticks:{{color:'#22c55e',stepSize:1}}, grid:{{drawOnChartArea:false}} }},
+        y: {{ position:'left', title:{{display:true,text:'Visitas',color:COL_VIS}}, ticks:{{color:COL_VIS}}, grid:{{color:GC}} }},
+        y1: {{ position:'right', title:{{display:true,text:'Reservas',color:COL_RES}}, ticks:{{color:COL_RES,stepSize:1}}, grid:{{drawOnChartArea:false}} }},
         x: {{ grid:{{display:false}} }}
       }}
     }}
@@ -1503,15 +1509,15 @@ function drawC17() {{
           ctx.save();
           ctx.beginPath(); ctx.arc(x, dotY, pri?7:5, 0, Math.PI*2);
           if (pri) {{
-            ctx.fillStyle='#eab308'; ctx.strokeStyle='#78350f'; ctx.lineWidth=2;
+            ctx.fillStyle=COL_ADR; ctx.strokeStyle='#713f12'; ctx.lineWidth=2;
             ctx.fill(); ctx.stroke();
-            ctx.fillStyle='#fef08a'; ctx.font='bold 9px Inter,sans-serif';
+            ctx.fillStyle='#fff'; ctx.font='bold 9px Inter,sans-serif';
             ctx.textAlign='center'; ctx.textBaseline='bottom';
             ctx.fillText(Math.round(adr)+'€', x, dotY-9);
           }} else {{
-            ctx.fillStyle='rgba(234,179,8,0.15)'; ctx.strokeStyle='#eab308'; ctx.lineWidth=1.5;
+            ctx.fillStyle=COL_ADR+'25'; ctx.strokeStyle=COL_ADR; ctx.lineWidth=1.5;
             ctx.fill(); ctx.stroke();
-            ctx.fillStyle='#94a3b8'; ctx.font='9px Inter,sans-serif';
+            ctx.fillStyle=COL_ADR+'99'; ctx.font='9px Inter,sans-serif';
             ctx.textAlign='center'; ctx.textBaseline='bottom';
             ctx.fillText(Math.round(adr)+'€', x, dotY-7);
           }}
@@ -1526,10 +1532,10 @@ function drawC17() {{
     data: {{
       labels,
       datasets: [
-        {{ label:'OTB '+y2+' (misma fecha)', data:otb2, backgroundColor:COL_Y2+'55', borderRadius:4, borderSkipped:false, yAxisID:'y', order:3 }},
-        {{ label:'OTB '+y1, data:otb1, backgroundColor:COL_Y1+'cc', borderRadius:4, borderSkipped:false, yAxisID:'y', order:2 }},
-        {{ label:'ADR '+y1, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:7, pointBackgroundColor:'#eab308', pointBorderColor:'#78350f', pointBorderWidth:2, showLine:false }},
-        {{ label:'ADR '+y2, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:5, pointBackgroundColor:'rgba(234,179,8,0.15)', pointBorderColor:'#eab308', pointBorderWidth:1.5, showLine:false }},
+        {{ label:'OTB '+y2+' (misma fecha)', data:otb2, backgroundColor:COL_ING+'40', borderRadius:4, borderSkipped:false, yAxisID:'y', order:3 }},
+        {{ label:'OTB '+y1, data:otb1, backgroundColor:COL_ING+'cc', borderRadius:4, borderSkipped:false, yAxisID:'y', order:2 }},
+        {{ label:'ADR '+y1, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:7, pointBackgroundColor:COL_ADR, pointBorderColor:'#78350f', pointBorderWidth:2, showLine:false }},
+        {{ label:'ADR '+y2, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:5, pointBackgroundColor:COL_ADR+'30', pointBorderColor:COL_ADR, pointBorderWidth:1.5, showLine:false }},
       ]
     }},
     options: {{
@@ -1689,8 +1695,8 @@ function drawC22() {{
     data: {{
       labels: years,
       datasets: [
-        {{ label: 'Confirmadas', data: conf, backgroundColor: 'rgba(59,130,246,0.7)', stack: 'a', yAxisID:'y' }},
-        {{ label: 'Canceladas',  data: canc, backgroundColor: 'rgba(239,68,68,0.7)',  stack: 'a', yAxisID:'y' }},
+        {{ label: 'Confirmadas', data: conf, backgroundColor: COL_RES+'b3', stack: 'a', yAxisID:'y' }},
+        {{ label: 'Canceladas',  data: canc, backgroundColor: COL_CANC+'b3', stack: 'a', yAxisID:'y' }},
       ]
     }},
     options: {{
