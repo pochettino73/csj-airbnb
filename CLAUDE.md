@@ -53,21 +53,25 @@ CSJ/
 │   └── raw/               28 ficheros JSON del export Airbnb (19/03/2026)
 ├── scripts/
 │   ├── visualizar.py      Genera dashboard.html desde los 3 JSON
+│   ├── auditar_dashboard.py  Auditoría económica — EJECUTAR antes de git push
 │   ├── validar.py         Valida reservas.json (se ejecuta automáticamente)
 │   ├── pricing.py         RMS determinista — genera output/pricing_output.xlsx
 │   └── utils/             Scripts de debug (no operativos)
 ├── output/
 │   ├── pricing_output.xlsx
-│   └── pricing_output.json
+│   ├── pricing_output.json
+│   ├── auditoria_dashboard.xlsx  Último informe de auditoría
+│   ├── auditoria_dashboard.json  Último informe de auditoría (JSON)
+│   └── audit_baseline.json       Snapshot de métricas validadas (auto-generado)
 └── buzon/
     ├── entrante/          Dani deja PDFs aquí
     └── procesado/YYYY/MM/
 
 GENERACION
 ══════════
-python scripts/visualizar.py  →  dashboard.html  →  git push  →  GitHub Pages
-python scripts/pricing.py     →  output/pricing_output.xlsx
-python scripts/validar.py     →  validación standalone
+python scripts/auditar_dashboard.py  →  verificar 0 CRÍTICOs
+python scripts/visualizar.py         →  dashboard.html  →  git push  →  GitHub Pages
+python scripts/pricing.py            →  output/pricing_output.xlsx
 ```
 
 ### Google Sheet — ARCHIVO MUERTO
@@ -96,7 +100,16 @@ El Google Sheet (`1BEa1m5InTFUDzvvILcDafwC3mRn7b6GkLYnq0eAMvXg`) queda como hist
 3. Ejecuta `python scripts/visualizar.py`
 4. `git commit && git push`
 
-### 3. Actualizar reviews (cuando haya nuevo export)
+### 3a. Añadir review individual (cuando Dani lo comunica)
+
+1. Localizar la reserva en `datos/reservas.json` por `confirmation_code`
+2. Añadir entrada al final de `datos/reviews.json` con la estructura de reviews recientes (date, rating, comment="", private_feedback="", language, bookable_id=null, reviewer_id=null, confirmation_code, general, llegada, limpieza, veracidad, comunicacion, ubicacion, calidad)
+3. Ejecutar `python scripts/visualizar.py`
+4. `git add datos/reviews.json dashboard.html && git commit && git push`
+
+> Claude ejecuta los pasos 3 y 4 directamente sin pedir a Dani que lo haga.
+
+### 3b. Actualizar reviews (cuando haya nuevo export)
 
 1. Solicitar export de datos personales en Airbnb
 2. Extraer a `datos/raw/`
@@ -219,10 +232,22 @@ Filtros: ano y1 vs y2, periodo Anual / A fecha.
 
 ### Colores de graficas
 
-- **y1** (ano principal): azul `#3b82f6`
-- **y2** (ano comparativa): naranja `#f97316`
-- **Media historica**: ambar/dorado `rgba(251,191,36,0.7)`
-- **Banda historica** (min/max): gris semitransparente
+Sistema de colores semántico: cada variable tiene un color fijo en todos los gráficos. La distinción entre años se hace con opacidad y línea discontinua, no cambiando el color.
+
+| Variable | Color | Hex | Constante JS |
+|----------|-------|-----|-------------|
+| Ingresos | Azul | `#3b82f6` | `COL_ING` |
+| Ocupación | Cian | `#22d3ee` | `COL_OCU` |
+| ADR / PM | Amarillo | `#facc15` | `COL_ADR` |
+| Visitas | Violeta | `#a78bfa` | `COL_VIS` |
+| Reservas | Verde | `#22c55e` | `COL_RES` |
+| Cancelaciones | Rojo | `#ef4444` | `COL_CANC` |
+
+- **y1** (año principal): color sólido, línea continua, grosor 3
+- **y2** (año comparativa): mismo color + `70` (opacidad ~44%), línea discontinua `[5,5]`, grosor 1.5
+- **Banda histórica** (min/max): gris semitransparente
+
+Las constantes se definen al inicio del bloque JS de `visualizar.py` y se usan en todas las funciones de chart.
 
 ### Secciones
 
@@ -618,4 +643,321 @@ Estado:    OK para generar
 
 ---
 
-*Documento actualizado el 27/04/2026*
+## Cambios aplicados 2026-05-22
+
+### Nueva reserva: Hermann Henkel (HME3NT9TKP)
+
+- Check-in 14/09/2026, 6 noches, 676,52€, booking_date 2026-05-22
+- Temporada media (sep), huésped alemán
+
+### Nueva review: Stef Wallace (HM5RJ9QHXS)
+
+- Date 2026-05-21, rating general 4, subcategorías: llegada=5, limpieza=4, veracidad=4, comunicación=5, ubicación=4, calidad=4
+
+### Visitas abril 2026
+
+- 1.226 visitas añadidas a `datos/visitas.json`
+
+### pricing.py — RMS completamente reescrito
+
+El sistema de Revenue Management anterior usaba reglas rígidas (`nights ≤ 2 → agresiva`). El nuevo sistema es multifactor, basado en zonas de percentiles, completamente auditable.
+
+**Estrategias:**
+
+| Estrategia | Zona percentil | Color Excel |
+|------------|---------------|-------------|
+| Ocupación | P25–P40 | Rojo (FDE9D9) |
+| Equilibrio | P45–P60 | Amarillo (FFF2CC) |
+| Rentabilidad | P65–P75 | Morado (E8DAEF) |
+
+**Lógica de asignación:**
+- **Ocupación**: hueco corto (≤3n) AND (lead<21d OR pace<0.97 OR temporada baja OR occ_futura<35%)
+- **Rentabilidad**: pos_score≥3 OR (temporada alta AND buena antelación AND (pace fuerte OR occ alta))
+- **Equilibrio**: caso por defecto
+
+**Microajustes dentro de la zona** (posición inicial = punto medio):
+- Lead <10d: −20% | <21d: −10% | >60d: +15%
+- Pace >1.07: +20% | >1.02: +10% | <0.93: −15% | <0.97: −8%
+- Noches ≤2: −10% | ≤3: −5%
+- Occ ≥70%: +10% | <30%: −10%
+- Tensión Rentabilidad (score≥3): hasta +13% sobre P75
+
+**Suelo**: P25 (×0.90 para estancias de 1 noche)
+**Techo**: P75 × 1.13
+
+**CLI:** `python scripts/pricing.py` — pace se auto-calcula si no se pasa `--pace`
+
+**Output:** 24 columnas en Excel incluyendo Estrategia, Zona objetivo, Precio base zona, Ajuste RMS, Precio final Flex, Precio NRF (−10%), Precio 7n (−5%), Motivo RMS, Suelo, Techo.
+
+**pricing_output.json** es leído por `visualizar.py` para poblar el bloque Huecos y Pricing del dashboard.
+
+### Dashboard — Revenue Decision Cockpit
+
+Refactoring completo del dashboard. De 22 visualizaciones a 14 elementos (11 charts + 3 bloques nuevos).
+
+**Nueva arquitectura — 7 secciones:**
+
+| # | Sección | Contenido |
+|---|---------|-----------|
+| 1 | Ritmo de ventas | C17+ Pace + ADR (doble eje) |
+| 2 | Huecos y Pricing | Tabla desde pricing_output.json — riesgo, acción, gap mercado |
+| 3 | Posicionamiento | Mini-form MPI con localStorage |
+| 4 | Ingresos | C1 (mensual) + C7+ (anual ingresos+ADR) |
+| 5 | Ocupación y PM | C3 + C5 + C14 + C6 + sparktable |
+| 6 | Conversión | Lead KPI inline + C15 + C16 |
+| 7 | Salud | Superhost panel + C21 + C22+ |
+
+**Eliminados (8 charts):** C2 (fusionado en C7+), C4, C8, C9, C10, C18, C19, C23, C24
+
+**C17+ Pace + ADR:** doble eje — barras OTB (eje izquierdo) + puntos discretos ADR actual y LY (eje derecho). Tooltips enriquecidos con Δ Rev%, Δ ADR%, Δ Noches%.
+
+**C7+ Evolución anual:** barras ingresos + línea ADR (sustituyó a C2+C7, eliminó ocupación).
+
+**C22+ Cancelaciones:** añadida línea de tasa % en eje derecho + delta vs año anterior en tooltip.
+
+**Bloque Huecos y Pricing:**
+- Tabla generada desde `PRICING_GAPS` (pricing_output.json inyectado en dashboard)
+- Columnas: Hueco · n · Temp · Estrategia · RMS · Actual (input editable) · Riesgo · Acción · vs Mkt
+- Precios actuales persistidos en `localStorage` (`csj_prices`)
+- Riesgo calculado client-side: nights + lead_days + future_occ_pct
+- Acción automática: Subir (actual < floor×0.95) / Bajar (actual > ceiling) / Mantener
+
+**Bloque Market Positioning:**
+- 4 inputs: mi precio actual, mercado vendido, mercado disponible, presión (dropdown)
+- MPI = mi precio / mercado vendido. Interpretación: <0.80 muy barato · 0.80–0.95 competitivo · 0.95–1.10 en mercado · >1.10 agresivo
+- Gap vs vendido y vs disponible automáticos
+- Todo persistido en `localStorage` (`csj_mkt`, `csj_my_price`)
+- Actualizar también recalcula la columna "vs Mkt" en la tabla de huecos
+
+**Lead Time mini-KPI:** sustituye C18+C19. Muestra lead medio del año seleccionado + delta % vs año anterior. Inline, sin gráfico.
+
+**Fix:** sección Evaluaciones abre por defecto en el trimestre en curso (`shIdx = 0`), no en el siguiente.
+
+### Estado de datos tras sesión
+
+- **reservas.json:** 590 registros (503 confirmadas, 87 canceladas)
+- **reviews.json:** 350 evaluaciones
+- **Auditoría:** 0 CRÍTICOS, 22 AVISOS (todos históricos o sin booking_date)
+
+---
+
+---
+
+## Cambios aplicados 2026-05-22 (sesión 2)
+
+### Dashboard v3 — refinements completos
+
+**Arquitectura revisada (6 secciones, Posicionamiento global eliminado):**
+
+| # | Sección | Contenido |
+|---|---------|-----------|
+| 1 | Huecos y Pricing | Tabla con filas expandibles de mercado por hueco |
+| 2 | Ritmo de ventas | C17 Pace + ADR (doble eje) |
+| 3 | Ingresos | C1 + C7 |
+| 4 | Ocupación y PM | C3 + C5 + C14 + sparktable (C6 eliminado) |
+| 5 | Demanda Airbnb | Lead KPI + C15 + C16 (antes "Conversión") |
+| 6 | Salud | Superhost panel + C21 + C22 |
+
+**Cambios implementados:**
+
+1. **Huecos expandibles con mercado por hueco** — click en fila abre panel con: Mkt vendido, Mkt disponible, Presión, Fecha revisión, Guardar. localStorage key = `csj_mkt_{start_date}`. Fila principal muestra badge MPI si hay datos. MPI thresholds: <0.80 Muy barato / 0.80-0.95 Competitivo / 0.95-1.10 En mercado / >1.10 Agresivo. Posicionamiento global (drawMarketPos/saveMkt) eliminado.
+
+2. **Acción mejorada** — considera: actual vs floor/ceiling, MPI vs mercado, presión de mercado. Resultados: Subir / Subir + mkt / Subir (mkt) / Oportunidad / Subir leve / Mantener / Mantener* / Revisar / Bajar.
+
+3. **6º KPI — Huecos abiertos** — muestra count + RMS medio + fecha próximo hueco. Grid KPI: 3 columnas desktop, 2 columnas tablet, 1 columna móvil.
+
+4. **Robustez técnica** — `safeDraw(fn, name)` envuelve cada drawXXX en try/catch. `window.onerror` + `div#err-banner` muestran error JS visible. Guard Chart.js: si no carga muestra mensaje y no ejecuta charts. Inicialización segura con if/else separados para Chart.defaults y tooltip config.
+
+5. **Sparktable tooltip** — `title` attribute en cada celda: año · mes · X% · N/D noches.
+
+6. **Renombrado** — "Conversión" → "Demanda Airbnb".
+
+7. **Dead code eliminado** — drawC2, drawC4, drawC9, drawC10, drawC18, drawC19, drawC23, drawC24; C6 "ADR anual" (redundante con C7); COSTES_ANN / NETO_ANN (Python + JS).
+
+8. **Secciones reordenadas** — Huecos antes que Pace; Posicionamiento global eliminado.
+
+**Refinements sesión 3 (9 puntos):**
+- `err-banner` div añadido al HTML
+- Chart.js safe init (guard si no carga)
+- KPI grid: 3-col desktop, responsive
+- Título: "CEO Dashboard" → "Revenue Cockpit" en header, h1 y footer
+- Confirmación visual al guardar datos de mercado (botón verde + "✓ Guardado" 2.5s)
+- Tooltip en celda Acción: motivo detallado por cada caso (precio bajo suelo, alto techo, MPI, presión, etc.)
+- C6 "ADR anual — evolución" eliminado (cubierto por C7)
+- COSTES_ANN / NETO_ANN eliminados de Python y JS
+- Tooltip nativo sparktable mantenido sin cambios
+
+**Deploy:** commit `21320f9` (v3 base) + `19097d1` (refinements).
+
+*Documento actualizado el 22/05/2026*
+
+---
+
+## Cambios aplicados 2026-05-25
+
+### Sistema de colores semántico
+
+Reemplaza el sistema anterior (y1=azul, y2=naranja). Ver tabla en "Colores de graficas" arriba.
+
+**Implementación:**
+- Constantes JS `COL_ING`, `COL_OCU`, `COL_ADR`, `COL_VIS`, `COL_RES`, `COL_CANC` al inicio del bloque JS
+- Variables CSS `--col-ing`, `--col-ocu`, etc. en `:root`
+- `makeDatasetLine(year, data, isPrimary, col)` recibe el color como parámetro
+- Año principal: color sólido, grosor 3. Año comparativa: color + `'70'` (hex opacity), `borderDash:[5,5]`, grosor 1.5
+
+### makeLegendLabels() — iconos de leyenda para líneas discontinuas
+
+Helper que devuelve un objeto `labels` para Chart.js que sustituye el círculo por una línea en la leyenda cuando el dataset tiene `borderDash`. Se pasa en `options.plugins.legend.labels` de cada chart.
+
+```javascript
+function makeLegendLabels(extra) {
+  return Object.assign({
+    usePointStyle: true,
+    font: {size: 10},
+    generateLabels: function(chart) {
+      const items = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+      items.forEach(function(item) {
+        const ds = chart.data.datasets[item.datasetIndex];
+        if (ds && ds.borderDash && ds.borderDash.length) { item.pointStyle = 'line'; }
+      });
+      return items;
+    }
+  }, extra || {});
+}
+```
+
+### niceMax() — valores enteros en el tope del eje
+
+`Math.max(...) * 1.35` producía decimales en el top del eje (ej. 147.555). `niceMax(v, step)` redondea hacia arriba al múltiplo de `step` (por defecto 10). Se aplica en todos los `suggestedMax` de Chart.js.
+
+```javascript
+function niceMax(v, step) { step = step || 10; return Math.ceil(v / step) * step; }
+```
+
+### pace_adr_otb — fórmula ADR correcta en Pace Report
+
+Nueva variable Python `pace_adr_otb` que calcula el ADR mensual OTB usando `sum(pm * nights) / sum(nights)`, excluyendo la cleaning fee. Reemplaza el cálculo incorrecto anterior (`total / nights`) que inflaba el ADR por la limpieza.
+
+- Solo cuenta reservas con `booking_date <= cutoff` (misma fecha que los bars OTB)
+- Excluye continuaciones cross-month (`code='' y total=0`)
+- Resultado inyectado en JS como `PACE_ADR = {str(year): [12 valores o null]}`
+
+### Pace Report — restauración eje ADR + Cierre en canvas
+
+**Eje y1 (ADR):** restaurado a la derecha del Pace Report. Los puntos ADR se posicionan con `y1Scale.getPixelForValue(adr)`, no a offset fijo.
+
+**Línea Cierre año anterior:** dibujada directamente en el canvas del plugin `paceAdr` (en `afterDatasetsDraw`), centrada sobre la barra OTB del año anterior (`bx2[i]`). No es un dataset Chart.js porque Chart.js posicionaría los puntos en el centro categórico (entre las dos barras agrupadas), no sobre la barra correcta.
+
+**Dataset fantasma para leyenda:** `{ label:'Cierre '+y2, data:Array(period).fill(null), type:'line', borderDash:[6,4], borderWidth:1.5, pointRadius:0, showLine:false }` — aparece en la leyenda con icono de línea discontinua pero no dibuja nada; el dibujo real lo hace el plugin.
+
+### Tabla Huecos — rediseño a tarjetas numeradas
+
+La tabla de huecos anterior tenía inputs de mercado por fila (Mkt vendido, Mkt disponible, Presión) que requerían mantenimiento manual. Eliminada completamente. Nueva tabla:
+
+- **Layout:** tarjetas CSS grid, columnas `36px 1fr 64px 88px 56px 108px`, `column-gap:16px`
+- **Por tarjeta:** número circular, fechas DD/MM/YY, badge "Xn", pill temporada (color por banda), antelación, precio RMS hero (grande, amarillo)
+- **Borde izquierdo** coloreado por temporada (azul=alta, amarillo=media, slate=baja)
+- **Eliminado:** toda la lógica de mercado, Riesgo, Acción, vs Mkt, inputs localStorage
+
+### Estado de auditoría (2026-05-25)
+
+```
+OK:        146
+AVISOS:     22  (solapes históricos + 6 sin booking_date + PM 2020 delta 5.7%)
+CRÍTICOS:    0
+Estado:    OK para generar
+```
+
+**Avisos conocidos pendientes de resolver:**
+- 6 reservas sin `booking_date` (2015-09, 2024-01, 2024-07, 2024-11, 2025-01, 2025-08) — afectan al cálculo OTB del Pace Report para esos meses
+- PM 2020: dashboard=66.33€ vs correcto=70.34€ (delta 5.7%) — causa pendiente de identificar
+- 14 solapes históricos (reservas pre-2021, ambas cerradas, sin impacto operativo)
+
+---
+
+## Cambios aplicados 2026-05-25 (sesión 2) — Auditoría económica
+
+### Duplicado eliminado: Arthur Schaber
+
+Detectado mediante el nuevo check de duplicados: el mismo huésped tenía dos registros para feb-mar 2026.
+- **Eliminados:** code='' Feb 2026 (162.75€) + code='' Mar 2026 (54.25€)
+- **Conservado:** HMZRBPTXRS (217.41€ Feb + 0€ Mar)
+- **Impacto:** Marzo 2026 corregido de 2153€ → 2099€
+
+### booking_dates estimados (6 registros)
+
+Registros sin `booking_date` estimados con la heurística `checkin - 4 meses`:
+
+| Huésped | Mes | booking_date estimado |
+|---------|-----|----------------------|
+| Bernhard | 2015-09 | 2015-04-27 (del registro padre) |
+| Maitane Renart | 2024-01 | 2023-09-01 |
+| Lucy Rankin | 2024-07 | 2024-03-01 |
+| Fabio Mora | 2024-11 | 2024-10-07 (del registro padre) |
+| Isabel Jung | 2025-01 | 2024-09-01 |
+| Marta Berdejo | 2025-08 | 2025-04-01 |
+
+### Dmitry Shpak — corrección de noches
+
+- **Checkin:** 2026-08-18 (correcto). **Checkout real:** 2026-08-25 (7n, no 8n)
+- **Tiani Les** entra el mismo día (25/ago) — es cambio de día, no solapamiento
+- **nights:** 8 → 7. **pm:** 105.0 → 120.0. **total:** 900€ (sin cambio, cuadra: 7×120+60=900)
+
+### auditar_dashboard.py — auditoría económica (nuevo sistema)
+
+El auditor pasa de "integridad estructural" a "coherencia de negocio". Añadidos 4 nuevos checks:
+
+**1. `audit_duplicados()`**
+- Detecta dos registros del mismo huésped en el mismo mes (guest-mes duplicado) → AVISO
+- Detecta código Airbnb apareciendo en más de un mes → CRÍTICO
+- Detecta registro sin código ni checkin pero con ingreso → AVISO
+- Solo aplica a códigos reales Airbnb: `len>=6 AND not isdigit() AND isalnum()` (evita false positives con códigos históricos numéricos)
+
+**2. `audit_distorsion_crossmonth()`**
+- Para cada reserva cross-month, calcula cuántos € corresponden económicamente al mes siguiente
+- Fórmula: `distorsion = pm_eff × nights_next_month`; `pct_mes = distorsion / total_mes × 100`
+- **AVISO** si distorsion >= 150€ OR pct_mes >= 15%
+- **CRÍTICO** (solo reciente, no histórico) si pct_mes >= 50% AND distorsion >= 400€
+- Muestra: noches en cada mes, total reserva, distorsión €, % del mes, % de noches en mes siguiente
+
+**3. `audit_anomalias_economicas()`**
+- Compara ingresos de cada mes de los últimos 2 años contra mediana histórica del mismo mes calendario
+- Referencias: años con al menos 3 años válidos (excluyendo COVID 2020, excluyendo año actual y futuro)
+- **AVISO** si delta >= +50% o <= -40%
+- **CRÍTICO** si delta >= +100% o <= -60%
+- Si cross-month explica la anomalía: baja nivel y omite si el delta residual está dentro del rango normal
+- En el campo `notes`: atribuye la causa ("Distorsión cross-month: +689€") con delta ajustado
+
+**4. `audit_proteccion_historica()`**
+- Carga `output/audit_baseline.json` si existe (snapshot de métricas validadas)
+- Compara ingresos y PM por mes. AVISO si delta >= 5%, CRÍTICO si >= 15%
+- El baseline se guarda automáticamente al final de cada auditoría sin CRÍTICOs (`_save_baseline()`)
+
+**Constantes añadidas:**
+```python
+BASELINE_PATH   = OUTPUT / "audit_baseline.json"
+COVID_YEARS     = {2020}
+REF_MIN_YEARS   = 3
+ANOM_WARN_PCT   = 50.0   # +50% / -40% → AVISO
+ANOM_CRIT_PCT   = 100.0  # +100% / -60% → CRÍTICO
+CROSS_WARN_EUR  = 150
+CROSS_WARN_PCT  = 15.0
+CROSS_CRIT_EUR  = 400
+CROSS_CRIT_PCT  = 35.0
+BASELINE_WARN_PCT = 5.0
+BASELINE_CRIT_PCT = 15.0
+```
+
+### Estado de auditoría tras sesión
+
+```
+OK:        147
+AVISOS:     43  (solapes históricos + cross-month + anomalías 2025 + duplicados potenciales + PM 2020)
+CRÍTICOS:    0
+Estado:    OK para generar
+```
+
+**Baseline guardado en:** `output/audit_baseline.json` (snapshot de métricas del 2026-05-25)
+
+**Avisos que requieren revisión de Dani:**
+- Lucy Rankin 2024-07: dos registros code='' (6n/723€ con checkin + 2n/270€ sin checkin) — posibles dos estancias separadas o error de entrada

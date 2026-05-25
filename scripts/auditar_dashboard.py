@@ -909,6 +909,303 @@ def run_unit_tests(conf: List[dict]) -> List[Finding]:
     return findings
 
 
+# ── AUDITORÍA ECONÓMICA ───────────────────────────────────────────────────────
+
+BASELINE_PATH = OUTPUT / "audit_baseline.json"
+COVID_YEARS   = {2020}          # excluidos de referencias históricas
+REF_MIN_YEARS = 3               # mínimo de años para construir referencia
+ANOM_WARN_PCT = 50.0            # +50% / -40% vs mediana histórica → AVISO
+ANOM_CRIT_PCT = 100.0           # +100% / -60% vs mediana histórica → CRÍTICO
+CROSS_WARN_EUR = 150            # distorsión cross-month > 150€ o > 15% mes → AVISO
+CROSS_WARN_PCT = 15.0
+CROSS_CRIT_EUR = 400            # distorsión cross-month > 400€ o > 35% mes → CRÍTICO
+CROSS_CRIT_PCT = 35.0
+BASELINE_WARN_PCT = 5.0         # cambio vs baseline > 5% → AVISO
+BASELINE_CRIT_PCT = 15.0        # cambio vs baseline > 15% → CRÍTICO
+
+
+def _crossmonth_impact(conf: List[dict]) -> Dict[Tuple[int,int], float]:
+    """Para cada (year, month), calcula cuántos € pertenecen económicamente al mes siguiente."""
+    impact: Dict[Tuple[int,int], float] = defaultdict(float)
+    for r in conf:
+        if not r.get("code") or not r.get("checkin") or r.get("total", 0) <= 0:
+            continue
+        y, m = r["year"], r["month"]
+        ny, nm = (y, m + 1) if m < 12 else (y + 1, 1)
+        cont = next((c for c in conf
+                     if not c.get("code")
+                     and c.get("guest", "") == r.get("guest", "")
+                     and c["year"] == ny and c["month"] == nm
+                     and c.get("total", 0) == 0
+                     and c.get("nights", 0) > 0), None)
+        if cont:
+            pm_eff = _pm_effective(r)
+            impact[(y, m)] += pm_eff * cont.get("nights", 0)
+    return dict(impact)
+
+
+def audit_distorsion_crossmonth(conf: List[dict]) -> List[Finding]:
+    """
+    Detecta reservas cross-month que distorsionan económicamente un mes.
+    La convención imputa todo el ingreso al mes de llegada; si la mayoría
+    de las noches caen en el mes siguiente, el mes de llegada queda inflado.
+    """
+    ingresos = calc_ingresos(conf)
+    findings: List[Finding] = []
+
+    for r in conf:
+        if not r.get("code") or not r.get("checkin") or r.get("total", 0) <= 0:
+            continue
+        y, m = r["year"], r["month"]
+        ny, nm = (y, m + 1) if m < 12 else (y + 1, 1)
+        cont = next((c for c in conf
+                     if not c.get("code")
+                     and c.get("guest", "") == r.get("guest", "")
+                     and c["year"] == ny and c["month"] == nm
+                     and c.get("total", 0) == 0
+                     and c.get("nights", 0) > 0), None)
+        if not cont:
+            continue
+
+        nights_here = r.get("nights", 0)
+        nights_next = cont.get("nights", 0)
+        total_nights = nights_here + nights_next
+        if total_nights <= 0:
+            continue
+
+        pm_eff     = _pm_effective(r)
+        distorsion = pm_eff * nights_next          # € que pertenecen al mes siguiente
+        month_ing  = ingresos.get((y, m), 0) or 1
+        pct_mes    = distorsion / month_ing * 100
+        pct_noches = nights_next / total_nights * 100
+
+        cy = date.today().year
+        is_historical = y < cy - 1
+        # Histórico: solo aviso. Reciente: crítico si muy severo (>50% del mes Y >500€)
+        if not is_historical and pct_mes >= 50 and distorsion >= CROSS_CRIT_EUR:
+            level, blocking = "CRÍTICO", True
+        elif distorsion >= CROSS_WARN_EUR or pct_mes >= CROSS_WARN_PCT:
+            level, blocking = "AVISO", False
+        else:
+            continue
+
+        findings.append(Finding(
+            section="Distorsion_CrossMonth",
+            level=level, blocking=blocking,
+            metric=f"CrossMonth {y}-{m:02d}: {r.get('guest','')}",
+            detail=(
+                f"{nights_here}n en {m:02d}/{y} + {nights_next}n en {nm:02d}/{ny}  "
+                f"Total reserva={r.get('total',0):.0f}€  "
+                f"Distorsión={distorsion:.0f}€ ({pct_mes:.0f}% del mes)  "
+                f"{pct_noches:.0f}% de las noches son del mes siguiente"
+            ),
+            year=y, month=m,
+            expected=round(month_ing - distorsion, 2),
+            dashboard=round(month_ing, 2),
+            delta_pct=round(pct_mes, 1),
+            notes=(f"Sin distorsión, {m:02d}/{y} mostraría ~{month_ing - distorsion:.0f}€ "
+                   f"en lugar de {month_ing:.0f}€. "
+                   f"Los {nights_next}n restantes están en {nm:02d}/{ny}."),
+        ))
+
+    if not findings:
+        findings.append(Finding(
+            section="Distorsion_CrossMonth", level="OK", blocking=False,
+            metric="Sin distorsiones graves", detail="Ninguna reserva cross-month distorsiona un mes significativamente",
+        ))
+    return findings
+
+
+def audit_anomalias_economicas(conf: List[dict]) -> List[Finding]:
+    """
+    Compara ingresos/noches/PM de cada mes de los últimos 2 años contra
+    la mediana histórica del mismo mes calendario.
+    Detecta meses económicamente absurdos sin importar la causa.
+    """
+    today     = date.today()
+    cy        = today.year
+    ingresos  = calc_ingresos(conf)
+    noches_m  = calc_noches(conf)
+    pm_ok     = calc_pm_correcto(conf)
+    impact_cm = _crossmonth_impact(conf)
+
+    all_years = sorted({r["year"] for r in conf})
+    ref_years = [y for y in all_years if y <= cy - 2 and y not in COVID_YEARS]
+    audit_years = [y for y in all_years if cy - 1 <= y <= cy]
+    findings: List[Finding] = []
+
+    if len(ref_years) < REF_MIN_YEARS:
+        findings.append(Finding(
+            section="Anomalias", level="AVISO", blocking=False,
+            metric="Histórico insuficiente",
+            detail=f"Solo {len(ref_years)} años de referencia (mínimo {REF_MIN_YEARS}). Checks de anomalía omitidos.",
+        ))
+        return findings
+
+    for ay in audit_years:
+        for m in range(1, 13):
+            ing_actual = ingresos.get((ay, m), 0)
+            if ing_actual == 0:
+                continue
+
+            # No comparar el mes actual si estamos a <15 días del inicio
+            if ay == cy and m == today.month and today.day < 15:
+                continue
+
+            hist = sorted([ingresos.get((ry, m), 0) for ry in ref_years if ingresos.get((ry, m), 0) > 0])
+            if len(hist) < 2:
+                continue
+
+            mediana = hist[len(hist) // 2]
+            h_min, h_max = hist[0], hist[-1]
+            if mediana == 0:
+                continue
+
+            delta_pct = (ing_actual - mediana) / mediana * 100
+
+            # Determine level
+            if delta_pct >= ANOM_CRIT_PCT or delta_pct <= -60:
+                level, blocking = "CRÍTICO", True
+            elif abs(delta_pct) >= ANOM_WARN_PCT:
+                level, blocking = "AVISO", False
+            else:
+                continue
+
+            # Explain the anomaly
+            cm_imp = impact_cm.get((ay, m), 0)
+            if cm_imp > 100:
+                ing_sin_cm = ing_actual - cm_imp
+                delta_sin  = (ing_sin_cm - mediana) / mediana * 100
+                causa = (f"Distorsión cross-month: +{cm_imp:.0f}€ imputados al mes de llegada. "
+                         f"Sin distorsión: {ing_sin_cm:.0f}€ (delta {delta_sin:+.0f}% vs histórico)")
+                # Si la anomalía queda explicada por cross-month, bajar nivel
+                if level == "CRÍTICO" and delta_sin < ANOM_CRIT_PCT:
+                    level, blocking = "AVISO", False
+                if abs(delta_sin) < ANOM_WARN_PCT:
+                    continue  # totalmente explicada; distorsion_crossmonth ya la flagea
+            else:
+                n_recs = sum(1 for r in conf if r["year"] == ay and r["month"] == m
+                             and r.get("total", 0) > 0 and _is_real_record(r))
+                pm_mes = pm_ok.get((ay, m), 0)
+                causa = f"{n_recs} reservas, PM={pm_mes:.0f}€"
+
+            noches_act = noches_m.get((ay, m), 0)
+            hist_noches = sorted([noches_m.get((ry, m), 0) for ry in ref_years if noches_m.get((ry, m), 0) > 0])
+            med_noches  = hist_noches[len(hist_noches) // 2] if hist_noches else 0
+
+            findings.append(Finding(
+                section="Anomalias",
+                level=level, blocking=blocking,
+                metric=f"Ingreso anómalo {ay}-{m:02d}",
+                detail=(
+                    f"Actual={ing_actual:.0f}€  Mediana_hist={mediana:.0f}€  "
+                    f"Delta={delta_pct:+.0f}%  Rango_hist=[{h_min:.0f}€-{h_max:.0f}€]  "
+                    f"Noches={noches_act} (mediana_hist={med_noches})"
+                ),
+                year=ay, month=m,
+                expected=mediana, dashboard=ing_actual,
+                delta_pct=round(delta_pct, 1),
+                notes=causa,
+            ))
+
+    if not any(f.section == "Anomalias" and f.level in ("AVISO","CRÍTICO") for f in findings):
+        findings.append(Finding(
+            section="Anomalias", level="OK", blocking=False,
+            metric="Sin anomalías detectadas",
+            detail=f"Todos los meses auditados dentro del rango histórico ({len(ref_years)} años ref.)",
+        ))
+    return findings
+
+
+def audit_proteccion_historica(conf: List[dict]) -> List[Finding]:
+    """
+    Compara métricas actuales contra el baseline guardado (output/audit_baseline.json).
+    Detecta modificaciones de datos que hayan alterado cifras ya validadas.
+    El baseline se actualiza automáticamente tras una auditoría limpia (0 críticos).
+    """
+    ingresos = calc_ingresos(conf)
+    noches_m = calc_noches(conf)
+    pm_ok    = calc_pm_correcto(conf)
+    findings: List[Finding] = []
+
+    current: dict = {}
+    for (y, m), ing in ingresos.items():
+        key = f"{y}-{m:02d}"
+        current[key] = {
+            "income":  round(ing, 2),
+            "nights":  noches_m.get((y, m), 0),
+            "pm":      round(pm_ok.get((y, m), 0), 2),
+        }
+
+    if not BASELINE_PATH.exists():
+        findings.append(Finding(
+            section="Baseline", level="OK", blocking=False,
+            metric="Baseline no existe aún",
+            detail="Se generará automáticamente tras la primera auditoría limpia.",
+        ))
+        return findings
+
+    with BASELINE_PATH.open(encoding="utf-8") as f:
+        baseline = json.load(f)
+    bl_months: dict = baseline.get("months", {})
+    bl_date   = baseline.get("generated", "?")
+
+    changed = False
+    for key, bl_v in bl_months.items():
+        cur_v = current.get(key)
+        if cur_v is None:
+            continue
+        for field, warn_thr, crit_thr in [
+            ("income", BASELINE_WARN_PCT, BASELINE_CRIT_PCT),
+            ("pm",     BASELINE_WARN_PCT, BASELINE_CRIT_PCT),
+        ]:
+            bl_f   = bl_v.get(field, 0)
+            cur_f  = cur_v.get(field, 0)
+            if bl_f == 0:
+                continue
+            delta  = abs(cur_f - bl_f) / bl_f * 100
+            if delta >= warn_thr:
+                level    = "CRÍTICO" if delta >= crit_thr else "AVISO"
+                blocking = delta >= crit_thr
+                changed  = True
+                findings.append(Finding(
+                    section="Baseline",
+                    level=level, blocking=blocking,
+                    metric=f"Cambio {field} {key}",
+                    detail=(f"Baseline ({bl_date}): {bl_f:.2f}  "
+                            f"Actual: {cur_f:.2f}  Delta: {delta:+.1f}%"),
+                    year=int(key[:4]), month=int(key[5:7]),
+                    expected=bl_f, dashboard=cur_f, delta_pct=round(delta, 1),
+                    notes=f"Modificación de datos detectada en {key}. Verifica que fue intencional.",
+                ))
+
+    if not changed:
+        findings.append(Finding(
+            section="Baseline", level="OK", blocking=False,
+            metric="Baseline consistente",
+            detail=f"Ningún cambio respecto al baseline del {bl_date}.",
+        ))
+    return findings
+
+
+def _save_baseline(conf: List[dict]) -> None:
+    """Guarda las métricas actuales como nuevo baseline."""
+    ingresos = calc_ingresos(conf)
+    noches_m = calc_noches(conf)
+    pm_ok    = calc_pm_correcto(conf)
+    months: dict = {}
+    for (y, m), ing in ingresos.items():
+        months[f"{y}-{m:02d}"] = {
+            "income": round(ing, 2),
+            "nights": noches_m.get((y, m), 0),
+            "pm":     round(pm_ok.get((y, m), 0), 2),
+        }
+    OUTPUT.mkdir(exist_ok=True)
+    with BASELINE_PATH.open("w", encoding="utf-8") as f:
+        json.dump({"generated": date.today().isoformat(), "months": months}, f,
+                  ensure_ascii=False, indent=2)
+
+
 # ── EXCEL ─────────────────────────────────────────────────────────────────────
 
 def _fill(level: str) -> PatternFill:
@@ -1210,6 +1507,51 @@ def write_excel(path: Path, findings: List[Finding],
             c.fill = _fill(f.level)
     _autosize(wcv, 20)
 
+    # ── Distorsión Cross-Month ────────────────────────────────────────────────
+    wdcm = wb.create_sheet("Distorsion_CrossMonth")
+    wdcm.append(["Nivel","Bloq.","Métrica","Detalle","Mes","Esperado€","Dashboard€","Distorsión%","Notas"])
+    for c in wdcm[1]:
+        c.font = Font(bold=True)
+        c.fill = FILL_HEADER
+    for f in [x for x in findings if x.section == "Distorsion_CrossMonth"]:
+        wdcm.append([f.level, "SÍ" if f.blocking else "no", f.metric, f.detail,
+                     f"{f.year}-{f.month:02d}" if f.month else "",
+                     round(f.expected, 2) if f.expected else "",
+                     round(f.dashboard, 2) if f.dashboard else "",
+                     f.delta_pct if f.delta_pct else "", f.notes])
+        for c in wdcm[wdcm.max_row]:
+            c.fill = _fill(f.level)
+    _autosize(wdcm, 80)
+
+    # ── Anomalías Económicas ──────────────────────────────────────────────────
+    wan = wb.create_sheet("Anomalias")
+    wan.append(["Nivel","Bloq.","Métrica","Actual€","Mediana_Hist€","Delta%","Rango_Hist","Causa"])
+    for c in wan[1]:
+        c.font = Font(bold=True)
+        c.fill = FILL_HEADER
+    for f in [x for x in findings if x.section == "Anomalias"]:
+        wan.append([f.level, "SÍ" if f.blocking else "no", f.metric,
+                    round(f.dashboard, 2) if f.dashboard else "",
+                    round(f.expected, 2) if f.expected else "",
+                    f.delta_pct if f.delta_pct else "",
+                    f.detail, f.notes])
+        for c in wan[wan.max_row]:
+            c.fill = _fill(f.level)
+    _autosize(wan, 80)
+
+    # ── Baseline / Protección Histórica ───────────────────────────────────────
+    wbl = wb.create_sheet("Baseline")
+    wbl.append(["Nivel","Bloq.","Métrica","Detalle","Delta%","Notas"])
+    for c in wbl[1]:
+        c.font = Font(bold=True)
+        c.fill = FILL_HEADER
+    for f in [x for x in findings if x.section == "Baseline"]:
+        wbl.append([f.level, "SÍ" if f.blocking else "no", f.metric,
+                    f.detail, f.delta_pct if f.delta_pct else "", f.notes])
+        for c in wbl[wbl.max_row]:
+            c.fill = _fill(f.level)
+    _autosize(wbl, 80)
+
     wb.save(path)
 
 
@@ -1221,6 +1563,9 @@ def auditar(verbose: bool = True) -> Tuple[List[Finding], List[Finding]]:
     all_findings: List[Finding] = []
     all_findings += audit_data_integrity(conf, canc)
     all_findings += audit_duplicados(conf)
+    all_findings += audit_distorsion_crossmonth(conf)
+    all_findings += audit_anomalias_economicas(conf)
+    all_findings += audit_proteccion_historica(conf)
     all_findings += audit_pm_mensual(conf)
     all_findings += audit_pm_temporada(conf)
     all_findings += audit_ocupacion(conf)
@@ -1233,6 +1578,11 @@ def auditar(verbose: bool = True) -> Tuple[List[Finding], List[Finding]]:
     all_findings += audit_superhost(conf, canc)
     all_findings += audit_conversion(conf)
     all_findings += run_unit_tests(conf)
+
+    # Guardar baseline si la auditoría es limpia (0 críticos)
+    blocking_new = [f for f in all_findings if f.blocking]
+    if not blocking_new:
+        _save_baseline(conf)
 
     blocking = [f for f in all_findings if f.blocking]
     warns    = [f for f in all_findings if f.level == "AVISO" and not f.blocking]
