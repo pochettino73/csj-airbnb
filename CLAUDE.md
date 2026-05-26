@@ -979,3 +979,35 @@ Estado:    OK para generar
 - Añadido guard `if(!ct) return;` a la función conservada
 
 **Lección:** al restaurar código de una versión anterior, verificar siempre con `grep "function drawNextSH\|let shIdx"` que no haya declaraciones duplicadas.
+
+### Chart.js movido al final del body
+
+`<script src="chart.js">` estaba en `<head>` sin `defer` — script bloqueante que impedía renderizar nada hasta que el CDN cargara. Movido a justo antes del script inline al final de `<body>`. El HTML skeleton se renderiza inmediatamente; Chart.js carga al final.
+
+### Funciones HTML puro desacopladas de Chart.js
+
+`drawKPIs`, `drawSpark`, `drawHuecos` y `drawNextSH` generan HTML puro sin Chart.js. Se llaman ahora **antes** del guard `if(typeof Chart!=='undefined')`, de modo que tablas y paneles aparecen aunque Chart.js tarde o falle.
+
+### Sparktable — fix scroll horizontal móvil
+
+- `min-width:620px` en `.spark-table` fuerza scroll horizontal
+- Wrapper `width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch` envuelve la tabla
+- `min-width:36px` en `th` y `td` garantiza columnas visibles
+- Barras subidas de 26px a 36px de alto
+- Media query móvil movida después de los estilos base para que tome precedencia
+
+### Deploy: GitHub Actions (sustituye legacy Jekyll)
+
+El sistema legacy de GitHub Pages fallaba silenciosamente porque Jekyll interpreta los `{{` del JS como Liquid templates, bloqueando el deploy. Solución:
+
+1. Añadido `.nojekyll` al repo
+2. Creado `.github/workflows/deploy.yml` con `actions/deploy-pages`
+3. Cambiado `build_type` a `workflow` via API
+
+**Desde ahora cada `git push` despliega en ~22 segundos via GitHub Actions.** El sistema legacy nunca más.
+
+```yaml
+# .github/workflows/deploy.yml
+on: push (branch: master)
+jobs: checkout → configure-pages → upload-artifact → deploy-pages
+```
