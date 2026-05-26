@@ -1196,32 +1196,37 @@ function drawC1() {{
   const ing1 = (ALL_ING[y1]||Array(12).fill(0)).slice(0, period);
   const ing2 = (ALL_ING[y2]||Array(12).fill(0)).slice(0, period);
 
-  // Para y2: solo meses ejecutados (checkin ya pasó). Corte en TODAY_MONTH.
-  const cutIdx = (parseInt(y2) === TODAY_YEAR) ? TODAY_MONTH : undefined;
+  // Corte en TODAY_MONTH para cualquier año que sea el año actual
+  const cut1 = (parseInt(y1) === TODAY_YEAR) ? TODAY_MONTH : undefined;
+  const cut2 = (parseInt(y2) === TODAY_YEAR) ? TODAY_MONTH : undefined;
 
-  const ytd2 = cumul(ing2, cutIdx);
-  const ytd1 = cumul(ing1);
+  const ytd1 = cumul(ing1, cut1);
+  const ytd2 = cumul(ing2, cut2);
 
-  // KPI: comparativa acumulado real y2 vs mismo período y1
-  const kpiEl = document.getElementById('ytd-kpi');
-  if(kpiEl) {{
-    const real2 = ytd2.filter(v => v !== null);
-    const real1 = ing1.slice(0, real2.length).reduce((a,b) => a+(b||0), 0);
-    const actual2 = real2.length ? real2[real2.length-1] : 0;
-    const diff = actual2 - real1;
-    const pct  = real1 > 0 ? (diff / real1 * 100) : 0;
+  // KPI: año actual vs mismo período año anterior
+  const curIng  = cut1 !== undefined ? ing1 : (cut2 !== undefined ? ing2 : []);
+  const prevIng = cut1 !== undefined ? ing2 : (cut2 !== undefined ? ing1 : []);
+  const cutM    = cut1 !== undefined ? cut1 : cut2;
+  const kpiEl   = document.getElementById('ytd-kpi');
+  if(kpiEl && cutM !== undefined) {{
+    const actualYTD = curIng.slice(0, cutM).reduce((a,b) => a+(b||0), 0);
+    const prevYTD   = prevIng.slice(0, cutM).reduce((a,b) => a+(b||0), 0);
+    const diff = actualYTD - prevYTD;
+    const pct  = prevYTD > 0 ? (diff / prevYTD * 100) : 0;
     const pos  = diff >= 0;
     const col  = pos ? '#22c55e' : '#ef4444';
     const sign = pos ? '+' : '';
-    const nM   = M[real2.length - 1] || '';
+    const nM   = M[cutM - 1] || '';
+    const curY  = cut1 !== undefined ? y1 : y2;
+    const prevY = cut1 !== undefined ? y2 : y1;
     kpiEl.innerHTML =
       '<div style="display:inline-flex;align-items:center;gap:18px;background:rgba(59,130,246,0.07);'
       +'border:1px solid rgba(59,130,246,0.18);border-radius:8px;padding:8px 16px;">'
-      +'<span style="font-size:11px;color:#64748b;">YTD hasta '+nM+'</span>'
+      +'<span style="font-size:11px;color:#64748b;">YTD '+curY+' hasta '+nM+'</span>'
       +'<span style="font-size:20px;font-weight:700;color:'+col+';">'
         +sign+diff.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€</span>'
       +'<span style="font-size:13px;font-weight:600;color:'+col+';">'
-        +sign+pct.toFixed(1)+'% vs '+y1+'</span>'
+        +sign+pct.toFixed(1)+'% vs '+prevY+'</span>'
       +'</div>';
   }}
 
