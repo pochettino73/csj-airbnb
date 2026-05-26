@@ -105,7 +105,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ Airbnb <span>Revenue Cockpit</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 26/05/2026 12:26</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 26/05/2026 12:35</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -1039,78 +1039,50 @@ function drawC17() {
 
 
 
-// === C21: Superhost timeline ===
+// === C21: Reviews por trimestre (barras) + Rating medio (línea) ===
 function drawC21() {
   if(charts.c21) charts.c21.destroy();
-  const nextQ = (FUTURE_SH && FUTURE_SH.length > 1) ? FUTURE_SH[1].label : (NEXT_SH ? NEXT_SH.label : null);
-  const cutIdx = nextQ ? SH_CHECKS.indexOf(nextQ) : SH_CHECKS.length - 1;
-  const allLabels = SH_CHECKS.slice(0, cutIdx + 1);
-  const labels = allLabels.slice(-4);
-  const ratings = labels.map(q => SH_DATA[q] ? SH_DATA[q].rating : null);
-  const counts = labels.map(q => SH_DATA[q] ? SH_DATA[q].n : 0);
-  const isSH = labels.map(q => SH_DATA[q] ? SH_DATA[q].superhost : false);
-  const ptColors = ratings.map((v,i) => v === null ? 'transparent' : (isSH[i] ? '#22c55e' : '#ef4444'));
-  const ptBorder = ratings.map((v,i) => v === null ? 'transparent' : (isSH[i] ? '#16a34a' : '#dc2626'));
-  charts.c21 = new Chart(document.getElementById('c21'), {
-    type:'line',
+  const el = document.getElementById('c21');
+  if(!el) return;
+  const labels  = SH_CHECKS;
+  const ratings = labels.map(q => SH_DATA[q] ? SH_DATA[q].rating : 0);
+  const counts  = labels.map(q => SH_DATA[q] ? SH_DATA[q].n : 0);
+  const isSH    = labels.map(q => SH_DATA[q] ? SH_DATA[q].superhost : false);
+  const barCol  = isSH.map(v => v ? '#22c55ecc' : '#ef4444cc');
+  const ptCol   = ratings.map((v,i) => isSH[i] ? '#22c55e' : '#ef4444');
+  charts.c21 = new Chart(el, {
+    type: 'bar',
     data: {
       labels,
       datasets: [
-        {
-          label:'Rating medio (365d)',
-          data:ratings,
-          borderColor:'#3b82f6',
-          borderWidth:2.5,
-          pointRadius:6,
-          pointHoverRadius:8,
-          pointBackgroundColor:ptColors,
-          pointBorderColor:ptBorder,
-          pointBorderWidth:2,
-          tension:0.3,
-          fill:false,
-          spanGaps:true,
-        },
-        {
-          label:'Umbral Superhost (4.8)',
-          data:Array(labels.length).fill(4.8),
-          borderColor:'rgba(239,68,68,0.5)',
-          borderDash:[8,4],
-          borderWidth:2,
-          pointRadius:0,
-          fill:{target:'end',above:'transparent',below:'rgba(239,68,68,0.08)'},
-        },
+        { label:'Reviews', data:counts, backgroundColor:barCol, borderRadius:4, borderSkipped:false, yAxisID:'y' },
+        { label:'Rating medio', data:ratings, type:'line', borderColor:COL_ADR, borderWidth:2.5,
+           pointRadius:4, pointBackgroundColor:ptCol, tension:0.3, fill:false, yAxisID:'y1' },
+        { label:'Umbral 4.8', data:Array(labels.length).fill(4.8), type:'line',
+           borderColor:'rgba(148,163,184,0.4)', borderDash:[6,4], borderWidth:1,
+           pointRadius:0, fill:false, yAxisID:'y1' },
       ]
     },
     options: {
       responsive:true, maintainAspectRatio:false,
       interaction:{mode:'index',intersect:false},
       plugins: {
-        legend:{position:'top',labels:makeLegendLabels()},
+        legend:{position:'top',labels:{usePointStyle:true,font:{size:10},
+          filter: item => !item.text.includes('Umbral')
+        }},
         tooltip:{callbacks:{
-          title: function(items) {
-            const i = items[0].dataIndex;
-            const q = labels[i];
-            return q + (isSH[i] ? ' \u2705 SUPERHOST' : ' \u274c No Superhost');
-          },
-          label:function(c) {
-            if(c.dataset.label.includes('Umbral')) return '';
-            const i = c.dataIndex;
-            const r = ratings[i];
-            const n = counts[i];
-            if(r===null) return '';
-            const diff = (r - 4.8).toFixed(2);
-            const sign = r >= 4.8 ? '+' : '';
-            return ['Rating: ' + r.toFixed(2) + ' (' + sign + diff + ' vs 4.8)', 'Reviews: ' + n + ' (min 3)'];
+          afterBody: i => isSH[i[0].dataIndex] ? ['✅ Superhost'] : ['❌ No Superhost'],
+          label: c => {
+            if(c.dataset.yAxisID==='y') return ' '+c.parsed.y+' reviews';
+            if(c.dataset.label==='Rating medio') return ' Rating: '+c.parsed.y.toFixed(2);
+            return '';
           }
         }}
       },
       scales: {
-        y: {
-          min:4.0, max:5.0,
-          ticks:{stepSize:0.1,color:'#94a3b8',callback:v=>v.toFixed(1)},
-          grid:{color: function(ctx) { return ctx.tick.value === 4.8 ? 'rgba(239,68,68,0.3)' : GC; } }
-        },
-        x: { ticks:{font:{size:10},maxRotation:0,autoSkip:false}, grid:{display:false} }
+        y:  { position:'left',  ticks:{color:'#60a5fa',stepSize:2}, grid:{color:GC}, title:{display:true,text:'Reviews',color:'#60a5fa',font:{size:10}} },
+        y1: { position:'right', ticks:{color:COL_ADR, callback:v=>v.toFixed(1)}, grid:{drawOnChartArea:false}, min:4, max:5, title:{display:true,text:'Rating',color:COL_ADR,font:{size:10}} },
+        x:  { ticks:{font:{size:9},maxRotation:45}, grid:{display:false} }
       }
     }
   });
