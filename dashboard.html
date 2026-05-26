@@ -105,7 +105,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ Airbnb <span>Revenue Cockpit</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 26/05/2026 11:36</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 26/05/2026 11:47</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -164,7 +164,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
   <div style="display:flex;flex-direction:column;gap:16px;">
     <div class="cd">
       <h3>Acumulado anual (YTD)</h3>
-      <div class="s">Ingresos acumulados mes a mes &mdash; 2025 completo vs 2026 hasta hoy</div>
+      <div class="s">Ingresos acumulados mes a mes &mdash; 2025 cierre vs 2026 vendido</div>
       <div class="ch md"><canvas id="c1"></canvas></div>
     </div>
     <div class="cd">
@@ -530,7 +530,6 @@ function drawC1() {
 
   const ing1 = (ALL_ING[y1]||Array(12).fill(0)).slice(0, period);
   const ing2 = (ALL_ING[y2]||Array(12).fill(0)).slice(0, period);
-  const cutIdx = (parseInt(y2) === TODAY_YEAR) ? TODAY_MONTH : undefined;
 
   charts.c1 = new Chart(document.getElementById('c1'), {
     type:'line',
@@ -538,7 +537,7 @@ function drawC1() {
       labels,
       datasets: [
         makeDatasetLine(y1, cumul(ing1), true,  COL_ING),
-        makeDatasetLine(y2, cumul(ing2, cutIdx), false, COL_ING),
+        makeDatasetLine(y2, cumul(ing2), false, COL_ING),
       ]
     },
     options: {

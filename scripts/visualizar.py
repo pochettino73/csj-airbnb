@@ -832,7 +832,7 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
   <div style="display:flex;flex-direction:column;gap:16px;">
     <div class="cd">
       <h3>Acumulado anual (YTD)</h3>
-      <div class="s">Ingresos acumulados mes a mes &mdash; {datetime.now().year-1} completo vs {datetime.now().year} hasta hoy</div>
+      <div class="s">Ingresos acumulados mes a mes &mdash; {datetime.now().year-1} cierre vs {datetime.now().year} vendido</div>
       <div class="ch md"><canvas id="c1"></canvas></div>
     </div>
     <div class="cd">
@@ -1198,7 +1198,6 @@ function drawC1() {{
 
   const ing1 = (ALL_ING[y1]||Array(12).fill(0)).slice(0, period);
   const ing2 = (ALL_ING[y2]||Array(12).fill(0)).slice(0, period);
-  const cutIdx = (parseInt(y2) === TODAY_YEAR) ? TODAY_MONTH : undefined;
 
   charts.c1 = new Chart(document.getElementById('c1'), {{
     type:'line',
@@ -1206,7 +1205,7 @@ function drawC1() {{
       labels,
       datasets: [
         makeDatasetLine(y1, cumul(ing1), true,  COL_ING),
-        makeDatasetLine(y2, cumul(ing2, cutIdx), false, COL_ING),
+        makeDatasetLine(y2, cumul(ing2), false, COL_ING),
       ]
     }},
     options: {{
