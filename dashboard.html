@@ -105,7 +105,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ Airbnb <span>Revenue Cockpit</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 26/05/2026 11:15</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 26/05/2026 11:19</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -902,9 +902,9 @@ function drawC17() {
     data: {
       labels,
       datasets: [
-        { label:'Cierre '+y2, data:fin2.map(v=>v||null), type:'line', borderColor:COL_ING+'70', borderDash:[6,4], borderWidth:1.5, pointRadius:0, showLine:false, yAxisID:'y', order:10 },
-        { label:'OTB '+y2, data:otb2, backgroundColor:COL_ING+'35', borderColor:COL_ING+'60', borderWidth:1, borderRadius:5, borderSkipped:false, order:3 },
-        { label:'OTB '+y1, data:otb1, backgroundColor:COL_ING+'bb', borderRadius:5, borderSkipped:false, order:2 },
+        { label:'OTB '+y2, data:otb2, backgroundColor:COL_ING+'35', borderColor:COL_ING+'60', borderWidth:1, borderRadius:5, borderSkipped:false },
+        { label:'OTB '+y1, data:otb1, backgroundColor:COL_ING+'bb', borderRadius:5, borderSkipped:false },
+        { label:'Cierre '+y2, data:fin2.map(v=>v||null), type:'line', borderColor:COL_ING+'70', borderDash:[6,4], borderWidth:1.5, pointRadius:0, showLine:false },
       ]
     },
     options: {
