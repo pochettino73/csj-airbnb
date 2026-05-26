@@ -86,7 +86,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 .spark-table th { color:var(--m); font-size:9px; font-weight:600; text-transform:uppercase; padding:4px 6px; text-align:center; }
 .spark-table td { padding:4px 6px; text-align:center; }
 .spark-table .yr { color:var(--m); font-weight:600; text-align:left; white-space:nowrap; }
-.spark-table .bar { height:26px; border-radius:3px; display:block; line-height:26px; overflow:hidden; font-size:9px; color:rgba(255,255,255,0.9); text-align:center; }
+.spark-table .bar { height:26px; border-radius:3px; display:block; line-height:26px; overflow:hidden; font-size:9px; color:#1e293b; text-align:center; font-weight:600; }
 
 /* Reviews */
 .rvs { display:grid; grid-template-columns:repeat(auto-fit,minmax(90px,1fr)); gap:8px; }
@@ -105,7 +105,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ Airbnb <span>Revenue Cockpit</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 26/05/2026 10:31</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 26/05/2026 11:15</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -205,19 +205,18 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <!-- ============================================ -->
 <div class="sh">Airbnb Health <span>Reputaci&oacute;n, Cancelaciones &amp; Conversi&oacute;n</span></div>
 <div class="row r2">
-  <div class="cd" id="nextShPanel"></div>
+  <div class="cd">
+    <h3>Superhost &mdash; rating trimestral</h3>
+    <div class="s">&Uacute;ltimos 4 trimestres (ventana 365d). Umbral 4.80.</div>
+    <div class="ch md"><canvas id="c21"></canvas></div>
+  </div>
   <div class="cd">
     <h3>Cancelaciones por a&ntilde;o</h3>
     <div class="s">Confirmadas vs canceladas. % tasa por a&ntilde;o.</div>
     <div class="ch md"><canvas id="c22"></canvas></div>
   </div>
 </div>
-<div class="row r2">
-  <div class="cd">
-    <h3>Superhost &mdash; rating trimestral</h3>
-    <div class="s">&Uacute;ltimos 4 trimestres (ventana 365d). Umbral 4.80.</div>
-    <div class="ch md"><canvas id="c21"></canvas></div>
-  </div>
+<div class="row r1">
   <div class="cd">
     <h3>Conversi&oacute;n anual</h3>
     <div class="s">Reservas / Visitas listing &mdash; desde 2018</div>
@@ -226,19 +225,12 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 </div>
 
 <!-- ============================================ -->
-<!-- F: ANALYTICS AVANZADOS (colapsable)          -->
+<!-- F: VISITAS Y RESERVAS                        -->
 <!-- ============================================ -->
-<div class="sh" style="cursor:pointer" onclick="document.getElementById('advanced-panel').classList.toggle('hidden')">
-  Analytics avanzados <span>Lead Time &mdash; clic para expandir</span>
-</div>
-<div id="advanced-panel" class="hidden">
-  <div id="lead-kpi" style="margin:0 0 12px 0;padding:0 4px;"></div>
-  <div class="row r1">
-    <div class="cd">
-      <h3>Visitas y reservas mensuales</h3>
-      <div class="s">Cu&aacute;ndo se reserv&oacute;, no cu&aacute;ndo se aloja</div>
-      <div class="ch md"><canvas id="c16"></canvas></div>
-    </div>
+<div class="sh">Visitas y reservas mensuales <span>Cu&aacute;ndo se reserv&oacute;</span></div>
+<div class="row r1">
+  <div class="cd">
+    <div class="ch md"><canvas id="c16"></canvas></div>
   </div>
 </div>
 
@@ -569,16 +561,22 @@ function drawC3() {
 
 // drawC4 removed (no canvas in HTML)
 
-// === C5: PM mensual ===
+// === C5: ADR mensual ===
 function drawC5() {
   if(charts.c5) charts.c5.destroy();
   const labels = M.slice(0,period);
+  // Banda histórica con media en gris para distinguir del ADR amarillo de y2
+  const bandGray = [
+    { label:'Rango hist.', data:HMAX_PM.slice(0,period), borderColor:'transparent', backgroundColor:'rgba(148,163,184,0.07)', fill:'+1', pointRadius:0, pointHitRadius:0, order:10 },
+    { label:'_min', data:HMIN_PM.slice(0,period), borderColor:'transparent', backgroundColor:'transparent', fill:false, pointRadius:0, pointHitRadius:0, order:10 },
+    { label:'Media hist.', data:HAVG_PM.slice(0,period), borderColor:'rgba(148,163,184,0.6)', borderDash:[6,3], borderWidth:1.5, pointRadius:0, pointHitRadius:0, fill:false, order:9 },
+  ];
   charts.c5 = new Chart(document.getElementById('c5'), {
     type:'line',
     data: {
       labels,
       datasets: [
-        ...bandDatasets(HMAX_PM, HMIN_PM, HAVG_PM, period),
+        ...bandGray,
         makeDatasetLine(y2, (ALL_PM[y2]||Array(12).fill(0)).slice(0,period), false, COL_ADR),
         makeDatasetLine(y1, (ALL_PM[y1]||Array(12).fill(0)).slice(0,period), true,  COL_ADR),
       ]
@@ -866,46 +864,36 @@ function drawC17() {
   const labels = M.slice(0,period);
   const otb1 = (PACE_OTB[y1]||Array(12).fill(0)).slice(0,period);
   const otb2 = (PACE_OTB[y2]||Array(12).fill(0)).slice(0,period);
-  const adr1 = (PACE_ADR_OTB[y1]||Array(12).fill(null)).slice(0,period);
-  const adr2 = (PACE_ADR_OTB[y2]||Array(12).fill(null)).slice(0,period);
+  const fin2 = (PACE_FINAL[y2]||Array(12).fill(0)).slice(0,period);
   const n1   = (PACE_NIGHTS_OTB[y1]||Array(12).fill(0)).slice(0,period);
   const n2   = (PACE_NIGHTS_OTB[y2]||Array(12).fill(0)).slice(0,period);
   const deltaRev = otb1.map((v,i) => otb2[i]>0 ? ((v-otb2[i])/otb2[i]*100).toFixed(1) : '—');
   const deltaN   = n1.map((v,i) => n2[i]>0 ? ((v-n2[i])/n2[i]*100).toFixed(1) : '—');
-  const ADR_OFFSET = 28; // px fijos por encima del top de la barra
 
+  // Plugin: dibuja línea Cierre y2 centrada sobre las barras de y2
   const pacePlugin = {
     id:'pacePlugin',
     afterDatasetsDraw(chart) {
-      const ctx = chart.ctx;
-      const bx1=[], by1=[], bx2=[], by2=[];
+      const ctx = chart.ctx, ysc = chart.scales['y'];
+      if (!ysc) return;
+      const bx2 = [];
       chart.data.datasets.forEach(function(ds, di) {
         const meta = chart.getDatasetMeta(di);
-        if (ds.label==='OTB '+y1) meta.data.forEach(function(b,i){ bx1[i]=b.x; by1[i]=b.y; });
-        if (ds.label==='OTB '+y2) meta.data.forEach(function(b,i){ bx2[i]=b.x; by2[i]=b.y; });
+        if (ds.label==='OTB '+y2) meta.data.forEach(function(b,i){ bx2[i]=b.x; });
       });
-      // Puntos ADR — posición fija por encima del top de la barra
-      [[adr1,bx1,by1,true],[adr2,bx2,by2,false]].forEach(function(cfg) {
-        const adrArr=cfg[0], bxArr=cfg[1], byArr=cfg[2], pri=cfg[3];
-        adrArr.forEach(function(adr, i) {
-          if (adr==null || bxArr[i]==null) return;
-          const x=bxArr[i], dotY=(byArr[i]||0)-ADR_OFFSET;
-          ctx.save();
-          ctx.beginPath(); ctx.arc(x, dotY, pri?8:6, 0, Math.PI*2);
-          if (pri) {
-            ctx.fillStyle=COL_ADR; ctx.strokeStyle='#713f12'; ctx.lineWidth=2;
-            ctx.fill(); ctx.stroke();
-            ctx.fillStyle='#1e293b'; ctx.font='bold 9px Inter,sans-serif';
-          } else {
-            ctx.fillStyle='transparent'; ctx.strokeStyle=COL_ADR; ctx.lineWidth=2;
-            ctx.fill(); ctx.stroke();
-            ctx.fillStyle=COL_ADR+'cc'; ctx.font='9px Inter,sans-serif';
-          }
-          ctx.textAlign='center'; ctx.textBaseline='middle';
-          ctx.fillText(Math.round(adr)+'€', x, dotY);
-          ctx.restore();
-        });
+      const cpts = [];
+      fin2.forEach(function(v,i) {
+        if (!v || bx2[i]==null) return;
+        cpts.push({x:bx2[i], y:ysc.getPixelForValue(v)});
       });
+      if (cpts.length > 1) {
+        ctx.save();
+        ctx.strokeStyle=COL_ING+'70'; ctx.lineWidth=1.5;
+        ctx.setLineDash([6,4]); ctx.lineJoin='round';
+        ctx.beginPath(); ctx.moveTo(cpts[0].x,cpts[0].y);
+        cpts.slice(1).forEach(function(p){ ctx.lineTo(p.x,p.y); });
+        ctx.stroke(); ctx.restore();
+      }
     }
   };
   charts.c17 = new Chart(document.getElementById('c17'), {
@@ -914,28 +902,21 @@ function drawC17() {
     data: {
       labels,
       datasets: [
+        { label:'Cierre '+y2, data:fin2.map(v=>v||null), type:'line', borderColor:COL_ING+'70', borderDash:[6,4], borderWidth:1.5, pointRadius:0, showLine:false, yAxisID:'y', order:10 },
         { label:'OTB '+y2, data:otb2, backgroundColor:COL_ING+'35', borderColor:COL_ING+'60', borderWidth:1, borderRadius:5, borderSkipped:false, order:3 },
         { label:'OTB '+y1, data:otb1, backgroundColor:COL_ING+'bb', borderRadius:5, borderSkipped:false, order:2 },
-        { label:'ADR '+y1, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:0, showLine:false },
-        { label:'ADR '+y2+' (hueco)', data:Array(period).fill(null), type:'line', borderColor:COL_ADR, borderDash:[4,4], borderWidth:1.5, pointRadius:0, showLine:false },
       ]
     },
     options: {
       responsive:true, maintainAspectRatio:false,
       interaction:{mode:'index',intersect:false},
-      layout:{ padding:{ top:40 } },
       plugins: {
-        legend:{position:'top',labels:makeLegendLabels({filter:function(item){ return !item.text.startsWith('ADR'); }}) },
+        legend:{position:'top',labels:makeLegendLabels()},
         tooltip:{
           callbacks:{
             label:function(c) {
-              if (c.dataset.label.startsWith('ADR')) return null;
-              const i=c.dataIndex;
-              const rev=c.parsed.y.toLocaleString('es-ES',{maximumFractionDigits:0})+'€';
-              const isPri = c.dataset.label==='OTB '+y1;
-              const adr = isPri ? adr1[i] : adr2[i];
-              const adrTxt = adr!=null ? ' · ADR '+Math.round(adr)+'€' : '';
-              return c.dataset.label+': '+rev+adrTxt;
+              const rev=c.parsed.y!=null?c.parsed.y.toLocaleString('es-ES',{maximumFractionDigits:0})+'€':'—';
+              return c.dataset.label+': '+rev;
             },
             afterBody:function(items) {
               const i=items[0].dataIndex, lines=[];
@@ -1120,25 +1101,29 @@ function drawHuecos() {
     media: {label:'Media', col:'#f59e0b'},
     baja:  {label:'Baja',  col:'#3b82f6'}
   };
-  let h = '<div style="display:flex;flex-wrap:wrap;gap:10px;">';
+  let h = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;">';
   PRICING_GAPS.forEach(function(g, i) {
     const sc = SC[g.season] || {label:g.season, col:'#94a3b8'};
     const rms = Math.round(g.recommended_price);
+    const floor = Math.round(g.floor_price||0), ceil = Math.round(g.ceiling_price||0);
     const d1 = fmtD(g.start_date), d2 = fmtD(g.end_date);
-    h += '<div style="display:flex;align-items:center;gap:12px;background:var(--c);border:1px solid var(--b);'
-       + 'border-left:4px solid '+sc.col+';border-radius:10px;padding:12px 16px;">';
-    h += '<div style="width:22px;height:22px;border-radius:50%;background:'+sc.col+'22;border:1px solid '+sc.col+'55;'
-       + 'color:'+sc.col+';font-weight:800;font-size:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+(i+1)+'</div>';
-    h += '<div>';
-    h += '<div style="font-size:13px;font-weight:600;color:var(--t);">'+d1+' &rarr; '+d2+'</div>';
-    h += '<div style="font-size:11px;color:var(--m);margin-top:2px;">'
-       + '<span style="color:'+sc.col+';font-weight:600">'+sc.label+'</span>'
-       + '&nbsp;·&nbsp;'+g.nights+'n'
-       + '&nbsp;·&nbsp;'+g.lead_days+'d ant.'
+    h += '<div style="display:flex;align-items:center;gap:16px;background:var(--c);border:1px solid var(--b);'
+       + 'border-left:4px solid '+sc.col+';border-radius:12px;padding:18px 20px;">';
+    // Número
+    h += '<div style="width:32px;height:32px;border-radius:50%;background:'+sc.col+'18;border:1px solid '+sc.col+'44;'
+       + 'color:'+sc.col+';font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+(i+1)+'</div>';
+    // Info
+    h += '<div style="flex:1;min-width:0">';
+    h += '<div style="font-size:15px;font-weight:700;color:var(--t);margin-bottom:5px;">'+d1+' &rarr; '+d2+'</div>';
+    h += '<div style="font-size:12px;color:var(--m);">'
+       + '<span style="background:'+sc.col+'18;color:'+sc.col+';border-radius:4px;padding:2px 7px;font-weight:600;margin-right:6px;">'+sc.label+'</span>'
+       + g.nights+' noches'
+       + '&nbsp;&nbsp;·&nbsp;&nbsp;'+g.lead_days+'d ant.'
        + '</div></div>';
-    h += '<div style="text-align:right;margin-left:8px;">'
-       + '<div style="font-size:20px;font-weight:800;color:'+COL_ADR+'">'+rms+'€</div>'
-       + '<div style="font-size:9px;color:var(--m)">RMS</div>'
+    // RMS
+    h += '<div style="text-align:right;flex-shrink:0;">'
+       + '<div style="font-size:24px;font-weight:800;color:'+COL_ADR+';line-height:1;">'+rms+'€</div>'
+       + '<div style="font-size:9px;color:var(--m);margin-top:3px;">'+floor+'€ &mdash; '+ceil+'€</div>'
        + '</div>';
     h += '</div>';
   });
@@ -1169,8 +1154,8 @@ function drawAll() {
   safeDraw(drawC7,'C7'); safeDraw(drawOcuAnnual,'OcuAnn'); safeDraw(drawADRAnnual,'AdrAnn');
   safeDraw(drawSpark,'Spark');
   safeDraw(drawHuecos,'Huecos');
-  safeDraw(drawNextSH,'NextSH'); safeDraw(drawC21,'C21'); safeDraw(drawC22,'C22');
-  safeDraw(drawC15,'C15'); safeDraw(drawC16,'C16'); safeDraw(drawLeadKPI,'LeadKPI');
+  safeDraw(drawC21,'C21'); safeDraw(drawC22,'C22'); safeDraw(drawC15,'C15');
+  safeDraw(drawC16,'C16');
 }
 if(typeof Chart!=='undefined') { drawAll(); }
 
@@ -1182,7 +1167,7 @@ document.querySelectorAll('.period-btn').forEach(btn => {
     document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     period = parseInt(btn.dataset.months);
-    drawKPIs(); drawC1(); drawC3(); drawC5(); drawC17(); drawLeadKPI();
+    drawKPIs(); drawC1(); drawC3(); drawC5(); drawC17();
   });
 });
 </script>
