@@ -105,7 +105,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ Airbnb <span>Revenue Cockpit</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 26/05/2026 11:47</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 26/05/2026 11:49</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -560,7 +560,6 @@ function drawC3() {
     data: {
       labels,
       datasets: [
-        ...bandDatasets(HMAX_OCU, HMIN_OCU, HAVG_OCU, period),
         makeDatasetLine(y2, (ALL_OCU[y2]||Array(12).fill(0)).slice(0,period), false, COL_OCU),
         makeDatasetLine(y1, (ALL_OCU[y1]||Array(12).fill(0)).slice(0,period), true,  COL_OCU),
       ]
@@ -568,7 +567,7 @@ function drawC3() {
     options: {
       responsive:true, maintainAspectRatio:false,
       interaction:{mode:'index',intersect:false},
-      plugins:{ legend:{position:'top',labels:makeLegendLabels({padding:12,filter:bandLegendFilter})}, tooltip:{filter:t=>t.dataset.label!=='_min',callbacks:{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(1)+'%'}} },
+      plugins:{ legend:{position:'top',labels:makeLegendLabels()}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(1)+'%'}} },
       scales:{ y:{max:100,ticks:{callback:v=>v+'%'},grid:{color:GC}}, x:{grid:{display:false}} }
     }
   });
@@ -580,18 +579,11 @@ function drawC3() {
 function drawC5() {
   if(charts.c5) charts.c5.destroy();
   const labels = M.slice(0,period);
-  // Banda histórica con media en gris para distinguir del ADR amarillo de y2
-  const bandGray = [
-    { label:'Rango hist.', data:HMAX_PM.slice(0,period), borderColor:'transparent', backgroundColor:'rgba(148,163,184,0.07)', fill:'+1', pointRadius:0, pointHitRadius:0, order:10 },
-    { label:'_min', data:HMIN_PM.slice(0,period), borderColor:'transparent', backgroundColor:'transparent', fill:false, pointRadius:0, pointHitRadius:0, order:10 },
-    { label:'Media hist.', data:HAVG_PM.slice(0,period), borderColor:'rgba(148,163,184,0.6)', borderDash:[6,3], borderWidth:1.5, pointRadius:0, pointHitRadius:0, fill:false, order:9 },
-  ];
   charts.c5 = new Chart(document.getElementById('c5'), {
     type:'line',
     data: {
       labels,
       datasets: [
-        ...bandGray,
         makeDatasetLine(y2, (ALL_PM[y2]||Array(12).fill(0)).slice(0,period), false, COL_ADR),
         makeDatasetLine(y1, (ALL_PM[y1]||Array(12).fill(0)).slice(0,period), true,  COL_ADR),
       ]
@@ -599,7 +591,7 @@ function drawC5() {
     options: {
       responsive:true, maintainAspectRatio:false,
       interaction:{mode:'index',intersect:false},
-      plugins:{ legend:{position:'top',labels:makeLegendLabels({padding:12,filter:bandLegendFilter})}, tooltip:{filter:t=>t.dataset.label!=='_min',callbacks:{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(1)+'€'}} },
+      plugins:{ legend:{position:'top',labels:makeLegendLabels()}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(1)+'€'}} },
       scales:{ y:{ticks:{callback:v=>v+'€'},grid:{color:GC}}, x:{grid:{display:false}} }
     }
   });
