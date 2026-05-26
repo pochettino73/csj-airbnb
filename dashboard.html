@@ -105,7 +105,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ Airbnb <span>Revenue Cockpit</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 26/05/2026 12:35</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 26/05/2026 12:39</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -201,11 +201,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <!-- ============================================ -->
 <div class="sh">Airbnb Health <span>Reputaci&oacute;n, Cancelaciones &amp; Conversi&oacute;n</span></div>
 <div class="row r2">
-  <div class="cd">
-    <h3>Superhost &mdash; rating trimestral</h3>
-    <div class="s">&Uacute;ltimos 4 trimestres (ventana 365d). Umbral 4.80.</div>
-    <div class="ch md"><canvas id="c21"></canvas></div>
-  </div>
+  <div class="cd" id="nextShPanel"></div>
   <div class="cd">
     <h3>Cancelaciones por a&ntilde;o</h3>
     <div class="s">Confirmadas vs canceladas. % tasa por a&ntilde;o.</div>
@@ -350,6 +346,7 @@ const PRICING_GAPS=[{"start_date": "2026-05-30", "end_date": "2026-06-01", "nigh
 // Globals
 let charts = {};
 let y1 = '2026', y2 = '2025', period = 12;
+let shIdx = 0;
 
 function getYears() { return [y1, y2]; }
 
@@ -1039,6 +1036,80 @@ function drawC17() {
 
 
 
+// === Próximas evaluaciones Superhost ===
+function drawNextSH(idx) {
+  if(idx !== undefined) shIdx = idx;
+  const ct = document.getElementById('nextShPanel');
+  if(!ct) return;
+  if(!FUTURE_SH || !FUTURE_SH.length) { ct.innerHTML = '<p style="color:var(--m)">Sin datos</p>'; return; }
+  const d = FUTURE_SH[shIdx];
+
+  let hBtns = '<div style="display:flex;gap:6px;margin-bottom:12px">';
+  FUTURE_SH.forEach((q,i) => {
+    const active = i === shIdx;
+    const bgc = active ? (q.is_super ? '#22c55e' : '#ef4444') : 'var(--c)';
+    const bdc = active ? bgc : 'var(--b)';
+    const txc = active ? '#fff' : 'var(--t)';
+    hBtns += '<button onclick="drawNextSH('+i+')" style="background:'+bgc+';color:'+txc+';border:1px solid '+bdc+';border-radius:8px;padding:6px 14px;font-size:12px;font-family:inherit;cursor:pointer;font-weight:'+(active?'700':'400')+'">'+q.label+'</button>';
+  });
+  hBtns += '</div>';
+
+  const col = d.is_super ? '#22c55e' : '#ef4444';
+  const icon = d.is_super ? '&#x2705;' : '&#x26A0;&#xFE0F;';
+  const statusTxt = d.is_super ? 'SUPERHOST' : 'EN RIESGO';
+  const dist = d.dist || {};
+
+  let h = hBtns;
+  h += '<h3>Revisi&oacute;n Superhost &mdash; '+d.label+'</h3>';
+  h += '<div class="s">Evaluaci&oacute;n: '+d.eval_date+' (faltan '+d.days_left+' d&iacute;as) &mdash; Ventana: '+d.window+'</div>';
+
+  h += '<div style="display:flex;align-items:center;gap:24px;margin:16px 0;flex-wrap:wrap">';
+  h += '<div style="text-align:center"><div style="font-size:48px;font-weight:800;color:'+col+'">'+d.rating_exact.toFixed(2)+'</div>';
+  h += '<div style="font-size:13px;font-weight:600;color:'+col+'">'+icon+' '+statusTxt+'</div></div>';
+
+  h += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1;min-width:250px">';
+  h += '<div style="background:rgba(59,130,246,0.08);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700">'+d.n+'</div><div style="font-size:10px;color:var(--m)">Reviews</div></div>';
+  h += '<div style="background:rgba(59,130,246,0.08);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700">'+d.total_pts+'</div><div style="font-size:10px;color:var(--m)">Puntos totales</div></div>';
+  const pend = d.pending || 0;
+  h += '<div style="background:rgba(251,191,36,0.1);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700;color:#f59e0b">'+pend+'</div><div style="font-size:10px;color:#f59e0b">Pendientes evaluar</div></div>';
+  if(!d.is_super) {
+    h += '<div style="background:rgba(239,68,68,0.1);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700;color:#ef4444">'+d.needed_5+'</div><div style="font-size:10px;color:#ef4444">Reviews 5&#9733; necesarias</div></div>';
+  } else {
+    const margin = (d.rating_exact - 4.8).toFixed(2);
+    h += '<div style="background:rgba(34,197,94,0.1);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700;color:#22c55e">+'+margin+'</div><div style="font-size:10px;color:#22c55e">Margen sobre 4.80</div></div>';
+  }
+  h += '</div></div>';
+
+  if(pend > 0) {
+    const pend5   = (d.total_pts + 5*pend) / (d.n + pend);
+    const pend4   = (d.total_pts + 4*pend) / (d.n + pend);
+    const pendMix = (d.total_pts + 5*Math.ceil(pend*0.8) + 4*Math.floor(pend*0.2)) / (d.n + pend);
+    h += '<div style="margin:8px 0;padding:10px;background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.2);border-radius:8px">';
+    h += '<div style="font-size:11px;font-weight:600;color:#f59e0b;margin-bottom:4px">SI LAS '+pend+' PENDIENTES EVAL&Uacute;AN:</div>';
+    h += '<div style="font-size:11px;color:var(--t);margin:2px 0">'+(pend5>=4.8?'&#x2705;':'&#x274C;')+' Todas 5&#9733; &rarr; <b>'+pend5.toFixed(4)+'</b></div>';
+    h += '<div style="font-size:11px;color:var(--t);margin:2px 0">'+(pendMix>=4.8?'&#x2705;':'&#x274C;')+' 80% de 5&#9733; &rarr; <b>'+pendMix.toFixed(4)+'</b></div>';
+    h += '<div style="font-size:11px;color:var(--t);margin:2px 0">'+(pend4>=4.8?'&#x2705;':'&#x274C;')+' Todas 4&#9733; &rarr; <b>'+pend4.toFixed(4)+'</b></div>';
+    h += '</div>';
+  }
+
+  const stars = [5,4,3,2,1];
+  const total = stars.reduce((s,k) => s + (dist[k]||0), 0);
+  const barCols = {5:'#22c55e',4:'#84cc16',3:'#f59e0b',2:'#f97316',1:'#ef4444'};
+  h += '<div style="margin:12px 0"><div style="font-size:11px;font-weight:600;color:var(--m);margin-bottom:6px">DISTRIBUCI&Oacute;N</div>';
+  stars.forEach(s => {
+    const cnt = dist[s] || 0;
+    const pctW = total > 0 ? (cnt/total*100) : 0;
+    h += '<div style="display:flex;align-items:center;gap:8px;margin:3px 0">';
+    h += '<div style="width:20px;font-size:11px;font-weight:600;text-align:right">'+s+'&#9733;</div>';
+    h += '<div style="flex:1;background:var(--b);border-radius:4px;height:14px;overflow:hidden"><div style="width:'+pctW+'%;height:100%;background:'+barCols[s]+';border-radius:4px"></div></div>';
+    h += '<div style="width:30px;font-size:11px;color:var(--m);text-align:right">'+cnt+'</div>';
+    h += '</div>';
+  });
+  h += '</div>';
+
+  ct.innerHTML = h;
+}
+
 // === C21: Reviews por trimestre (barras) + Rating medio (línea) ===
 function drawC21() {
   if(charts.c21) charts.c21.destroy();
@@ -1227,7 +1298,7 @@ function drawAll() {
   safeDraw(drawC3,'C3'); safeDraw(drawC5,'C5');
   safeDraw(drawSpark,'Spark');
   safeDraw(drawHuecos,'Huecos');
-  safeDraw(drawC21,'C21'); safeDraw(drawC22,'C22'); safeDraw(drawC15,'C15');
+  safeDraw(drawNextSH,'NextSH'); safeDraw(drawC22,'C22'); safeDraw(drawC15,'C15');
   safeDraw(drawC16,'C16');
 }
 if(typeof Chart!=='undefined') { drawAll(); }
