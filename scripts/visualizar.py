@@ -1329,26 +1329,13 @@ function drawBizOv() {{
       maintainAspectRatio: false,
       interaction: {{ mode: 'index', intersect: false }},
       plugins: {{
-        legend: {{
-          position: 'top',
-          labels: {{ color: '#94a3b8', font: {{ size: 12 }}, padding: 20,
-            generateLabels: chart => chart.data.datasets.map((ds, i) => ({{
-              text: ds.label,
-              fillStyle: ds.borderColor,
-              strokeStyle: ds.borderColor,
-              lineWidth: 2,
-              hidden: false,
-              datasetIndex: i,
-              pointStyle: ds.type === 'bar' ? 'rect' : 'line',
-            }}))
-          }}
-        }},
+        legend: {{ position: 'top', labels: makeLegendLabels() }},
         tooltip: {{
           callbacks: {{
             label: c => {{
               if(c.dataset.yAxisID === 'y')  return ' Revenue: ' + c.parsed.y.toLocaleString('es-ES', {{maximumFractionDigits:0}}) + '€';
               if(c.dataset.yAxisID === 'y2') return ' Ocupación: ' + c.parsed.y.toFixed(1) + '%';
-              if(c.dataset.yAxisID === 'y3') return ' ADR: ' + c.parsed.y.toFixed(0) + '€/noche';
+              if(c.dataset.yAxisID === 'y3') return ' ADR: ' + c.parsed.y.toFixed(1) + '€/noche';
               return '';
             }}
           }}
@@ -1369,9 +1356,10 @@ function drawBizOv() {{
         }},
         y3: {{
           type: 'linear', position: 'right',
-          display: false,
           min: adrMin,
           max: adrMax,
+          ticks: {{ callback: v => v.toFixed(0) + '€', color: COL_ADR, maxTicksLimit: 6 }},
+          grid: {{ drawOnChartArea: false }}
         }}
       }}
     }}
