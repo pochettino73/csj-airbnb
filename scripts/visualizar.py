@@ -831,8 +831,8 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
   <!-- Columna derecha: visión mensual -->
   <div style="display:flex;flex-direction:column;gap:16px;">
     <div class="cd">
-      <h3>Ingresos mensuales</h3>
-      <div class="s">A&ntilde;os seleccionados + banda hist&oacute;rica</div>
+      <h3>Acumulado anual (YTD)</h3>
+      <div class="s">Ingresos acumulados mes a mes &mdash; {datetime.now().year-1} completo vs {datetime.now().year} hasta hoy</div>
       <div class="ch md"><canvas id="c1"></canvas></div>
     </div>
     <div class="cd">
@@ -998,6 +998,8 @@ const RES_P={J(res_p)};
 const PM_BANDA={J(pm_banda)};
 const CONV_DATA={J({str(y): conv_data[str(y)] for y in conv_years if str(y) in conv_data})};
 const CONV_ANN={J(conv_ann)};
+const TODAY_MONTH={datetime.now().month};
+const TODAY_YEAR={datetime.now().year};
 const PACE_OTB={J(pace_otb)};
 const PACE_FINAL={J(pace_final)};
 const PACE_NIGHTS_OTB={J(pace_nights_otb)};
@@ -1180,23 +1182,37 @@ function makeLegendLabels(extra) {{
 // Redondea hacia arriba al múltiplo de `step` más cercano → eje siempre acaba en número entero limpio
 function niceMax(v, step) {{ step = step || 10; return Math.ceil(v / step) * step; }}
 
-// === C1: Ingresos mensuales comparativa + banda ===
+// === C1: Acumulado anual YTD ===
 function drawC1() {{
   if(charts.c1) charts.c1.destroy();
   const labels = M.slice(0, period);
+
+  function cumul(arr, cutIdx) {{
+    let s = 0;
+    return arr.map((v, i) => {{
+      if (cutIdx !== undefined && i >= cutIdx) return null;
+      s += v || 0;
+      return Math.round(s);
+    }});
+  }}
+
+  const ing1 = (ALL_ING[y1]||Array(12).fill(0)).slice(0, period);
+  const ing2 = (ALL_ING[y2]||Array(12).fill(0)).slice(0, period);
+  const cutIdx = (parseInt(y2) === TODAY_YEAR) ? TODAY_MONTH : undefined;
+
   charts.c1 = new Chart(document.getElementById('c1'), {{
-    type:'bar',
+    type:'line',
     data: {{
       labels,
       datasets: [
-        {{ label:y2, data:(ALL_ING[y2]||Array(12).fill(0)).slice(0,period), backgroundColor:COL_ING+'35', borderRadius:4, borderSkipped:false }},
-        {{ label:y1, data:(ALL_ING[y1]||Array(12).fill(0)).slice(0,period), backgroundColor:COL_ING+'bb', borderRadius:4, borderSkipped:false }},
+        makeDatasetLine(y1, cumul(ing1), true,  COL_ING),
+        makeDatasetLine(y2, cumul(ing2, cutIdx), false, COL_ING),
       ]
     }},
     options: {{
       responsive:true, maintainAspectRatio:false,
       interaction:{{mode:'index',intersect:false}},
-      plugins:{{ legend:{{position:'top',labels:makeLegendLabels()}}, tooltip:{{callbacks:{{label:c=>c.dataset.label+': '+c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€'}}}} }},
+      plugins:{{ legend:{{position:'top',labels:makeLegendLabels()}}, tooltip:{{callbacks:{{label:c=>c.parsed.y===null?null:c.dataset.label+': '+c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€'}}}} }},
       scales:{{ y:{{ticks:{{callback:v=>v.toLocaleString('es-ES')+'€'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
     }}
   }});
