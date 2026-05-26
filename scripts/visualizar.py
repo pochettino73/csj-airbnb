@@ -810,7 +810,8 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
 <div class="row r1">
   <div class="cd">
     <h3>Acumulado anual (YTD)</h3>
-    <div class="s">Ingresos acumulados mes a mes &mdash; {datetime.now().year-1} cierre vs {datetime.now().year} vendido</div>
+    <div class="s">Negocio real ejecutado &mdash; {datetime.now().year} solo meses completados vs mismo per&iacute;odo {datetime.now().year-1}</div>
+    <div id="ytd-kpi" style="margin:10px 0 4px;"></div>
     <div class="ch md"><canvas id="c1"></canvas></div>
   </div>
 </div>
@@ -1177,11 +1178,12 @@ function makeLegendLabels(extra) {{
 // Redondea hacia arriba al múltiplo de `step` más cercano → eje siempre acaba en número entero limpio
 function niceMax(v, step) {{ step = step || 10; return Math.ceil(v / step) * step; }}
 
-// === C1: Acumulado anual YTD ===
+// === C1: Acumulado anual YTD — negocio real ejecutado ===
 function drawC1() {{
   if(charts.c1) charts.c1.destroy();
   const labels = M.slice(0, period);
 
+  // Acumulado mensual; corta en cutIdx (excluido) para y2 si es el año actual
   function cumul(arr, cutIdx) {{
     let s = 0;
     return arr.map((v, i) => {{
@@ -1194,19 +1196,54 @@ function drawC1() {{
   const ing1 = (ALL_ING[y1]||Array(12).fill(0)).slice(0, period);
   const ing2 = (ALL_ING[y2]||Array(12).fill(0)).slice(0, period);
 
+  // Para y2: solo meses ejecutados (checkin ya pasó). Corte en TODAY_MONTH.
+  const cutIdx = (parseInt(y2) === TODAY_YEAR) ? TODAY_MONTH : undefined;
+
+  const ytd2 = cumul(ing2, cutIdx);
+  const ytd1 = cumul(ing1);
+
+  // KPI: comparativa acumulado real y2 vs mismo período y1
+  const kpiEl = document.getElementById('ytd-kpi');
+  if(kpiEl) {{
+    const real2 = ytd2.filter(v => v !== null);
+    const real1 = ing1.slice(0, real2.length).reduce((a,b) => a+(b||0), 0);
+    const actual2 = real2.length ? real2[real2.length-1] : 0;
+    const diff = actual2 - real1;
+    const pct  = real1 > 0 ? (diff / real1 * 100) : 0;
+    const pos  = diff >= 0;
+    const col  = pos ? '#22c55e' : '#ef4444';
+    const sign = pos ? '+' : '';
+    const nM   = M[real2.length - 1] || '';
+    kpiEl.innerHTML =
+      '<div style="display:inline-flex;align-items:center;gap:18px;background:rgba(59,130,246,0.07);'
+      +'border:1px solid rgba(59,130,246,0.18);border-radius:8px;padding:8px 16px;">'
+      +'<span style="font-size:11px;color:#64748b;">YTD hasta '+nM+'</span>'
+      +'<span style="font-size:20px;font-weight:700;color:'+col+';">'
+        +sign+diff.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€</span>'
+      +'<span style="font-size:13px;font-weight:600;color:'+col+';">'
+        +sign+pct.toFixed(1)+'% vs '+y1+'</span>'
+      +'</div>';
+  }}
+
   charts.c1 = new Chart(document.getElementById('c1'), {{
     type:'line',
     data: {{
       labels,
       datasets: [
-        makeDatasetLine(y1, cumul(ing1), true,  COL_ING),
-        makeDatasetLine(y2, cumul(ing2), false, COL_ING),
+        makeDatasetLine(y1, ytd1, true,  COL_ING),
+        makeDatasetLine(y2, ytd2, false, COL_ING),
       ]
     }},
     options: {{
       responsive:true, maintainAspectRatio:false,
       interaction:{{mode:'index',intersect:false}},
-      plugins:{{ legend:{{position:'top',labels:makeLegendLabels()}}, tooltip:{{callbacks:{{label:c=>c.parsed.y===null?null:c.dataset.label+': '+c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€'}}}} }},
+      plugins:{{
+        legend:{{position:'top',labels:makeLegendLabels()}},
+        tooltip:{{callbacks:{{
+          label: c => c.parsed.y===null ? null
+            : c.dataset.label+': '+c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€'
+        }}}}
+      }},
       scales:{{ y:{{ticks:{{callback:v=>v.toLocaleString('es-ES')+'€'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
     }}
   }});
