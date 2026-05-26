@@ -961,3 +961,21 @@ Estado:    OK para generar
 
 **Avisos que requieren revisión de Dani:**
 - Lucy Rankin 2024-07: dos registros code='' (6n/723€ con checkin + 2n/270€ sin checkin) — posibles dos estancias separadas o error de entrada
+
+---
+
+## Cambios aplicados 2026-05-26
+
+### Bug crítico resuelto: dashboard en blanco
+
+**Causa:** `let shIdx = 0` declarado dos veces en el mismo `<script>` (líneas 1017 y 1443 de `visualizar.py`). En JS moderno, re-declarar una variable `let` en el mismo scope es un SyntaxError que rompe toda la página.
+
+**Causa secundaria:** `function drawNextSH(idx)` también estaba declarada dos veces (líneas 1444 y 1708).
+
+**Fix aplicado en `visualizar.py`:**
+- Eliminado el `let shIdx = 0;` duplicado en la línea 1443
+- Eliminada la segunda declaración completa de `drawNextSH` (bloque 1707-1779, versión incompleta sin bad_reviews)
+- Conservada la función completa (línea 1443→1550) con: selector de trimestres, rating, stats, simulación de pendientes, distribución de estrellas, bad_reviews expandibles, simulación cuántas reviews necesito
+- Añadido guard `if(!ct) return;` a la función conservada
+
+**Lección:** al restaurar código de una versión anterior, verificar siempre con `grep "function drawNextSH\|let shIdx"` que no haya declaraciones duplicadas.

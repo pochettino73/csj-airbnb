@@ -58,8 +58,6 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
   .ch.xl { height:260px; } .ch.lg { height:240px; } .ch.md { height:220px; } .ch.sm { height:180px; }
   .filters { gap:4px; }
   .filters select, .filters button { padding:5px 8px; font-size:11px; }
-  .spark-table { font-size:9px; }
-  .spark-table th, .spark-table td { padding:2px 3px; }
 }
 
 /* Cards */
@@ -82,11 +80,11 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 .sh span { color:var(--a); font-weight:400; font-size:12px; margin-left:8px; }
 
 /* Heatmap reimagined as sparkline table */
-.spark-table { width:100%; border-collapse:collapse; font-size:11px; }
-.spark-table th { color:var(--m); font-size:9px; font-weight:600; text-transform:uppercase; padding:4px 6px; text-align:center; }
-.spark-table td { padding:4px 6px; text-align:center; }
+.spark-table { width:100%; min-width:620px; border-collapse:collapse; font-size:11px; }
+.spark-table th { color:var(--m); font-size:9px; font-weight:600; text-transform:uppercase; padding:4px 6px; text-align:center; min-width:36px; }
+.spark-table td { padding:5px 4px; text-align:center; min-width:36px; }
 .spark-table .yr { color:var(--m); font-weight:600; text-align:left; white-space:nowrap; }
-.spark-table .bar { height:26px; border-radius:3px; display:block; line-height:26px; overflow:hidden; font-size:9px; color:#1e293b; text-align:center; font-weight:600; }
+.spark-table .bar { height:36px; border-radius:3px; display:block; line-height:36px; overflow:hidden; font-size:9px; color:#1e293b; text-align:center; font-weight:600; }
 
 /* Reviews */
 .rvs { display:grid; grid-template-columns:repeat(auto-fit,minmax(90px,1fr)); gap:8px; }
@@ -96,6 +94,11 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 
 .ft { text-align:center; color:var(--m); font-size:9px; margin-top:24px; padding-top:12px; border-top:1px solid var(--b); }
 .hidden { display:none; }
+@media(max-width:600px) {
+  .spark-table { font-size:9px; }
+  .spark-table th, .spark-table td { padding:2px 2px !important; }
+  .spark-table .bar { height:28px; line-height:28px; }
+}
 </style>
 </head>
 <body>
@@ -105,7 +108,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="top">
   <div>
     <h1>CSJ Airbnb <span>Revenue Cockpit</span></h1>
-    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 26/05/2026 12:39</div>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; 26/05/2026 13:47</div>
   </div>
   <div class="filters">
     <label>Comparar:</label>
@@ -182,7 +185,9 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pad
 <div class="sh">Ocupaci&oacute;n hist&oacute;rica <span>por a&ntilde;o y mes</span></div>
 <div class="row r1">
   <div class="cd">
-    <div id="sparktable" style="margin-top:4px;overflow-x:auto;"></div>
+    <div style="width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;">
+      <div id="sparktable" style="margin-top:4px;"></div>
+    </div>
   </div>
 </div>
 
@@ -771,11 +776,11 @@ function drawSpark() {
   ct.innerHTML = h;
 }
 
-// === Review cards by year ===
-let shIdx = 0;
+// === Próximas evaluaciones Superhost ===
 function drawNextSH(idx) {
   if(idx !== undefined) shIdx = idx;
   const ct = document.getElementById('nextShPanel');
+  if(!ct) return;
   if(!FUTURE_SH || !FUTURE_SH.length) { ct.innerHTML = '<p style="color:var(--m)">Sin datos</p>'; return; }
   const d = FUTURE_SH[shIdx];
 
@@ -1034,82 +1039,6 @@ function drawC17() {
 
 // drawC18, drawC19 removed (no canvas in HTML)
 
-
-
-// === Próximas evaluaciones Superhost ===
-function drawNextSH(idx) {
-  if(idx !== undefined) shIdx = idx;
-  const ct = document.getElementById('nextShPanel');
-  if(!ct) return;
-  if(!FUTURE_SH || !FUTURE_SH.length) { ct.innerHTML = '<p style="color:var(--m)">Sin datos</p>'; return; }
-  const d = FUTURE_SH[shIdx];
-
-  let hBtns = '<div style="display:flex;gap:6px;margin-bottom:12px">';
-  FUTURE_SH.forEach((q,i) => {
-    const active = i === shIdx;
-    const bgc = active ? (q.is_super ? '#22c55e' : '#ef4444') : 'var(--c)';
-    const bdc = active ? bgc : 'var(--b)';
-    const txc = active ? '#fff' : 'var(--t)';
-    hBtns += '<button onclick="drawNextSH('+i+')" style="background:'+bgc+';color:'+txc+';border:1px solid '+bdc+';border-radius:8px;padding:6px 14px;font-size:12px;font-family:inherit;cursor:pointer;font-weight:'+(active?'700':'400')+'">'+q.label+'</button>';
-  });
-  hBtns += '</div>';
-
-  const col = d.is_super ? '#22c55e' : '#ef4444';
-  const icon = d.is_super ? '&#x2705;' : '&#x26A0;&#xFE0F;';
-  const statusTxt = d.is_super ? 'SUPERHOST' : 'EN RIESGO';
-  const dist = d.dist || {};
-
-  let h = hBtns;
-  h += '<h3>Revisi&oacute;n Superhost &mdash; '+d.label+'</h3>';
-  h += '<div class="s">Evaluaci&oacute;n: '+d.eval_date+' (faltan '+d.days_left+' d&iacute;as) &mdash; Ventana: '+d.window+'</div>';
-
-  h += '<div style="display:flex;align-items:center;gap:24px;margin:16px 0;flex-wrap:wrap">';
-  h += '<div style="text-align:center"><div style="font-size:48px;font-weight:800;color:'+col+'">'+d.rating_exact.toFixed(2)+'</div>';
-  h += '<div style="font-size:13px;font-weight:600;color:'+col+'">'+icon+' '+statusTxt+'</div></div>';
-
-  h += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1;min-width:250px">';
-  h += '<div style="background:rgba(59,130,246,0.08);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700">'+d.n+'</div><div style="font-size:10px;color:var(--m)">Reviews</div></div>';
-  h += '<div style="background:rgba(59,130,246,0.08);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700">'+d.total_pts+'</div><div style="font-size:10px;color:var(--m)">Puntos totales</div></div>';
-  const pend = d.pending || 0;
-  h += '<div style="background:rgba(251,191,36,0.1);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700;color:#f59e0b">'+pend+'</div><div style="font-size:10px;color:#f59e0b">Pendientes evaluar</div></div>';
-  if(!d.is_super) {
-    h += '<div style="background:rgba(239,68,68,0.1);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700;color:#ef4444">'+d.needed_5+'</div><div style="font-size:10px;color:#ef4444">Reviews 5&#9733; necesarias</div></div>';
-  } else {
-    const margin = (d.rating_exact - 4.8).toFixed(2);
-    h += '<div style="background:rgba(34,197,94,0.1);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700;color:#22c55e">+'+margin+'</div><div style="font-size:10px;color:#22c55e">Margen sobre 4.80</div></div>';
-  }
-  h += '</div></div>';
-
-  if(pend > 0) {
-    const pend5   = (d.total_pts + 5*pend) / (d.n + pend);
-    const pend4   = (d.total_pts + 4*pend) / (d.n + pend);
-    const pendMix = (d.total_pts + 5*Math.ceil(pend*0.8) + 4*Math.floor(pend*0.2)) / (d.n + pend);
-    h += '<div style="margin:8px 0;padding:10px;background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.2);border-radius:8px">';
-    h += '<div style="font-size:11px;font-weight:600;color:#f59e0b;margin-bottom:4px">SI LAS '+pend+' PENDIENTES EVAL&Uacute;AN:</div>';
-    h += '<div style="font-size:11px;color:var(--t);margin:2px 0">'+(pend5>=4.8?'&#x2705;':'&#x274C;')+' Todas 5&#9733; &rarr; <b>'+pend5.toFixed(4)+'</b></div>';
-    h += '<div style="font-size:11px;color:var(--t);margin:2px 0">'+(pendMix>=4.8?'&#x2705;':'&#x274C;')+' 80% de 5&#9733; &rarr; <b>'+pendMix.toFixed(4)+'</b></div>';
-    h += '<div style="font-size:11px;color:var(--t);margin:2px 0">'+(pend4>=4.8?'&#x2705;':'&#x274C;')+' Todas 4&#9733; &rarr; <b>'+pend4.toFixed(4)+'</b></div>';
-    h += '</div>';
-  }
-
-  const stars = [5,4,3,2,1];
-  const total = stars.reduce((s,k) => s + (dist[k]||0), 0);
-  const barCols = {5:'#22c55e',4:'#84cc16',3:'#f59e0b',2:'#f97316',1:'#ef4444'};
-  h += '<div style="margin:12px 0"><div style="font-size:11px;font-weight:600;color:var(--m);margin-bottom:6px">DISTRIBUCI&Oacute;N</div>';
-  stars.forEach(s => {
-    const cnt = dist[s] || 0;
-    const pctW = total > 0 ? (cnt/total*100) : 0;
-    h += '<div style="display:flex;align-items:center;gap:8px;margin:3px 0">';
-    h += '<div style="width:20px;font-size:11px;font-weight:600;text-align:right">'+s+'&#9733;</div>';
-    h += '<div style="flex:1;background:var(--b);border-radius:4px;height:14px;overflow:hidden"><div style="width:'+pctW+'%;height:100%;background:'+barCols[s]+';border-radius:4px"></div></div>';
-    h += '<div style="width:30px;font-size:11px;color:var(--m);text-align:right">'+cnt+'</div>';
-    h += '</div>';
-  });
-  h += '</div>';
-
-  ct.innerHTML = h;
-}
-
 // === C21: Reviews por trimestre (barras) + Rating medio (línea) ===
 function drawC21() {
   if(charts.c21) charts.c21.destroy();
@@ -1301,6 +1230,13 @@ function drawAll() {
   safeDraw(drawNextSH,'NextSH'); safeDraw(drawC22,'C22'); safeDraw(drawC15,'C15');
   safeDraw(drawC16,'C16');
 }
+
+// Bloques HTML puro — no necesitan Chart.js
+safeDraw(drawKPIs,'KPIs');
+safeDraw(drawSpark,'Spark');
+safeDraw(drawHuecos,'Huecos');
+safeDraw(drawNextSH,'NextSH');
+// Gráficas Chart.js
 if(typeof Chart!=='undefined') { drawAll(); }
 
 // === FILTER HANDLERS ===
