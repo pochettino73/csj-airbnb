@@ -804,47 +804,42 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
 </div>
 
 <!-- ============================================ -->
-<!-- B: EVOLUCIÓN DEL NEGOCIO                     -->
+<!-- B: ACUMULADO YTD                             -->
 <!-- ============================================ -->
-<div class="sh">Evoluci&oacute;n del negocio <span>Anual &amp; Mensual</span></div>
-<div class="row r2">
-
-  <!-- Columna izquierda: visión anual -->
-  <div style="display:flex;flex-direction:column;gap:16px;">
-    <div class="cd">
-      <h3>Ingresos anuales</h3>
-      <div class="s">Ingresos brutos por a&ntilde;o</div>
-      <div class="ch md"><canvas id="c7"></canvas></div>
-    </div>
-    <div class="cd">
-      <h3>Ocupaci&oacute;n anual</h3>
-      <div class="s">% ocupaci&oacute;n por a&ntilde;o</div>
-      <div class="ch md"><canvas id="cOcuAnn"></canvas></div>
-    </div>
-    <div class="cd">
-      <h3>ADR anual</h3>
-      <div class="s">&euro;/noche por a&ntilde;o</div>
-      <div class="ch md"><canvas id="cAdrAnn"></canvas></div>
-    </div>
+<div class="sh">Ingresos acumulados <span>Year-to-Date</span></div>
+<div class="row r1">
+  <div class="cd">
+    <h3>Acumulado anual (YTD)</h3>
+    <div class="s">Ingresos acumulados mes a mes &mdash; {datetime.now().year-1} cierre vs {datetime.now().year} vendido</div>
+    <div class="ch md"><canvas id="c1"></canvas></div>
   </div>
+</div>
 
-  <!-- Columna derecha: visión mensual -->
-  <div style="display:flex;flex-direction:column;gap:16px;">
-    <div class="cd">
-      <h3>Acumulado anual (YTD)</h3>
-      <div class="s">Ingresos acumulados mes a mes &mdash; {datetime.now().year-1} cierre vs {datetime.now().year} vendido</div>
-      <div class="ch md"><canvas id="c1"></canvas></div>
-    </div>
-    <div class="cd">
-      <h3>Ocupaci&oacute;n mensual</h3>
-      <div class="s">A&ntilde;os seleccionados + banda hist&oacute;rica</div>
-      <div class="ch md"><canvas id="c3"></canvas></div>
-    </div>
-    <div class="cd">
-      <h3>ADR mensual</h3>
-      <div class="s">A&ntilde;os seleccionados + banda hist&oacute;rica</div>
-      <div class="ch md"><canvas id="c5"></canvas></div>
-    </div>
+<!-- ============================================ -->
+<!-- C: BUSINESS PERFORMANCE OVERVIEW             -->
+<!-- ============================================ -->
+<div class="sh">Business Performance Overview <span>Revenue &middot; Ocupaci&oacute;n &middot; ADR &mdash; visi&oacute;n anual</span></div>
+<div class="row r1">
+  <div class="cd">
+    <div class="s" style="margin-bottom:8px;">Barras: Revenue (eje izq. &euro;) &nbsp;&middot;&nbsp; L&iacute;nea cyan: Ocupaci&oacute;n (eje der. %) &nbsp;&middot;&nbsp; L&iacute;nea amarilla: ADR &mdash; escala de tendencia</div>
+    <div class="ch" style="height:380px"><canvas id="cBizOv"></canvas></div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- D: DETALLE MENSUAL                           -->
+<!-- ============================================ -->
+<div class="sh">Detalle mensual <span>Ocupaci&oacute;n y ADR</span></div>
+<div class="row r2">
+  <div class="cd">
+    <h3>Ocupaci&oacute;n mensual</h3>
+    <div class="s">A&ntilde;os seleccionados</div>
+    <div class="ch md"><canvas id="c3"></canvas></div>
+  </div>
+  <div class="cd">
+    <h3>ADR mensual</h3>
+    <div class="s">A&ntilde;os seleccionados</div>
+    <div class="ch md"><canvas id="c5"></canvas></div>
   </div>
 </div>
 
@@ -1267,50 +1262,118 @@ function drawC5() {{
 
 // drawC6 removed
 
-// === C7: Ingresos anuales (barras) ===
-function drawC7() {{
-  if(charts.c7) charts.c7.destroy();
-  charts.c7 = new Chart(document.getElementById('c7'), {{
-    type:'bar',
-    data: {{ labels:RES_Y, datasets:[
-      {{ label:'Ingresos €', data:RES_I, backgroundColor:COL_ING+'99', borderRadius:6, borderSkipped:false }},
-    ]}},
-    options: {{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{{ legend:{{display:false}}, tooltip:{{callbacks:{{label:c=>c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€'}}}} }},
-      scales:{{ y:{{ticks:{{callback:v=>(v/1000).toFixed(0)+'k€'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
-    }}
-  }});
-}}
+// === Business Performance Overview — Revenue / Occupancy / ADR anual ===
+function drawBizOv() {{
+  if(charts.bizOv) charts.bizOv.destroy();
+  const el = document.getElementById('cBizOv');
+  if(!el) return;
 
-// === Ocupación anual (líneas) ===
-function drawOcuAnnual() {{
-  if(charts.ocuAnn) charts.ocuAnn.destroy();
-  charts.ocuAnn = new Chart(document.getElementById('cOcuAnn'), {{
-    type:'line',
-    data: {{ labels:RES_Y, datasets:[
-      {{ label:'Ocupación %', data:RES_O, borderColor:COL_OCU, borderWidth:2.5, pointRadius:4, pointBackgroundColor:COL_OCU, tension:0.3, fill:false }},
-    ]}},
-    options: {{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{{ legend:{{display:false}}, tooltip:{{callbacks:{{label:c=>c.parsed.y.toFixed(1)+'%'}}}} }},
-      scales:{{ y:{{min:0,max:100,ticks:{{callback:v=>v+'%'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
-    }}
-  }});
-}}
+  // ADR: hidden axis calibrated so trend visually aligns with occupancy band
+  const adrVals = RES_P.filter(v => v > 0);
+  const adrMin  = Math.max(0, Math.min(...adrVals) * 0.5);
+  const adrMax  = Math.max(...adrVals) * 1.6;
 
-// === ADR anual (líneas) ===
-function drawADRAnnual() {{
-  if(charts.adrAnn) charts.adrAnn.destroy();
-  charts.adrAnn = new Chart(document.getElementById('cAdrAnn'), {{
-    type:'line',
-    data: {{ labels:RES_Y, datasets:[
-      {{ label:'ADR €/noche', data:RES_P, borderColor:COL_ADR, borderWidth:2.5, pointRadius:4, pointBackgroundColor:COL_ADR, tension:0.3, fill:false }},
-    ]}},
+  charts.bizOv = new Chart(el, {{
+    type: 'bar',
+    data: {{
+      labels: RES_Y,
+      datasets: [
+        {{
+          label: 'Revenue',
+          data: RES_I,
+          type: 'bar',
+          backgroundColor: COL_ING + '40',
+          borderColor: COL_ING + 'bb',
+          borderWidth: 1.5,
+          borderRadius: 5,
+          borderSkipped: false,
+          yAxisID: 'y',
+          order: 3,
+        }},
+        {{
+          label: 'Ocupación',
+          data: RES_O,
+          type: 'line',
+          borderColor: COL_OCU,
+          backgroundColor: 'transparent',
+          borderWidth: 2.5,
+          pointRadius: 5,
+          pointBackgroundColor: COL_OCU,
+          pointBorderColor: '#0f172a',
+          pointBorderWidth: 1.5,
+          tension: 0.3,
+          fill: false,
+          yAxisID: 'y2',
+          order: 1,
+        }},
+        {{
+          label: 'ADR',
+          data: RES_P,
+          type: 'line',
+          borderColor: COL_ADR,
+          backgroundColor: 'transparent',
+          borderWidth: 2.5,
+          pointRadius: 5,
+          pointBackgroundColor: COL_ADR,
+          pointBorderColor: '#0f172a',
+          pointBorderWidth: 1.5,
+          tension: 0.3,
+          fill: false,
+          yAxisID: 'y3',
+          order: 2,
+        }},
+      ]
+    }},
     options: {{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{{ legend:{{display:false}}, tooltip:{{callbacks:{{label:c=>c.parsed.y.toFixed(1)+'€'}}}} }},
-      scales:{{ y:{{ticks:{{callback:v=>v+'€'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: {{ mode: 'index', intersect: false }},
+      plugins: {{
+        legend: {{
+          position: 'top',
+          labels: {{ color: '#94a3b8', font: {{ size: 12 }}, padding: 20,
+            generateLabels: chart => chart.data.datasets.map((ds, i) => ({{
+              text: ds.label,
+              fillStyle: ds.borderColor,
+              strokeStyle: ds.borderColor,
+              lineWidth: 2,
+              hidden: false,
+              datasetIndex: i,
+              pointStyle: ds.type === 'bar' ? 'rect' : 'line',
+            }}))
+          }}
+        }},
+        tooltip: {{
+          callbacks: {{
+            label: c => {{
+              if(c.dataset.yAxisID === 'y')  return ' Revenue: ' + c.parsed.y.toLocaleString('es-ES', {{maximumFractionDigits:0}}) + '€';
+              if(c.dataset.yAxisID === 'y2') return ' Ocupación: ' + c.parsed.y.toFixed(1) + '%';
+              if(c.dataset.yAxisID === 'y3') return ' ADR: ' + c.parsed.y.toFixed(0) + '€/noche';
+              return '';
+            }}
+          }}
+        }}
+      }},
+      scales: {{
+        x: {{ grid: {{ display: false }}, ticks: {{ color: '#94a3b8' }} }},
+        y: {{
+          type: 'linear', position: 'left',
+          ticks: {{ callback: v => (v/1000).toFixed(0) + 'k€', color: COL_ING }},
+          grid: {{ color: GC }}
+        }},
+        y2: {{
+          type: 'linear', position: 'right',
+          min: 0, max: 100,
+          ticks: {{ callback: v => v + '%', color: COL_OCU }},
+          grid: {{ drawOnChartArea: false }}
+        }},
+        y3: {{
+          type: 'linear', position: 'right',
+          display: false,
+          min: adrMin,
+          max: adrMax,
+        }}
+      }}
     }}
   }});
 }}
@@ -1825,8 +1888,9 @@ function drawLeadKPI() {{
 function drawAll() {{
   safeDraw(drawKPIs,'KPIs');
   safeDraw(drawC17,'C17');
-  safeDraw(drawC1,'C1'); safeDraw(drawC3,'C3'); safeDraw(drawC5,'C5');
-  safeDraw(drawC7,'C7'); safeDraw(drawOcuAnnual,'OcuAnn'); safeDraw(drawADRAnnual,'AdrAnn');
+  safeDraw(drawC1,'C1');
+  safeDraw(drawBizOv,'BizOv');
+  safeDraw(drawC3,'C3'); safeDraw(drawC5,'C5');
   safeDraw(drawSpark,'Spark');
   safeDraw(drawHuecos,'Huecos');
   safeDraw(drawC21,'C21'); safeDraw(drawC22,'C22'); safeDraw(drawC15,'C15');
