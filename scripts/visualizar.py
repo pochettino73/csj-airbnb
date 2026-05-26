@@ -461,34 +461,6 @@ def build(data, ing, ocu, pm, rev):
         pace_final[sy] = final
         pace_nights_otb[sy] = nights_otb
 
-    # ADR OTB por año/mes: sum(pm * nights) / sum(nights) — excluye limpieza y fees
-    pace_adr_otb = {}
-    for y in active:
-        sy = str(y)
-        try:
-            cutoff = today_d.replace(year=y)
-        except ValueError:
-            cutoff = today_d.replace(year=y, day=28)
-        cutoff_str = cutoff.strftime("%Y-%m-%d")
-        adr_months = []
-        for m in range(1, 13):
-            mr = [r for r in reservas if r['year'] == y and r['month'] == m]
-            otb_r = [r for r in mr if r.get('booking_date') and r['booking_date'] <= cutoff_str]
-            otb_r += [r for r in mr if not r.get('booking_date')]
-            pm_num = pm_den = 0
-            for r in otb_r:
-                n = r.get('nights', 0)
-                if n <= 0:
-                    continue
-                pm_eff = r.get('pm', 0) or 0
-                if pm_eff <= 0 and r.get('total', 0) > 0:
-                    pm_eff = (r['total'] - r.get('cleaning', 0)) / n
-                if pm_eff > 0:
-                    pm_num += pm_eff * n
-                    pm_den += n
-            adr_months.append(round(pm_num / pm_den, 1) if pm_den > 0 else None)
-        pace_adr_otb[sy] = adr_months
-
     # === LEAD TIME ===
     lt_buckets_def = [("<7d", 0, 7), ("7-30d", 7, 30), ("30-90d", 30, 90), (">90d", 90, 9999)]
     lt_bucket_data = {b[0]: [] for b in lt_buckets_def}
@@ -994,7 +966,6 @@ const CONV_ANN={J(conv_ann)};
 const PACE_OTB={J(pace_otb)};
 const PACE_FINAL={J(pace_final)};
 const PACE_NIGHTS_OTB={J(pace_nights_otb)};
-const PACE_ADR_OTB={J(pace_adr_otb)};
 const LT_SUMMARY={J(lt_summary)};
 const LT_AVG_YEAR={J(lt_avg_year)};
 const REV_BY_YEAR={J(rev_by_year)};
@@ -1496,34 +1467,26 @@ function drawC17() {{
   const labels = M.slice(0,period);
   const otb1 = (PACE_OTB[y1]||Array(12).fill(0)).slice(0,period);
   const otb2 = (PACE_OTB[y2]||Array(12).fill(0)).slice(0,period);
-  const adr1 = (PACE_ADR_OTB[y1]||Array(12).fill(null)).slice(0,period);
-  const adr2 = (PACE_ADR_OTB[y2]||Array(12).fill(null)).slice(0,period);
   const n1   = (PACE_NIGHTS_OTB[y1]||Array(12).fill(0)).slice(0,period);
   const n2   = (PACE_NIGHTS_OTB[y2]||Array(12).fill(0)).slice(0,period);
   const deltaRev = otb1.map((v,i) => otb2[i]>0 ? ((v-otb2[i])/otb2[i]*100).toFixed(1) : '—');
-  const deltaAdr = adr1.map((v,i) => (v&&adr2[i]) ? ((v-adr2[i])/adr2[i]*100).toFixed(1) : '—');
   const deltaN   = n1.map((v,i) => n2[i]>0 ? ((v-n2[i])/n2[i]*100).toFixed(1) : '—');
   const fin2  = (PACE_FINAL[y2]||Array(12).fill(0)).slice(0,period);
-  const maxADR = niceMax(Math.max(...[...adr1,...adr2].filter(v=>v!=null)) * 1.35 || 150);
-  // Plugin: Cierre y2 centrado en barra + ADR posicionado por eje y1
-  const paceAdr = {{
-    id:'paceAdr',
+  // Plugin: Cierre y2 centrado en barra OTB y2
+  const pacePlugin = {{
+    id:'pacePlugin',
     afterDatasetsDraw(chart) {{
-      const ctx = chart.ctx, sc = chart.scales['y1'], ysc = chart.scales['y'];
-      if (!sc || !ysc) return;
-      // 1. Recoger bar.x de cada dataset OTB para calcular el centro exacto
-      const bx1=[], bx2=[];
+      const ctx = chart.ctx, ysc = chart.scales['y'];
+      if (!ysc) return;
+      const bx2=[];
       chart.data.datasets.forEach(function(ds, di) {{
         const meta = chart.getDatasetMeta(di);
-        if (ds.label==='OTB '+y1) meta.data.forEach(function(b,i){{ bx1[i]=b.x; }});
         if (ds.label==='OTB '+y2+' (misma fecha)') meta.data.forEach(function(b,i){{ bx2[i]=b.x; }});
       }});
-      // 2. Dibujar línea Cierre y2 centrada entre ambas barras
       const cpts=[];
       fin2.forEach(function(v,i) {{
         if (!v) return;
-        const cx = bx2[i] != null ? bx2[i] : (bx1[i]||0);
-        cpts.push({{x:cx, y:ysc.getPixelForValue(v)}});
+        cpts.push({{x:bx2[i]||0, y:ysc.getPixelForValue(v)}});
       }});
       if (cpts.length>1) {{
         ctx.save();
@@ -1533,47 +1496,17 @@ function drawC17() {{
         cpts.slice(1).forEach(function(p){{ ctx.lineTo(p.x,p.y); }});
         ctx.stroke(); ctx.restore();
       }}
-      // 3. Puntos ADR sobre cada barra (bar.x exacto del dataset correspondiente)
-      chart.data.datasets.forEach(function(ds, di) {{
-        let adrArr=null, pri=false;
-        if (ds.label==='OTB '+y1) {{ adrArr=adr1; pri=true; }}
-        else if (ds.label==='OTB '+y2+' (misma fecha)') {{ adrArr=adr2; }}
-        if (!adrArr) return;
-        const meta = chart.getDatasetMeta(di);
-        meta.data.forEach(function(bar, idx) {{
-          const adr=adrArr[idx]; if (adr==null) return;
-          const x=bar.x, dotY=sc.getPixelForValue(adr);
-          ctx.save();
-          ctx.beginPath(); ctx.arc(x, dotY, pri?7:5, 0, Math.PI*2);
-          if (pri) {{
-            ctx.fillStyle=COL_ADR; ctx.strokeStyle='#713f12'; ctx.lineWidth=2;
-            ctx.fill(); ctx.stroke();
-            ctx.fillStyle='#fff'; ctx.font='bold 9px Inter,sans-serif';
-            ctx.textAlign='center'; ctx.textBaseline='bottom';
-            ctx.fillText(Math.round(adr)+'€', x, dotY-9);
-          }} else {{
-            ctx.fillStyle=COL_ADR+'25'; ctx.strokeStyle=COL_ADR; ctx.lineWidth=1.5;
-            ctx.fill(); ctx.stroke();
-            ctx.fillStyle=COL_ADR+'99'; ctx.font='9px Inter,sans-serif';
-            ctx.textAlign='center'; ctx.textBaseline='bottom';
-            ctx.fillText(Math.round(adr)+'€', x, dotY-7);
-          }}
-          ctx.restore();
-        }});
-      }});
     }}
   }};
   charts.c17 = new Chart(document.getElementById('c17'), {{
     type:'bar',
-    plugins:[paceAdr],
+    plugins:[pacePlugin],
     data: {{
       labels,
       datasets: [
         {{ label:'Cierre '+y2, data:Array(period).fill(null), type:'line', borderColor:COL_ING+'70', borderDash:[6,4], borderWidth:1.5, pointRadius:0, showLine:false, yAxisID:'y', order:10 }},
         {{ label:'OTB '+y2+' (misma fecha)', data:otb2, backgroundColor:COL_ING+'40', borderRadius:4, borderSkipped:false, yAxisID:'y', order:3 }},
         {{ label:'OTB '+y1, data:otb1, backgroundColor:COL_ING+'cc', borderRadius:4, borderSkipped:false, yAxisID:'y', order:2 }},
-        {{ label:'ADR '+y1, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:7, pointBackgroundColor:COL_ADR, pointBorderColor:'#713f12', pointBorderWidth:2, showLine:false, yAxisID:'y1' }},
-        {{ label:'ADR '+y2, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:5, pointBackgroundColor:COL_ADR+'30', pointBorderColor:COL_ADR, pointBorderWidth:1.5, showLine:false, yAxisID:'y1' }},
       ]
     }},
     options: {{
@@ -1582,23 +1515,14 @@ function drawC17() {{
       plugins: {{
         legend:{{position:'top',labels:makeLegendLabels()}},
         tooltip:{{
-          filter:function(item) {{ return item.dataset.label && !item.dataset.label.startsWith('ADR'); }},
           callbacks:{{
             label:function(c) {{
-              const i=c.dataIndex;
               const rev=c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€';
-              if(c.dataset.label==='OTB '+y1) {{
-                const a=adr1[i]; return c.dataset.label+': '+rev+(a!=null?' | ADR: '+a.toFixed(0)+'€/n':'');
-              }}
-              if(c.dataset.label==='OTB '+y2+' (misma fecha)') {{
-                const a=adr2[i]; return c.dataset.label+': '+rev+(a!=null?' | ADR: '+a.toFixed(0)+'€/n':'');
-              }}
               return c.dataset.label+': '+rev;
             }},
             afterBody:function(items) {{
               const i=items[0].dataIndex, lines=[];
               if(deltaRev[i]!=='—') lines.push('Δ Rev: '+(parseFloat(deltaRev[i])>=0?'+':'')+deltaRev[i]+'%');
-              if(deltaAdr[i]!=='—') lines.push('Δ ADR: '+(parseFloat(deltaAdr[i])>=0?'+':'')+deltaAdr[i]+'%');
               if(deltaN[i]!=='—') lines.push('Δ Noches: '+(parseFloat(deltaN[i])>=0?'+':'')+deltaN[i]+'%');
               return lines.length?['\\n'+lines.join('  |  ')]:[];
             }}
@@ -1606,8 +1530,7 @@ function drawC17() {{
         }}
       }},
       scales: {{
-        y:  {{ position:'left',  ticks:{{callback:v=>(v/1000).toFixed(0)+'k€',color:'#94a3b8'}}, grid:{{color:GC}} }},
-        y1: {{ position:'right', title:{{display:true,text:'ADR €/n',color:COL_ADR}}, ticks:{{color:COL_ADR,callback:v=>v+'€'}}, grid:{{drawOnChartArea:false}}, min:0, max:maxADR }},
+        y: {{ position:'left', ticks:{{callback:v=>(v/1000).toFixed(0)+'k€',color:'#94a3b8'}}, grid:{{color:GC}} }},
         x: {{ grid:{{display:false}} }}
       }}
     }}
