@@ -461,6 +461,33 @@ def build(data, ing, ocu, pm, rev):
         pace_final[sy] = final
         pace_nights_otb[sy] = nights_otb
 
+    # ADR OTB por año/mes: sum(pm * nights) / sum(nights)
+    pace_adr_otb = {}
+    for y in active:
+        sy = str(y)
+        try:
+            cutoff = today_d.replace(year=y)
+        except ValueError:
+            cutoff = today_d.replace(year=y, day=28)
+        cutoff_str = cutoff.strftime("%Y-%m-%d")
+        adr_months = []
+        for m in range(1, 13):
+            mr = [r for r in reservas if r['year'] == y and r['month'] == m]
+            otb_r = [r for r in mr if r.get('booking_date') and r['booking_date'] <= cutoff_str]
+            otb_r += [r for r in mr if not r.get('booking_date')]
+            pm_num = pm_den = 0
+            for r in otb_r:
+                n = r.get('nights', 0)
+                if n <= 0: continue
+                pm_eff = r.get('pm', 0) or 0
+                if pm_eff <= 0 and r.get('total', 0) > 0:
+                    pm_eff = (r['total'] - r.get('cleaning', 0)) / n
+                if pm_eff > 0:
+                    pm_num += pm_eff * n
+                    pm_den += n
+            adr_months.append(round(pm_num / pm_den, 1) if pm_den > 0 else None)
+        pace_adr_otb[sy] = adr_months
+
     # === LEAD TIME ===
     lt_buckets_def = [("<7d", 0, 7), ("7-30d", 7, 30), ("30-90d", 30, 90), (">90d", 90, 9999)]
     lt_bucket_data = {b[0]: [] for b in lt_buckets_def}
@@ -671,28 +698,28 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
 
 /* Error banner */
 .err-banner {{ display:none; background:#ef4444; color:#fff; padding:10px 16px; border-radius:8px; margin-bottom:14px; font-size:12px; font-weight:600; }}
-/* KPIs */
-.kpis {{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:16px; }}
-.kpi {{ background:var(--c); border:1px solid var(--b); border-radius:10px; padding:16px; }}
+
+/* ── KPI Cards ── */
+.kpis {{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-bottom:32px; }}
+.kpi {{ background:var(--c); border:1px solid var(--b); border-radius:14px; padding:24px 22px; position:relative; transition:border-color .15s; }}
 .kpi:hover {{ border-color:var(--a); }}
-.kpi .lbl {{ font-size:10px; font-weight:600; color:var(--m); text-transform:uppercase; letter-spacing:.5px; margin-bottom:5px; }}
-.kpi .val {{ font-size:24px; font-weight:700; letter-spacing:-0.5px; }}
-.kpi .chg {{ font-size:11px; font-weight:600; margin-top:2px; }}
+.kpi .lbl {{ font-size:10px; font-weight:700; color:var(--m); text-transform:uppercase; letter-spacing:.8px; margin-bottom:10px; }}
+.kpi .val {{ font-size:36px; font-weight:800; letter-spacing:-1.5px; line-height:1; margin-bottom:8px; }}
+.kpi .chg {{ font-size:13px; font-weight:700; margin-bottom:6px; }}
 .kpi .chg.up {{ color:var(--g); }} .kpi .chg.down {{ color:var(--r); }} .kpi .chg.eq {{ color:var(--m); }}
-.kpi .det {{ font-size:9px; color:var(--m); margin-top:1px; }}
-.kpi .hist {{ font-size:9px; color:var(--m); margin-top:3px; border-top:1px solid var(--b); padding-top:3px; }}
-.kpi.primary {{ border-left:3px solid var(--a); }}
-.kpi.primary .val {{ font-size:28px; }}
-.kpi.primary .lbl {{ color:var(--t); }}
-.kpi.secondary {{ opacity:0.8; }}
-.kpi.secondary .val {{ font-size:20px; }}
-.kpi-icon {{ font-size:13px; margin-right:3px; }}
-@media(max-width:700px) {{ .kpis {{ grid-template-columns:repeat(2,1fr); gap:10px; }} }}
-@media(max-width:440px) {{ .kpis {{ grid-template-columns:1fr; gap:8px; }} .kpi .val {{ font-size:20px; }} }}
+.kpi .det {{ font-size:11px; color:var(--m); }}
+.kpi .hist {{ font-size:10px; color:var(--m); margin-top:10px; padding-top:10px; border-top:1px solid var(--b); }}
+.kpi-accent {{ position:absolute; top:0; left:0; bottom:0; width:4px; border-radius:14px 0 0 14px; }}
+@media(max-width:900px) {{ .kpis {{ grid-template-columns:repeat(2,1fr); gap:14px; }} }}
+@media(max-width:480px) {{ .kpis {{ grid-template-columns:1fr; gap:10px; }} .kpi .val {{ font-size:28px; }} }}
+
+/* ── Pace summary ── */
+.pace-summary {{ background:rgba(59,130,246,0.06); border:1px solid rgba(59,130,246,0.2); border-radius:10px; padding:14px 18px; margin-bottom:14px; font-size:13px; color:var(--m); line-height:1.6; }}
+.pace-summary strong {{ color:var(--t); }}
+
 @media(max-width:600px) {{
   body {{ padding:10px 8px; }}
   .top h1 {{ font-size:18px; }}
-  .kpi .val {{ font-size:22px; }}
   .sh {{ font-size:15px; margin:20px 0 8px 0; }}
   .cd {{ padding:12px; }}
   .cd h3 {{ font-size:12px; }}
@@ -736,6 +763,7 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
 .rv .rl {{ font-size:9px; color:var(--m); margin-top:2px; }}
 
 .ft {{ text-align:center; color:var(--m); font-size:9px; margin-top:24px; padding-top:12px; border-top:1px solid var(--b); }}
+.hidden {{ display:none; }}
 </style>
 </head>
 <body>
@@ -765,105 +793,120 @@ body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); pa
 <div class="kpis" id="kpiContainer"></div>
 
 <!-- ============================================ -->
-<!-- SECTION 1: HUECOS Y PRICING                  -->
+<!-- A: PACE REPORT — HERO                        -->
 <!-- ============================================ -->
-<div class="sh">Huecos y Pricing <span>Revenue Decisions</span></div>
+<div class="sh">Pace Report <span>OTB vs misma fecha a&ntilde;o anterior</span></div>
+<div id="pace-summary" class="pace-summary"></div>
 <div class="row r1">
   <div class="cd">
-    <h3>Huecos en calendario &mdash; propuestas de precio</h3>
-    <div class="s">Calculado por pricing.py &mdash; Precio RMS = tarifa flexible recomendada &middot; Suelo m&iacute;nimo &mdash; Techo m&aacute;ximo &middot; Ant. = antelaci&oacute;n en d&iacute;as desde hoy.</div>
-    <div id="huecos-panel" style="margin-top:8px;overflow-x:auto;"></div>
+    <div class="ch" style="height:420px"><canvas id="c17"></canvas></div>
   </div>
 </div>
 
 <!-- ============================================ -->
-<!-- SECTION 2: PACE + ADR                        -->
+<!-- B: EVOLUCIÓN DEL NEGOCIO                     -->
 <!-- ============================================ -->
-<div class="sh">Ritmo de ventas <span>Pace &amp; ADR</span></div>
-<div class="row r1">
-  <div class="cd">
-    <h3>Pace Report &mdash; On The Books + ADR</h3>
-    <div class="s">Barras agrupadas: azul = {cy} / naranja = {cy-1}. Punto amarillo sobre cada barra = ADR de esa serie. Etiqueta = ADR {cy}. L&iacute;nea gris = total final {cy-1}.</div>
-    <div class="ch xl"><canvas id="c17"></canvas></div>
-  </div>
-</div>
-
-<!-- ============================================ -->
-<!-- SECTION 4: INGRESOS                          -->
-<!-- ============================================ -->
-<div class="sh">Ingresos <span>Revenue</span></div>
+<div class="sh">Evoluci&oacute;n del negocio <span>Anual &amp; Mensual</span></div>
 <div class="row r2">
-  <div class="cd">
-    <h3>Ingresos mensuales &mdash; comparativa</h3>
-    <div class="s">A&ntilde;os seleccionados + banda hist&oacute;rica (min/max)</div>
-    <div class="ch xl"><canvas id="c1"></canvas></div>
+
+  <!-- Columna izquierda: visión anual -->
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <div class="cd">
+      <h3>Ingresos anuales</h3>
+      <div class="s">Ingresos brutos por a&ntilde;o</div>
+      <div class="ch md"><canvas id="c7"></canvas></div>
+    </div>
+    <div class="cd">
+      <h3>Ocupaci&oacute;n anual</h3>
+      <div class="s">% ocupaci&oacute;n por a&ntilde;o</div>
+      <div class="ch md"><canvas id="cOcuAnn"></canvas></div>
+    </div>
+    <div class="cd">
+      <h3>ADR anual</h3>
+      <div class="s">&euro;/noche por a&ntilde;o</div>
+      <div class="ch md"><canvas id="cAdrAnn"></canvas></div>
+    </div>
   </div>
-  <div class="cd">
-    <h3>Evoluci&oacute;n anual &mdash; Ingresos y ADR</h3>
-    <div class="s">Barras = ingresos anuales (eje izdo) &mdash; L&iacute;nea = ADR anual (eje dcho)</div>
-    <div class="ch xl"><canvas id="c7"></canvas></div>
+
+  <!-- Columna derecha: visión mensual -->
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <div class="cd">
+      <h3>Ingresos mensuales</h3>
+      <div class="s">A&ntilde;os seleccionados + banda hist&oacute;rica</div>
+      <div class="ch md"><canvas id="c1"></canvas></div>
+    </div>
+    <div class="cd">
+      <h3>Ocupaci&oacute;n mensual</h3>
+      <div class="s">A&ntilde;os seleccionados + banda hist&oacute;rica</div>
+      <div class="ch md"><canvas id="c3"></canvas></div>
+    </div>
+    <div class="cd">
+      <h3>ADR mensual</h3>
+      <div class="s">A&ntilde;os seleccionados + banda hist&oacute;rica</div>
+      <div class="ch md"><canvas id="c5"></canvas></div>
+    </div>
   </div>
 </div>
 
 <!-- ============================================ -->
-<!-- SECTION 5: OCUPACIÓN Y PM                    -->
+<!-- C: OCUPACIÓN HEATMAP                         -->
 <!-- ============================================ -->
-<div class="sh">Ocupaci&oacute;n y Precio Medio <span>Occupancy &amp; ADR</span></div>
-<div class="row r2">
-  <div class="cd">
-    <h3>Ocupaci&oacute;n mensual &mdash; comparativa</h3>
-    <div class="s">A&ntilde;os seleccionados + banda hist&oacute;rica (min/max)</div>
-    <div class="ch xl"><canvas id="c3"></canvas></div>
-  </div>
-  <div class="cd">
-    <h3>PM mensual &mdash; comparativa</h3>
-    <div class="s">A&ntilde;os seleccionados + banda hist&oacute;rica (min/max)</div>
-    <div class="ch xl"><canvas id="c5"></canvas></div>
-  </div>
-</div>
+<div class="sh">Ocupaci&oacute;n hist&oacute;rica <span>por a&ntilde;o y mes</span></div>
 <div class="row r1">
   <div class="cd">
-    <h3>PM por banda estacional</h3>
-    <div class="s">Alta (15jun-15sep) / Media (1abr-14jun, 16sep-31oct) / Baja (1nov-31mar) &mdash; &euro;/noche</div>
-    <div class="ch lg"><canvas id="c14"></canvas></div>
+    <div id="sparktable" style="margin-top:4px;overflow-x:auto;"></div>
   </div>
 </div>
+
+<!-- ============================================ -->
+<!-- D: HUECOS ABIERTOS                           -->
+<!-- ============================================ -->
+<div class="sh">Huecos abiertos <span>Calendario</span></div>
 <div class="row r1">
   <div class="cd">
-    <h3>Ocupaci&oacute;n mensual por a&ntilde;o</h3>
-    <div class="s">Barras proporcionales &mdash; verde (&gt;80%), amarillo (50-80%), rojo (&lt;50%)</div>
-    <div id="sparktable" style="margin-top:8px; overflow-x:auto;"></div>
+    <div id="huecos-panel" style="margin-top:4px;"></div>
   </div>
 </div>
 
 <!-- ============================================ -->
-<!-- SECTION 5: DEMANDA AIRBNB                    -->
+<!-- E: AIRBNB HEALTH                             -->
 <!-- ============================================ -->
-<div class="sh">Demanda Airbnb <span>Funnel &amp; Lead Time</span></div>
-<div id="lead-kpi" style="margin:0 0 12px 0;padding:0 4px;"></div>
-<div class="row r2">
-  <div class="cd">
-    <h3>Tasa de conversi&oacute;n anual</h3>
-    <div class="s">Reservas creadas / Visitas al listing &mdash; desde 2018</div>
-    <div class="ch md"><canvas id="c15"></canvas></div>
-  </div>
-  <div class="cd">
-    <h3>Visitas y reservas mensuales (fecha de venta)</h3>
-    <div class="s">Cu&aacute;ndo se reserv&oacute;, no cu&aacute;ndo se aloja &mdash; barras=visitas al listing, l&iacute;nea=reservas creadas</div>
-    <div class="ch md"><canvas id="c16"></canvas></div>
-  </div>
-</div>
-
-<!-- ============================================ -->
-<!-- SECTION 7: SALUD                             -->
-<!-- ============================================ -->
-<div class="sh">Reputaci&oacute;n y Cancelaciones <span>Reviews &amp; Superhost</span></div>
+<div class="sh">Airbnb Health <span>Reputaci&oacute;n, Cancelaciones &amp; Conversi&oacute;n</span></div>
 <div class="row r2">
   <div class="cd" id="nextShPanel"></div>
   <div class="cd">
     <h3>Cancelaciones por a&ntilde;o</h3>
-    <div class="s">Reservas confirmadas vs canceladas. % tasa + variaci&oacute;n vs a&ntilde;o anterior</div>
+    <div class="s">Confirmadas vs canceladas. % tasa por a&ntilde;o.</div>
     <div class="ch md"><canvas id="c22"></canvas></div>
+  </div>
+</div>
+<div class="row r2">
+  <div class="cd">
+    <h3>Superhost &mdash; rating trimestral</h3>
+    <div class="s">&Uacute;ltimos 4 trimestres (ventana 365d). Umbral 4.80.</div>
+    <div class="ch md"><canvas id="c21"></canvas></div>
+  </div>
+  <div class="cd">
+    <h3>Conversi&oacute;n anual</h3>
+    <div class="s">Reservas / Visitas listing &mdash; desde 2018</div>
+    <div class="ch md"><canvas id="c15"></canvas></div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- F: ANALYTICS AVANZADOS (colapsable)          -->
+<!-- ============================================ -->
+<div class="sh" style="cursor:pointer" onclick="document.getElementById('advanced-panel').classList.toggle('hidden')">
+  Analytics avanzados <span>Lead Time &mdash; clic para expandir</span>
+</div>
+<div id="advanced-panel" class="hidden">
+  <div id="lead-kpi" style="margin:0 0 12px 0;padding:0 4px;"></div>
+  <div class="row r1">
+    <div class="cd">
+      <h3>Visitas y reservas mensuales</h3>
+      <div class="s">Cu&aacute;ndo se reserv&oacute;, no cu&aacute;ndo se aloja</div>
+      <div class="ch md"><canvas id="c16"></canvas></div>
+    </div>
   </div>
 </div>
 
@@ -966,6 +1009,7 @@ const CONV_ANN={J(conv_ann)};
 const PACE_OTB={J(pace_otb)};
 const PACE_FINAL={J(pace_final)};
 const PACE_NIGHTS_OTB={J(pace_nights_otb)};
+const PACE_ADR_OTB={J(pace_adr_otb)};
 const LT_SUMMARY={J(lt_summary)};
 const LT_AVG_YEAR={J(lt_avg_year)};
 const REV_BY_YEAR={J(rev_by_year)};
@@ -987,105 +1031,113 @@ let y1 = '{cy}', y2 = '{cy-1}', period = 12;
 
 function getYears() {{ return [y1, y2]; }}
 
-// === KPIs dinámicos ===
+// === KPIs — 4 cards ejecutivas ===
 function drawKPIs() {{
   const ct = document.getElementById('kpiContainer');
-  const d1 = ALL_ING[y1] || Array(12).fill(0);
-  const d2 = ALL_ING[y2] || Array(12).fill(0);
-  const o1 = ALL_OCU[y1] || Array(12).fill(0);
-  const o2 = ALL_OCU[y2] || Array(12).fill(0);
-  const p1 = ALL_PM[y1] || Array(12).fill(0);
-  const p2 = ALL_PM[y2] || Array(12).fill(0);
-
-  const sum = (a,n) => a.slice(0,n).reduce((s,v)=>s+v,0);
-  const avg = (a,n) => {{ const vs=a.slice(0,n).filter(v=>v>0); return vs.length ? vs.reduce((s,v)=>s+v,0)/vs.length : 0; }};
   const pct = (a,b) => b ? ((a-b)/b*100) : 0;
   const fmt = (v,dec=0) => v.toLocaleString('es-ES',{{maximumFractionDigits:dec,minimumFractionDigits:dec}});
+  const tot2 = TOTALES[y2] || {{}};
 
-  const ing1 = sum(d1,period), ing2 = sum(d2,period);
-  const ocu1 = avg(o1,period), ocu2 = avg(o2,period);
-
-  // OTB a misma fecha (comparativa justa: vendido hasta hoy vs mismo día año pasado)
-  const otb1 = (PACE_OTB[y1]||Array(12).fill(0)).slice(0,period).reduce((a,b)=>a+b,0);
-  const otb2 = (PACE_OTB[y2]||Array(12).fill(0)).slice(0,period).reduce((a,b)=>a+b,0);
-  const noc1 = (PACE_NIGHTS_OTB[y1]||Array(12).fill(0)).slice(0,period).reduce((a,b)=>a+b,0);
-  const noc2 = (PACE_NIGHTS_OTB[y2]||Array(12).fill(0)).slice(0,period).reduce((a,b)=>a+b,0);
+  // Datos OTB a misma fecha
+  const otb1 = (PACE_OTB[y1]||Array(12).fill(0)).reduce((a,b)=>a+b,0);
+  const otb2 = (PACE_OTB[y2]||Array(12).fill(0)).reduce((a,b)=>a+b,0);
+  const noc1 = (PACE_NIGHTS_OTB[y1]||Array(12).fill(0)).reduce((a,b)=>a+b,0);
+  const noc2 = (PACE_NIGHTS_OTB[y2]||Array(12).fill(0)).reduce((a,b)=>a+b,0);
   const diasAno = parseInt(y1) % 4 === 0 ? 366 : 365;
   const ocuOtb1 = noc1 / diasAno * 100;
   const ocuOtb2 = noc2 / diasAno * 100;
+  const pmGlobal1 = PM_YTD[y1] || 0;
+  const pmGlobal2 = PM_YTD[y2] || 0;
 
-  // PM temporada alta (jun=5, jul=6, ago=7) — siempre fijo, no depende del filtro
-  const pmAlta = (a) => {{ const vs=[a[5],a[6],a[7]].filter(v=>v>0); return vs.length?vs.reduce((s,v)=>s+v,0)/vs.length:0; }};
-  const pm1 = pmAlta(p1), pm2 = pmAlta(p2);
-
-  const periodLabel = period === 12 ? 'anual' : period+'m';
-  const pmLabel = period <= 3 ? 'PM' : period <= 7 ? 'PM' : 'PM';
-
-  function card(label, val, chg, det, histLine, invert, klass, icon, accentCol) {{
-    const good = invert ? chg <= 0 : chg >= 0;
-    const cls = good ? 'up' : 'down';
+  function kpiCard(label, value, delta, sub, footer, accentCol) {{
+    const good = delta >= 0;
+    const deltaCls = good ? 'up' : 'down';
     const arr = good ? '&#9650;' : '&#9660;';
-    let chgStr = '';
-    if (isFinite(chg) && chg !== 0) {{
-      chgStr = '<div class="chg '+cls+'">'+arr+' '+Math.abs(chg).toFixed(1)+'% vs '+y2+'</div>';
-    }} else if (isFinite(chg) && chg === 0 && det) {{
-      chgStr = '<div class="chg eq">= 0.0% vs '+y2+'</div>';
-    }}
-    const histStr = histLine ? '<div class="hist">'+histLine+'</div>' : '';
-    const iconHtml = icon ? '<span class="kpi-icon">'+icon+'</span>' : '';
-    const st = accentCol ? ' style="border-left:3px solid '+accentCol+';"' : '';
-    return '<div class="kpi'+(klass?' '+klass:'')+'"'+st+'><div class="lbl">'+iconHtml+label+'</div><div class="val">'+val+'</div>'+chgStr+'<div class="det">'+det+'</div>'+histStr+'</div>';
+    const deltaHtml = isFinite(delta) && delta !== 0
+      ? '<div class="chg '+deltaCls+'">'+arr+' '+Math.abs(delta).toFixed(1)+'% vs '+y2+'</div>'
+      : '<div class="chg eq">= vs '+y2+'</div>';
+    const accentHtml = accentCol ? '<div class="kpi-accent" style="background:'+accentCol+'"></div>' : '';
+    return '<div class="kpi">'+accentHtml
+      +'<div class="lbl">'+label+'</div>'
+      +'<div class="val">'+value+'</div>'
+      +deltaHtml
+      +'<div class="det">'+sub+'</div>'
+      +(footer?'<div class="hist">'+footer+'</div>':'')
+      +'</div>';
   }}
 
   let h = '';
-  const tot2 = TOTALES[y2] || {{}};
-  // Card 1 — Ventas a misma fecha
-  h += card('Ventas '+y1+' a misma fecha', fmt(otb1)+'€', pct(otb1,otb2),
+
+  // Card 1 — Revenue Pace
+  const lyFinal = tot2.income ? fmt(tot2.income)+'€' : '—';
+  h += kpiCard(
+    'Revenue Pace',
+    fmt(otb1)+'€',
+    pct(otb1, otb2),
     y2+' misma fecha: '+fmt(otb2)+'€',
-    'Total final '+y2+': '+fmt(tot2.income||ing2)+'€', false, 'primary', '&#x1F4B0;', 'var(--cy1)');
-  // Card 2 — Ocupación a misma fecha
-  h += card('Ocupaci&oacute;n '+y1+' a misma fecha', ocuOtb1.toFixed(1)+'%', pct(ocuOtb1,ocuOtb2),
-    y2+' misma fecha: '+ocuOtb2.toFixed(1)+'% ('+noc2+' noches)',
-    'Total final '+y2+': '+(tot2.ocu!=null?tot2.ocu.toFixed(1):'-')+'% ('+tot2.nights+' noches)', false, 'secondary', '&#x1F4CA;');
-  // PM computations — ponderado por noches, estancias vendidas hasta misma fecha
-  const pmAvg = (a) => {{ const vs=a.filter(v=>v>0); return vs.length?vs.reduce((s,v)=>s+v,0)/vs.length:0; }};
-  const pmGlobal1 = PM_YTD[y1] || 0, pmGlobal2 = PM_YTD[y2] || 0;
-  // Card 3 — Cancelaciones
-  const ck1 = CANC_KPIS[y1] || null;
-  const ck2ytd = CANC_KPIS_YTD[y2] || null;
-  if (ck1) {{
-    const tasa1 = ck1.tasa, tasa2 = ck2ytd ? ck2ytd.tasa : 0;
-    const canc1 = ck1.canc;
-    h += card('Cancelaciones '+y1, canc1+' ('+tasa1.toFixed(1)+'%)', pct(tasa1,tasa2),
-      y2+' misma fecha: '+(ck2ytd?ck2ytd.canc:'-')+' ('+(ck2ytd?ck2ytd.tasa.toFixed(1):'-')+'%)',
-      'Total final '+y2+': '+(tot2.canc||'-')+' ('+(tot2.tasa_canc!=null?tot2.tasa_canc.toFixed(1):'-')+'%)', true, 'secondary', '&#x26A0;');
-  }} else {{
-    h += card('Cancelaciones '+y1, 'Sin datos', 0, '', '', false, 'secondary', '&#x26A0;');
-  }}
-  // Card 4 — PM medio a misma fecha
-  h += card('PM medio '+y1+' a misma fecha', pmGlobal1.toFixed(1)+'€', pct(pmGlobal1,pmGlobal2),
-    y2+' misma fecha: '+pmGlobal2.toFixed(1)+'€/noche',
-    'Total final '+y2+': '+(tot2.pm||'-')+'€/noche', false, 'primary', '&#x20AC;', 'var(--adr)');
-  // Card 5 — Rating trimestre en curso (próxima evaluación = FUTURE_SH[0])
+    'LY final: '+lyFinal,
+    COL_ING
+  );
+
+  // Card 2 — Occupancy Pace
+  const lyOcuFinal = tot2.ocu != null ? tot2.ocu.toFixed(1)+'%' : '—';
+  h += kpiCard(
+    'Occupancy Pace',
+    ocuOtb1.toFixed(1)+'%',
+    pct(ocuOtb1, ocuOtb2),
+    y2+' misma fecha: '+ocuOtb2.toFixed(1)+'%&nbsp;('+noc2+'n)',
+    'LY final: '+lyOcuFinal+'&nbsp;('+( tot2.nights||'—')+'n)',
+    COL_OCU
+  );
+
+  // Card 3 — ADR Pace
+  const lyAdrFinal = tot2.pm ? tot2.pm.toFixed(1)+'€' : '—';
+  h += kpiCard(
+    'ADR Pace',
+    pmGlobal1 > 0 ? pmGlobal1.toFixed(1)+'€' : '—',
+    pct(pmGlobal1, pmGlobal2),
+    y2+' misma fecha: '+(pmGlobal2>0?pmGlobal2.toFixed(1)+'€':'—'),
+    'LY final: '+lyAdrFinal,
+    COL_ADR
+  );
+
+  // Card 4 — Airbnb Health
   const shd = FUTURE_SH && FUTURE_SH.length ? FUTURE_SH[0] : null;
-  if(shd) {{
-    const shCol = shd.is_super ? '#22c55e' : '#ef4444';
-    const shIcon = shd.is_super ? '&#x2705;' : '&#x26A0;&#xFE0F;';
-    const shStatus = shd.is_super ? 'Superhost' : 'En riesgo';
-    const shDiff = (shd.rating_exact - 4.8).toFixed(2);
-    const shSign = shd.rating_exact >= 4.8 ? '+' : '';
-    const pendTxt = shd.pending > 0 ? '<div style="font-size:9px;color:var(--m);margin-top:3px;border-top:1px solid var(--b);padding-top:3px">'+shd.pending+' pendientes &rarr; si 5&#9733;: <b style="color:'+(shd.if_pending_5>=4.8?'#22c55e':'#f59e0b')+'">'+shd.if_pending_5.toFixed(2)+'</b></div>' : '';
-    h += '<div class="kpi secondary"><div class="lbl"><span class="kpi-icon">&#x2605;</span>Rating '+shd.label+'</div><div class="val" style="color:'+shCol+'">'+shd.rating_exact.toFixed(2)+'</div><div class="chg" style="color:'+shCol+'">'+shIcon+' '+shStatus+'</div><div class="det">'+shSign+shDiff+' vs 4.80 &mdash; '+shd.n+' reviews</div><div class="hist">Eval: '+shd.eval_date+' ('+shd.days_left+'d)</div>'+pendTxt+'</div>';
-  }}
-  // Card 6 — Huecos abiertos
-  if(PRICING_GAPS && PRICING_GAPS.length > 0) {{
-    const nH = PRICING_GAPS.length;
-    const avgRMS = PRICING_GAPS.reduce((s,g)=>s+g.recommended_price,0)/nH;
-    const nextGap = PRICING_GAPS[0].start_date ? PRICING_GAPS[0].start_date.slice(5) : '';
-    h += '<div class="kpi primary" style="border-left:3px solid var(--warn);"><div class="lbl"><span class="kpi-icon">&#x1F4C5;</span>Huecos abiertos</div><div class="val">'+nH+'</div><div class="det">RMS medio: '+avgRMS.toFixed(0)+'€/n</div><div class="hist">Próximo: '+nextGap+'</div></div>';
+  const ck1 = CANC_KPIS[y1] || null;
+  if (shd) {{
+    const shCol = shd.is_super ? '#22c55e' : '#f59e0b';
+    const shLabel = shd.is_super ? 'Superhost OK' : 'Riesgo Superhost';
+    const cancLine = ck1 ? (ck1.canc+' cancelaciones ('+ck1.tasa.toFixed(1)+'%)') : '—';
+    const pendLine = shd.pending > 0
+      ? shd.pending+' reviews pendientes'
+      : 'Sin reviews pendientes';
+    h += '<div class="kpi"><div class="kpi-accent" style="background:'+shCol+'"></div>'
+      +'<div class="lbl">Airbnb Health</div>'
+      +'<div class="val" style="color:'+shCol+';font-size:28px">'+shd.rating_exact.toFixed(2)+'</div>'
+      +'<div class="chg" style="color:'+shCol+'">'+(shd.is_super?'&#x2705;':'&#x26A0;')+' '+shLabel+'</div>'
+      +'<div class="det">'+cancLine+'</div>'
+      +'<div class="hist">'+pendLine+' &mdash; eval '+shd.eval_date+'</div>'
+      +'</div>';
   }}
 
   ct.innerHTML = h;
+
+  // Resumen automático Pace Report
+  const sumEl = document.getElementById('pace-summary');
+  if (sumEl && otb2 > 0) {{
+    const dRev = pct(otb1, otb2);
+    const dAdr = pct(pmGlobal1, pmGlobal2);
+    const dOcu = (ocuOtb1 - ocuOtb2).toFixed(1);
+    const revSign = dRev >= 0 ? '+' : '';
+    const adrSign = dAdr >= 0 ? '+' : '';
+    const ocuSign = parseFloat(dOcu) >= 0 ? '+' : '';
+    sumEl.innerHTML = '<strong>'+y1+' vs '+y2+' a misma fecha:</strong>&nbsp;&nbsp;'
+      +'Revenue <strong style="color:'+(dRev>=0?COL_ING:'#ef4444')+'">'+revSign+dRev.toFixed(1)+'%</strong>&nbsp;&nbsp;·&nbsp;&nbsp;'
+      +'ADR <strong style="color:'+(dAdr>=0?COL_ADR:'#ef4444')+'">'+adrSign+dAdr.toFixed(1)+'%</strong>&nbsp;&nbsp;·&nbsp;&nbsp;'
+      +'Ocupación <strong style="color:'+(parseFloat(dOcu)>=0?COL_OCU:'#ef4444')+'">'+ocuSign+dOcu+' pt</strong>';
+  }} else if (sumEl) {{
+    sumEl.style.display = 'none';
+  }}
 }}
 
 const COL_ING  = '#3b82f6';  // Ingresos — azul
@@ -1141,19 +1193,18 @@ function drawC1() {{
   if(charts.c1) charts.c1.destroy();
   const labels = M.slice(0, period);
   charts.c1 = new Chart(document.getElementById('c1'), {{
-    type:'line',
+    type:'bar',
     data: {{
       labels,
       datasets: [
-        ...bandDatasets(HMAX, HMIN, HAVG, period),
-        makeDatasetLine(y2, (ALL_ING[y2]||Array(12).fill(0)).slice(0,period), false, COL_ING),
-        makeDatasetLine(y1, (ALL_ING[y1]||Array(12).fill(0)).slice(0,period), true,  COL_ING),
+        {{ label:y2, data:(ALL_ING[y2]||Array(12).fill(0)).slice(0,period), backgroundColor:COL_ING+'35', borderRadius:4, borderSkipped:false }},
+        {{ label:y1, data:(ALL_ING[y1]||Array(12).fill(0)).slice(0,period), backgroundColor:COL_ING+'bb', borderRadius:4, borderSkipped:false }},
       ]
     }},
     options: {{
       responsive:true, maintainAspectRatio:false,
       interaction:{{mode:'index',intersect:false}},
-      plugins:{{ legend:{{position:'top',labels:makeLegendLabels({{padding:12,filter:bandLegendFilter}})}}, tooltip:{{filter:t=>t.dataset.label!=='_min',callbacks:{{label:c=>c.dataset.label+': '+c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€'}}}} }},
+      plugins:{{ legend:{{position:'top',labels:makeLegendLabels()}}, tooltip:{{callbacks:{{label:c=>c.dataset.label+': '+c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€'}}}} }},
       scales:{{ y:{{ticks:{{callback:v=>v.toLocaleString('es-ES')+'€'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
     }}
   }});
@@ -1209,36 +1260,52 @@ function drawC5() {{
   }});
 }}
 
-// drawC6 removed (redundante con C7 que ya muestra ADR anual)
+// drawC6 removed
 
-// === C7: Evolución anual — Ingresos y ADR ===
+// === C7: Ingresos anuales (barras) ===
 function drawC7() {{
   if(charts.c7) charts.c7.destroy();
-  const maxADR = niceMax(Math.max(...RES_P.filter(v=>v>0)) * 1.3 || 150);
   charts.c7 = new Chart(document.getElementById('c7'), {{
     type:'bar',
-    data: {{
-      labels: RES_Y,
-      datasets: [
-        {{ label:'Ingresos (€)', data:RES_I, backgroundColor:COL_ING+'99', borderRadius:6, borderSkipped:false, yAxisID:'y', order:2 }},
-        {{ label:'ADR (€/noche)', data:RES_P, type:'line', borderColor:COL_ADR, borderWidth:2.5, pointRadius:4, pointBackgroundColor:COL_ADR, tension:0.3, fill:false, yAxisID:'y1', order:1 }},
-      ]
-    }},
+    data: {{ labels:RES_Y, datasets:[
+      {{ label:'Ingresos €', data:RES_I, backgroundColor:COL_ING+'99', borderRadius:6, borderSkipped:false }},
+    ]}},
     options: {{
       responsive:true, maintainAspectRatio:false,
-      interaction:{{mode:'index',intersect:false}},
-      plugins: {{
-        legend:{{position:'top',labels:makeLegendLabels({{padding:14}})}},
-        tooltip:{{ callbacks:{{ label:function(c){{
-          if(c.dataset.yAxisID==='y') return c.dataset.label+': '+c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€';
-          return c.dataset.label+': '+c.parsed.y.toFixed(1)+'€/noche';
-        }} }} }}
-      }},
-      scales: {{
-        y: {{ position:'left', title:{{display:true,text:'Ingresos €',color:COL_ING}}, ticks:{{callback:v=>(v/1000).toFixed(0)+'k€',color:COL_ING}}, grid:{{color:GC}} }},
-        y1: {{ position:'right', title:{{display:true,text:'ADR €/noche',color:COL_ADR}}, ticks:{{color:COL_ADR,callback:v=>v+'€'}}, grid:{{drawOnChartArea:false}}, min:0, max:maxADR }},
-        x: {{ grid:{{display:false}} }}
-      }}
+      plugins:{{ legend:{{display:false}}, tooltip:{{callbacks:{{label:c=>c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€'}}}} }},
+      scales:{{ y:{{ticks:{{callback:v=>(v/1000).toFixed(0)+'k€'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
+    }}
+  }});
+}}
+
+// === Ocupación anual (líneas) ===
+function drawOcuAnnual() {{
+  if(charts.ocuAnn) charts.ocuAnn.destroy();
+  charts.ocuAnn = new Chart(document.getElementById('cOcuAnn'), {{
+    type:'line',
+    data: {{ labels:RES_Y, datasets:[
+      {{ label:'Ocupación %', data:RES_O, borderColor:COL_OCU, borderWidth:2.5, pointRadius:4, pointBackgroundColor:COL_OCU, tension:0.3, fill:false }},
+    ]}},
+    options: {{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{{ legend:{{display:false}}, tooltip:{{callbacks:{{label:c=>c.parsed.y.toFixed(1)+'%'}}}} }},
+      scales:{{ y:{{min:0,max:100,ticks:{{callback:v=>v+'%'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
+    }}
+  }});
+}}
+
+// === ADR anual (líneas) ===
+function drawADRAnnual() {{
+  if(charts.adrAnn) charts.adrAnn.destroy();
+  charts.adrAnn = new Chart(document.getElementById('cAdrAnn'), {{
+    type:'line',
+    data: {{ labels:RES_Y, datasets:[
+      {{ label:'ADR €/noche', data:RES_P, borderColor:COL_ADR, borderWidth:2.5, pointRadius:4, pointBackgroundColor:COL_ADR, tension:0.3, fill:false }},
+    ]}},
+    options: {{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{{ legend:{{display:false}}, tooltip:{{callbacks:{{label:c=>c.parsed.y.toFixed(1)+'€'}}}} }},
+      scales:{{ y:{{ticks:{{callback:v=>v+'€'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
     }}
   }});
 }}
@@ -1461,41 +1528,52 @@ function drawC16() {{
   }});
 }}
 
-// === C17: Pace Report — barras agrupadas + ADR sobre cada barra (plugin) ===
+// === C17: Pace Report — HERO ===
 function drawC17() {{
   if(charts.c17) charts.c17.destroy();
   const labels = M.slice(0,period);
   const otb1 = (PACE_OTB[y1]||Array(12).fill(0)).slice(0,period);
   const otb2 = (PACE_OTB[y2]||Array(12).fill(0)).slice(0,period);
+  const adr1 = (PACE_ADR_OTB[y1]||Array(12).fill(null)).slice(0,period);
+  const adr2 = (PACE_ADR_OTB[y2]||Array(12).fill(null)).slice(0,period);
   const n1   = (PACE_NIGHTS_OTB[y1]||Array(12).fill(0)).slice(0,period);
   const n2   = (PACE_NIGHTS_OTB[y2]||Array(12).fill(0)).slice(0,period);
   const deltaRev = otb1.map((v,i) => otb2[i]>0 ? ((v-otb2[i])/otb2[i]*100).toFixed(1) : '—');
   const deltaN   = n1.map((v,i) => n2[i]>0 ? ((v-n2[i])/n2[i]*100).toFixed(1) : '—');
-  const fin2  = (PACE_FINAL[y2]||Array(12).fill(0)).slice(0,period);
-  // Plugin: Cierre y2 centrado en barra OTB y2
+  const ADR_OFFSET = 28; // px fijos por encima del top de la barra
+
   const pacePlugin = {{
     id:'pacePlugin',
     afterDatasetsDraw(chart) {{
-      const ctx = chart.ctx, ysc = chart.scales['y'];
-      if (!ysc) return;
-      const bx2=[];
+      const ctx = chart.ctx;
+      const bx1=[], by1=[], bx2=[], by2=[];
       chart.data.datasets.forEach(function(ds, di) {{
         const meta = chart.getDatasetMeta(di);
-        if (ds.label==='OTB '+y2+' (misma fecha)') meta.data.forEach(function(b,i){{ bx2[i]=b.x; }});
+        if (ds.label==='OTB '+y1) meta.data.forEach(function(b,i){{ bx1[i]=b.x; by1[i]=b.y; }});
+        if (ds.label==='OTB '+y2) meta.data.forEach(function(b,i){{ bx2[i]=b.x; by2[i]=b.y; }});
       }});
-      const cpts=[];
-      fin2.forEach(function(v,i) {{
-        if (!v) return;
-        cpts.push({{x:bx2[i]||0, y:ysc.getPixelForValue(v)}});
+      // Puntos ADR — posición fija por encima del top de la barra
+      [[adr1,bx1,by1,true],[adr2,bx2,by2,false]].forEach(function(cfg) {{
+        const adrArr=cfg[0], bxArr=cfg[1], byArr=cfg[2], pri=cfg[3];
+        adrArr.forEach(function(adr, i) {{
+          if (adr==null || bxArr[i]==null) return;
+          const x=bxArr[i], dotY=(byArr[i]||0)-ADR_OFFSET;
+          ctx.save();
+          ctx.beginPath(); ctx.arc(x, dotY, pri?8:6, 0, Math.PI*2);
+          if (pri) {{
+            ctx.fillStyle=COL_ADR; ctx.strokeStyle='#713f12'; ctx.lineWidth=2;
+            ctx.fill(); ctx.stroke();
+            ctx.fillStyle='#1e293b'; ctx.font='bold 9px Inter,sans-serif';
+          }} else {{
+            ctx.fillStyle='transparent'; ctx.strokeStyle=COL_ADR; ctx.lineWidth=2;
+            ctx.fill(); ctx.stroke();
+            ctx.fillStyle=COL_ADR+'cc'; ctx.font='9px Inter,sans-serif';
+          }}
+          ctx.textAlign='center'; ctx.textBaseline='middle';
+          ctx.fillText(Math.round(adr)+'€', x, dotY);
+          ctx.restore();
+        }});
       }});
-      if (cpts.length>1) {{
-        ctx.save();
-        ctx.strokeStyle=COL_ING+'70'; ctx.lineWidth=1.5;
-        ctx.setLineDash([6,4]); ctx.lineJoin='round';
-        ctx.beginPath(); ctx.moveTo(cpts[0].x,cpts[0].y);
-        cpts.slice(1).forEach(function(p){{ ctx.lineTo(p.x,p.y); }});
-        ctx.stroke(); ctx.restore();
-      }}
     }}
   }};
   charts.c17 = new Chart(document.getElementById('c17'), {{
@@ -1504,33 +1582,40 @@ function drawC17() {{
     data: {{
       labels,
       datasets: [
-        {{ label:'Cierre '+y2, data:fin2.map(v=>v||null), type:'line', borderColor:COL_ING+'70', borderDash:[6,4], borderWidth:1.5, pointRadius:0, showLine:false, yAxisID:'y', order:10 }},
-        {{ label:'OTB '+y2+' (misma fecha)', data:otb2, backgroundColor:COL_ING+'40', borderRadius:4, borderSkipped:false, yAxisID:'y', order:3 }},
-        {{ label:'OTB '+y1, data:otb1, backgroundColor:COL_ING+'cc', borderRadius:4, borderSkipped:false, yAxisID:'y', order:2 }},
+        {{ label:'OTB '+y2, data:otb2, backgroundColor:COL_ING+'35', borderColor:COL_ING+'60', borderWidth:1, borderRadius:5, borderSkipped:false, order:3 }},
+        {{ label:'OTB '+y1, data:otb1, backgroundColor:COL_ING+'bb', borderRadius:5, borderSkipped:false, order:2 }},
+        {{ label:'ADR '+y1, data:Array(period).fill(null), type:'line', borderColor:'transparent', pointRadius:0, showLine:false }},
+        {{ label:'ADR '+y2+' (hueco)', data:Array(period).fill(null), type:'line', borderColor:COL_ADR, borderDash:[4,4], borderWidth:1.5, pointRadius:0, showLine:false }},
       ]
     }},
     options: {{
       responsive:true, maintainAspectRatio:false,
       interaction:{{mode:'index',intersect:false}},
+      layout:{{ padding:{{ top:40 }} }},
       plugins: {{
-        legend:{{position:'top',labels:makeLegendLabels()}},
+        legend:{{position:'top',labels:makeLegendLabels({{filter:function(item){{ return !item.text.startsWith('ADR'); }}}}) }},
         tooltip:{{
           callbacks:{{
             label:function(c) {{
+              if (c.dataset.label.startsWith('ADR')) return null;
+              const i=c.dataIndex;
               const rev=c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€';
-              return c.dataset.label+': '+rev;
+              const isPri = c.dataset.label==='OTB '+y1;
+              const adr = isPri ? adr1[i] : adr2[i];
+              const adrTxt = adr!=null ? ' · ADR '+Math.round(adr)+'€' : '';
+              return c.dataset.label+': '+rev+adrTxt;
             }},
             afterBody:function(items) {{
               const i=items[0].dataIndex, lines=[];
               if(deltaRev[i]!=='—') lines.push('Δ Rev: '+(parseFloat(deltaRev[i])>=0?'+':'')+deltaRev[i]+'%');
               if(deltaN[i]!=='—') lines.push('Δ Noches: '+(parseFloat(deltaN[i])>=0?'+':'')+deltaN[i]+'%');
-              return lines.length?['\\n'+lines.join('  |  ')]:[];
+              return lines.length?['',lines.join('   ·   ')]:[];
             }}
           }}
         }}
       }},
       scales: {{
-        y: {{ position:'left', ticks:{{callback:v=>(v/1000).toFixed(0)+'k€',color:'#94a3b8'}}, grid:{{color:GC}} }},
+        y: {{ ticks:{{callback:v=>(v/1000).toFixed(0)+'k€',color:'#94a3b8'}}, grid:{{color:GC}} }},
         x: {{ grid:{{display:false}} }}
       }}
     }}
@@ -1694,53 +1779,38 @@ function drawHuecos() {{
   const ct = document.getElementById('huecos-panel');
   if (!ct) return;
   if (!PRICING_GAPS || !PRICING_GAPS.length) {{
-    ct.innerHTML = '<div style="color:var(--m);padding:16px;font-size:13px;">Sin datos. Ejecuta <code>python scripts/pricing.py</code> para calcular los huecos.</div>';
+    ct.innerHTML = '<div style="color:var(--m);padding:16px;font-size:13px;">Sin huecos. Ejecuta <code>python scripts/pricing.py</code> para actualizar.</div>';
     return;
   }}
-  function fmtD(s) {{ const p=s.split('-'); return p[2]+'/'+p[1]+'/'+p[0].slice(2); }}
+  function fmtD(s) {{ const p=s.split('-'); return p[2]+'/'+p[1]; }}
   const SC = {{
-    alta:  {{label:'Alta',  col:'#ef4444', icon:'&#9728;'}},
-    media: {{label:'Media', col:'#f59e0b', icon:'&#9670;'}},
-    baja:  {{label:'Baja',  col:'#3b82f6', icon:'&#10052;'}}
+    alta:  {{label:'Alta',  col:'#ef4444'}},
+    media: {{label:'Media', col:'#f59e0b'}},
+    baja:  {{label:'Baja',  col:'#3b82f6'}}
   }};
-  // Cabecera
-  const GCOLS = '36px 1fr 64px 88px 56px 108px';
-  let h = '<div style="display:grid;grid-template-columns:'+GCOLS+';column-gap:16px;padding:6px 20px;margin-bottom:4px;">';
-  ['#','Fechas','Noches','Temporada','Ant.','RMS'].forEach(function(c,i) {{
-    const al = i===0?'center':i===4?'center':i===5?'right':'left';
-    h += '<div style="font-size:10px;font-weight:600;color:var(--m);text-transform:uppercase;letter-spacing:.6px;text-align:'+al+';">'+c+'</div>';
-  }});
-  h += '</div>';
-  // Filas
+  let h = '<div style="display:flex;flex-wrap:wrap;gap:10px;">';
   PRICING_GAPS.forEach(function(g, i) {{
-    const sc = SC[g.season] || {{label:g.season, col:'#94a3b8', icon:''}};
+    const sc = SC[g.season] || {{label:g.season, col:'#94a3b8'}};
     const rms = Math.round(g.recommended_price);
-    const floor = Math.round(g.floor_price||0);
-    const ceil  = Math.round(g.ceiling_price||0);
-    const dates = fmtD(g.start_date)+' &rarr; '+fmtD(g.end_date);
-    h += '<div style="display:grid;grid-template-columns:'+GCOLS+';column-gap:16px;align-items:center;'
-       + 'background:var(--c);border:1px solid var(--b);border-left:4px solid '+sc.col+';border-radius:10px;'
-       + 'padding:14px 20px;margin-bottom:8px;">';
-    // #
-    h += '<div style="width:26px;height:26px;border-radius:50%;background:'+sc.col+'22;border:1px solid '+sc.col+'55;'
-       + 'color:'+sc.col+';font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+(i+1)+'</div>';
-    // Fechas
-    h += '<div style="font-size:14px;font-weight:600;color:var(--t);white-space:nowrap;">'+dates+'</div>';
-    // Noches
-    h += '<div style="text-align:center;"><span style="background:var(--bg);border:1px solid var(--b);border-radius:20px;'
-       + 'padding:3px 8px;font-size:11px;font-weight:600;color:var(--m);">'+g.nights+'n</span></div>';
-    // Temporada
-    h += '<div style="text-align:center;"><span style="background:'+sc.col+'18;color:'+sc.col+';border:1px solid '+sc.col+'44;'
-       + 'border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;">'+sc.label+'</span></div>';
-    // Antelación
-    h += '<div style="text-align:center;font-size:13px;font-weight:600;color:var(--t);">'+g.lead_days+'d</div>';
-    // RMS
-    h += '<div style="text-align:right;">'
-       + '<div style="font-size:22px;font-weight:800;color:'+COL_ADR+';line-height:1;">'+rms+'&#8364;</div>'
-       + '<div style="font-size:9px;color:var(--m);margin-top:2px;">'+floor+'&#8364; &mdash; '+ceil+'&#8364;</div>'
+    const d1 = fmtD(g.start_date), d2 = fmtD(g.end_date);
+    h += '<div style="display:flex;align-items:center;gap:12px;background:var(--c);border:1px solid var(--b);'
+       + 'border-left:4px solid '+sc.col+';border-radius:10px;padding:12px 16px;">';
+    h += '<div style="width:22px;height:22px;border-radius:50%;background:'+sc.col+'22;border:1px solid '+sc.col+'55;'
+       + 'color:'+sc.col+';font-weight:800;font-size:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+(i+1)+'</div>';
+    h += '<div>';
+    h += '<div style="font-size:13px;font-weight:600;color:var(--t);">'+d1+' &rarr; '+d2+'</div>';
+    h += '<div style="font-size:11px;color:var(--m);margin-top:2px;">'
+       + '<span style="color:'+sc.col+';font-weight:600">'+sc.label+'</span>'
+       + '&nbsp;·&nbsp;'+g.nights+'n'
+       + '&nbsp;·&nbsp;'+g.lead_days+'d ant.'
+       + '</div></div>';
+    h += '<div style="text-align:right;margin-left:8px;">'
+       + '<div style="font-size:20px;font-weight:800;color:'+COL_ADR+'">'+rms+'€</div>'
+       + '<div style="font-size:9px;color:var(--m)">RMS</div>'
        + '</div>';
     h += '</div>';
   }});
+  h += '</div>';
   ct.innerHTML = h;
 }}
 
@@ -1761,12 +1831,14 @@ function drawLeadKPI() {{
 
 // === DRAW ALL ===
 function drawAll() {{
-  safeDraw(drawKPIs,'KPIs'); safeDraw(drawHuecos,'Huecos');
-  safeDraw(drawC17,'C17'); safeDraw(drawC1,'C1'); safeDraw(drawC7,'C7');
-  safeDraw(drawC3,'C3'); safeDraw(drawC5,'C5'); safeDraw(drawC14,'C14');
+  safeDraw(drawKPIs,'KPIs');
+  safeDraw(drawC17,'C17');
+  safeDraw(drawC1,'C1'); safeDraw(drawC3,'C3'); safeDraw(drawC5,'C5');
+  safeDraw(drawC7,'C7'); safeDraw(drawOcuAnnual,'OcuAnn'); safeDraw(drawADRAnnual,'AdrAnn');
   safeDraw(drawSpark,'Spark');
+  safeDraw(drawHuecos,'Huecos');
+  safeDraw(drawNextSH,'NextSH'); safeDraw(drawC21,'C21'); safeDraw(drawC22,'C22');
   safeDraw(drawC15,'C15'); safeDraw(drawC16,'C16'); safeDraw(drawLeadKPI,'LeadKPI');
-  safeDraw(drawNextSH,'NextSH'); safeDraw(drawC22,'C22');
 }}
 if(typeof Chart!=='undefined') {{ drawAll(); }}
 
@@ -1778,7 +1850,7 @@ document.querySelectorAll('.period-btn').forEach(btn => {{
     document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     period = parseInt(btn.dataset.months);
-    drawKPIs(); drawC1(); drawC3(); drawC5(); drawC16(); drawC17(); drawLeadKPI();
+    drawKPIs(); drawC1(); drawC3(); drawC5(); drawC17(); drawLeadKPI();
   }});
 }});
 </script>
