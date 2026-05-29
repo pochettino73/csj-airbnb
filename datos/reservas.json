@@ -8057,12 +8057,13 @@
     "guest": "Derek Stray",
     "checkin": "2026-06-16",
     "nights": 8,
-    "pm": 79.38,
-    "cleaning": 60.0,
-    "total": 695.02,
+    "pm": 0,
+    "cleaning": 0.0,
+    "total": 0,
     "confirmation_code": "HMAZFDQRF3",
     "booking_date": "2025-09-26",
-    "status": "confirmed"
+    "status": "cancelled",
+    "impacto": 695.02
   },
   {
     "year": 2026,
@@ -8290,6 +8291,20 @@
     "total": 676.52,
     "confirmation_code": "HME3NT9TKP",
     "booking_date": "2026-05-22",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 6,
+    "code": "HMHHT4EP8S",
+    "guest": "Janine Ulrich",
+    "checkin": "2026-06-19",
+    "nights": 3,
+    "pm": 73.86,
+    "cleaning": 60.0,
+    "total": 281.59,
+    "confirmation_code": "HMHHT4EP8S",
+    "booking_date": "2026-05-29",
     "status": "confirmed"
   }
 ]
