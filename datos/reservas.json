@@ -8343,6 +8343,21 @@
   {
     "year": 2026,
     "month": 7,
+    "code": "HM8T2PNRSC",
+    "guest": "Britta John",
+    "checkin": "2026-07-06",
+    "nights": 6,
+    "pm": 109.79,
+    "cleaning": 60.0,
+    "total": 718.73,
+    "confirmation_code": "HM8T2PNRSC",
+    "booking_date": "2026-06-01",
+    "status": "confirmed",
+    "rate_type": "nrf"
+  },
+  {
+    "year": 2026,
+    "month": 7,
     "code": "HMKQFE28R9",
     "guest": "Hannah P.",
     "checkin": "2026-07-03",
