@@ -838,28 +838,8 @@ def run_unit_tests(conf: List[dict]) -> List[Finding]:
             expected=expected, dashboard=actual,
         ))
 
-    # T1 — Darya Kramar jun→jul 2026 (HMNKEKCM4M)
-    darya = next((r for r in conf if r.get("code") == "HMNKEKCM4M"), None)
-    if darya:
-        n = darya.get("nights", 0)
-        _t("T1a HMNKEKCM4M nights jun-2026", n == 1,
-           f"nights={n} esperado=1", 2026, 6, 1.0, float(n))
-        cont = next((r for r in conf if not r.get("code")
-                     and r.get("guest", "") == darya.get("guest", "")
-                     and r.get("year") == 2026 and r.get("month") == 7), None)
-        _t("T1b HMNKEKCM4M continuación jul-2026", bool(cont),
-           "Continuación " + ("encontrada" if cont else "NO encontrada"), 2026, 7)
-        _t("T1c (2026,6) en distorted_months", (2026, 6) in distorted,
-           f"(2026,6) in distorted_months = {(2026, 6) in distorted}", 2026, 6)
-        pm_c = pm_ok.get((2026, 6), 0)
-        pm_d = pm_dash.get((2026, 6), 0)
-        delta_ok = abs(pm_d - pm_c) / pm_c * 100 if pm_c > 0 else 0
-        _t("T1d PM jun-2026 formula corregida (delta<5%)",
-           delta_ok < 5.0,
-           f"PM_correcto={pm_c:.2f}  PM_dashboard={pm_d:.2f}  delta={delta_ok:.1f}%",
-           2026, 6, pm_c, pm_d)
-    else:
-        _t("T1 HMNKEKCM4M", False, "Reserva no encontrada en datos", 2026, 6)
+    # T1 — Darya Kramar HMNKEKCM4M: cancelada 2026-06-01, test reemplazado por T2
+    pass
 
     # T2 — Vasile Cumatrenco jul→ago 2026 (HMHM4FQMHK)
     vasile = next((r for r in conf if r.get("code") == "HMHM4FQMHK"), None)

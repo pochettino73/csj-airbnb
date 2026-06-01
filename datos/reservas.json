@@ -8086,12 +8086,13 @@
     "guest": "Darya Kramar",
     "checkin": "2026-06-30",
     "nights": 1,
-    "pm": 105.07,
-    "cleaning": 6.0,
-    "total": 111.07,
+    "pm": 0,
+    "cleaning": 0.0,
+    "total": 0.0,
     "confirmation_code": "HMNKEKCM4M",
     "booking_date": "2025-11-03",
-    "status": "confirmed"
+    "status": "cancelled",
+    "impacto": 1110.66
   },
   {
     "year": 2026,
@@ -8100,12 +8101,13 @@
     "guest": "Darya Kramar",
     "checkin": "2026-07-01",
     "nights": 9,
-    "pm": 105.07,
-    "cleaning": 54.0,
-    "total": 999.59,
+    "pm": 0,
+    "cleaning": 0.0,
+    "total": 0.0,
     "confirmation_code": "HMNKEKCM4M",
     "booking_date": "2025-11-03",
-    "status": "confirmed",
+    "status": "cancelled",
+    "impacto": 0,
     "is_continuation": true
   },
   {
@@ -8320,6 +8322,36 @@
     "total": 209.51,
     "confirmation_code": "HM9ZY9JH58",
     "booking_date": "2026-05-29",
+    "status": "confirmed",
+    "rate_type": "nrf"
+  },
+  {
+    "year": 2026,
+    "month": 6,
+    "code": "HMAY3W3RB8",
+    "guest": "Cynthia Laure",
+    "checkin": "2026-06-22",
+    "nights": 2,
+    "pm": 73.02,
+    "cleaning": 60.0,
+    "total": 206.04,
+    "confirmation_code": "HMAY3W3RB8",
+    "booking_date": "2026-06-01",
+    "status": "confirmed",
+    "rate_type": "nrf"
+  },
+  {
+    "year": 2026,
+    "month": 7,
+    "code": "HMKQFE28R9",
+    "guest": "Hannah P.",
+    "checkin": "2026-07-03",
+    "nights": 3,
+    "pm": 105.09,
+    "cleaning": 60.0,
+    "total": 375.27,
+    "confirmation_code": "HMKQFE28R9",
+    "booking_date": "2026-06-01",
     "status": "confirmed",
     "rate_type": "nrf"
   }
