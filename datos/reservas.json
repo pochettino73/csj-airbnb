@@ -8342,6 +8342,30 @@
   },
   {
     "year": 2026,
+    "month": 6,
+    "code": "HMF95F5PJM",
+    "confirmation_code": "HMF95F5PJM",
+    "guest": "Anne Ooms",
+    "checkin": "2026-06-29",
+    "nights": 2,
+    "pm": 95.55,
+    "cleaning": 60.0,
+    "total": 346.64,
+    "booking_date": "2026-06-04"
+  },
+  {
+    "year": 2026,
+    "month": 7,
+    "code": "",
+    "guest": "Anne Ooms",
+    "nights": 1,
+    "pm": 0,
+    "cleaning": 0.0,
+    "total": 0,
+    "booking_date": "2026-06-04"
+  },
+  {
+    "year": 2026,
     "month": 7,
     "code": "HM8T2PNRSC",
     "guest": "Britta John",
