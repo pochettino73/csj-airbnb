@@ -8358,6 +8358,19 @@
   {
     "year": 2026,
     "month": 7,
+    "code": "HM4M9WT2QE",
+    "confirmation_code": "HM4M9WT2QE",
+    "guest": "Rachel Pons Gual De Torrella",
+    "checkin": "2026-07-02",
+    "nights": 1,
+    "pm": 95.16,
+    "cleaning": 60.0,
+    "total": 155.16,
+    "booking_date": "2026-06-05"
+  },
+  {
+    "year": 2026,
+    "month": 7,
     "code": "HMKQFE28R9",
     "guest": "Hannah P.",
     "checkin": "2026-07-03",
