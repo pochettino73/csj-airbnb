@@ -8362,7 +8362,8 @@
     "pm": 0,
     "cleaning": 0.0,
     "total": 0,
-    "booking_date": "2026-06-04"
+    "booking_date": "2026-06-04",
+    "checkin": "2026-07-01"
   },
   {
     "year": 2026,
