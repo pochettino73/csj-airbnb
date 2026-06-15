@@ -8157,6 +8157,21 @@
   {
     "year": 2026,
     "month": 8,
+    "code": "HMX25YHD58",
+    "guest": "Vera",
+    "checkin": "2026-08-12",
+    "nights": 5,
+    "pm": 139.30,
+    "cleaning": 60.0,
+    "total": 756.50,
+    "confirmation_code": "HMX25YHD58",
+    "booking_date": "2026-06-15",
+    "rate_type": "refundable",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 8,
     "code": "HMHS3SRTMF",
     "guest": "Tiani Les",
     "checkin": "2026-08-25",
