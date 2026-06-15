@@ -8423,5 +8423,36 @@
     "booking_date": "2026-06-01",
     "status": "confirmed",
     "rate_type": "nrf"
+  },
+  {
+    "year": 2027,
+    "month": 6,
+    "code": "HMKNT9H82C",
+    "guest": "Pablo Ruiz",
+    "checkin": "2027-06-25",
+    "nights": 6,
+    "pm": 109.62,
+    "cleaning": 60.0,
+    "total": 1046.58,
+    "confirmation_code": "HMKNT9H82C",
+    "booking_date": "2026-06-15",
+    "rate_type": "refundable",
+    "status": "confirmed"
+  },
+  {
+    "year": 2027,
+    "month": 7,
+    "code": "",
+    "guest": "Pablo Ruiz",
+    "checkin": "2027-06-25",
+    "nights": 3,
+    "pm": 0,
+    "cleaning": 0.0,
+    "total": 0,
+    "confirmation_code": "HMKNT9H82C",
+    "booking_date": "2026-06-15",
+    "rate_type": "refundable",
+    "status": "confirmed",
+    "is_continuation": true
   }
 ]
