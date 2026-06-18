@@ -8454,5 +8454,20 @@
     "rate_type": "refundable",
     "status": "confirmed",
     "is_continuation": true
+  },
+  {
+    "year": 2027,
+    "month": 6,
+    "code": "HMZMSSNHFH",
+    "guest": "Hermann",
+    "checkin": "2027-06-08",
+    "nights": 17,
+    "pm": 109.73,
+    "cleaning": 60.0,
+    "total": 1925.47,
+    "confirmation_code": "HMZMSSNHFH",
+    "booking_date": "2026-06-18",
+    "rate_type": "refundable",
+    "status": "confirmed"
   }
 ]

@@ -5274,5 +5274,22 @@
     "comunicacion": 5,
     "ubicacion": 5,
     "calidad": 5
+  },
+  {
+    "date": "2026-06-18",
+    "rating": 4,
+    "comment": "",
+    "private_feedback": "",
+    "language": "es",
+    "bookable_id": null,
+    "reviewer_id": null,
+    "confirmation_code": "HMFJ8S23WT",
+    "general": 4,
+    "llegada": 5,
+    "limpieza": 4,
+    "veracidad": 5,
+    "comunicacion": 5,
+    "ubicacion": 5,
+    "calidad": 5
   }
 ]
