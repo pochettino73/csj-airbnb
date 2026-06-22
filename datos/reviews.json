@@ -5291,5 +5291,39 @@
     "comunicacion": 5,
     "ubicacion": 5,
     "calidad": 5
+  },
+  {
+    "date": "2026-06-22",
+    "rating": 5,
+    "comment": "",
+    "private_feedback": "",
+    "language": "es",
+    "bookable_id": null,
+    "reviewer_id": null,
+    "confirmation_code": "HM9ZY9JH58",
+    "general": 5,
+    "llegada": 5,
+    "limpieza": 5,
+    "veracidad": 5,
+    "comunicacion": 5,
+    "ubicacion": 5,
+    "calidad": 5
+  },
+  {
+    "date": "2026-06-22",
+    "rating": 4,
+    "comment": "",
+    "private_feedback": "Actualiza tus fotos",
+    "language": "de",
+    "bookable_id": null,
+    "reviewer_id": null,
+    "confirmation_code": "HMHHT4EP8S",
+    "general": 4,
+    "llegada": 5,
+    "limpieza": 3,
+    "veracidad": 4,
+    "comunicacion": 5,
+    "ubicacion": 4,
+    "calidad": 3
   }
 ]
