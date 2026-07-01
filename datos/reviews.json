@@ -5325,5 +5325,22 @@
     "comunicacion": 5,
     "ubicacion": 4,
     "calidad": 3
+  },
+  {
+    "date": "2026-06-16",
+    "rating": 4,
+    "comment": "",
+    "private_feedback": "",
+    "language": "en",
+    "bookable_id": null,
+    "reviewer_id": null,
+    "confirmation_code": null,
+    "general": 4,
+    "llegada": 3,
+    "limpieza": 5,
+    "veracidad": 5,
+    "comunicacion": 2,
+    "ubicacion": 3,
+    "calidad": 5
   }
 ]
