@@ -2,3 +2,5 @@ datos/raw/
 __pycache__/
 *.pyc
 node_modules/
+output/auditoria_dashboard.json
+output/auditoria_dashboard.xlsx

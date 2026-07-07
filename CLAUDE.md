@@ -17,7 +17,7 @@ Control y analisis del apartamento de alquiler turistico en Colonia de Sant Jord
 - **Historico**: desde 2015 (primeras reservas), operativo completo desde 2016
 - **Perfil**: apartamento pequeno, buena ocupacion 12 meses, objetivo Superhost permanente
 - **Estrategia de precio**: subida gradual del PM sin perjudicar valoraciones
-- **Estancia minima**: 3 noches (ocasionalmente 2 si queda hueco)
+- **Estancia minima**: Gestionada dinámicamente según la casuística de cada hueco. Solo los huecos de 1 noche son pérdida asumida — cualquier hueco de 2+ noches se puede llenar ajustando la estancia mínima al hueco.
 - **Dashboard publico**: https://pochettino73.github.io/csj-airbnb/dashboard.html
 
 ---
@@ -82,23 +82,47 @@ El Google Sheet (`1BEa1m5InTFUDzvvILcDafwC3mRn7b6GkLYnq0eAMvXg`) queda como hist
 
 ## Flujo operativo
 
+> **Regla general:** `pricing.py` debe ejecutarse **siempre que cambie `reservas.json`** (nueva reserva, cancelación, modificación, corrección de datos). Sin él, la sección Huecos y Pricing del dashboard queda desactualizada. `visualizar.py` debe ejecutarse después de cualquier cambio en cualquier fichero de datos.
+
 ### 1. Nueva reserva
 
 1. Dani deja PDF de reserva en `buzon/entrante/`
 2. Claude extrae datos del PDF
 3. Verificar si la reserva ya existe en `datos/reservas.json`
 4. Si cruza meses: calcular prorrateo (2 registros, el sin `code` es continuacion)
-5. Anadir a `datos/reservas.json`
-6. Ejecutar `python scripts/visualizar.py` para regenerar dashboard (valida automáticamente)
-7. `git commit && git push` para actualizar GitHub Pages
-8. Mover PDF a `buzon/procesado/YYYY/MM/`
+5. Añadir a `datos/reservas.json`
+6. Ejecutar `python scripts/pricing.py` — el hueco ocupado desaparece, precios se recalculan
+7. Ejecutar `python scripts/visualizar.py` — valida y regenera dashboard
+8. `git add datos/reservas.json output/pricing_output.json output/pricing_output.xlsx dashboard.html && git commit && git push`
+9. Mover PDF a `buzon/procesado/YYYY/MM/`
+
+### 1b. Cancelación de reserva
+
+1. Localizar la reserva en `datos/reservas.json` por `confirmation_code`
+2. Cambiar `status` a `"cancelled"`
+3. Añadir campo `impacto` = total original de la reserva (ingreso perdido)
+4. Si cancelación flexible (sin penalización para el host): poner `total=0`, `cleaning=0.0`, `pm=0`
+5. Si hay penalización cobrada al huésped: `total` = importe transferido al host por Airbnb
+6. Ejecutar `python scripts/pricing.py` — las fechas liberadas aparecen como huecos nuevos
+7. Ejecutar `python scripts/visualizar.py` — actualiza Huecos, Cancelaciones y KPIs
+8. Si el baseline bloquea (delta income > 15%): actualizar `output/audit_baseline.json` → `months["YYYY-MM"]["income"]` y `nights`
+9. `git add datos/reservas.json output/pricing_output.json output/pricing_output.xlsx output/audit_baseline.json dashboard.html && git commit && git push`
+
+### 1c. Modificación de reserva (cambio de fechas o importe)
+
+1. Localizar y actualizar el registro en `datos/reservas.json` (fechas, nights, pm, total, cleaning)
+2. Si cambia de mes: eliminar registro original y crear nuevo con el mes correcto; si cruza meses, crear 2 registros
+3. Ejecutar `python scripts/pricing.py` — los huecos se recalculan con las nuevas fechas
+4. Ejecutar `python scripts/visualizar.py`
+5. Si el baseline bloquea: actualizar `output/audit_baseline.json`
+6. `git add datos/reservas.json output/pricing_output.json output/pricing_output.xlsx output/audit_baseline.json dashboard.html && git commit && git push`
 
 ### 2. Actualizar visitas (1x/mes)
 
 1. Dani entra al panel de Airbnb → Rendimiento → Visitas
-2. Edita `datos/visitas.json`, anade la linea del mes: `"2026-03": 750`
-3. Ejecuta `python scripts/visualizar.py`
-4. `git commit && git push`
+2. Editar `datos/visitas.json`, añadir la linea del mes: `"2026-03": 750`
+3. Ejecutar `python scripts/visualizar.py`
+4. `git add datos/visitas.json dashboard.html && git commit && git push`
 
 ### 3a. Añadir review individual (cuando Dani lo comunica)
 
@@ -115,13 +139,16 @@ El Google Sheet (`1BEa1m5InTFUDzvvILcDafwC3mRn7b6GkLYnq0eAMvXg`) queda como hist
 2. Extraer a `datos/raw/`
 3. Claude procesa y actualiza `datos/reviews.json`
 4. Claude enriquece `datos/reservas.json` con nuevas reservas/fechas
-5. Regenerar dashboard y push
+5. Ejecutar `python scripts/pricing.py` (reservas.json cambió)
+6. Ejecutar `python scripts/visualizar.py`
+7. `git add datos/reservas.json datos/reviews.json output/pricing_output.json output/pricing_output.xlsx dashboard.html && git commit && git push`
 
-### 4. Regenerar dashboard
+### 4. Regenerar dashboard (genérico)
 
 ```bash
-python scripts/visualizar.py
-git add datos/reservas.json dashboard.html && git commit -m "..." && git push
+python scripts/pricing.py      # si reservas.json cambió
+python scripts/visualizar.py   # siempre
+git add datos/reservas.json output/pricing_output.json output/pricing_output.xlsx dashboard.html && git commit -m "..." && git push
 ```
 
 Lee los 3 JSON en `datos/`. Genera `dashboard.html`. Push publica en GitHub Pages.
@@ -187,18 +214,18 @@ Clave = `YYYY-MM`, valor = numero de page views del listing en ese mes.
 | Concepto | Importe | Frecuencia |
 |----------|---------|------------|
 | Limpieza (Tania) | 30 EUR/reserva | Por reserva (Dani paga 30, cobra 60 al cliente) |
-| Amenities | ~10 EUR/reserva | Por reserva |
 
 ### Modelo de costes en el dashboard
 
 ```python
-COSTE_RESERVA = 40  # EUR/reserva (30 Tania + 10 amenities)
+COSTE_RESERVA = 30  # EUR/reserva (limpieza Tania)
 COSTES_FIJOS = {2015: 6000, ..., 2024: 9090, 2025: 9090, ...}
-costes_ano = COSTES_FIJOS[ano] + 40 * n_reservas
+costes_ano = COSTES_FIJOS[ano] + 30 * n_reservas
 ```
 
 - Los 60 EUR de limpieza se cobran al cliente y ya estan en el ingreso neto
-- El coste real para Dani son 30 EUR (lo que paga a Tania) + 10 EUR amenities
+- El coste real para Dani son 30 EUR (lo que paga a Tania)
+- Limpieza neta: +30 EUR por reserva (60 cobrado − 30 pagado)
 
 ---
 
@@ -1011,3 +1038,111 @@ El sistema legacy de GitHub Pages fallaba silenciosamente porque Jekyll interpre
 on: push (branch: master)
 jobs: checkout → configure-pages → upload-artifact → deploy-pages
 ```
+
+---
+
+## Cambios aplicados 2026-06-01
+
+### Cancelación: Darya Kramar (HMNKEKCM4M)
+
+- Cross-month jun→jul 2026 (1n jun + 9n jul), política flexible
+- Impacto: 1110.66€ (111.07€ jun + 999.59€ jul)
+- Ambos registros: `status` → `"cancelled"`, `total` = 0, `cleaning` = 0.0, `pm` = 0
+- Continuación jul: `impacto` = 0 (el total va en el primario)
+- baseline 2026-07 actualizado: income 3161.65→2537.33, nights 27→21
+- T1 en auditar_dashboard.py adaptado (ya no busca Darya en confirmadas)
+
+### Nueva reserva: Cynthia Laure (HMAY3W3RB8)
+
+- Francesa, 2 adultos, NRF
+- Check-in 2026-06-22, 2 noches, 206.04€ neto
+- `pm` = 73.02, `cleaning` = 60.0, `booking_date` = 2026-06-01
+
+### Nueva reserva: Hannah P. (HMKQFE28R9)
+
+- Nueva Zelanda, 2 adultos, NRF
+- Check-in 2026-07-03, 3 noches, 375.27€ neto
+- `pm` = 105.09, `cleaning` = 60.0, `booking_date` = 2026-06-01
+
+### Nueva reserva: Britta John (HM8T2PNRSC)
+
+- Alemana, 2 adultos, NRF
+- Check-in 2026-07-06, 6 noches, 718.73€ neto — cubre el hueco Jul 6-12
+- `pm` = 109.79, `cleaning` = 60.0, `booking_date` = 2026-06-01
+
+### Estado de datos tras sesión
+
+- **reservas.json:** 593 registros (503 confirmadas, 90 canceladas)
+- **Auditoría:** 0 CRÍTICOS, 38 AVISOS (todos históricos)
+- **Julio 2026:** 27n / 31 días = 87% ocupación, 3.256€
+
+---
+
+## Cambios aplicados 2026-06-15
+
+### Cancelación: Renuka Prabhakar (HMHXK9AFY5)
+
+- Agosto 2026, 5 noches (9-14 ago), política flexible
+- `status` → `"cancelled"`, `impacto` = 530.04€, `total` = 0, `cleaning` = 0.0, `pm` = 0
+- baseline 2026-08 actualizado: income 2982.71 → 2452.67, nights 25 → 20
+
+### Nueva reserva: Vera (HMX25YHD58)
+
+- Francesa, flexible
+- Check-in 2026-08-12, 5 noches, 756.50€ neto
+- `pm` = 139.30, `cleaning` = 60.0, `booking_date` = 2026-06-15
+- baseline 2026-08 actualizado: income 2452.67 → 3209.17, nights 20 → 25, pm 119.70
+
+### Nueva reserva: Pablo Ruiz (HMKNT9H82C)
+
+- Español, flexible, cross-month jun→jul 2027
+- Check-in 2027-06-25, 9 noches (6n jun + 3n jul), 1046.58€ neto
+- `pm` = 109.62, `cleaning` = 60.0, `booking_date` = 2026-06-15
+- 2 registros: jun 2027 (total=1046.58) + jul 2027 (is_continuation=true, total=0)
+
+### Visitas mayo 2026
+
+- 1.273 visitas añadidas a `datos/visitas.json`
+- CVR mayo 2026: 0.4% (5 reservas nuevas)
+
+### Estado de datos tras sesión
+
+- **reservas.json:** 598 registros (506 confirmadas, 91 canceladas)
+- **visitas.json:** actualizado hasta mayo 2026
+- **Auditoría:** 0 CRÍTICOS
+
+---
+
+## Cambios aplicados 2026-05-29
+
+### Cancelación: Derek Stray (HMAZFDQRF3)
+
+- Política: flexible (sin penalización para el host)
+- `status` → `"cancelled"`, `impacto` = 695.02€, `total` = 0, `cleaning` = 0.0, `pm` = 0
+- Fechas liberadas: las noches de Derek vuelven a ser huecos en pricing_output.json
+
+### Nueva reserva: Janine Ulrich (HMHHT4EP8S)
+
+- Huésped alemana, 2 adultos, NRF
+- Check-in 2026-06-19, 3 noches, 281.59€ neto
+- `pm` = 73.86, `cleaning` = 60.0, `booking_date` = 2026-05-29
+
+### Nueva reserva: Grupo de Vicent (HM9ZY9JH58)
+
+- Huésped español, 2 personas, NRF
+- Check-in 2026-06-16, 2 noches, 209.51€ neto
+- `pm` = 74.76, `cleaning` = 60.0, `booking_date` = 2026-05-29
+- Nota: queda 1 noche muerta Jun 18→19 entre Vicent y Janine — pérdida asumida (huecos de 1n no se llenan)
+
+### audit_baseline.json actualizado (2026-06)
+
+- Incidencia CRÍTICO bloqueante: delta income 2026-06 superó 15% (cancelación Derek)
+- Actualizado manualmente: `months["2026-06"]["income"]` 2570.71 → 2157.28, `nights` 28 → 23
+
+### Flujo operativo CLAUDE.md — reescritura completa
+
+- Añadida **regla general** al inicio: `pricing.py` debe ejecutarse siempre que cambie `reservas.json`
+- Sección **1c Modificación** — nueva (no existía)
+- `pricing.py` añadido a los flujos de: nueva reserva, cancelación, reviews export
+- `git add` corregido en todos los flujos para incluir `pricing_output.json` y `pricing_output.xlsx`
+- Flujo 4 (regenerar genérico) muestra `pricing.py` como condicional
