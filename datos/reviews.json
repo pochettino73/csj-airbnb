@@ -5376,5 +5376,39 @@
     "comunicacion": 5,
     "ubicacion": 5,
     "calidad": 5
+  },
+  {
+    "date": "2026-07-28",
+    "rating": 5,
+    "comment": "Buen anfitrion. Alojamiento muy equipado, con multiples libros y todo tipo de cosas para la playa. 10/10",
+    "private_feedback": "",
+    "language": "es",
+    "bookable_id": null,
+    "reviewer_id": null,
+    "confirmation_code": "HMDBD3SJA4",
+    "general": 5,
+    "llegada": 5,
+    "limpieza": 5,
+    "veracidad": 5,
+    "comunicacion": 5,
+    "ubicacion": 5,
+    "calidad": 5
+  },
+  {
+    "date": "2026-07-28",
+    "rating": 5,
+    "comment": "Pequeno apartamento no muy lejos de la playa, restaurantes y tiendas... Daniel es un anfitrion atento... recomendamos el apartamento (traducido del aleman)",
+    "private_feedback": "Hola, Daniel: Nos sentimos comodos en tu alojamiento. Gracias de nuevo por responder pronto. (traducido del aleman)",
+    "language": "de",
+    "bookable_id": null,
+    "reviewer_id": null,
+    "confirmation_code": "HMTPSMQXSS",
+    "general": 5,
+    "llegada": 5,
+    "limpieza": 5,
+    "veracidad": 4,
+    "comunicacion": 5,
+    "ubicacion": 5,
+    "calidad": 5
   }
 ]

@@ -1,4 +1,4 @@
-> **Proyecto**: CSJ — Airbnb Colonia de Sant Jordi. Ruta: `C:\Users\droig\Proyectos\CSJ\`. Buzón de entrada: `CSJ/buzon/entrante/`.
+> **Proyecto**: CSJ — Airbnb Colonia de Sant Jordi. Ruta: `C:\Users\droig\Proyectos\Dani Roig\CSJ\`. Buzón de entrada: `CSJ/buzon/entrante/`.
 
 # CSJ Airbnb — Documentacion del Proyecto
 
@@ -549,6 +549,7 @@ Cuando una reserva cruza de un mes al siguiente se crean **2 registros**:
 
 ## Pendiente / Mejoras
 
+- [x] **Cambio de comisión única de Airbnb (anunciado 07/07/2026)**: Airbnb pasa de comisión repartida (anfitrión ~3% + viajero ~15%) a una **comisión única del 15,5% a cargo del anfitrión**, con el viajero pagando exactamente el precio publicado. Fecha límite para ajustar precios: **13/10/2026** (España, EEE) — si no se ajusta, el ingreso neto cae ~12-13% sin que el viajero pague menos. **Dani ya dio el OK a la herramienta de Airbnb para actualizar los precios automáticamente (09/07/2026)** — riesgo mitigado. Nota para el futuro: si a partir de esa fecha se detecta una caída de ingresos netos en la auditoría (`audit_anomalias_economicas`), verificar primero si es este cambio de comisión antes de asumir un error de datos.
 - [ ] Retomar control de gastos reales (no se actualiza desde 2024)
 - [ ] Corregir PM mensual en dashboard para reservas cross-month (usar campo `pm` ponderado) — auditoria_dashboard.py lo detecta como AVISO
 - [x] GitHub Pages activo: https://pochettino73.github.io/csj-airbnb/dashboard.html
@@ -1146,3 +1147,24 @@ jobs: checkout → configure-pages → upload-artifact → deploy-pages
 - `pricing.py` añadido a los flujos de: nueva reserva, cancelación, reviews export
 - `git add` corregido en todos los flujos para incluir `pricing_output.json` y `pricing_output.xlsx`
 - Flujo 4 (regenerar genérico) muestra `pricing.py` como condicional
+
+---
+
+## Cambios aplicados 2026-07-16
+
+### Precios base 2027 — ajuste por cambio de comisión Airbnb (15,5%)
+
+Tras el cambio de comisión única (ver `Pendiente` — anunciado 07/07/2026, deadline 13/10/2026), se fijaron precios base 2027 en el calendario de Airbnb combinando dos criterios: compensar la comisión nueva y subir el precio de forma real (no solo compensar).
+
+**Fórmula de compensación de comisión:**
+- Neto deseado → PVP a publicar = `neto / 0.845` (0,845 = 1 − 0,155)
+- PVP actual → PVP equivalente con comisión nueva (mismo neto) = `PVP_antiguo × 1,1405` (compensa el salto de ~3,63% a 15,5%)
+
+**Metodología para fijar el neto objetivo de cada periodo:**
+- **Temporada alta:** en vez de partir de medianas históricas (quedan desfasadas por la subida gradual de precio), se ancló al **percentil alto de ventas recientes reales** (P90-máximo), validado por la observación de que en temporada alta "se puede subir mucho porque se acaba vendiendo, aunque haya que aguantar" — las últimas ventas de 2026 (más tardías respecto al checkin) lograron los PM más altos (131-139€ neto).
+- **Temporada baja (ene-mar):** se exigió que el neto resultante supere el **máximo de 2025 y 2026 +10%** para cada mes/quincena, no solo la media — asegura una subida real año contra año, no solo el ajuste de comisión.
+- Reservas ya confirmadas antes del 13/10/2026 (p.ej. HMKNT9H82C, Pablo Ruiz, 25/06/27) quedan bajo la comisión antigua — no son referencia para fijar precios nuevos.
+
+**Nota:** los precios concretos fijados en julio 2026 son una carga inicial de calendario que Dani irá ajustando según demanda real — no se documentan aquí por quedar obsoletos rápido. Ante dudas futuras sobre precios 2027, mirar el calendario de Airbnb directamente y, si hace falta recalcular, aplicar la metodología de arriba con los netos reales más recientes (no los de esta sesión).
+
+**Aviso pendiente:** noviembre/diciembre 2026 tenían valores puestos automáticamente por la herramienta de Airbnb (75€/63€) que superaban el techo del RMS — no se han validado todavía con este método.

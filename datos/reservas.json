@@ -8498,5 +8498,35 @@
     "confirmation_code": "HM8Z8HTK9D",
     "booking_date": "2026-07-07",
     "rate_type": "refundable"
+  },
+  {
+    "year": 2026,
+    "month": 12,
+    "code": "HMZ5KBRMKK",
+    "guest": "Margarita Trejos Naranjo",
+    "checkin": "2026-12-03",
+    "nights": 4,
+    "pm": 50.61,
+    "cleaning": 60.0,
+    "total": 262.42,
+    "confirmation_code": "HMZ5KBRMKK",
+    "booking_date": "2026-07-21",
+    "rate_type": "refundable",
+    "status": "confirmed"
+  },
+  {
+    "year": 2027,
+    "month": 5,
+    "code": "HMJJH3HD93",
+    "guest": "Tomas Pareto",
+    "checkin": "2027-05-24",
+    "nights": 5,
+    "pm": 62.91,
+    "cleaning": 60.0,
+    "total": 374.53,
+    "confirmation_code": "HMJJH3HD93",
+    "booking_date": "2026-07-27",
+    "rate_type": "refundable",
+    "status": "confirmed"
   }
 ]
