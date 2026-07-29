@@ -8462,13 +8462,14 @@
     "guest": "Hermann",
     "checkin": "2027-06-08",
     "nights": 17,
-    "pm": 109.73,
-    "cleaning": 60.0,
-    "total": 1925.47,
+    "pm": 0,
+    "cleaning": 0.0,
+    "total": 0,
     "confirmation_code": "HMZMSSNHFH",
     "booking_date": "2026-06-18",
     "rate_type": "refundable",
-    "status": "confirmed"
+    "status": "cancelled",
+    "impacto": 1925.47
   },
   {
     "year": 2026,
@@ -8526,6 +8527,21 @@
     "total": 374.53,
     "confirmation_code": "HMJJH3HD93",
     "booking_date": "2026-07-27",
+    "rate_type": "refundable",
+    "status": "confirmed"
+  },
+  {
+    "year": 2027,
+    "month": 6,
+    "code": "HMSM4KHR9E",
+    "guest": "Alexzandra Echevarria",
+    "checkin": "2027-06-16",
+    "nights": 5,
+    "pm": 114.9,
+    "cleaning": 60.0,
+    "total": 634.52,
+    "confirmation_code": "HMSM4KHR9E",
+    "booking_date": "2026-07-28",
     "rate_type": "refundable",
     "status": "confirmed"
   }
