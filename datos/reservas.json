@@ -8544,5 +8544,20 @@
     "booking_date": "2026-07-28",
     "rate_type": "refundable",
     "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 10,
+    "code": "HM92X8PQ8T",
+    "guest": "Bernhard Bugenhagen",
+    "checkin": "2026-10-13",
+    "nights": 6,
+    "pm": 69.62,
+    "cleaning": 60.0,
+    "total": 477.72,
+    "confirmation_code": "HM92X8PQ8T",
+    "booking_date": "2026-08-09",
+    "rate_type": "refundable",
+    "status": "confirmed"
   }
 ]
