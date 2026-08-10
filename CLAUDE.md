@@ -1168,3 +1168,29 @@ Tras el cambio de comisión única (ver `Pendiente` — anunciado 07/07/2026, de
 **Nota:** los precios concretos fijados en julio 2026 son una carga inicial de calendario que Dani irá ajustando según demanda real — no se documentan aquí por quedar obsoletos rápido. Ante dudas futuras sobre precios 2027, mirar el calendario de Airbnb directamente y, si hace falta recalcular, aplicar la metodología de arriba con los netos reales más recientes (no los de esta sesión).
 
 **Aviso pendiente:** noviembre/diciembre 2026 tenían valores puestos automáticamente por la herramienta de Airbnb (75€/63€) que superaban el techo del RMS — no se han validado todavía con este método.
+
+---
+
+## Cambios aplicados 2026-08-10
+
+### Nueva reserva: Bernhard Bugenhagen (HM92X8PQ8T)
+
+13-19 oct 2026, 6 noches, 477,72€ neto, rate_type flexible. Baseline `output/audit_baseline.json` para 2026-10 actualizado (income 1159,09→1636,81, nights 15→21, pm 68,94→69,13) recalculando con las mismas funciones (`calc_ingresos`/`calc_noches`/`calc_pm_correcto`) del propio auditor, para evitar desajustes manuales.
+
+### 6 evaluaciones añadidas + 2 `confirmation_code` faltantes corregidos
+
+Añadidas las evaluaciones de Cynthia Laure Mezatio (HMAY3W3RB8), Anne Ooms (HMF95F5PJM), Montse Amat Ortega (HMQTHQ3KER), Vasile Cumatrenco (HMHM4FQMHK), Надежда Ведерникова (HM8Z8HTK9D) y Hannah P. (HMKQFE28R9). Reviews totales: 361 → 367.
+
+**Nota sobre la fecha de las reviews añadidas:** Dani no dio la fecha exacta de publicación de cada evaluación, así que se usó la fecha de checkout como aproximación (confirmado por Dani que vale así). Ninguna cae cerca de un límite de trimestre Superhost, así que no afecta a la clasificación T1-T4.
+
+**Apellido completado:** "Cynthia Laure" → "Cynthia Laure Mezatio" (dato incompleto en `reservas.json`).
+
+**Bug de datos encontrado:** dos reservas (Xepe De Lucas HMDBD3SJA4, Terry Lutz HMF8YAQAKN) tenían el campo `code` pero les faltaba `confirmation_code` — por eso una búsqueda de evaluación por código no las encontraba aunque la reserva sí existiera. Corregido en ambas. Se revisó el resto del fichero por si había más casos con un código Airbnb real (formato `len>=6, alfanumérico, no solo dígitos`) sin `confirmation_code`: no se encontró ninguno más (los otros 27 casos sin `confirmation_code` son códigos históricos numéricos/internos, sin equivalente real en Airbnb, así que es correcto que no lo tengan).
+
+**Pendiente:** falta la evaluación de Britta John (HM8T2PNRSC, checkout 12/07/2026).
+
+### Estado Superhost para la evaluación del 01/10/2026 (ventana 01/10/2025 → 30/09/2026)
+
+- **Rating: 4,70 / 4,8 requerido.** 44 evaluaciones en ventana: 31×5★, 13×4★, ninguna por debajo. Harían falta 21 evaluaciones más seguidas de 5★ antes del 1/10 para llegar a 4,8 — matemáticamente muy improbable en el tiempo que queda. Con el ritmo actual, esta evaluación probablemente queda por debajo del umbral.
+- **Estancias: 64 confirmadas / 296 noches en ventana** — de sobra sobre el mínimo (10 estancias o 3+100 noches).
+- **Cancelación y tasa de respuesta: no se puede calcular de forma fiable con los datos locales.** `reservas.json` no distingue cancelación de huésped (no penaliza Superhost) de cancelación de anfitrión (sí penaliza) — cualquier % calculado localmente mezclaría ambas y sería engañoso. La tasa de respuesta no se registra en ningún fichero local. Para estos dos datos, consultar directamente Airbnb → Insights → Superhost.
