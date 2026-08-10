@@ -6359,6 +6359,7 @@
     "pm": 57.38,
     "cleaning": 15.0,
     "total": 244.47,
+    "confirmation_code": "HMF8YAQAKN",
     "rate_type": "refundable",
     "status": "confirmed",
     "booking_date": "2025-08-19"
@@ -8293,6 +8294,7 @@
     "pm": 103.54,
     "cleaning": 60.0,
     "total": 474.14,
+    "confirmation_code": "HMDBD3SJA4",
     "booking_date": "2026-04-25",
     "rate_type": "nrf",
     "status": "confirmed"
@@ -8345,7 +8347,7 @@
     "year": 2026,
     "month": 6,
     "code": "HMAY3W3RB8",
-    "guest": "Cynthia Laure",
+    "guest": "Cynthia Laure Mezatio",
     "checkin": "2026-06-22",
     "nights": 2,
     "pm": 73.02,
