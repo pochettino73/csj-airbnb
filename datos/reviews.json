@@ -5512,5 +5512,22 @@
     "comunicacion": 5,
     "ubicacion": 4,
     "calidad": 5
+  },
+  {
+    "date": "2026-07-06",
+    "rating": 4,
+    "comment": "Apartamento estupendo, buena relacion calidad-precio y es agradable poder cocinar. Me encanto que hubiera una sombrilla de playa y una bolsa termica/paquete de hielo para llevar a la playa. ¡Un poco anticuado pero genial por el precio!",
+    "private_feedback": "",
+    "language": "en",
+    "bookable_id": null,
+    "reviewer_id": null,
+    "confirmation_code": "HMKQFE28R9",
+    "general": 4,
+    "llegada": 5,
+    "limpieza": 5,
+    "veracidad": 5,
+    "comunicacion": 5,
+    "ubicacion": 4,
+    "calidad": 5
   }
 ]
