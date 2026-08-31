@@ -8576,5 +8576,20 @@
     "booking_date": "2026-08-12",
     "rate_type": "refundable",
     "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 10,
+    "code": "HM3JRPK3B3",
+    "guest": "Katja Sterzenbach",
+    "checkin": "2026-10-20",
+    "nights": 4,
+    "pm": 61.53,
+    "cleaning": 60.0,
+    "total": 306.14,
+    "confirmation_code": "HM3JRPK3B3",
+    "booking_date": "2026-08-28",
+    "rate_type": "nrf",
+    "status": "confirmed"
   }
 ]

@@ -5529,5 +5529,39 @@
     "comunicacion": 5,
     "ubicacion": 4,
     "calidad": 5
+  },
+  {
+    "date": "2026-08-28",
+    "rating": 5,
+    "comment": "¡Alojamiento acogedor con todo lo que necesitas, incluso una sombrilla de playa! Excelente ubicación, a solo 15 minutos de una hermosa playa.",
+    "private_feedback": "Todo fue perfecto. Lo único que se podría mejorar son las almohadas.",
+    "language": "en",
+    "bookable_id": null,
+    "reviewer_id": null,
+    "confirmation_code": "HMHS3SRTMF",
+    "general": 5,
+    "llegada": 5,
+    "limpieza": 5,
+    "veracidad": 5,
+    "comunicacion": 5,
+    "ubicacion": 5,
+    "calidad": 5
+  },
+  {
+    "date": "2026-08-25",
+    "rating": 5,
+    "comment": "Ubicación práctica en Colonia, parece un poco en las afueras, pero a solo unas manzanas de las tiendas y del paseo marítimo/playa de la ciudad. Puedes ir caminando a Es Trenc, pero incluso un par de minutos en coche y aparcar acortarían bastante el paseo. El apartamento es bueno. Bien equipado. Bonitas vistas privadas. Buena cama y ropa de cama (en otros lugares puede ser impredecible). Lo alquilaría de nuevo si volviera a Colonia.",
+    "private_feedback": "",
+    "language": "en",
+    "bookable_id": null,
+    "reviewer_id": null,
+    "confirmation_code": "HMYWZP4MTM",
+    "general": 5,
+    "llegada": 5,
+    "limpieza": 5,
+    "veracidad": 5,
+    "comunicacion": 5,
+    "ubicacion": 5,
+    "calidad": 5
   }
 ]
