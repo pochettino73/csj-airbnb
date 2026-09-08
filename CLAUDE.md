@@ -1189,8 +1189,45 @@ Añadidas las evaluaciones de Cynthia Laure Mezatio (HMAY3W3RB8), Anne Ooms (HMF
 
 **Pendiente:** falta la evaluación de Britta John (HM8T2PNRSC, checkout 12/07/2026).
 
+---
+
+## Cambios aplicados 2026-08-31
+
+### Nueva reserva: Katja Sterzenbach (HM3JRPK3B3)
+
+- Check-in 20/10/2026, 4 noches, 306,14€ neto, `rate_type` = `"nrf"`
+- `pm` = 61,53, `cleaning` = 60,0, `booking_date` = 2026-08-28
+- Cubre el hueco de octubre 20-24; `pricing.py` recalculó los huecos restantes (19-20 oct 1n, 24-26 oct 2n)
+
+### 2 evaluaciones añadidas
+
+- Tiani Les (HMHS3SRTMF, checkout 28/08/2026): 5★ general, incluye `private_feedback` sobre almohadas (nota accionable menor, no pública)
+- Dmitry Shpak (HMYWZP4MTM, checkout 25/08/2026): 5★ general
+- Reviews totales: 367 → 369
+
+### Baseline de auditoría actualizado (audit_baseline.json)
+
+La nueva reserva de octubre disparó el check de protección histórica (delta income 2026-10 = +18,7%, > umbral CRÍTICO 15%). Siguiendo el precedente de Bernhard Bugenhagen (10/08/2026): en vez de editar el JSON a mano, se recalculó `months["2026-10"]` con las mismas funciones del auditor (`calc_ingresos`/`calc_noches`/`calc_pm_correcto`) vía script puntual, para evitar desajustes manuales. Resultado: income 1636,81→1942,95, nights 21→25, pm 69,13→67,92. Auditoría tras el cambio: 0 CRÍTICOS, 38 AVISOS (todos ya conocidos).
+
+**Nota para el futuro:** este patrón (nueva reserva/cancelación que dispara el baseline en un mes ya cerrado) es esperable y no indica error de datos — recalcular con las funciones del auditor, nunca a mano.
+
+### Superhost — actualización tras las 2 reviews nuevas
+
+Ventana 01/10/2025→30/09/2026: 46 evaluaciones (33×5★ + 13×4★), media **4,72** (antes 4,70 con 44 evaluaciones). Sigue por debajo del umbral 4,8. Harían falta 19 evaluaciones seguidas de 5★ antes del 30/09 (antes 21) — sigue siendo muy improbable en el tiempo restante.
+
 ### Estado Superhost para la evaluación del 01/10/2026 (ventana 01/10/2025 → 30/09/2026)
 
 - **Rating: 4,70 / 4,8 requerido.** 44 evaluaciones en ventana: 31×5★, 13×4★, ninguna por debajo. Harían falta 21 evaluaciones más seguidas de 5★ antes del 1/10 para llegar a 4,8 — matemáticamente muy improbable en el tiempo que queda. Con el ritmo actual, esta evaluación probablemente queda por debajo del umbral.
 - **Estancias: 64 confirmadas / 296 noches en ventana** — de sobra sobre el mínimo (10 estancias o 3+100 noches).
 - **Cancelación y tasa de respuesta: no se puede calcular de forma fiable con los datos locales.** `reservas.json` no distingue cancelación de huésped (no penaliza Superhost) de cancelación de anfitrión (sí penaliza) — cualquier % calculado localmente mezclaría ambas y sería engañoso. La tasa de respuesta no se registra en ningún fichero local. Para estos dos datos, consultar directamente Airbnb → Insights → Superhost.
+
+---
+
+## Cambios aplicados 2026-09-08
+
+### Nueva reserva: 민하 김 (HMZJ8DHXZA)
+
+- Check-in 25/04/2027, 3 noches (checkout 28/04/2027), 235,61€ neto, `rate_type` = `"refundable"` (Flexible)
+- `pm` = 58,54, `cleaning` = 60,0, `booking_date` = 2026-09-08
+- `pricing.py` recalculado: 6 huecos vigentes (oct-dic 2026), sin cambios de fondo en la temporada 2027 por esta reserva puntual
+- Auditoría tras el cambio: 0 CRÍTICOS, 38 AVISOS (todos ya conocidos e históricos, ninguno nuevo)

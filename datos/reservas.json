@@ -8591,5 +8591,20 @@
     "booking_date": "2026-08-28",
     "rate_type": "nrf",
     "status": "confirmed"
+  },
+  {
+    "year": 2027,
+    "month": 4,
+    "code": "HMZJ8DHXZA",
+    "guest": "민하 김",
+    "checkin": "2027-04-25",
+    "nights": 3,
+    "pm": 58.54,
+    "cleaning": 60.0,
+    "total": 235.61,
+    "confirmation_code": "HMZJ8DHXZA",
+    "booking_date": "2026-09-08",
+    "rate_type": "refundable",
+    "status": "confirmed"
   }
 ]
