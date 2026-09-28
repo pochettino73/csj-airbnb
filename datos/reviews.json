@@ -5157,23 +5157,6 @@
     "calidad": 5
   },
   {
-    "date": "2026-04-22",
-    "rating": 5,
-    "comment": "",
-    "private_feedback": "",
-    "language": "fr",
-    "bookable_id": null,
-    "reviewer_id": null,
-    "confirmation_code": "HMY38EJXR2",
-    "general": 5,
-    "llegada": 5,
-    "limpieza": 5,
-    "veracidad": 5,
-    "comunicacion": 5,
-    "ubicacion": 5,
-    "calidad": 5
-  },
-  {
     "date": "2026-04-29",
     "rating": 5,
     "comment": "",
@@ -5562,6 +5545,40 @@
     "veracidad": 5,
     "comunicacion": 5,
     "ubicacion": 5,
+    "calidad": 5
+  },
+  {
+    "date": "2026-09-10",
+    "rating": 5,
+    "comment": "Alojamiento muy bien situado, playa y puerto accesibles a pie, así como las tiendas, fácil de aparcar, anfitrión acogedor",
+    "private_feedback": "Gracias. Alojamiento bien situado y tranquilo. El aire acondicionado fue de agradecer. Faltan utensilios de cocina y sería necesario renovar algunos elementos, como la mesa del jardín exterior. Hay una fuga de agua en el inodoro y en el lavadero, y el fregadero se atasca. Lydie",
+    "language": "fr",
+    "bookable_id": null,
+    "reviewer_id": null,
+    "confirmation_code": "HMQZFT2NNP",
+    "general": 5,
+    "llegada": 5,
+    "limpieza": 4,
+    "veracidad": 4,
+    "comunicacion": 4,
+    "ubicacion": 5,
+    "calidad": 4
+  },
+  {
+    "date": "2026-09-14",
+    "rating": 4,
+    "comment": "Apartamento cómodo y bien ubicado para disfrutar del lugar. Cerca de la playa, de restaurantes, comercios… Contaba con lo necesario para la estancia, mobiliario algo anticuado pero bien limpio. Daniel como anfitrión fue muy atento.",
+    "private_feedback": "",
+    "language": "es",
+    "bookable_id": null,
+    "reviewer_id": null,
+    "confirmation_code": "HMBHBHF4PJ",
+    "general": 4,
+    "llegada": 4,
+    "limpieza": 4,
+    "veracidad": 4,
+    "comunicacion": 4,
+    "ubicacion": 4,
     "calidad": 5
   }
 ]

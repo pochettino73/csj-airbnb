@@ -1231,3 +1231,48 @@ Ventana 01/10/2025→30/09/2026: 46 evaluaciones (33×5★ + 13×4★), media **
 - `pm` = 58,54, `cleaning` = 60,0, `booking_date` = 2026-09-08
 - `pricing.py` recalculado: 6 huecos vigentes (oct-dic 2026), sin cambios de fondo en la temporada 2027 por esta reserva puntual
 - Auditoría tras el cambio: 0 CRÍTICOS, 38 AVISOS (todos ya conocidos e históricos, ninguno nuevo)
+
+---
+
+## Cambios aplicados 2026-09-21
+
+### Visitas: agosto 2026 añadido
+`datos/visitas.json`: "2026-08": 1177. Julio (777) ya estaba registrado.
+
+### 2 evaluaciones nuevas
+- **Lydie Horvais** (`HMQZFT2NNP`, checkin 30/08 → checkout 10/09/2026, 11 noches): 5★ general, llegada=5, limpieza=4, veracidad=4, comunicación=4, ubicación=5, calidad=4. Nota privada trae 3 incidencias de mantenimiento accionables: faltan utensilios de cocina, mesa de jardín exterior a renovar, fuga de agua en inodoro y lavadero, fregadero se atasca.
+- **Cristina Cascales** (`HMBHBHF4PJ`, checkin 10/09 → checkout 14/09/2026, 4 noches): 4★ general, llegada=4, limpieza=4, veracidad=4, comunicación=4, ubicación=4, calidad=5. Airbnb marcó aviso de "actualiza instrucciones de llegada" (el huésped tuvo problemas para entrar) — no es parte de la evaluación pero conviene revisarlo.
+
+### 🔵 Discrepancia de recuento en reviews.json — sin resolver, pendiente de retomar
+
+Dani confirmó que el total real en Airbnb, ya incluyendo Lydie y Cristina, es **367**. El fichero, tras añadir esas 2, tenía 371. Se encontró y corrigió **1 duplicado exacto** (`HMY38EJXR2`, registrado dos veces con contenido idéntico salvo la fecha, 21/04 y 22/04/2026) → fichero bajado a **370**. Quedan **3 de diferencia sin identificar**: revisado por contenido idéntico, por código de confirmación repetido, y por registros idénticos salvo la fecha, sin más coincidencias. No se ha borrado nada más a ciegas para no arriesgar evaluaciones reales (muchas reviews antiguas tienen comentario vacío por diseño, no es indicio de error). **Decisión de Dani: se deja así por ahora, se retoma más adelante** — posiblemente cruzando contra una nueva exportación completa de Airbnb.
+
+**Nota importante**: esta discrepancia de +3 registros fantasma afecta al cálculo de Superhost (media de rating en ventana 01/10/2025→30/09/2026) hasta que se resuelva — la cifra de 4,71 calculada hoy puede estar ligeramente distorsionada si alguno de los 3 registros de más cae dentro de esa ventana.
+
+### Reservas pendientes de añadir (comunicado por Dani, sin detalle todavía)
+Faltan 3 reservas confirmadas no registradas en `reservas.json`: **1 de julio 2026** y **2 de agosto 2026** (por fecha de venta/`booking_date`). Detectado comparando el recuento de Dani (5 reservas confirmadas en julio, 5 en agosto) contra los registros existentes (4 en julio, 3 en agosto). Pendiente de que Dani pase el detalle (código, huésped, check-in, noches, PM/total, tipo de tarifa) de cada una.
+
+### 4 reservas nuevas añadidas (`reservas.json`, 609 → 614 registros)
+
+- **Hermann Henkel** (`HMN5PB3CAT`): checkin 01/06/2027, 15 noches, 1672,68€ total, pm=107,51, Flexible. `booking_date` 19/09/2026.
+- **David Grant** (`HM2XMYTEPB`): checkin 05/05/2027, 5 noches, 365,60€ total, pm=61,12, Flexible. `booking_date` 19/09/2026.
+- **Raymond Pointeau** (`HMQXKQHJDT`): checkin 23/02/2027, 7 noches, 376,01€ total, pm=45,14, Flexible. `booking_date` 17/09/2026. **Cruza feb→mar 2027**, prorrateado en 2 registros (código vacío en ambos, mismo `confirmation_code`): 6 noches en febrero (322,27€) + 1 noche en marzo (53,71€), cleaning prorrateado 51,43€/8,57€.
+- **Heidrun Bley** (`HMRAT8R2PC`): checkin 06/04/2027, 11 noches, 677,02€ total, pm=56,09, Flexible. `booking_date` 01/09/2026.
+
+**Baseline recalculado (3 meses)**: las 3 primeras dispararon protección histórica (deltas +99,5% jun-27, +59,6% may-27, +287,3% abr-27, todas por encima del umbral CRÍTICO del 15%) al ser meses con muy poca base previa. Mismo patrón ya documentado (Bernhard 10/08, Katja 31/08): recalculado `output/audit_baseline.json` solo para 2027-04/05/06 con las funciones propias del auditor (`calc_ingresos`/`calc_noches`/`calc_pm_correcto`, reutilizando el `_load()` interno del script), sin tocar el JSON a mano. Auditoría tras el recálculo: 0 CRÍTICOS, 38 AVISOS (mismos de siempre, ninguno nuevo).
+
+### 5ª reserva nueva: Christophe Hodemon (`HMNZSK2RZS`) — 615 registros
+
+Checkin 07/11/2026, 7 noches, 453,95€ total, pm=56,28, Flexible, `booking_date` 31/08/2026. Cubre uno de los huecos de noviembre. Auditoría tras el cambio: 0 CRÍTICOS, 38 AVISOS, sin disparar protección histórica (a diferencia de las 3 de 2027).
+
+**Nota importante**: Dani pasó también a "Margarita Trejos Naranjo" (`HMZ5KBRMKK`) como si fuera nueva, pero **ya estaba registrada exactamente igual** desde antes (mismo check-in 03/12/2026, 4 noches, 262,42€, `booking_date` 21/07/2026) — no se duplicó, se detectó y se descartó. No cuenta para el hueco de julio.
+
+**Estado actualizado del hueco julio/agosto**: con Christophe, agosto pasa de 3 a 4 registros por `booking_date`. Sigue faltando **1 de julio y 1 de agosto** para llegar a los 5+5 que Dani declaró (antes eran 1+2). Pendiente de que Dani identifique esas 2 reservas concretas — ya avisado de que puede estar confundiendo el criterio de fecha (varias veces ha pasado reservas cuyo `booking_date` real no coincidía con el mes que él tenía en mente).
+
+### Cancelación: 민하 김 (`HMZJ8DHXZA`, checkin 25/04/2027)
+
+Dani confirmó que esta reserva está cancelada. Actualizado siguiendo el mismo patrón que el resto de cancelaciones del fichero: `status` → `cancelled`, `pm`/`cleaning`/`total` a 0, y nuevo campo `impacto: 235.61` (el importe que se pierde, convención ya usada en otras cancelaciones del fichero, ej. `HMHXK9AFY5`, `HMZMSSNHFH`).
+
+**Baseline recalculado (2027-04)**: la cancelación disparó protección histórica (income baseline 912,63€ fijado esta misma sesión al añadir la reserva → 677,02€ real tras cancelarla, +25,8%, crítico). Recalculado solo ese mes con las funciones del auditor, mismo patrón de siempre. Auditoría final: 0 CRÍTICOS, 38 AVISOS.
+
+**Pendiente**: revisar `output/pricing_output` / huecos, ya que esta cancelación reabre un hueco en abril 2027 que antes estaba cubierto.
