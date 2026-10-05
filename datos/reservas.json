@@ -8675,13 +8675,14 @@
     "guest": "Heidrun Bley",
     "checkin": "2027-04-06",
     "nights": 11,
-    "pm": 56.09,
-    "cleaning": 60.0,
-    "total": 677.02,
+    "pm": 0,
+    "cleaning": 0.0,
+    "total": 0,
     "confirmation_code": "HMRAT8R2PC",
     "booking_date": "2026-09-01",
     "rate_type": "refundable",
-    "status": "confirmed"
+    "status": "cancelled",
+    "impacto": 677.02
   },
   {
     "year": 2026,
@@ -8725,6 +8726,21 @@
     "total": 1140.11,
     "confirmation_code": "HMC5CKHYAX",
     "booking_date": "2026-09-28",
+    "rate_type": "refundable",
+    "status": "confirmed"
+  },
+  {
+    "year": 2026,
+    "month": 12,
+    "code": "HM4YH2FDWZ",
+    "guest": "Eva Hoppmann",
+    "checkin": "2026-12-10",
+    "nights": 4,
+    "pm": 48.37,
+    "cleaning": 60.0,
+    "total": 253.48,
+    "confirmation_code": "HM4YH2FDWZ",
+    "booking_date": "2026-10-03",
     "rate_type": "refundable",
     "status": "confirmed"
   }
