@@ -5580,5 +5580,22 @@
     "comunicacion": 4,
     "ubicacion": 4,
     "calidad": 5
+  },
+  {
+    "date": "2026-10-04",
+    "rating": 5,
+    "comment": "En general, un alojamiento muy satisfactorio. Había una lavadora, una nevera portátil y una sombrilla. Algunos platos no estaban del todo limpios, pero eso puede pasar. El precio del apartamento no nos convenció, aunque era uno de los más baratos disponibles en las fechas de nuestro viaje. Probablemente no se deba al anfitrión, sino a los precios en Mallorca. ¡Gracias por la agradable estancia! P. D.: Colonia de Sant Jordi es muy recomendable por sus playas y su buena ubicación en el sur de la isla, sin estar demasiado lejos de Palma.",
+    "private_feedback": "",
+    "language": "de",
+    "bookable_id": null,
+    "reviewer_id": null,
+    "confirmation_code": "HMR2NXTWHJ",
+    "general": 5,
+    "llegada": 5,
+    "limpieza": 4,
+    "veracidad": 4,
+    "comunicacion": 5,
+    "ubicacion": 5,
+    "calidad": 2
   }
 ]
