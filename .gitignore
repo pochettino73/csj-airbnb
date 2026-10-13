@@ -1,0 +1,12 @@
+datos/raw/
+__pycache__/
+*.pyc
+node_modules/
+output/auditoria_dashboard.json
+output/auditoria_dashboard.xlsx
+
+# Privado: no se publica (IBAN, nombres de huespedes). Solo dashboard.html y scripts van al repo publico
+CLAUDE.md
+datos/
+buzon/
+output/

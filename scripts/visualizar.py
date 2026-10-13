@@ -1,0 +1,1982 @@
+#!/usr/bin/env python3
+"""
+CSJ Airbnb — Dashboard Ejecutivo CEO
+HTML interactivo con Chart.js + filtros.
+Todos los datos desde ficheros locales: _reservas.json, _reviews.json, _visitas.json.
+0 dependencias externas.
+"""
+
+import json
+import os
+import calendar
+import sys
+from datetime import datetime
+
+from validar import validar as _validar
+from auditar_dashboard import auditar as _auditar
+
+_ROOT = os.path.dirname(os.path.dirname(__file__))  # CSJ/
+_DATOS = os.path.join(_ROOT, "datos")
+
+MESES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+
+PALETTE = {
+    2015: "#6b7280", 2016: "#9ca3af", 2017: "#a78bfa", 2018: "#c084fc",
+    2019: "#f472b6", 2020: "#ef4444", 2021: "#fb923c", 2022: "#fbbf24",
+    2023: "#34d399", 2024: "#22d3ee", 2025: "#3b82f6", 2026: "#8b5cf6",
+    2027: "#f59e0b",
+}
+
+
+def load_reservas():
+    """Carga _reservas.json y calcula ingresos, ocupación y PM mensuales por año."""
+    path = os.path.join(_DATOS, "reservas.json")
+    with open(path, "r", encoding="utf-8") as f:
+        reservas = json.load(f)
+
+    # Solo reservas confirmadas para cálculos de ingresos/ocupación/PM
+    reservas = [r for r in reservas if r.get("status", "confirmed") == "confirmed"]
+
+    # Validación: filtrar entradas imposibles
+    before = len(reservas)
+    reservas = [r for r in reservas if 0 < r["nights"] <= 31 or r["total"] > 0]
+    if len(reservas) < before:
+        print(f"  AVISO: {before - len(reservas)} entradas filtradas por datos imposibles")
+
+    # Acumular por (año, mes): total ingresos, noches, PM ponderado
+    from collections import defaultdict
+    acc = defaultdict(lambda: {"total": 0, "nights": 0, "total_sin_limp": 0, "count": 0,
+                                "pm_num": 0.0, "pm_den": 0})
+    for r in reservas:
+        key = (r["year"], r["month"])
+        acc[key]["total"] += r["total"]
+        acc[key]["nights"] += r["nights"]
+        acc[key]["total_sin_limp"] += r["total"] - r["cleaning"]
+        acc[key]["count"] += 1
+        # PM = sum(pm * nights) / sum(nights) — incluye continuaciones (tienen pm correcto desde prorrateo)
+        if r["nights"] > 0:
+            pm_eff = r.get("pm", 0) or 0
+            if pm_eff <= 0:
+                pm_eff = (r["total"] - r["cleaning"]) / r["nights"] if r["total"] > 0 else 0
+            if pm_eff > 0:
+                acc[key]["pm_num"] += pm_eff * r["nights"]
+                acc[key]["pm_den"] += r["nights"]
+
+    years = sorted(set(k[0] for k in acc))
+    ing, ocu, pm = {}, {}, {}
+    for y in years:
+        ing[y] = []
+        ocu[y] = []
+        pm[y] = []
+        for m in range(1, 13):
+            d = acc.get((y, m))
+            days = calendar.monthrange(y, m)[1]
+            if d and d["total"] > 0:
+                ing[y].append(round(d["total"], 2))
+                ocu[y].append(round(d["nights"] / days, 4))  # fracción 0-1
+                pm[y].append(round(d["pm_num"] / d["pm_den"], 2) if d["pm_den"] > 0 else 0)
+            else:
+                ing[y].append(0)
+                ocu[y].append(0)
+                pm[y].append(0)
+
+    return ing, ocu, pm, reservas
+
+
+def load_reviews():
+    """Carga _reviews.json y calcula medias por subcategoría."""
+    path = os.path.join(_DATOS, "reviews.json")
+    with open(path, "r", encoding="utf-8") as f:
+        reviews = json.load(f)
+
+    cats = ["llegada", "limpieza", "veracidad", "comunicacion", "ubicacion", "calidad"]
+    CAT_DISPLAY = {
+        "llegada": "Llegada", "limpieza": "Limpieza", "veracidad": "Veracidad",
+        "comunicacion": "Comunicación", "ubicacion": "Ubicación", "calidad": "Calidad"
+    }
+
+    def avg_cat(revs, cat):
+        vs = [r[cat] for r in revs if r.get(cat) and r[cat] > 0]
+        return round(sum(vs) / len(vs), 2) if vs else 0
+
+    def avg_general(revs):
+        vs = [r["rating"] for r in revs if r.get("rating") and r["rating"] > 0]
+        return round(sum(vs) / len(vs), 2) if vs else 0
+
+    result = {"global": {}, "12m": {}, "3m": {}}
+    # All reviews
+    result["global"]["General"] = avg_general(reviews)
+    result["global"]["n"] = len(reviews)
+    for c in cats:
+        result["global"][CAT_DISPLAY[c]] = avg_cat(reviews, c)
+
+    # Last 12 months
+    from datetime import datetime, timedelta
+    now = datetime.now()
+    r12 = [r for r in reviews if r["date"] >= (now - timedelta(days=365)).strftime("%Y-%m-%d")]
+    result["12m"]["General"] = avg_general(r12)
+    result["12m"]["n"] = len(r12)
+    for c in cats:
+        result["12m"][CAT_DISPLAY[c]] = avg_cat(r12, c)
+
+    # Last 3 months
+    r3 = [r for r in reviews if r["date"] >= (now - timedelta(days=90)).strftime("%Y-%m-%d")]
+    result["3m"]["General"] = avg_general(r3)
+    result["3m"]["n"] = len(r3)
+    for c in cats:
+        result["3m"][CAT_DISPLAY[c]] = avg_cat(r3, c)
+
+    return result, reviews
+
+
+def load_visitas():
+    """Carga _visitas.json con page views del listing por mes."""
+    path = os.path.join(_DATOS, "visitas.json")
+    if not os.path.exists(path):
+        return {}
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+
+def J(o):
+    return json.dumps(o, ensure_ascii=False)
+
+
+def calc_cancelaciones(reservas_all):
+    from collections import defaultdict
+    confirmed = [r for r in reservas_all if r.get("status", "confirmed") == "confirmed"]
+    cancelled  = [r for r in reservas_all if r.get("status") == "cancelled"]
+
+    conf_ranges = []
+    for r in confirmed:
+        try:
+            from datetime import datetime, timedelta
+            s = datetime.strptime(r["checkin"], "%Y-%m-%d")
+            e = s + timedelta(days=r["nights"])
+            conf_ranges.append((s, e, r))
+        except:
+            pass
+
+    def recovery(c):
+        from datetime import datetime, timedelta
+        try:
+            cs = datetime.strptime(c["checkin"], "%Y-%m-%d")
+            ce = cs + timedelta(days=c["nights"])
+        except:
+            return 0.0
+        rec = 0.0
+        for s, e, r in conf_ranges:
+            ov = (min(ce, e) - max(cs, s)).days
+            if ov > 0:
+                rec += r["total"] * ov / r["nights"]
+        return round(rec, 2)
+
+    years = sorted(set(r["year"] for r in reservas_all if r.get("checkin")))
+
+    by_year = defaultdict(lambda: {"conf": 0, "canc": 0, "perdido": 0, "recuperado": 0, "neto": 0,
+                                    "lt_conf": [], "lt_canc": []})
+
+    from datetime import datetime, timedelta
+    for r in confirmed:
+        y = r["year"]
+        by_year[y]["conf"] += 1
+        try:
+            bd = datetime.strptime(r["booking_date"], "%Y-%m-%d")
+            ci = datetime.strptime(r["checkin"], "%Y-%m-%d")
+            by_year[y]["lt_conf"].append((ci - bd).days)
+        except:
+            pass
+
+    for c in cancelled:
+        y = c["year"]
+        by_year[y]["canc"] += 1
+        precio = (c.get("impacto") or 0) + (c.get("total") or 0)
+        pen    = c.get("total") or 0
+        rec    = recovery(c)
+        neto   = round(precio - pen - rec, 2)
+        by_year[y]["perdido"]    += precio
+        by_year[y]["recuperado"] += rec
+        by_year[y]["neto"]       += neto
+        try:
+            bd = datetime.strptime(c["booking_date"], "%Y-%m-%d")
+            ci = datetime.strptime(c["checkin"], "%Y-%m-%d")
+            by_year[y]["lt_canc"].append((ci - bd).days)
+        except:
+            pass
+
+    result = {}
+    for y in years:
+        d = by_year[y]
+        total = d["conf"] + d["canc"]
+        result[y] = {
+            "conf": d["conf"],
+            "canc": d["canc"],
+            "tasa": round(d["canc"] / total * 100, 1) if total else 0,
+            "perdido": round(d["perdido"], 2),
+            "recuperado": round(d["recuperado"], 2),
+            "neto": round(d["neto"], 2),
+            "lt_conf": round(sum(d["lt_conf"]) / len(d["lt_conf"])) if d["lt_conf"] else 0,
+            "lt_canc": round(sum(d["lt_canc"]) / len(d["lt_canc"])) if d["lt_canc"] else 0,
+        }
+    return result
+
+
+def calc_cancelaciones_ytd(reservas_all, today=None):
+    """Tasa de cancelación por año filtrada a la misma fecha (mismo mes/día) en cada año."""
+    from datetime import date as date_
+    import calendar as cal_
+    if today is None:
+        today = date_.today()
+
+    years = sorted(set(r["year"] for r in reservas_all if r.get("year")))
+    result = {}
+    for y in years:
+        try:
+            cutoff = date_(y, today.month, today.day)
+        except ValueError:
+            cutoff = date_(y, today.month, cal_.monthrange(y, today.month)[1])
+
+        def in_ytd(r, c=cutoff):
+            bd = r.get("booking_date")
+            if not bd:
+                return True
+            try:
+                return date_.fromisoformat(bd) <= c
+            except:
+                return True
+
+        canc = [r for r in reservas_all if r.get("status") == "cancelled" and r.get("year") == y and in_ytd(r)]
+        conf = [r for r in reservas_all if r.get("status", "confirmed") == "confirmed" and r.get("year") == y and in_ytd(r)]
+        total = len(canc) + len(conf)
+        result[y] = {
+            "conf": len(conf),
+            "canc": len(canc),
+            "tasa": round(len(canc) / total * 100, 1) if total else 0,
+        }
+    return result
+
+
+def calc_pm_ytd(reservas_all, today=None):
+    """PM ponderado por noches de todas las estancias de cada año vendidas hasta la misma fecha."""
+    from datetime import date as date_
+    import calendar as cal_
+    if today is None:
+        today = date_.today()
+
+    years = sorted(set(r["year"] for r in reservas_all if r.get("year")))
+    result = {}
+    for y in years:
+        try:
+            cutoff = date_(y, today.month, today.day)
+        except ValueError:
+            cutoff = date_(y, today.month, cal_.monthrange(y, today.month)[1])
+
+        pm_num = pm_den = 0
+        for r in reservas_all:
+            if r.get("status", "confirmed") != "confirmed": continue
+            if r.get("year") != y: continue
+            bd = r.get("booking_date")
+            if not bd: continue
+            try:
+                if date_.fromisoformat(bd) > cutoff: continue
+            except:
+                continue
+            n = r.get("nights", 0)
+            pm = r.get("pm", 0) or 0
+            if n > 0 and pm > 0:
+                pm_num += pm * n
+                pm_den += n
+
+        result[y] = round(pm_num / pm_den, 1) if pm_den else 0
+    return result
+
+
+def build(data, ing, ocu, pm, rev):
+    reservas = data.get("reservas", [])
+    visitas_raw = data.get("visitas", {})
+    now = datetime.now()
+    cy, cm = now.year, now.month
+
+    active = sorted([y for y in ing if sum(ing[y]) > 0])
+
+    # All data as JSON for JS
+    all_ing = {str(y): ing[y] for y in active}
+    all_ocu = {str(y): [round(v * 100, 2) for v in ocu.get(y, [0]*12)] for y in active}
+    all_pm = {str(y): [round(v, 2) for v in pm.get(y, [0]*12)] for y in active}
+
+    ann_ing = {str(y): round(sum(ing[y])) for y in active}
+    ann_ocu = {str(y): round(sum(v for v in ocu[y] if v > 0) / max(1, sum(1 for v in ocu[y] if v > 0)) * 100, 1) for y in active}
+    ann_pm = {str(y): round(sum(pm.get(y, [0]*12)) / 12, 1) for y in active}
+
+    # Resumen from local data (replaces Sheet "Resumen" tab)
+    res_y = [str(y) for y in active]
+    res_i = [ann_ing[str(y)] for y in active]
+    res_o = [ann_ocu[str(y)] for y in active]
+    res_p = [ann_pm[str(y)] for y in active]
+
+    palette = {str(y): PALETTE.get(y, "#94a3b8") for y in active}
+
+    # Band — Ingresos
+    hmin, hmax, havg = [], [], []
+    for m in range(12):
+        vs = [ing[y][m] for y in ing if y < cy and ing[y][m] > 0]
+        hmin.append(round(min(vs), 0) if vs else 0)
+        hmax.append(round(max(vs), 0) if vs else 0)
+        havg.append(round(sum(vs)/len(vs), 0) if vs else 0)
+
+    # Band — Ocupación
+    hmin_ocu, hmax_ocu, havg_ocu = [], [], []
+    for m in range(12):
+        vs = [ocu[y][m]*100 for y in ocu if y < cy and ocu[y][m] > 0]
+        hmin_ocu.append(round(min(vs), 1) if vs else 0)
+        hmax_ocu.append(round(max(vs), 1) if vs else 0)
+        havg_ocu.append(round(sum(vs)/len(vs), 1) if vs else 0)
+
+    # Band — PM
+    hmin_pm, hmax_pm, havg_pm = [], [], []
+    for m in range(12):
+        vs = [pm[y][m] for y in pm if y < cy and pm[y][m] > 0]
+        hmin_pm.append(round(min(vs), 1) if vs else 0)
+        hmax_pm.append(round(max(vs), 1) if vs else 0)
+        havg_pm.append(round(sum(vs)/len(vs), 1) if vs else 0)
+
+    # === CONVERSIÓN (visitas desde _visitas.json + reservas desde booking_date) ===
+    # Identificar prorated children para no contarlas como reservas separadas
+    _pror = set()
+    for i in range(len(reservas)):
+        r = reservas[i]
+        g = r['guest'].strip() if r.get('guest') else ''
+        if not g:
+            continue
+        ym = r['year'] * 12 + r['month']
+        for j in range(max(0, i - 5), i):
+            p = reservas[j]
+            pg = p['guest'].strip() if p.get('guest') else ''
+            if pg == g and p['year'] * 12 + p['month'] == ym - 1:
+                _pror.add(i)
+                break
+
+    conv_years = sorted(set(y for y in active if y >= 2018))
+    conv_data = {}
+    for y in conv_years:
+        sy = str(y)
+        c_visitas, c_reservas = [], []
+        for m in range(1, 13):
+            vk = f"{y}-{m:02d}"
+            c_visitas.append(visitas_raw.get(vk, 0))
+            # Reservas por fecha de venta (booking_date), excluir prorated
+            n_res = sum(1 for idx, r in enumerate(reservas)
+                        if r.get('booking_date')
+                        and int(r['booking_date'][:4]) == y
+                        and int(r['booking_date'][5:7]) == m
+                        and idx not in _pror)
+            c_reservas.append(n_res)
+        conv_data[sy] = {"v": c_visitas, "r": c_reservas}
+
+    conv_ann = {}
+    for sy in conv_data:
+        tv = sum(conv_data[sy]["v"])
+        tr = sum(conv_data[sy]["r"])
+        cvr = round(tr / tv * 100, 2) if tv > 0 else 0
+        conv_ann[sy] = {"v": tv, "r": tr, "cvr": cvr}
+
+
+    # === PM POR BANDA ESTACIONAL ===
+    # Alta: 15/6 al 15/9 — Media: 1/4 al 15/6 y 15/9 al 31/10 — Baja: 1/11 al 31/3
+    def get_banda(checkin_str):
+        """Devuelve 'alta', 'media' o 'baja' según la fecha de checkin."""
+        mm, dd = int(checkin_str[5:7]), int(checkin_str[8:10])
+        # Alta: 15 jun - 15 sep
+        if (mm == 6 and dd >= 15) or mm in (7, 8) or (mm == 9 and dd <= 15):
+            return "alta"
+        # Baja: 1 nov - 31 mar
+        if mm in (11, 12, 1, 2, 3):
+            return "baja"
+        # Media: 1 abr - 14 jun y 16 sep - 31 oct
+        return "media"
+
+    pm_banda = {}
+    for y in active:
+        sy = str(y)
+        bandas = {"alta": [], "media": [], "baja": []}  # list of (pm, nights)
+        for r in reservas:
+            if r["year"] != y or r["nights"] <= 0:
+                continue
+            # Excluir continuaciones cross-month (code='', total=0)
+            if not r.get("code") and r.get("total", 0) == 0:
+                continue
+            ci = r.get("checkin")
+            pm_eff = r.get("pm", 0) or 0
+            if pm_eff <= 0 and r.get("total", 0) > 0:
+                pm_eff = (r["total"] - r["cleaning"]) / r["nights"]
+            if pm_eff <= 0:
+                continue
+            n = r["nights"]
+            if ci:
+                banda = get_banda(ci)
+                bandas[banda].append((pm_eff, n))
+            else:
+                m = r["month"]
+                if m in (7, 8):
+                    bandas["alta"].append((pm_eff, n))
+                elif m in (11, 12, 1, 2, 3):
+                    bandas["baja"].append((pm_eff, n))
+                else:
+                    bandas["media"].append((pm_eff, n))
+        pm_banda[sy] = {
+            b: round(sum(v * n for v, n in vs) / sum(n for _, n in vs), 1) if vs else 0
+            for b, vs in bandas.items()
+        }
+
+    # === PACE REPORT (On The Books vs LY) ===
+    from datetime import date, timedelta
+    today_d = date.today()
+
+    pace_otb = {}        # {str(y): [12]}  — revenue booked by equivalent date
+    pace_final = {}      # {str(y): [12]} — total final revenue
+    pace_nights_otb = {} # {str(y): [12]} — nights booked by equivalent date
+
+    for y in active:
+        sy = str(y)
+        try:
+            cutoff = today_d.replace(year=y)
+        except ValueError:
+            cutoff = today_d.replace(year=y, day=28)
+        cutoff_str = cutoff.strftime("%Y-%m-%d")
+
+        otb, final, nights_otb = [], [], []
+        for m in range(1, 13):
+            mr = [r for r in reservas if r['year'] == y and r['month'] == m]
+            final.append(round(sum(r['total'] for r in mr), 2))
+            otb_v = sum(r['total'] for r in mr
+                        if r.get('booking_date') and r['booking_date'] <= cutoff_str)
+            otb_v += sum(r['total'] for r in mr if not r.get('booking_date'))
+            otb.append(round(otb_v, 2))
+            nights_v = sum(r.get('nights', 0) for r in mr
+                           if r.get('booking_date') and r['booking_date'] <= cutoff_str)
+            nights_v += sum(r.get('nights', 0) for r in mr if not r.get('booking_date'))
+            nights_otb.append(nights_v)
+        pace_otb[sy] = otb
+        pace_final[sy] = final
+        pace_nights_otb[sy] = nights_otb
+
+    # ADR OTB por año/mes: sum(pm * nights) / sum(nights)
+    pace_adr_otb = {}
+    for y in active:
+        sy = str(y)
+        try:
+            cutoff = today_d.replace(year=y)
+        except ValueError:
+            cutoff = today_d.replace(year=y, day=28)
+        cutoff_str = cutoff.strftime("%Y-%m-%d")
+        adr_months = []
+        for m in range(1, 13):
+            mr = [r for r in reservas if r['year'] == y and r['month'] == m]
+            otb_r = [r for r in mr if r.get('booking_date') and r['booking_date'] <= cutoff_str]
+            otb_r += [r for r in mr if not r.get('booking_date')]
+            pm_num = pm_den = 0
+            for r in otb_r:
+                n = r.get('nights', 0)
+                if n <= 0: continue
+                pm_eff = r.get('pm', 0) or 0
+                if pm_eff <= 0 and r.get('total', 0) > 0:
+                    pm_eff = (r['total'] - r.get('cleaning', 0)) / n
+                if pm_eff > 0:
+                    pm_num += pm_eff * n
+                    pm_den += n
+            adr_months.append(round(pm_num / pm_den, 1) if pm_den > 0 else None)
+        pace_adr_otb[sy] = adr_months
+
+    # === LEAD TIME ===
+    lt_buckets_def = [("<7d", 0, 7), ("7-30d", 7, 30), ("30-90d", 30, 90), (">90d", 90, 9999)]
+    lt_bucket_data = {b[0]: [] for b in lt_buckets_def}
+    lt_by_year_raw = {}
+
+    for r in reservas:
+        if not r.get('booking_date') or not r.get('checkin'):
+            continue
+        try:
+            bd = date.fromisoformat(r['booking_date'])
+            ci = date.fromisoformat(r['checkin'])
+        except Exception:
+            continue
+        lt = (ci - bd).days
+        if lt < 0 or r['nights'] <= 0:
+            continue
+        pm_n = r.get('pm', 0) or (r['total'] - r['cleaning']) / r['nights']
+        for bname, blo, bhi in lt_buckets_def:
+            if blo <= lt < bhi:
+                lt_bucket_data[bname].append({"lt": lt, "pm": pm_n, "total": r['total']})
+                break
+        lt_by_year_raw.setdefault(str(r['year']), []).append(lt)
+
+    lt_summary = {}
+    for bname in [b[0] for b in lt_buckets_def]:
+        entries = lt_bucket_data[bname]
+        if entries:
+            lt_summary[bname] = {
+                "n": len(entries),
+                "avg_pm": round(sum(e['pm'] for e in entries) / len(entries), 2),
+                "avg_lt": round(sum(e['lt'] for e in entries) / len(entries), 1),
+                "pct_rev": round(sum(e['total'] for e in entries), 0),
+            }
+        else:
+            lt_summary[bname] = {"n": 0, "avg_pm": 0, "avg_lt": 0, "pct_rev": 0}
+
+    lt_avg_year = {}
+    for sy, lts in lt_by_year_raw.items():
+        lt_avg_year[sy] = round(sum(lts) / len(lts), 1) if lts else 0
+
+    rg = rev.get("global", {})
+    cats = ["General", "Llegada", "Limpieza", "Veracidad", "Comunicación", "Ubicación", "Calidad"]
+    cats_sub = ["Llegada", "Limpieza", "Veracidad", "Comunicación", "Ubicación", "Calidad"]
+    cats_key = ["llegada", "limpieza", "veracidad", "comunicacion", "ubicacion", "calidad"]
+
+    # Superhost assessment periods (quarterly, rolling 365d)
+    # Q1 check: Jan 1 (reviews from Jan 1 LY to Dec 31)
+    # Q2 check: Apr 1 (reviews from Apr 1 LY to Mar 31)
+    # Q3 check: Jul 1 (reviews from Jul 1 LY to Jun 30)
+    # Q4 check: Oct 1 (reviews from Oct 1 LY to Sep 30)
+    reviews_list = data.get("reviews_list", [])
+    superhost_quarters = {}  # {"2026-Q1": {rating, n, ...}}
+    sh_checks = []
+    for y in range(2018, cy + 2):
+        # Q1: 1 ene Y-1 → 31 dic Y-1 (end year = Y-1)
+        # Q2: 1 abr Y-1 → 31 mar Y  (end year = Y)
+        # Q3: 1 jul Y-1 → 30 jun Y  (end year = Y)
+        # Q4: 1 oct Y-1 → 30 sep Y  (end year = Y)
+        for q, (sm, sd, ey_offset, em, ed) in enumerate([
+            (1, 1, -1, 12, 31), (4, 1, 0, 3, 31), (7, 1, 0, 6, 30), (10, 1, 0, 9, 30)
+        ], 1):
+            start = f"{y-1}-{sm:02d}-{sd:02d}"
+            end = f"{y+ey_offset}-{em:02d}-{ed:02d}"
+            t_map = {1: 4, 2: 1, 3: 2, 4: 3}
+            t_year = {1: y-1, 2: y, 3: y, 4: y}
+            label = f"{t_year[q]}-T{t_map[q]}"
+            qrevs = [r for r in reviews_list if start <= r["date"] <= end]
+            if not qrevs:
+                continue
+            ratings = [r["rating"] for r in qrevs if r.get("rating") and r["rating"] > 0]
+            avg_r = round(sum(ratings) / len(ratings), 2) if ratings else 0
+            superhost_quarters[label] = {
+                "n": len(qrevs), "rating": avg_r,
+                "superhost": avg_r >= 4.8 and len(qrevs) >= 3,
+            }
+            sh_checks.append(label)
+
+    # === REVISIONES SUPERHOST FUTURAS ===
+    today_str = now.strftime("%Y-%m-%d")
+    from collections import Counter
+    from datetime import datetime as dt2
+    future_sh = []  # list of future quarter assessments
+    for y in range(cy, cy + 2):
+        for q, (sm, sd, ey_offset, em, ed) in enumerate([
+            (1, 1, -1, 12, 31), (4, 1, 0, 3, 31), (7, 1, 0, 6, 30), (10, 1, 0, 9, 30)
+        ], 1):
+            eval_date = f"{y}-{[1,4,7,10][q-1]:02d}-01"
+            if eval_date >= today_str and len(future_sh) < 4:
+                start_w = f"{y-1}-{sm:02d}-{sd:02d}"
+                end_w = f"{y+ey_offset}-{em:02d}-{ed:02d}"
+                t_map_w = {1: 4, 2: 1, 3: 2, 4: 3}
+                t_year_w = {1: y-1, 2: y, 3: y, 4: y}
+                label_w = f"{t_year_w[q]}-T{t_map_w[q]}"
+                qrevs_w = [r for r in reviews_list if start_w <= r["date"] <= end_w]
+                ratings_w = [r["rating"] for r in qrevs_w if r.get("rating") and r["rating"] > 0]
+                total_pts = sum(ratings_w)
+                n_rev = len(ratings_w)
+                avg_now = round(total_pts / n_rev, 4) if n_rev else 0
+                gap = round(4.8 * n_rev - total_pts, 1)
+                dist_w = Counter(ratings_w)
+                needed_5 = 0
+                test_pts, test_n = total_pts, n_rev
+                while test_n > 0 and test_pts / test_n < 4.8:
+                    test_pts += 5
+                    test_n += 1
+                    needed_5 += 1
+                    if needed_5 > 50:
+                        break
+                bad_revs = []
+                for r in qrevs_w:
+                    if r.get("rating") and r["rating"] < 5:
+                        bad_revs.append({
+                            "date": r["date"],
+                            "rating": r["rating"],
+                            "comment": (r.get("comment") or "")[:100],
+                        })
+                bad_revs.sort(key=lambda x: x["rating"])
+                # Reservas en la ventana que ya hicieron checkout pero no dejaron review
+                from datetime import timedelta
+                review_dates = set(r["date"] for r in qrevs_w)
+                stays_in_window = []
+                for r in reservas:
+                    ci = r.get("checkin")
+                    if not ci or not r.get("code"):
+                        continue
+                    co_date = (dt2.strptime(ci, "%Y-%m-%d") + timedelta(days=r["nights"])).strftime("%Y-%m-%d")
+                    # Stay falls in window if checkout is within window period
+                    if start_w <= co_date <= end_w and co_date <= today_str:
+                        stays_in_window.append({"guest": r.get("guest", "?"), "checkin": ci, "nights": r["nights"], "checkout": co_date})
+                # Estimated pending = stays - reviews (approximate, not exact match)
+                pending_reviews = max(0, len(stays_in_window) - n_rev)
+
+                eval_dt = dt2.strptime(eval_date, "%Y-%m-%d")
+                days_left = (eval_dt - now).days
+                future_sh.append({
+                    "label": label_w,
+                    "eval_date": eval_date,
+                    "days_left": days_left,
+                    "window": f"{start_w} → {end_w}",
+                    "n": n_rev,
+                    "total_pts": total_pts,
+                    "rating": round(avg_now, 2),
+                    "rating_exact": round(avg_now, 4),
+                    "gap": gap,
+                    "needed_5": needed_5,
+                    "is_super": avg_now >= 4.8,
+                    "dist": {str(k): v for k, v in dist_w.items()},
+                    "bad_reviews": bad_revs[:10],
+                    "pending": pending_reviews,
+                    "if_pending_5": round((total_pts + 5 * pending_reviews) / (n_rev + pending_reviews), 4) if pending_reviews > 0 and n_rev > 0 else avg_now,
+                })
+    next_sh = future_sh[0] if future_sh else None
+
+    rev_by_year = {}
+    for y in active:
+        sy = str(y)
+        yr = [r for r in reviews_list if r["date"][:4] == sy]
+        if not yr:
+            rev_by_year[sy] = {"General": 0, "n": 0}
+            for ck in cats_key:
+                rev_by_year[sy][ck] = 0
+            continue
+        gen = [r["rating"] for r in yr if r.get("rating") and r["rating"] > 0]
+        rev_by_year[sy] = {
+            "General": round(sum(gen) / len(gen), 2) if gen else 0,
+            "n": len(yr),
+        }
+        for ck in cats_key:
+            vs = [r[ck] for r in yr if r.get(ck) and r[ck] > 0]
+            rev_by_year[sy][ck] = round(sum(vs) / len(vs), 2) if vs else 0
+
+    # Review cards (global)
+    rcards = ""
+    for c in cats:
+        v = rg.get(c, 0)
+        col = "#22c55e" if v >= 4.8 else "#f59e0b" if v >= 4.5 else "#ef4444"
+        rcards += f'<div class="rv"><div class="rs" style="color:{col}">{v:.2f}</div><div class="rl">{c}</div></div>'
+
+    html = f"""<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>CSJ Airbnb — Revenue Cockpit</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+:root {{ --bg:#0f172a; --c:#1e293b; --b:#334155; --t:#f1f5f9; --m:#94a3b8; --a:#3b82f6; --g:#22c55e; --r:#ef4444; --pos:#22c55e; --warn:#f59e0b; --risk:#ef4444; --hist:#94a3b8;
+  --col-ing:#3b82f6; --col-ocu:#22d3ee; --col-adr:#facc15; --col-vis:#a78bfa; --col-res:#22c55e; --col-canc:#ef4444; }}
+* {{ margin:0;padding:0;box-sizing:border-box; }}
+body {{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--t); padding:20px 24px; max-width:100%; overflow-x:hidden; }}
+
+/* Header + Filters */
+.top {{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid var(--b); }}
+.top h1 {{ font-size:24px; font-weight:800; }} .top h1 span {{ color:var(--a); }}
+.top .sub {{ color:var(--m); font-size:12px; }}
+.filters {{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }}
+.filters label {{ color:var(--m); font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.5px; }}
+.filters select, .filters button {{
+  background:var(--c); color:var(--t); border:1px solid var(--b); border-radius:8px;
+  padding:6px 12px; font-size:12px; font-family:inherit; cursor:pointer;
+}}
+.filters select:focus, .filters button:hover {{ border-color:var(--a); outline:none; }}
+.filters button.active {{ background:var(--a); border-color:var(--a); }}
+
+/* Error banner */
+.err-banner {{ display:none; background:#ef4444; color:#fff; padding:10px 16px; border-radius:8px; margin-bottom:14px; font-size:12px; font-weight:600; }}
+
+/* ── KPI Cards ── */
+.kpis {{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-bottom:32px; }}
+.kpi {{ background:var(--c); border:1px solid var(--b); border-radius:14px; padding:24px 22px; position:relative; transition:border-color .15s; }}
+.kpi:hover {{ border-color:var(--a); }}
+.kpi .lbl {{ font-size:10px; font-weight:700; color:var(--m); text-transform:uppercase; letter-spacing:.8px; margin-bottom:10px; }}
+.kpi .val {{ font-size:36px; font-weight:800; letter-spacing:-1.5px; line-height:1; margin-bottom:8px; }}
+.kpi .chg {{ font-size:13px; font-weight:700; margin-bottom:6px; }}
+.kpi .chg.up {{ color:var(--g); }} .kpi .chg.down {{ color:var(--r); }} .kpi .chg.eq {{ color:var(--m); }}
+.kpi .det {{ font-size:11px; color:var(--m); }}
+.kpi .hist {{ font-size:10px; color:var(--m); margin-top:10px; padding-top:10px; border-top:1px solid var(--b); }}
+.kpi-accent {{ position:absolute; top:0; left:0; bottom:0; width:4px; border-radius:14px 0 0 14px; }}
+@media(max-width:900px) {{ .kpis {{ grid-template-columns:repeat(2,1fr); gap:14px; }} }}
+@media(max-width:480px) {{ .kpis {{ grid-template-columns:1fr; gap:10px; }} .kpi .val {{ font-size:28px; }} }}
+
+/* ── Pace summary ── */
+.pace-summary {{ background:rgba(59,130,246,0.06); border:1px solid rgba(59,130,246,0.2); border-radius:10px; padding:14px 18px; margin-bottom:14px; font-size:13px; color:var(--m); line-height:1.6; }}
+.pace-summary strong {{ color:var(--t); }}
+
+@media(max-width:600px) {{
+  body {{ padding:10px 8px; }}
+  .top h1 {{ font-size:18px; }}
+  .sh {{ font-size:15px; margin:20px 0 8px 0; }}
+  .cd {{ padding:12px; }}
+  .cd h3 {{ font-size:12px; }}
+  .ch.xl {{ height:260px; }} .ch.lg {{ height:240px; }} .ch.md {{ height:220px; }} .ch.sm {{ height:180px; }}
+  .filters {{ gap:4px; }}
+  .filters select, .filters button {{ padding:5px 8px; font-size:11px; }}
+}}
+
+/* Cards */
+.row {{ display:grid; gap:16px; margin-bottom:20px; }}
+.r2 {{ grid-template-columns:1fr 1fr; }} .r1 {{ grid-template-columns:1fr; }} .r3 {{ grid-template-columns:1fr 1fr 1fr; }}
+@media(max-width:900px) {{ .r2,.r3 {{ grid-template-columns:1fr; }} }}
+.cd {{ background:var(--c); border:1px solid var(--b); border-radius:10px; padding:18px; }}
+.cd h3 {{ font-size:14px; font-weight:600; margin-bottom:2px; }}
+.cd .s {{ font-size:10px; color:var(--m); margin-bottom:12px; }}
+.ch {{ position:relative; width:100%; }}
+.ch.xl {{ height:380px; }} .ch.lg {{ height:320px; }} .ch.md {{ height:280px; }} .ch.sm {{ height:220px; }}
+/* Tooltip box posicionada en esquina */
+.tt-box {{ position:absolute; background:var(--c); border:1px solid var(--b); border-radius:8px; padding:8px 10px; font-size:11px; pointer-events:none; z-index:10; min-width:110px; opacity:0; transition:opacity .15s; box-shadow:0 4px 16px rgba(0,0,0,.35); }}
+.tt-box .tt-title {{ font-weight:700; color:var(--t); margin-bottom:5px; font-size:12px; }}
+.tt-box .tt-row {{ display:flex; align-items:center; gap:6px; color:var(--m); margin:2px 0; white-space:nowrap; }}
+.tt-box .tt-dot {{ width:8px; height:8px; border-radius:50%; flex-shrink:0; }}
+
+/* Section headers */
+.sh {{ font-size:18px; font-weight:700; margin:28px 0 12px 0; padding-top:16px; border-top:1px solid var(--b); }}
+.sh span {{ color:var(--a); font-weight:400; font-size:12px; margin-left:8px; }}
+
+/* Heatmap reimagined as sparkline table */
+.spark-table {{ width:100%; min-width:620px; border-collapse:collapse; font-size:11px; }}
+.spark-table th {{ color:var(--m); font-size:9px; font-weight:600; text-transform:uppercase; padding:4px 6px; text-align:center; min-width:36px; }}
+.spark-table td {{ padding:5px 4px; text-align:center; min-width:36px; }}
+.spark-table .yr {{ color:var(--m); font-weight:600; text-align:left; white-space:nowrap; }}
+.spark-table .bar {{ height:36px; border-radius:3px; display:block; line-height:36px; overflow:hidden; font-size:9px; color:#1e293b; text-align:center; font-weight:600; }}
+
+/* Reviews */
+.rvs {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(90px,1fr)); gap:8px; }}
+.rv {{ text-align:center; padding:10px 4px; background:rgba(59,130,246,0.06); border-radius:6px; }}
+.rv .rs {{ font-size:20px; font-weight:700; }}
+.rv .rl {{ font-size:9px; color:var(--m); margin-top:2px; }}
+
+.ft {{ text-align:center; color:var(--m); font-size:9px; margin-top:24px; padding-top:12px; border-top:1px solid var(--b); }}
+.hidden {{ display:none; }}
+@media(max-width:600px) {{
+  .spark-table {{ font-size:9px; }}
+  .spark-table th, .spark-table td {{ padding:2px 2px !important; }}
+  .spark-table .bar {{ height:28px; line-height:28px; }}
+}}
+</style>
+</head>
+<body>
+
+<div id="err-banner" class="err-banner"></div>
+
+<div class="top">
+  <div>
+    <h1>CSJ Airbnb <span>Revenue Cockpit</span></h1>
+    <div class="sub">Colonia de Sant Jordi, Mallorca &mdash; {now.strftime("%d/%m/%Y %H:%M")}</div>
+  </div>
+  <div class="filters">
+    <label>Comparar:</label>
+    <select id="fYear1">
+      {"".join(f'<option value="{y}" {"selected" if y==cy else ""}>{y}</option>' for y in reversed(active))}
+    </select>
+    <span style="color:var(--m)">vs</span>
+    <select id="fYear2">
+      {"".join(f'<option value="{y}" {"selected" if y==cy-1 else ""}>{y}</option>' for y in reversed(active))}
+    </select>
+    <label style="margin-left:12px">Periodo:</label>
+    <button class="period-btn active" data-months="12">Anual</button>
+    <button class="period-btn" data-months="{cm}">A fecha</button>
+  </div>
+</div>
+
+<div class="kpis" id="kpiContainer"></div>
+
+<!-- ============================================ -->
+<!-- A: PACE REPORT — HERO                        -->
+<!-- ============================================ -->
+<div class="sh">Pace Report <span>OTB vs misma fecha a&ntilde;o anterior</span></div>
+<div id="pace-summary" class="pace-summary"></div>
+<div class="row r1">
+  <div class="cd">
+    <div class="ch" style="height:420px"><canvas id="c17"></canvas></div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- B: ACUMULADO YTD                             -->
+<!-- ============================================ -->
+<div class="sh">Ingresos acumulados <span>Year-to-Date</span></div>
+<div class="row r1">
+  <div class="cd">
+    <h3>Acumulado anual (YTD)</h3>
+    <div class="s">Negocio real ejecutado &mdash; {datetime.now().year} solo meses completados vs mismo per&iacute;odo {datetime.now().year-1}</div>
+    <div id="ytd-kpi" style="margin:10px 0 4px;"></div>
+    <div class="ch md"><canvas id="c1"></canvas></div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- C: BUSINESS PERFORMANCE OVERVIEW             -->
+<!-- ============================================ -->
+<div class="sh">Business Performance Overview <span>Revenue &middot; Ocupaci&oacute;n &middot; ADR &mdash; visi&oacute;n anual</span></div>
+<div class="row r1">
+  <div class="cd">
+    <div class="s" style="margin-bottom:8px;">Barras: Revenue (eje izq. &euro;) &nbsp;&middot;&nbsp; L&iacute;nea cyan: Ocupaci&oacute;n (eje der. %) &nbsp;&middot;&nbsp; L&iacute;nea amarilla: ADR &mdash; escala de tendencia</div>
+    <div class="ch" style="height:380px"><canvas id="cBizOv"></canvas></div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- D: DETALLE MENSUAL                           -->
+<!-- ============================================ -->
+<div class="sh">Detalle mensual <span>Ocupaci&oacute;n y ADR</span></div>
+<div class="row r2">
+  <div class="cd">
+    <h3>Ocupaci&oacute;n mensual</h3>
+    <div class="s">A&ntilde;os seleccionados</div>
+    <div class="ch md"><canvas id="c3"></canvas></div>
+  </div>
+  <div class="cd">
+    <h3>ADR mensual</h3>
+    <div class="s">A&ntilde;os seleccionados</div>
+    <div class="ch md"><canvas id="c5"></canvas></div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- C: OCUPACIÓN HEATMAP                         -->
+<!-- ============================================ -->
+<div class="sh">Ocupaci&oacute;n hist&oacute;rica <span>por a&ntilde;o y mes</span></div>
+<div class="row r1">
+  <div class="cd">
+    <div style="width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;">
+      <div id="sparktable" style="margin-top:4px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- D: HUECOS ABIERTOS                           -->
+<!-- ============================================ -->
+<div class="sh">Huecos abiertos <span>Calendario</span></div>
+<div class="row r1">
+  <div class="cd">
+    <div id="huecos-panel" style="margin-top:4px;"></div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- E: AIRBNB HEALTH                             -->
+<!-- ============================================ -->
+<div class="sh">Airbnb Health <span>Reputaci&oacute;n, Cancelaciones &amp; Conversi&oacute;n</span></div>
+<div class="row r2">
+  <div class="cd" id="nextShPanel"></div>
+  <div class="cd">
+    <h3>Cancelaciones por a&ntilde;o</h3>
+    <div class="s">Confirmadas vs canceladas. % tasa por a&ntilde;o.</div>
+    <div class="ch md"><canvas id="c22"></canvas></div>
+  </div>
+</div>
+<div class="row r1">
+  <div class="cd">
+    <h3>Conversi&oacute;n anual</h3>
+    <div class="s">Reservas / Visitas listing &mdash; desde 2018</div>
+    <div class="ch md"><canvas id="c15"></canvas></div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- F: VISITAS Y RESERVAS                        -->
+<!-- ============================================ -->
+<div class="sh">Visitas y reservas mensuales <span>Cu&aacute;ndo se reserv&oacute;</span></div>
+<div class="row r1">
+  <div class="cd">
+    <div class="ch md"><canvas id="c16"></canvas></div>
+  </div>
+</div>
+
+<div class="ft">CSJ Airbnb Revenue Cockpit &mdash; visualizar.py &mdash; {now.strftime("%d/%m/%Y")}</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+window.onerror=function(msg,src,line){{const b=document.getElementById('err-banner');if(b){{b.style.display='block';b.textContent='Error JS (l.'+line+'): '+msg;}}return false;}};
+function safeDraw(fn,name){{try{{fn();}}catch(e){{console.error('draw['+name+']: '+e.message);}}}}
+
+if(typeof Chart==='undefined'){{
+  const b=document.getElementById('err-banner');
+  if(b){{b.style.display='block';b.textContent='Chart.js no cargó — verifica tu conexión a internet y recarga la página.';}}
+  document.querySelectorAll('canvas').forEach(c=>{{c.parentNode.innerHTML='<p style="color:#ef4444;padding:16px;font-size:12px;">Sin gráfica (Chart.js no cargó)</p>';}});
+}} else {{
+  Chart.defaults.color='#94a3b8';
+  Chart.defaults.borderColor='#334155';
+  Chart.defaults.font.family="'Inter',sans-serif";
+}}
+
+// === Tooltip externo: caja flotante anclada en esquina superior derecha del área de datos ===
+const tooltipExternal = function(context) {{
+  const {{chart, tooltip}} = context;
+  const parent = chart.canvas.parentNode;
+  let box = parent.querySelector('.tt-box');
+  if (!box) {{
+    box = document.createElement('div');
+    box.className = 'tt-box';
+    parent.appendChild(box);
+  }}
+  // Cancelar hide pendiente (crítico en touch: touchend dispara opacity=0 enseguida)
+  if (box._ht) {{ clearTimeout(box._ht); box._ht = null; }}
+  if (!tooltip.body || !tooltip.opacity) {{
+    box._ht = setTimeout(function() {{ box.style.opacity = '0'; }}, 200);
+    return;
+  }}
+  // Suprimir si el cursor está sobre el eje Y (fuera del área de datos)
+  const ca = chart.chartArea;
+  const evtX = tooltip._eventPosition?.x;
+  if (evtX !== undefined && evtX < ca.left) {{
+    box._ht = setTimeout(function() {{ box.style.opacity = '0'; }}, 200);
+    return;
+  }}
+  // Contenido
+  const title = tooltip.title?.[0] || '';
+  let html = '<div class="tt-title">' + title + '</div>';
+  (tooltip.body || []).forEach(function(body, i) {{
+    const lc = tooltip.labelColors?.[i];
+    const rawCol = lc ? (lc.borderColor || lc.backgroundColor) : '#94a3b8';
+    const col = typeof rawCol === 'string' ? rawCol : (Array.isArray(rawCol) ? rawCol[0] : '#94a3b8');
+    const line = body.lines?.[0] || '';
+    if (line) html += '<div class="tt-row"><span class="tt-dot" style="background:' + col + '"></span>' + line + '</div>';
+  }});
+  box.innerHTML = html;
+  // Posición: esquina inferior derecha del área de datos
+  const cw = chart.canvas.offsetWidth;
+  const ch = chart.canvas.offsetHeight;
+  box.style.right = (cw - ca.right + 4) + 'px';
+  box.style.left = 'auto';
+  box.style.bottom = (ch - ca.bottom + 8) + 'px';
+  box.style.top = 'auto';
+  box.style.opacity = '1';
+}};
+// Click fuera de cualquier gráfico cierra todos los tooltips
+document.addEventListener('click', function(e) {{
+  if (!e.target.closest('.cd')) {{
+    document.querySelectorAll('.tt-box').forEach(function(b) {{ b.style.opacity = '0'; }});
+  }}
+}});
+if(typeof Chart!=='undefined'){{
+  Chart.defaults.plugins.tooltip.enabled = false;
+  Chart.defaults.plugins.tooltip.external = tooltipExternal;
+}}
+
+const M={J(MESES)};
+const GC='rgba(51,65,85,0.5)';
+const PALETTE={J(palette)};
+const ALL_ING={J(all_ing)};
+const ALL_OCU={J(all_ocu)};
+const ALL_PM={J(all_pm)};
+const ANN_ING={J(ann_ing)};
+const ANN_OCU={J(ann_ocu)};
+const ANN_PM={J(ann_pm)};
+const ACTIVE={J([str(y) for y in active])};
+const HMIN={J(hmin)};
+const HMAX={J(hmax)};
+const HAVG={J(havg)};
+const HMIN_OCU={J(hmin_ocu)};
+const HMAX_OCU={J(hmax_ocu)};
+const HAVG_OCU={J(havg_ocu)};
+const HMIN_PM={J(hmin_pm)};
+const HMAX_PM={J(hmax_pm)};
+const HAVG_PM={J(havg_pm)};
+const RES_Y={J(res_y)};
+const RES_I={J(res_i)};
+const RES_O={J(res_o)};
+const RES_P={J(res_p)};
+const PM_BANDA={J(pm_banda)};
+const CONV_DATA={J({str(y): conv_data[str(y)] for y in conv_years if str(y) in conv_data})};
+const CONV_ANN={J(conv_ann)};
+const TODAY_MONTH={datetime.now().month};
+const TODAY_YEAR={datetime.now().year};
+const PACE_OTB={J(pace_otb)};
+const PACE_FINAL={J(pace_final)};
+const PACE_NIGHTS_OTB={J(pace_nights_otb)};
+const PACE_ADR_OTB={J(pace_adr_otb)};
+const LT_SUMMARY={J(lt_summary)};
+const LT_AVG_YEAR={J(lt_avg_year)};
+const REV_BY_YEAR={J(rev_by_year)};
+const CATS_SUB={J(cats_sub)};
+const CATS_KEY={J(cats_key)};
+const SH_DATA={J(superhost_quarters)};
+const SH_CHECKS={J(sh_checks)};
+const NEXT_SH={J(next_sh)};
+const FUTURE_SH={J(future_sh)};
+const CANC_KPIS={J({str(k): v for k, v in data.get("canc_kpis", {}).items()})};
+const CANC_KPIS_YTD={J({str(k): v for k, v in data.get("canc_kpis_ytd", {}).items()})};
+const PM_YTD={J({str(k): v for k, v in data.get("pm_ytd", {}).items()})};
+const TOTALES={J({str(k): v for k, v in data.get("totales", {}).items()})};
+const PRICING_GAPS={J(data.get("pricing_gaps", []))};
+
+// Globals
+let charts = {{}};
+let y1 = '{cy}', y2 = '{cy-1}', period = 12;
+let shIdx = 0;
+
+function getYears() {{ return [y1, y2]; }}
+
+// === KPIs — 4 cards ejecutivas ===
+function drawKPIs() {{
+  const ct = document.getElementById('kpiContainer');
+  const pct = (a,b) => b ? ((a-b)/b*100) : 0;
+  const fmt = (v,dec=0) => v.toLocaleString('es-ES',{{maximumFractionDigits:dec,minimumFractionDigits:dec}});
+  const tot2 = TOTALES[y2] || {{}};
+
+  // Datos OTB a misma fecha
+  const otb1 = (PACE_OTB[y1]||Array(12).fill(0)).reduce((a,b)=>a+b,0);
+  const otb2 = (PACE_OTB[y2]||Array(12).fill(0)).reduce((a,b)=>a+b,0);
+  const noc1 = (PACE_NIGHTS_OTB[y1]||Array(12).fill(0)).reduce((a,b)=>a+b,0);
+  const noc2 = (PACE_NIGHTS_OTB[y2]||Array(12).fill(0)).reduce((a,b)=>a+b,0);
+  const diasAno = parseInt(y1) % 4 === 0 ? 366 : 365;
+  const ocuOtb1 = noc1 / diasAno * 100;
+  const ocuOtb2 = noc2 / diasAno * 100;
+  const pmGlobal1 = PM_YTD[y1] || 0;
+  const pmGlobal2 = PM_YTD[y2] || 0;
+
+  function kpiCard(label, value, delta, sub, footer, accentCol) {{
+    const good = delta >= 0;
+    const deltaCls = good ? 'up' : 'down';
+    const arr = good ? '&#9650;' : '&#9660;';
+    const deltaHtml = isFinite(delta) && delta !== 0
+      ? '<div class="chg '+deltaCls+'">'+arr+' '+Math.abs(delta).toFixed(1)+'% vs '+y2+'</div>'
+      : '<div class="chg eq">= vs '+y2+'</div>';
+    const accentHtml = accentCol ? '<div class="kpi-accent" style="background:'+accentCol+'"></div>' : '';
+    return '<div class="kpi">'+accentHtml
+      +'<div class="lbl">'+label+'</div>'
+      +'<div class="val">'+value+'</div>'
+      +deltaHtml
+      +'<div class="det">'+sub+'</div>'
+      +(footer?'<div class="hist">'+footer+'</div>':'')
+      +'</div>';
+  }}
+
+  let h = '';
+
+  // Card 1 — Revenue Pace
+  const lyFinal = tot2.income ? fmt(tot2.income)+'€' : '—';
+  h += kpiCard(
+    'Revenue Pace',
+    fmt(otb1)+'€',
+    pct(otb1, otb2),
+    y2+' misma fecha: '+fmt(otb2)+'€',
+    'LY final: '+lyFinal,
+    COL_ING
+  );
+
+  // Card 2 — Occupancy Pace
+  const lyOcuFinal = tot2.ocu != null ? tot2.ocu.toFixed(1)+'%' : '—';
+  h += kpiCard(
+    'Occupancy Pace',
+    ocuOtb1.toFixed(1)+'%',
+    pct(ocuOtb1, ocuOtb2),
+    y2+' misma fecha: '+ocuOtb2.toFixed(1)+'%&nbsp;('+noc2+'n)',
+    'LY final: '+lyOcuFinal+'&nbsp;('+( tot2.nights||'—')+'n)',
+    COL_OCU
+  );
+
+  // Card 3 — ADR Pace
+  const lyAdrFinal = tot2.pm ? tot2.pm.toFixed(1)+'€' : '—';
+  h += kpiCard(
+    'ADR Pace',
+    pmGlobal1 > 0 ? pmGlobal1.toFixed(1)+'€' : '—',
+    pct(pmGlobal1, pmGlobal2),
+    y2+' misma fecha: '+(pmGlobal2>0?pmGlobal2.toFixed(1)+'€':'—'),
+    'LY final: '+lyAdrFinal,
+    COL_ADR
+  );
+
+  // Card 4 — Airbnb Health
+  const shd = FUTURE_SH && FUTURE_SH.length ? FUTURE_SH[0] : null;
+  const ck1 = CANC_KPIS[y1] || null;
+  if (shd) {{
+    const shCol = shd.is_super ? '#22c55e' : '#f59e0b';
+    const shLabel = shd.is_super ? 'Superhost OK' : 'Riesgo Superhost';
+    const cancLine = ck1 ? (ck1.canc+' cancelaciones ('+ck1.tasa.toFixed(1)+'%)') : '—';
+    const pendLine = shd.pending > 0
+      ? shd.pending+' reviews pendientes'
+      : 'Sin reviews pendientes';
+    h += '<div class="kpi"><div class="kpi-accent" style="background:'+shCol+'"></div>'
+      +'<div class="lbl">Airbnb Health</div>'
+      +'<div class="val" style="color:'+shCol+';font-size:28px">'+shd.rating_exact.toFixed(2)+'</div>'
+      +'<div class="chg" style="color:'+shCol+'">'+(shd.is_super?'&#x2705;':'&#x26A0;')+' '+shLabel+'</div>'
+      +'<div class="det">'+cancLine+'</div>'
+      +'<div class="hist">'+pendLine+' &mdash; eval '+shd.eval_date+'</div>'
+      +'</div>';
+  }}
+
+  ct.innerHTML = h;
+
+  // Resumen automático Pace Report
+  const sumEl = document.getElementById('pace-summary');
+  if (sumEl && otb2 > 0) {{
+    const dRev = pct(otb1, otb2);
+    const dAdr = pct(pmGlobal1, pmGlobal2);
+    const dOcu = (ocuOtb1 - ocuOtb2).toFixed(1);
+    const revSign = dRev >= 0 ? '+' : '';
+    const adrSign = dAdr >= 0 ? '+' : '';
+    const ocuSign = parseFloat(dOcu) >= 0 ? '+' : '';
+    sumEl.innerHTML = '<strong>'+y1+' vs '+y2+' a misma fecha:</strong>&nbsp;&nbsp;'
+      +'Revenue <strong style="color:'+(dRev>=0?COL_ING:'#ef4444')+'">'+revSign+dRev.toFixed(1)+'%</strong>&nbsp;&nbsp;·&nbsp;&nbsp;'
+      +'ADR <strong style="color:'+(dAdr>=0?COL_ADR:'#ef4444')+'">'+adrSign+dAdr.toFixed(1)+'%</strong>&nbsp;&nbsp;·&nbsp;&nbsp;'
+      +'Ocupación <strong style="color:'+(parseFloat(dOcu)>=0?COL_OCU:'#ef4444')+'">'+ocuSign+dOcu+' pt</strong>';
+  }} else if (sumEl) {{
+    sumEl.style.display = 'none';
+  }}
+}}
+
+const COL_ING  = '#3b82f6';  // Ingresos — azul
+const COL_OCU  = '#22d3ee';  // Ocupación — cian
+const COL_ADR  = '#facc15';  // ADR / PM — amarillo
+const COL_VIS  = '#a78bfa';  // Visitas — violeta
+const COL_RES  = '#22c55e';  // Reservas — verde
+const COL_CANC = '#ef4444';  // Cancelaciones — rojo
+// makeDatasetLine: col = variable color; año secundario = mismo color, tenue + discontinuo
+function makeDatasetLine(year, data, isPrimary, col) {{
+  return {{
+    label: year,
+    data: data,
+    borderColor: isPrimary ? col : col + '70',
+    borderWidth: isPrimary ? 3 : 1.5,
+    borderDash: isPrimary ? [] : [5, 5],
+    pointRadius: isPrimary ? 4 : 2,
+    pointBackgroundColor: isPrimary ? col : col + '70',
+    tension: 0.3,
+    fill: false,
+  }};
+}}
+
+// === Banda histórica (reutilizable) ===
+function bandDatasets(hmax, hmin, havg, n) {{
+  return [
+    {{ label:'Rango hist.', data:hmax.slice(0,n), borderColor:'transparent', backgroundColor:'rgba(251,191,36,0.08)', fill:'+1', pointRadius:0, pointHitRadius:0, order:10 }},
+    {{ label:'_min', data:hmin.slice(0,n), borderColor:'transparent', backgroundColor:'transparent', fill:false, pointRadius:0, pointHitRadius:0, order:10 }},
+    {{ label:'Media hist.', data:havg.slice(0,n), borderColor:'rgba(251,191,36,0.7)', borderDash:[6,3], borderWidth:2, pointRadius:0, pointHitRadius:0, fill:false, order:9 }},
+  ];
+}}
+function bandLegendFilter(item) {{ return item.text && item.text !== '_min'; }}
+// Leyenda: líneas discontinuas muestran icono discontinuo en lugar de círculo
+function makeLegendLabels(extra) {{
+  return Object.assign({{
+    usePointStyle: true,
+    font: {{size: 10}},
+    generateLabels: function(chart) {{
+      const items = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+      items.forEach(function(item) {{
+        const ds = chart.data.datasets[item.datasetIndex];
+        if (ds && ds.borderDash && ds.borderDash.length) {{ item.pointStyle = 'line'; }}
+      }});
+      return items;
+    }}
+  }}, extra || {{}});
+}}
+// Redondea hacia arriba al múltiplo de `step` más cercano → eje siempre acaba en número entero limpio
+function niceMax(v, step) {{ step = step || 10; return Math.ceil(v / step) * step; }}
+
+// === C1: Acumulado anual YTD — negocio real ejecutado ===
+function drawC1() {{
+  if(charts.c1) charts.c1.destroy();
+  const labels = M.slice(0, period);
+
+  // Acumulado mensual; corta en cutIdx (excluido) para y2 si es el año actual
+  function cumul(arr, cutIdx) {{
+    let s = 0;
+    return arr.map((v, i) => {{
+      if (cutIdx !== undefined && i >= cutIdx) return null;
+      s += v || 0;
+      return Math.round(s);
+    }});
+  }}
+
+  const ing1 = (ALL_ING[y1]||Array(12).fill(0)).slice(0, period);
+  const ing2 = (ALL_ING[y2]||Array(12).fill(0)).slice(0, period);
+
+  // Corte en TODAY_MONTH para cualquier año que sea el año actual
+  const cut1 = (parseInt(y1) === TODAY_YEAR) ? TODAY_MONTH : undefined;
+  const cut2 = (parseInt(y2) === TODAY_YEAR) ? TODAY_MONTH : undefined;
+
+  const ytd1 = cumul(ing1, cut1);
+  const ytd2 = cumul(ing2, cut2);
+
+  // KPI: año actual vs mismo período año anterior
+  const curIng  = cut1 !== undefined ? ing1 : (cut2 !== undefined ? ing2 : []);
+  const prevIng = cut1 !== undefined ? ing2 : (cut2 !== undefined ? ing1 : []);
+  const cutM    = cut1 !== undefined ? cut1 : cut2;
+  const kpiEl   = document.getElementById('ytd-kpi');
+  if(kpiEl && cutM !== undefined) {{
+    const actualYTD = curIng.slice(0, cutM).reduce((a,b) => a+(b||0), 0);
+    const prevYTD   = prevIng.slice(0, cutM).reduce((a,b) => a+(b||0), 0);
+    const diff = actualYTD - prevYTD;
+    const pct  = prevYTD > 0 ? (diff / prevYTD * 100) : 0;
+    const pos  = diff >= 0;
+    const col  = pos ? '#22c55e' : '#ef4444';
+    const sign = pos ? '+' : '';
+    const nM   = M[cutM - 1] || '';
+    const curY  = cut1 !== undefined ? y1 : y2;
+    const prevY = cut1 !== undefined ? y2 : y1;
+    kpiEl.innerHTML =
+      '<div style="display:inline-flex;align-items:center;gap:18px;background:rgba(59,130,246,0.07);'
+      +'border:1px solid rgba(59,130,246,0.18);border-radius:8px;padding:8px 16px;">'
+      +'<span style="font-size:11px;color:#64748b;">YTD '+curY+' hasta '+nM+'</span>'
+      +'<span style="font-size:20px;font-weight:700;color:'+col+';">'
+        +sign+diff.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€</span>'
+      +'<span style="font-size:13px;font-weight:600;color:'+col+';">'
+        +sign+pct.toFixed(1)+'% vs '+prevY+'</span>'
+      +'</div>';
+  }}
+
+  charts.c1 = new Chart(document.getElementById('c1'), {{
+    type:'line',
+    data: {{
+      labels,
+      datasets: [
+        makeDatasetLine(y1, ytd1, true,  COL_ING),
+        makeDatasetLine(y2, ytd2, false, COL_ING),
+      ]
+    }},
+    options: {{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{{mode:'index',intersect:false}},
+      plugins:{{
+        legend:{{position:'top',labels:makeLegendLabels()}},
+        tooltip:{{callbacks:{{
+          label: c => c.parsed.y===null ? null
+            : c.dataset.label+': '+c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€'
+        }}}}
+      }},
+      scales:{{ y:{{ticks:{{callback:v=>v.toLocaleString('es-ES')+'€'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
+    }}
+  }});
+}}
+
+// drawC2 removed (no canvas in HTML)
+
+// === C3: Ocupación mensual ===
+function drawC3() {{
+  if(charts.c3) charts.c3.destroy();
+  const labels = M.slice(0,period);
+  charts.c3 = new Chart(document.getElementById('c3'), {{
+    type:'line',
+    data: {{
+      labels,
+      datasets: [
+        makeDatasetLine(y2, (ALL_OCU[y2]||Array(12).fill(0)).slice(0,period), false, COL_OCU),
+        makeDatasetLine(y1, (ALL_OCU[y1]||Array(12).fill(0)).slice(0,period), true,  COL_OCU),
+      ]
+    }},
+    options: {{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{{mode:'index',intersect:false}},
+      plugins:{{ legend:{{position:'top',labels:makeLegendLabels()}}, tooltip:{{callbacks:{{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(1)+'%'}}}} }},
+      scales:{{ y:{{max:100,ticks:{{callback:v=>v+'%'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
+    }}
+  }});
+}}
+
+// drawC4 removed (no canvas in HTML)
+
+// === C5: ADR mensual ===
+function drawC5() {{
+  if(charts.c5) charts.c5.destroy();
+  const labels = M.slice(0,period);
+  charts.c5 = new Chart(document.getElementById('c5'), {{
+    type:'line',
+    data: {{
+      labels,
+      datasets: [
+        makeDatasetLine(y2, (ALL_PM[y2]||Array(12).fill(0)).slice(0,period), false, COL_ADR),
+        makeDatasetLine(y1, (ALL_PM[y1]||Array(12).fill(0)).slice(0,period), true,  COL_ADR),
+      ]
+    }},
+    options: {{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{{mode:'index',intersect:false}},
+      plugins:{{ legend:{{position:'top',labels:makeLegendLabels()}}, tooltip:{{callbacks:{{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(1)+'€'}}}} }},
+      scales:{{ y:{{ticks:{{callback:v=>v+'€'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
+    }}
+  }});
+}}
+
+// drawC6 removed
+
+// === Business Performance Overview — Revenue / Occupancy / ADR anual ===
+function drawBizOv() {{
+  if(charts.bizOv) charts.bizOv.destroy();
+  const el = document.getElementById('cBizOv');
+  if(!el) return;
+
+  // ADR: hidden axis calibrated so trend visually aligns with occupancy band
+  const adrVals = RES_P.filter(v => v > 0);
+  const adrMin  = Math.max(0, Math.min(...adrVals) * 0.5);
+  const adrMax  = Math.max(...adrVals) * 1.6;
+
+  charts.bizOv = new Chart(el, {{
+    type: 'bar',
+    data: {{
+      labels: RES_Y,
+      datasets: [
+        {{
+          label: 'Revenue',
+          data: RES_I,
+          type: 'bar',
+          backgroundColor: COL_ING + '40',
+          borderColor: COL_ING + 'bb',
+          borderWidth: 1.5,
+          borderRadius: 5,
+          borderSkipped: false,
+          yAxisID: 'y',
+          order: 3,
+        }},
+        {{
+          label: 'Ocupación',
+          data: RES_O,
+          type: 'line',
+          borderColor: COL_OCU,
+          backgroundColor: 'transparent',
+          borderWidth: 2.5,
+          pointRadius: 5,
+          pointBackgroundColor: COL_OCU,
+          pointBorderColor: '#0f172a',
+          pointBorderWidth: 1.5,
+          tension: 0.3,
+          fill: false,
+          yAxisID: 'y2',
+          order: 1,
+        }},
+        {{
+          label: 'ADR',
+          data: RES_P,
+          type: 'line',
+          borderColor: COL_ADR,
+          backgroundColor: 'transparent',
+          borderWidth: 2.5,
+          pointRadius: 5,
+          pointBackgroundColor: COL_ADR,
+          pointBorderColor: '#0f172a',
+          pointBorderWidth: 1.5,
+          tension: 0.3,
+          fill: false,
+          yAxisID: 'y3',
+          order: 2,
+        }},
+      ]
+    }},
+    options: {{
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: {{ mode: 'index', intersect: false }},
+      plugins: {{
+        legend: {{ position: 'top', labels: makeLegendLabels() }},
+        tooltip: {{
+          callbacks: {{
+            label: c => {{
+              if(c.dataset.yAxisID === 'y')  return ' Revenue: ' + c.parsed.y.toLocaleString('es-ES', {{maximumFractionDigits:0}}) + '€';
+              if(c.dataset.yAxisID === 'y2') return ' Ocupación: ' + c.parsed.y.toFixed(1) + '%';
+              if(c.dataset.yAxisID === 'y3') return ' ADR: ' + c.parsed.y.toFixed(1) + '€/noche';
+              return '';
+            }}
+          }}
+        }}
+      }},
+      scales: {{
+        x: {{ grid: {{ display: false }}, ticks: {{ color: '#94a3b8' }} }},
+        y: {{
+          type: 'linear', position: 'left',
+          ticks: {{ callback: v => (v/1000).toFixed(0) + 'k€', color: COL_ING }},
+          grid: {{ color: GC }}
+        }},
+        y2: {{
+          type: 'linear', position: 'right',
+          min: 0, max: 100,
+          ticks: {{ callback: v => v + '%', color: COL_OCU }},
+          grid: {{ drawOnChartArea: false }}
+        }},
+        y3: {{
+          type: 'linear', position: 'right',
+          min: adrMin,
+          max: adrMax,
+          ticks: {{ callback: v => v.toFixed(0) + '€', color: COL_ADR, maxTicksLimit: 6 }},
+          grid: {{ drawOnChartArea: false }}
+        }}
+      }}
+    }}
+  }});
+}}
+
+// drawC9 removed (no canvas in HTML)
+
+// === Spark table (occupancy visual) ===
+function drawSpark() {{
+  const ct = document.getElementById('sparktable');
+  let h = '<div style="display:flex;gap:14px;margin-bottom:8px;font-size:10px;color:var(--m);">';
+  h += '<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#22c55e;vertical-align:middle;margin-right:3px;"></span>&gt;80%</span>';
+  h += '<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#eab308;vertical-align:middle;margin-right:3px;"></span>50&ndash;80%</span>';
+  h += '<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#ef4444;vertical-align:middle;margin-right:3px;"></span>&lt;50%</span>';
+  h += '</div>';
+  h += '<table class="spark-table"><thead><tr><th></th>';
+  M.forEach(m => h += '<th>'+m+'</th>');
+  h += '<th>Media</th></tr></thead><tbody>';
+  ACTIVE.slice().reverse().forEach(y => {{
+    const d = ALL_OCU[y] || Array(12).fill(0);
+    const avg = d.filter(v=>v>0);
+    const mean = avg.length ? (avg.reduce((a,b)=>a+b,0)/avg.length).toFixed(1) : '0';
+    h += '<tr><td class="yr" style="color:'+PALETTE[y]+'">'+y+'</td>';
+    d.forEach(function(v, midx) {{
+      const w = Math.max(v, 0);
+      const col = v >= 80 ? '#22c55e' : v >= 50 ? '#eab308' : v > 0 ? '#ef4444' : '#1e293b';
+      const days = new Date(parseInt(y), midx+1, 0).getDate();
+      const noches = Math.round(v * days / 100);
+      const tip = v > 0 ? y+' · '+M[midx]+' · '+v.toFixed(1)+'% · '+noches+'/'+days+' noches' : '';
+      const pctLabel = v >= 35 ? v.toFixed(0)+'%' : '';
+      h += '<td title="'+tip+'"><div class="bar" style="width:'+w+'%;background:'+col+'">'+pctLabel+'</div></td>';
+    }});
+    h += '<td style="font-weight:600;color:'+(parseFloat(mean)>=80?'#22c55e':parseFloat(mean)>=50?'#eab308':'#ef4444')+'">'+mean+'%</td>';
+    h += '</tr>';
+  }});
+  h += '</tbody></table>';
+  ct.innerHTML = h;
+}}
+
+// === Próximas evaluaciones Superhost ===
+function drawNextSH(idx) {{
+  if(idx !== undefined) shIdx = idx;
+  const ct = document.getElementById('nextShPanel');
+  if(!ct) return;
+  if(!FUTURE_SH || !FUTURE_SH.length) {{ ct.innerHTML = '<p style="color:var(--m)">Sin datos</p>'; return; }}
+  const d = FUTURE_SH[shIdx];
+
+  // Quarter selector buttons
+  let hBtns = '<div style="display:flex;gap:6px;margin-bottom:12px">';
+  FUTURE_SH.forEach((q,i) => {{
+    const active = i === shIdx;
+    const bgc = active ? (q.is_super ? '#22c55e' : '#ef4444') : 'var(--c)';
+    const bdc = active ? bgc : 'var(--b)';
+    const txc = active ? '#fff' : 'var(--t)';
+    hBtns += '<button onclick="drawNextSH('+i+')" style="background:'+bgc+';color:'+txc+';border:1px solid '+bdc+';border-radius:8px;padding:6px 14px;font-size:12px;font-family:inherit;cursor:pointer;font-weight:'+(active?'700':'400')+'">'+q.label+'</button>';
+  }});
+  hBtns += '</div>';
+  const col = d.is_super ? '#22c55e' : '#ef4444';
+  const icon = d.is_super ? '&#x2705;' : '&#x26A0;&#xFE0F;';
+  const statusTxt = d.is_super ? 'SUPERHOST' : 'EN RIESGO';
+  const gap = d.gap;
+  const dist = d.dist || {{}};
+
+  let h = hBtns;
+  h += '<h3>Revisi&oacute;n Superhost &mdash; '+d.label+'</h3>';
+  h += '<div class="s">Evaluaci&oacute;n: '+d.eval_date+' (faltan '+d.days_left+' d&iacute;as) &mdash; Ventana: '+d.window+'</div>';
+
+  // Main rating display
+  h += '<div style="display:flex;align-items:center;gap:24px;margin:16px 0;flex-wrap:wrap">';
+  h += '<div style="text-align:center"><div style="font-size:48px;font-weight:800;color:'+col+'">'+d.rating_exact.toFixed(2)+'</div>';
+  h += '<div style="font-size:13px;font-weight:600;color:'+col+'">'+icon+' '+statusTxt+'</div></div>';
+
+  // Stats
+  h += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1;min-width:250px">';
+  h += '<div style="background:rgba(59,130,246,0.08);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700">'+d.n+'</div><div style="font-size:10px;color:var(--m)">Reviews</div></div>';
+  h += '<div style="background:rgba(59,130,246,0.08);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700">'+d.total_pts+'</div><div style="font-size:10px;color:var(--m)">Puntos totales</div></div>';
+  // Pending reviews
+  const pend = d.pending || 0;
+  h += '<div style="background:rgba(251,191,36,0.1);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700;color:#f59e0b">'+pend+'</div><div style="font-size:10px;color:#f59e0b">Pendientes evaluar</div></div>';
+
+  if(!d.is_super) {{
+    h += '<div style="background:rgba(239,68,68,0.1);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700;color:#ef4444">'+d.needed_5+'</div><div style="font-size:10px;color:#ef4444">Reviews 5&#9733; necesarias</div></div>';
+  }} else {{
+    const margin = (d.rating_exact - 4.8).toFixed(2);
+    h += '<div style="background:rgba(34,197,94,0.1);border-radius:8px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:700;color:#22c55e">+'+margin+'</div><div style="font-size:10px;color:#22c55e">Margen sobre 4.80</div></div>';
+  }}
+  h += '</div></div>';
+
+  // Pending simulation
+  if(pend > 0) {{
+    const pend5 = (d.total_pts + 5 * pend) / (d.n + pend);
+    const pend4 = (d.total_pts + 4 * pend) / (d.n + pend);
+    const pendMix = (d.total_pts + 5 * Math.ceil(pend*0.8) + 4 * Math.floor(pend*0.2)) / (d.n + pend);
+    h += '<div style="margin:8px 0;padding:10px;background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.2);border-radius:8px">';
+    h += '<div style="font-size:11px;font-weight:600;color:#f59e0b;margin-bottom:4px">SI LAS '+pend+' PENDIENTES EVAL&Uacute;AN:</div>';
+    h += '<div style="font-size:11px;color:var(--t);margin:2px 0">'+(pend5>=4.8?'&#x2705;':'&#x274C;')+' Todas 5&#9733; &rarr; <b>'+pend5.toFixed(4)+'</b></div>';
+    h += '<div style="font-size:11px;color:var(--t);margin:2px 0">'+(pendMix>=4.8?'&#x2705;':'&#x274C;')+' 80% de 5&#9733; + 20% de 4&#9733; &rarr; <b>'+pendMix.toFixed(4)+'</b></div>';
+    h += '<div style="font-size:11px;color:var(--t);margin:2px 0">'+(pend4>=4.8?'&#x2705;':'&#x274C;')+' Todas 4&#9733; &rarr; <b>'+pend4.toFixed(4)+'</b></div>';
+    h += '</div>';
+  }}
+
+  // Distribution bar
+  const stars = [5,4,3,2,1];
+  const total = stars.reduce((s,k) => s + (dist[k]||0), 0);
+  h += '<div style="margin:12px 0"><div style="font-size:11px;font-weight:600;color:var(--m);margin-bottom:6px">DISTRIBUCI&Oacute;N</div>';
+  const barCols = {{5:'#22c55e',4:'#84cc16',3:'#f59e0b',2:'#f97316',1:'#ef4444'}};
+  stars.forEach(s => {{
+    const cnt = dist[s] || 0;
+    const pctW = total > 0 ? (cnt/total*100) : 0;
+    h += '<div style="display:flex;align-items:center;gap:8px;margin:3px 0">';
+    h += '<div style="width:20px;font-size:11px;font-weight:600;text-align:right">'+s+'&#9733;</div>';
+    h += '<div style="flex:1;background:var(--b);border-radius:4px;height:14px;overflow:hidden"><div style="width:'+pctW+'%;height:100%;background:'+barCols[s]+';border-radius:4px"></div></div>';
+    h += '<div style="width:30px;font-size:11px;color:var(--m);text-align:right">'+cnt+'</div>';
+    h += '</div>';
+  }});
+  h += '</div>';
+
+  // Bad reviews
+  const bad = d.bad_reviews || [];
+  if(bad.length > 0) {{
+    h += '<details style="margin-top:12px"><summary style="cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--m);padding:4px 0;">&#9660; REVIEWS QUE PENALIZAN ('+bad.length+' &mdash; &lt; 5&#9733;)</summary>';
+    h += '<div style="margin-top:8px;max-height:200px;overflow-y:auto">';
+    bad.forEach(r => {{
+      const rc = r.rating <= 3 ? '#ef4444' : '#f59e0b';
+      h += '<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--b);font-size:11px">';
+      h += '<div style="white-space:nowrap;color:var(--m)">'+r.date+'</div>';
+      h += '<div style="font-weight:700;color:'+rc+'">'+r.rating+'&#9733;</div>';
+      h += '<div style="color:var(--m);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+r.comment+'</div>';
+      h += '</div>';
+    }});
+    h += '</div></details>';
+  }}
+
+  // Simulation
+  if(!d.is_super) {{
+    h += '<details style="margin-top:12px"><summary style="cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:#ef4444;padding:4px 0;">&#9660; &#x1F4CA; SIMULACI&Oacute;N &mdash; cu&aacute;ntas reviews necesito</summary>';
+    h += '<div style="margin-top:8px;padding:12px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:8px">';
+    for(let extra = 1; extra <= 5; extra++) {{
+      const newAvg = (d.total_pts + 5*extra) / (d.n + extra);
+      const ok = newAvg >= 4.8;
+      const ic = ok ? '&#x2705;' : '&#x274C;';
+      h += '<div style="font-size:11px;color:var(--t);margin:2px 0">'+ic+' +'+extra+' review(s) de 5&#9733; &rarr; <b>'+newAvg.toFixed(4)+'</b></div>';
+    }}
+    h += '</div></details>';
+  }}
+
+  ct.innerHTML = h;
+}}
+
+// drawC10 removed (no canvas in HTML)
+
+
+// === C14: PM por banda estacional ===
+function drawC14() {{
+  if(charts.c14) charts.c14.destroy();
+  const yrs = ACTIVE.filter(y => PM_BANDA[y] && (PM_BANDA[y].alta > 0 || PM_BANDA[y].media > 0 || PM_BANDA[y].baja > 0));
+  charts.c14 = new Chart(document.getElementById('c14'), {{
+    type:'bar',
+    data: {{ labels:yrs, datasets:[
+      {{ label:'Alta (15jun-15sep)', data:yrs.map(y=>PM_BANDA[y].alta), backgroundColor:'#ef4444cc', borderRadius:6, borderSkipped:false }},
+      {{ label:'Media (abr-jun,sep-oct)', data:yrs.map(y=>PM_BANDA[y].media), backgroundColor:'#f59e0bcc', borderRadius:6, borderSkipped:false }},
+      {{ label:'Baja (nov-mar)', data:yrs.map(y=>PM_BANDA[y].baja), backgroundColor:'#3b82f6cc', borderRadius:6, borderSkipped:false }},
+    ] }},
+    options: {{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{{ legend:{{position:'top',labels:makeLegendLabels()}}, tooltip:{{callbacks:{{label:c=>c.dataset.label+': '+c.parsed.y.toFixed(1)+'€/noche'}}}} }},
+      scales:{{ y:{{ticks:{{callback:v=>v+'€'}},grid:{{color:GC}}}}, x:{{grid:{{display:false}}}} }}
+    }}
+  }});
+}}
+
+// === C15: Tasa de conversión anual ===
+function drawC15() {{
+  if(charts.c15) charts.c15.destroy();
+  const cyrs = Object.keys(CONV_ANN).sort();
+  const cvrs = cyrs.map(y => CONV_ANN[y].cvr);
+  const reservas = cyrs.map(y => CONV_ANN[y].r);
+  charts.c15 = new Chart(document.getElementById('c15'), {{
+    type:'bar',
+    data: {{ labels:cyrs, datasets:[
+      {{ label:'CVR %', data:cvrs, backgroundColor:cyrs.map(y=>(y===y1||y===y2)?PALETTE[y]||'#3b82f6':'rgba(148,163,184,0.3)'), borderRadius:6, borderSkipped:false, yAxisID:'y' }},
+      {{ label:'Reservas', data:reservas, type:'line', borderColor:COL_RES, borderWidth:2, pointRadius:3, pointBackgroundColor:COL_RES, tension:0.3, fill:false, yAxisID:'y1' }},
+    ] }},
+    options: {{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{{ legend:{{position:'top',labels:makeLegendLabels()}}, tooltip:{{callbacks:{{label:c=>c.dataset.yAxisID==='y'?c.parsed.y.toFixed(2)+'%':c.parsed.y+' reservas'}}}} }},
+      scales: {{
+        y: {{ position:'left', title:{{display:true,text:'CVR %',color:COL_VIS}}, ticks:{{callback:v=>v.toFixed(1)+'%',color:COL_VIS}}, grid:{{color:GC}} }},
+        y1: {{ position:'right', title:{{display:true,text:'Reservas',color:COL_RES}}, ticks:{{color:COL_RES}}, grid:{{drawOnChartArea:false}} }},
+        x: {{ grid:{{display:false}} }}
+      }}
+    }}
+  }});
+}}
+
+// === C16: Visitas y reservas mensuales ===
+function drawC16() {{
+  if(charts.c16) charts.c16.destroy();
+  const labels = M.slice(0,period);
+  const ds = [];
+  [y1, y2].forEach((y,idx) => {{
+    const cd = CONV_DATA[y];
+    if (!cd) return;
+    const alpha = idx === 0 ? 'b3' : '55';
+    ds.push({{ label:'Visitas '+y, data:cd.v.slice(0,period), backgroundColor:COL_VIS+(idx===0?'b3':'50'), borderRadius:4, yAxisID:'y', order:2+idx }});
+    ds.push({{ label:'Reservas '+y, data:cd.r.slice(0,period), type:'line', borderColor:idx===0?COL_RES:COL_RES+'70', borderWidth:idx===0?2.5:1.5, borderDash:idx===0?[]:[5,5], pointRadius:idx===0?3:2, pointBackgroundColor:idx===0?COL_RES:COL_RES+'70', tension:0.3, fill:false, yAxisID:'y1', order:idx }});
+  }});
+  charts.c16 = new Chart(document.getElementById('c16'), {{
+    type:'bar',
+    data: {{ labels, datasets:ds }},
+    options: {{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{{mode:'index',intersect:false}},
+      plugins:{{ legend:{{position:'top',labels:makeLegendLabels()}}, tooltip:{{}} }},
+      scales: {{
+        y: {{ position:'left', title:{{display:true,text:'Visitas',color:COL_VIS}}, ticks:{{color:COL_VIS}}, grid:{{color:GC}} }},
+        y1: {{ position:'right', title:{{display:true,text:'Reservas',color:COL_RES}}, ticks:{{color:COL_RES,stepSize:1}}, grid:{{drawOnChartArea:false}} }},
+        x: {{ grid:{{display:false}} }}
+      }}
+    }}
+  }});
+}}
+
+// === C17: Pace Report — HERO ===
+function drawC17() {{
+  if(charts.c17) charts.c17.destroy();
+  const labels = M.slice(0,period);
+  const otb1 = (PACE_OTB[y1]||Array(12).fill(0)).slice(0,period);
+  const otb2 = (PACE_OTB[y2]||Array(12).fill(0)).slice(0,period);
+  const fin2 = (PACE_FINAL[y2]||Array(12).fill(0)).slice(0,period);
+  const n1   = (PACE_NIGHTS_OTB[y1]||Array(12).fill(0)).slice(0,period);
+  const n2   = (PACE_NIGHTS_OTB[y2]||Array(12).fill(0)).slice(0,period);
+  const deltaRev = otb1.map((v,i) => otb2[i]>0 ? ((v-otb2[i])/otb2[i]*100).toFixed(1) : '—');
+  const deltaN   = n1.map((v,i) => n2[i]>0 ? ((v-n2[i])/n2[i]*100).toFixed(1) : '—');
+
+  // Plugin: dibuja línea Cierre y2 centrada sobre las barras de y2
+  const pacePlugin = {{
+    id:'pacePlugin',
+    afterDatasetsDraw(chart) {{
+      const ctx = chart.ctx, ysc = chart.scales['y'];
+      if (!ysc) return;
+      const bx2 = [];
+      chart.data.datasets.forEach(function(ds, di) {{
+        const meta = chart.getDatasetMeta(di);
+        if (ds.label==='OTB '+y2) meta.data.forEach(function(b,i){{ bx2[i]=b.x; }});
+      }});
+      const cpts = [];
+      fin2.forEach(function(v,i) {{
+        if (!v || bx2[i]==null) return;
+        cpts.push({{x:bx2[i], y:ysc.getPixelForValue(v)}});
+      }});
+      if (cpts.length > 1) {{
+        ctx.save();
+        ctx.strokeStyle=COL_ING+'70'; ctx.lineWidth=1.5;
+        ctx.setLineDash([6,4]); ctx.lineJoin='round';
+        ctx.beginPath(); ctx.moveTo(cpts[0].x,cpts[0].y);
+        cpts.slice(1).forEach(function(p){{ ctx.lineTo(p.x,p.y); }});
+        ctx.stroke(); ctx.restore();
+      }}
+    }}
+  }};
+  charts.c17 = new Chart(document.getElementById('c17'), {{
+    type:'bar',
+    plugins:[pacePlugin],
+    data: {{
+      labels,
+      datasets: [
+        {{ label:'OTB '+y2, data:otb2, backgroundColor:COL_ING+'35', borderColor:COL_ING+'60', borderWidth:1, borderRadius:5, borderSkipped:false }},
+        {{ label:'OTB '+y1, data:otb1, backgroundColor:COL_ING+'bb', borderRadius:5, borderSkipped:false }},
+        {{ label:'Cierre '+y2, data:fin2.map(v=>v||null), type:'line', borderColor:COL_ING+'70', borderDash:[6,4], borderWidth:1.5, pointRadius:0, showLine:false }},
+      ]
+    }},
+    options: {{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{{mode:'index',intersect:false}},
+      plugins: {{
+        legend:{{position:'top',labels:makeLegendLabels()}},
+        tooltip:{{
+          callbacks:{{
+            label:function(c) {{
+              const rev=c.parsed.y!=null?c.parsed.y.toLocaleString('es-ES',{{maximumFractionDigits:0}})+'€':'—';
+              return c.dataset.label+': '+rev;
+            }},
+            afterBody:function(items) {{
+              const i=items[0].dataIndex, lines=[];
+              if(deltaRev[i]!=='—') lines.push('Δ Rev: '+(parseFloat(deltaRev[i])>=0?'+':'')+deltaRev[i]+'%');
+              if(deltaN[i]!=='—') lines.push('Δ Noches: '+(parseFloat(deltaN[i])>=0?'+':'')+deltaN[i]+'%');
+              return lines.length?['',lines.join('   ·   ')]:[];
+            }}
+          }}
+        }}
+      }},
+      scales: {{
+        y: {{ ticks:{{callback:v=>(v/1000).toFixed(0)+'k€',color:'#94a3b8'}}, grid:{{color:GC}} }},
+        x: {{ grid:{{display:false}} }}
+      }}
+    }}
+  }});
+}}
+
+// drawC18, drawC19 removed (no canvas in HTML)
+
+// === C21: Reviews por trimestre (barras) + Rating medio (línea) ===
+function drawC21() {{
+  if(charts.c21) charts.c21.destroy();
+  const el = document.getElementById('c21');
+  if(!el) return;
+  const labels  = SH_CHECKS;
+  const ratings = labels.map(q => SH_DATA[q] ? SH_DATA[q].rating : 0);
+  const counts  = labels.map(q => SH_DATA[q] ? SH_DATA[q].n : 0);
+  const isSH    = labels.map(q => SH_DATA[q] ? SH_DATA[q].superhost : false);
+  const barCol  = isSH.map(v => v ? '#22c55ecc' : '#ef4444cc');
+  const ptCol   = ratings.map((v,i) => isSH[i] ? '#22c55e' : '#ef4444');
+  charts.c21 = new Chart(el, {{
+    type: 'bar',
+    data: {{
+      labels,
+      datasets: [
+        {{ label:'Reviews', data:counts, backgroundColor:barCol, borderRadius:4, borderSkipped:false, yAxisID:'y' }},
+        {{ label:'Rating medio', data:ratings, type:'line', borderColor:COL_ADR, borderWidth:2.5,
+           pointRadius:4, pointBackgroundColor:ptCol, tension:0.3, fill:false, yAxisID:'y1' }},
+        {{ label:'Umbral 4.8', data:Array(labels.length).fill(4.8), type:'line',
+           borderColor:'rgba(148,163,184,0.4)', borderDash:[6,4], borderWidth:1,
+           pointRadius:0, fill:false, yAxisID:'y1' }},
+      ]
+    }},
+    options: {{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{{mode:'index',intersect:false}},
+      plugins: {{
+        legend:{{position:'top',labels:{{usePointStyle:true,font:{{size:10}},
+          filter: item => !item.text.includes('Umbral')
+        }}}},
+        tooltip:{{callbacks:{{
+          afterBody: i => isSH[i[0].dataIndex] ? ['✅ Superhost'] : ['❌ No Superhost'],
+          label: c => {{
+            if(c.dataset.yAxisID==='y') return ' '+c.parsed.y+' reviews';
+            if(c.dataset.label==='Rating medio') return ' Rating: '+c.parsed.y.toFixed(2);
+            return '';
+          }}
+        }}}}
+      }},
+      scales: {{
+        y:  {{ position:'left',  ticks:{{color:'#60a5fa',stepSize:2}}, grid:{{color:GC}}, title:{{display:true,text:'Reviews',color:'#60a5fa',font:{{size:10}}}} }},
+        y1: {{ position:'right', ticks:{{color:COL_ADR, callback:v=>v.toFixed(1)}}, grid:{{drawOnChartArea:false}}, min:4, max:5, title:{{display:true,text:'Rating',color:COL_ADR,font:{{size:10}}}} }},
+        x:  {{ ticks:{{font:{{size:9}},maxRotation:45}}, grid:{{display:false}} }}
+      }}
+    }}
+  }});
+}}
+
+// === C22: Cancelaciones por año ===
+function drawC22() {{
+  const el = document.getElementById('c22');
+  if (!el) return;
+  if (el._chart) el._chart.destroy();
+  const years = Object.keys(CANC_KPIS).sort();
+  const conf  = years.map(y => CANC_KPIS[y].conf);
+  const canc  = years.map(y => CANC_KPIS[y].canc);
+  const tasas = years.map(y => CANC_KPIS[y].tasa);
+  const deltaTasa = tasas.map((t,i) => i>0 && tasas[i-1]>0 ? (t-tasas[i-1]).toFixed(1) : '—');
+  const c22labels = {{
+    id: 'c22labels',
+    afterDatasetsDraw(chart) {{
+      const ctx = chart.ctx;
+      chart.data.datasets.forEach(function(dataset, di) {{
+        if (dataset.label !== 'Canceladas') return;
+        const meta = chart.getDatasetMeta(di);
+        meta.data.forEach(function(bar, idx) {{
+          const tasa = tasas[idx];
+          if (!tasa) return;
+          const barH = Math.abs(bar.base - bar.y);
+          if (barH < 12) return;
+          ctx.save();
+          ctx.fillStyle = '#fff';
+          ctx.font = 'bold 9px Inter,sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(tasa.toFixed(1)+'%', bar.x, (bar.y + bar.base) / 2);
+          ctx.restore();
+        }});
+      }});
+    }}
+  }};
+  el._chart = new Chart(el, {{
+    type: 'bar',
+    plugins: [c22labels],
+    data: {{
+      labels: years,
+      datasets: [
+        {{ label: 'Confirmadas', data: conf, backgroundColor: COL_RES+'b3', stack: 'a', yAxisID:'y' }},
+        {{ label: 'Canceladas',  data: canc, backgroundColor: COL_CANC+'b3', stack: 'a', yAxisID:'y' }},
+      ]
+    }},
+    options: {{
+      responsive: true, maintainAspectRatio: false,
+      plugins: {{
+        legend: {{ position: 'top', labels: makeLegendLabels() }},
+        tooltip: {{ callbacks: {{
+          label: function(c) {{
+            if(c.dataset.label==='Canceladas') return 'Canceladas: '+c.parsed.y+' ('+tasas[c.dataIndex].toFixed(1)+'%)';
+            return c.dataset.label+': '+c.parsed.y;
+          }},
+          afterBody: function(items) {{
+            const i = items[0].dataIndex;
+            const d = deltaTasa[i];
+            if(d==='—') return [];
+            const sign = parseFloat(d)>=0?'+':'';
+            return ['Δ tasa vs ant.: '+sign+d+'pp'];
+          }}
+        }} }}
+      }},
+      scales: {{
+        x: {{ stacked: true, grid: {{ display: false }}, ticks: {{ font: {{ size: 10 }} }} }},
+        y: {{ stacked: true, ticks: {{ color: '#94a3b8' }}, grid: {{ color: GC }} }}
+      }}
+    }}
+  }});
+}}
+
+// drawC23, drawC24 removed (no canvas in HTML)
+
+// === HUECOS — tabla visual de huecos con precio RMS ===
+function drawHuecos() {{
+  const ct = document.getElementById('huecos-panel');
+  if (!ct) return;
+  if (!PRICING_GAPS || !PRICING_GAPS.length) {{
+    ct.innerHTML = '<div style="color:var(--m);padding:16px;font-size:13px;">Sin huecos. Ejecuta <code>python scripts/pricing.py</code> para actualizar.</div>';
+    return;
+  }}
+  function fmtD(s) {{ const p=s.split('-'); return p[2]+'/'+p[1]; }}
+  const SC = {{
+    alta:  {{label:'Alta',  col:'#ef4444'}},
+    media: {{label:'Media', col:'#f59e0b'}},
+    baja:  {{label:'Baja',  col:'#3b82f6'}}
+  }};
+  let h = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;">';
+  PRICING_GAPS.forEach(function(g, i) {{
+    const sc = SC[g.season] || {{label:g.season, col:'#94a3b8'}};
+    const rms = Math.round(g.recommended_price);
+    const floor = Math.round(g.floor_price||0), ceil = Math.round(g.ceiling_price||0);
+    const d1 = fmtD(g.start_date), d2 = fmtD(g.end_date);
+    h += '<div style="display:flex;align-items:center;gap:16px;background:var(--c);border:1px solid var(--b);'
+       + 'border-left:4px solid '+sc.col+';border-radius:12px;padding:18px 20px;">';
+    // Número
+    h += '<div style="width:32px;height:32px;border-radius:50%;background:'+sc.col+'18;border:1px solid '+sc.col+'44;'
+       + 'color:'+sc.col+';font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+(i+1)+'</div>';
+    // Info
+    h += '<div style="flex:1;min-width:0">';
+    h += '<div style="font-size:15px;font-weight:700;color:var(--t);margin-bottom:5px;">'+d1+' &rarr; '+d2+'</div>';
+    h += '<div style="font-size:12px;color:var(--m);">'
+       + '<span style="background:'+sc.col+'18;color:'+sc.col+';border-radius:4px;padding:2px 7px;font-weight:600;margin-right:6px;">'+sc.label+'</span>'
+       + g.nights+' noches'
+       + '&nbsp;&nbsp;·&nbsp;&nbsp;'+g.lead_days+'d ant.'
+       + '</div></div>';
+    // RMS
+    h += '<div style="text-align:right;flex-shrink:0;">'
+       + '<div style="font-size:24px;font-weight:800;color:'+COL_ADR+';line-height:1;">'+rms+'€</div>'
+       + '<div style="font-size:9px;color:var(--m);margin-top:3px;">'+floor+'€ &mdash; '+ceil+'€</div>'
+       + '</div>';
+    h += '</div>';
+  }});
+  h += '</div>';
+  ct.innerHTML = h;
+}}
+
+// === LEAD TIME KPI ===
+function drawLeadKPI() {{
+  const ct = document.getElementById('lead-kpi');
+  if(!ct) return;
+  const lt1=LT_AVG_YEAR[y1]||0, lt2=LT_AVG_YEAR[y2]||0;
+  if(!lt1) {{ ct.innerHTML=''; return; }}
+  const delta=lt2>0?((lt1-lt2)/lt2*100):0;
+  const dCol=delta>=0?'#22c55e':'#f59e0b';
+  ct.innerHTML='<div style="display:inline-flex;align-items:center;gap:14px;background:var(--c);border:1px solid var(--b);border-radius:8px;padding:10px 16px;font-size:13px;">'
+    +'<span style="color:var(--m);">Lead medio '+y1+'</span>'
+    +'<span style="font-size:20px;font-weight:700;color:var(--t);">'+Math.round(lt1)+' d&iacute;as</span>'
+    +(lt2?'<span style="color:'+dCol+';font-weight:600;">'+(delta>=0?'+':'')+delta.toFixed(1)+'% vs '+y2+'</span>':'')
+    +'</div>';
+}}
+
+// === DRAW ALL ===
+function drawAll() {{
+  safeDraw(drawKPIs,'KPIs');
+  safeDraw(drawC17,'C17');
+  safeDraw(drawC1,'C1');
+  safeDraw(drawBizOv,'BizOv');
+  safeDraw(drawC3,'C3'); safeDraw(drawC5,'C5');
+  safeDraw(drawSpark,'Spark');
+  safeDraw(drawHuecos,'Huecos');
+  safeDraw(drawNextSH,'NextSH'); safeDraw(drawC22,'C22'); safeDraw(drawC15,'C15');
+  safeDraw(drawC16,'C16');
+}}
+
+// Bloques HTML puro — no necesitan Chart.js
+safeDraw(drawKPIs,'KPIs');
+safeDraw(drawSpark,'Spark');
+safeDraw(drawHuecos,'Huecos');
+safeDraw(drawNextSH,'NextSH');
+// Gráficas Chart.js
+if(typeof Chart!=='undefined') {{ drawAll(); }}
+
+// === FILTER HANDLERS ===
+document.getElementById('fYear1').addEventListener('change', e => {{ y1 = e.target.value; drawAll(); }});
+document.getElementById('fYear2').addEventListener('change', e => {{ y2 = e.target.value; drawAll(); }});
+document.querySelectorAll('.period-btn').forEach(btn => {{
+  btn.addEventListener('click', () => {{
+    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    period = parseInt(btn.dataset.months);
+    drawKPIs(); drawC1(); drawC3(); drawC5(); drawC17();
+  }});
+}});
+</script>
+</body>
+</html>"""
+    return html
+
+
+def main():
+    errors, _ = _validar(verbose=True)
+    if errors:
+        print("Abortando — corrige los errores antes de regenerar el dashboard.")
+        sys.exit(1)
+
+    blocking, _ = _auditar(verbose=True)
+    if blocking:
+        print("Abortando — errores bloqueantes en auditoría de métricas.")
+        sys.exit(1)
+
+    print("Cargando datos locales...")
+    ing, ocu, pm, reservas = load_reservas()
+    rev, reviews_list = load_reviews()
+    visitas = load_visitas()
+    all_reservas = json.load(open(os.path.join(_DATOS, "reservas.json"), encoding="utf-8"))
+    canc_kpis = calc_cancelaciones(all_reservas)
+    canc_kpis_ytd = calc_cancelaciones_ytd(all_reservas)
+    pm_ytd = calc_pm_ytd(all_reservas)
+    import calendar as _cal
+    totales = {}
+    for _y in sorted(set(r["year"] for r in all_reservas if r.get("year"))):
+        _conf = [r for r in all_reservas if r.get("status", "confirmed") == "confirmed" and r.get("year") == _y]
+        _nights = sum(r.get("nights", 0) for r in _conf)
+        _income = sum(r.get("total", 0) for r in _conf if r.get("total", 0) > 0)
+        _ck = canc_kpis.get(_y, {})
+        _pm_num = sum(r.get("pm", 0) * r.get("nights", 0) for r in _conf
+                      if not (not r.get("code") and r.get("total", 0) == 0) and r.get("pm", 0) > 0 and r.get("nights", 0) > 0)
+        _pm_den = sum(r.get("nights", 0) for r in _conf
+                      if not (not r.get("code") and r.get("total", 0) == 0) and r.get("pm", 0) > 0 and r.get("nights", 0) > 0)
+        _dias = 366 if _cal.isleap(_y) else 365
+        totales[_y] = {
+            "income": round(_income, 2),
+            "ocu": round(_nights / _dias * 100, 1),
+            "nights": _nights,
+            "canc": _ck.get("canc", 0),
+            "tasa_canc": _ck.get("tasa", 0),
+            "pm": round(_pm_num / _pm_den, 1) if _pm_den else 0,
+        }
+    pricing_gaps = []
+    _pg_path = os.path.join(_ROOT, "output", "pricing_output.json")
+    if os.path.exists(_pg_path):
+        try:
+            pricing_gaps = json.load(open(_pg_path, encoding="utf-8"))
+        except Exception:
+            pass
+    data = {"reservas": reservas, "reviews_list": reviews_list, "visitas": visitas, "canc_kpis": canc_kpis, "canc_kpis_ytd": canc_kpis_ytd, "pm_ytd": pm_ytd, "totales": totales, "pricing_gaps": pricing_gaps}
+    html = build(data, ing, ocu, pm, rev)
+    out = os.path.join(_ROOT, "dashboard.html")
+    with open(out, "w", encoding="utf-8") as f:
+        f.write(html)
+    print(f"\nDashboard: {out}")
+
+
+if __name__ == "__main__":
+    main()
